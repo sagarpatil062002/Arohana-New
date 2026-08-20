@@ -1,0 +1,59 @@
+.heading {
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  max-width: 30ch;
+}
+
+.strip {
+  margin-top: clamp(32px, 4vw, 52px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(96px, 11vw, 148px);
+  padding: 1.4rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.4s ease;
+}
+
+.cell:hover {
+  background: var(--surface);
+}
+
+.wordmark {
+  font-size: clamp(0.95rem, 1.3vw, 1.18rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.4s ease;
+}
+
+.cell:hover .wordmark {
+  color: var(--ink);
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
