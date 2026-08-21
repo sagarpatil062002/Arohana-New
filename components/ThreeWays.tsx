@@ -1,35 +1,115 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { services } from "@/data/content";
+import { gsap } from "@/lib/gsap";
+import { useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import Reveal from "./Reveal";
-import Media from "./Media";
+import Arrow from "./Arrow";
 import styles from "./ThreeWays.module.css";
 
 export default function ThreeWays() {
+  const listRef = useRef<HTMLDivElement>(null);
+  const floatRef = useRef<HTMLDivElement>(null);
+  const quick = useRef<{ x: (v: number) => void; y: (v: number) => void } | null>(
+    null
+  );
+  const [active, setActive] = useState<number | null>(null);
+
+  const reduced = useReducedMotion();
+  const mobile = useIsMobile();
+  const interactive = !reduced && !mobile;
+
+  useEffect(() => {
+    if (!interactive || !floatRef.current) return;
+    gsap.set(floatRef.current, { xPercent: -50, yPercent: -50, autoAlpha: 0 });
+    quick.current = {
+      x: gsap.quickTo(floatRef.current, "x", { duration: 0.55, ease: "power3" }),
+      y: gsap.quickTo(floatRef.current, "y", { duration: 0.55, ease: "power3" }),
+    };
+  }, [interactive]);
+
+  const onMove = (e: React.MouseEvent) => {
+    if (!interactive || !quick.current || !listRef.current) return;
+    const r = listRef.current.getBoundingClientRect();
+    quick.current.x(e.clientX - r.left);
+    quick.current.y(e.clientY - r.top);
+  };
+
+  const enter = (i: number) => () => {
+    if (!interactive) return;
+    setActive(i);
+    if (floatRef.current)
+      gsap.to(floatRef.current, { autoAlpha: 1, duration: 0.4 });
+  };
+
+  const leave = () => {
+    if (!interactive) return;
+    setActive(null);
+    if (floatRef.current)
+      gsap.to(floatRef.current, { autoAlpha: 0, duration: 0.3 });
+  };
+
   return (
     <section className="section" aria-labelledby="ways-heading">
       <div className="container">
         <Reveal as="p" className="eyebrow">
-          How we engage
+          What we do
         </Reveal>
         <Reveal as="h2" id="ways-heading" className="section-title" delay={80}>
           Three ways we work
         </Reveal>
 
-        <div className={styles.grid}>
-          {services.map((service, i) => (
-            <Reveal key={service.number} className={styles.card} delay={120 + i * 90}>
-              <article className={styles.cardInner}>
-                <div className={styles.media}>
-                  <Media media={service.media} ratio="4 / 3" rounded="md" />
+        <Reveal className={styles.listWrap} delay={140}>
+          <div
+            ref={listRef}
+            className={styles.list}
+            onMouseMove={onMove}
+            onMouseLeave={leave}
+          >
+            {services.map((s, i) => (
+              <div
+                key={s.number}
+                className={styles.row}
+                onMouseEnter={enter(i)}
+                data-cursor="view"
+              >
+                <span className={styles.num}>{s.number}</span>
+                <div className={styles.main}>
+                  <h3 className={styles.title}>{s.title}</h3>
+                  {!interactive && (
+                    <p className={styles.descStatic}>{s.description}</p>
+                  )}
+                  {!interactive && (
+                    <div className={styles.thumb}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={s.media.src} alt={s.media.alt} loading="lazy" />
+                    </div>
+                  )}
                 </div>
-                <div className={styles.content}>
-                  <span className={styles.number}>{service.number}</span>
-                  <h3 className={styles.title}>{service.title}</h3>
-                  <p className={styles.desc}>{service.description}</p>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                <span className={styles.arrow} aria-hidden="true">
+                  <Arrow />
+                </span>
+              </div>
+            ))}
+
+            {interactive && (
+              <div ref={floatRef} className={styles.float} aria-hidden="true">
+                {services.map((s, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={s.number}
+                    src={s.media.src}
+                    alt=""
+                    className={`${styles.floatImg} ${
+                      active === i ? styles.floatImgOn : ""
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </Reveal>
       </div>
     </section>
   );

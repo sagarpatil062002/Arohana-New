@@ -1,92 +1,142 @@
-.grid {
+.listWrap {
   margin-top: clamp(40px, 5vw, 72px);
+}
+
+.list {
+  position: relative;
+  border-top: 1px solid var(--line-2);
+}
+
+.row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(20px, 2.4vw, 36px);
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(16px, 3vw, 48px);
+  padding: clamp(22px, 3vw, 38px) 0.5rem;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left var(--dur-hover) var(--ease),
+    background-color var(--dur-hover) var(--ease);
+  cursor: pointer;
 }
 
-.card {
-  height: 100%;
+.row:hover {
+  padding-left: clamp(12px, 1.6vw, 28px);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--accent-soft) 60%, transparent),
+    transparent 70%
+  );
 }
 
-.cardInner {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: clamp(16px, 1.6vw, 22px);
-  transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
-    box-shadow 0.5s ease;
+.num {
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-hover) var(--ease);
 }
 
-.cardInner:hover {
-  border-color: var(--line-2);
-  transform: translateY(-4px);
-  box-shadow: 0 22px 50px -34px rgba(20, 19, 18, 0.4);
-}
-
-.media {
-  overflow: hidden;
-  border-radius: var(--r-md);
-}
-
-/* subtle image scale on hover */
-.media :global(.media) > img,
-.media :global(.media) > video {
-  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-
-.cardInner:hover .media :global(.media) > img,
-.cardInner:hover .media :global(.media) > video {
-  transform: scale(1.03);
-}
-
-.content {
-  padding: clamp(16px, 1.4vw, 22px) 4px 8px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.number {
-  font-size: 0.82rem;
-  letter-spacing: 0.18em;
+.row:hover .num {
   color: var(--accent);
-  font-weight: 600;
+}
+
+.main {
+  min-width: 0;
 }
 
 .title {
-  font-size: var(--fs-h3);
-  margin-top: 0.7rem;
+  font-size: clamp(1.6rem, 3.6vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+  transition: transform var(--dur-hover) var(--ease),
+    color var(--dur-hover) var(--ease);
 }
 
-.desc {
-  margin-top: 0.9rem;
+.row:hover .title {
+  transform: translateX(6px);
+}
+
+.descStatic {
+  margin-top: 0.8rem;
   color: var(--ink-soft);
-  font-size: 0.98rem;
+  font-size: 1rem;
   line-height: 1.55;
+  max-width: 52ch;
 }
 
-@media (max-width: 980px) {
-  .grid {
-    grid-template-columns: 1fr;
-    max-width: 620px;
-  }
+.thumb {
+  margin-top: 1.2rem;
+  width: min(100%, 420px);
+  aspect-ratio: 16 / 10;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.arrow {
+  display: inline-flex;
+  color: var(--ink-faint);
+  transform: translateX(-4px);
+  opacity: 0;
+  transition: transform var(--dur-hover) var(--ease),
+    opacity var(--dur-hover) var(--ease), color var(--dur-hover) var(--ease);
+}
+
+.row:hover .arrow {
+  transform: translateX(0);
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* floating cursor-following preview (desktop) */
+.float {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(220px, 20vw, 300px);
+  height: clamp(280px, 26vw, 380px);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+  box-shadow: 0 30px 70px -40px rgba(20, 19, 18, 0.5);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+}
+
+.floatImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+}
+
+.floatImgOn {
+  opacity: 1;
+  transform: scale(1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cardInner,
-  .media :global(.media) > img,
-  .media :global(.media) > video {
+  .row,
+  .num,
+  .title,
+  .arrow,
+  .floatImg {
     transition: none !important;
   }
-  .cardInner:hover {
-    transform: none;
-  }
-  .cardInner:hover .media :global(.media) > img,
-  .cardInner:hover .media :global(.media) > video {
+  .row:hover .title {
     transform: none;
   }
 }

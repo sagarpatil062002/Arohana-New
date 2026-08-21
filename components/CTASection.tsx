@@ -15,7 +15,11 @@ export default function CTASection() {
         </Reveal>
 
         <Reveal className={styles.actions} delay={160}>
-          <a href={finalCta.primaryCta.href} className={styles.primary}>
+          <a
+            href={finalCta.primaryCta.href}
+            className={styles.primary}
+            data-cursor="cta"
+          >
             {finalCta.primaryCta.label}
             <Arrow />
           </a>

@@ -1,0 +1,232 @@
+.hero {
+  padding-block: clamp(80px, 14vw, 200px);
+  text-align: center;
+}
+
+.heroHeading {
+  font-size: var(--fs-display);
+  letter-spacing: -0.04em;
+  max-width: 10ch;
+  margin-inline: auto;
+  line-height: var(--lh-tight);
+}
+
+.heroBody {
+  margin-top: 1.6rem;
+  color: var(--ink-soft);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  max-width: 48ch;
+  margin-inline: auto;
+}
+
+/* Contact Info */
+.info {
+  padding-block: clamp(60px, 8vw, 120px);
+  border-top: 1px solid var(--line);
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(32px, 5vw, 80px);
+}
+
+.infoLabel {
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 1.2rem;
+  display: block;
+}
+
+.infoValue {
+  display: block;
+  font-size: clamp(1rem, 1.3vw, 1.25rem);
+  color: var(--ink);
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.infoValue:hover {
+  color: var(--accent);
+}
+
+.infoValue + .infoValue {
+  margin-top: 0.6rem;
+}
+
+/* Form */
+.formSection {
+  padding-block: clamp(60px, 8vw, 120px);
+  border-top: 1px solid var(--line);
+}
+
+.formInner {
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.formHeading {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.02em;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.field {
+  margin-bottom: clamp(28px, 3.5vw, 44px);
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.8rem;
+  transition: color 0.3s ease;
+}
+
+.fieldInput:focus ~ .fieldLabel,
+.fieldInput:not(:placeholder-shown) ~ .fieldLabel {
+  color: var(--accent);
+}
+
+.fieldInput {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-2);
+  padding-block: 0.7em;
+  font: inherit;
+  font-size: var(--fs-lead);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.3s ease;
+  border-radius: 0;
+}
+
+.fieldInput:focus {
+  border-color: var(--accent);
+}
+
+.fieldInput::placeholder {
+  color: var(--ink-faint);
+  font-size: var(--fs-body);
+}
+
+textarea.fieldInput {
+  resize: vertical;
+  min-height: 6em;
+  line-height: 1.6;
+}
+
+.fieldError {
+  font-size: 0.82rem;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+
+.submitRow {
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 1em 2.2em;
+  background: var(--ink);
+  color: #fdfcf9;
+  border: none;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 0.35s ease, transform 0.35s var(--ease);
+}
+
+.submitBtn:hover {
+  background: var(--accent);
+  transform: translateY(-2px);
+}
+
+.submitBtn:active {
+  transform: translateY(0);
+}
+
+.submitBtn .arrow {
+  transition: transform 0.35s var(--ease);
+}
+
+.submitBtn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Closing Visual */
+.closing {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.closingMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.closingMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.closingOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 16, 0.5);
+  z-index: 1;
+}
+
+.closingInner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 16ch;
+}
+
+.closingText {
+  color: #fdfcf9;
+  font-size: var(--fs-h2);
+  letter-spacing: -0.02em;
+}
+
+.closingCta {
+  margin-top: clamp(28px, 3vw, 44px);
+}
+
+@media (max-width: 880px) {
+  .infoGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submitBtn,
+  .submitBtn .arrow,
+  .fieldInput,
+  .fieldLabel,
+  .infoValue {
+    transition: none !important;
+  }
+}

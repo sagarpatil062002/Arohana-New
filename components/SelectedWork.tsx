@@ -1,12 +1,64 @@
+"use client";
+
+import { useRef } from "react";
 import { selectedWork } from "@/data/content";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useIsomorphicLayoutEffect, useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import Reveal from "./Reveal";
 import Media from "./Media";
 import Arrow from "./Arrow";
 import styles from "./SelectedWork.module.css";
 
 export default function SelectedWork() {
+  const root = useRef<HTMLElement | null>(null);
+  const reduced = useReducedMotion();
+  const mobile = useIsMobile();
+
+  useIsomorphicLayoutEffect(() => {
+    if (reduced || mobile || !root.current) return;
+    const ctx = gsap.context(() => {
+      const wraps = gsap.utils.toArray<HTMLElement>("[data-parallax]");
+      wraps.forEach((wrap) => {
+        const img = wrap.querySelector("img");
+        // gentle parallax drift
+        gsap.fromTo(
+          wrap,
+          { yPercent: 4 },
+          {
+            yPercent: -4,
+            ease: "none",
+            scrollTrigger: {
+              trigger: wrap,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+        // image settles from 1.06 -> 1 as it enters
+        if (img) {
+          gsap.fromTo(
+            img,
+            { scale: 1.06 },
+            {
+              scale: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: wrap,
+                start: "top bottom",
+                end: "center center",
+                scrub: true,
+              },
+            }
+          );
+        }
+      });
+    }, root);
+    return () => ctx.revert();
+  }, [reduced, mobile]);
+
   return (
-    <section className="section" aria-labelledby="work-heading">
+    <section ref={root} className="section" aria-labelledby="work-heading">
       <div className="container">
         <Reveal as="p" className="eyebrow">
           Selected work
@@ -24,8 +76,8 @@ export default function SelectedWork() {
                 className={`${styles.card} ${isFeature ? styles.feature : styles.standard}`}
                 delay={100 + (i % 2) * 80}
               >
-                <a href={item.href} className={styles.link}>
-                  <div className={styles.media}>
+                <a href={item.href} className={styles.link} data-cursor="project">
+                  <div className={styles.mediaWrap} data-parallax>
                     <Media
                       media={item.media}
                       ratio={isFeature ? "16 / 10" : "4 / 3"}

@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import BrandObject from "@/components/BrandObject";
 import PointOfView from "@/components/PointOfView";
 import ThreeWays from "@/components/ThreeWays";
 import SelectedWork from "@/components/SelectedWork";
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <BrandObject />
         <PointOfView />
         <ThreeWays />
         <SelectedWork />
