@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { hero } from "@/data/content";
+import { hero } from "@/lib/content";
 import { gsap } from "@/lib/gsap";
 import { useIsomorphicLayoutEffect, useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import HeroMedia from "./HeroMedia";

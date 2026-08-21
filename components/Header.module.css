@@ -148,7 +148,7 @@
   animation: mobileIn 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.mobileOpen {
+.mobile.mobileOpen {
   display: block;
 }
 
@@ -165,7 +165,6 @@
   }
 
   .mobile {
-    display: none;
     border-top: 1px solid var(--line);
     padding: 1.4rem var(--gutter) 2.4rem;
     background: var(--bg);

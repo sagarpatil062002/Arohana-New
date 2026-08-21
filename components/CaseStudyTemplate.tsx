@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import Media from "@/components/Media";
 import Arrow from "@/components/Arrow";
-import { caseStudies } from "@/data/content";
+import { caseStudies } from "@/lib/content";
 import styles from "./CaseStudyTemplate.module.css";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function CaseStudyTemplate({ slug }: Props) {
-  const study = caseStudies[slug];
+  const study = caseStudies[slug as keyof typeof caseStudies];
 
   useEffect(() => {
     window.scrollTo({ top: 0 });

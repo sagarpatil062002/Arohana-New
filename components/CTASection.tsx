@@ -1,4 +1,4 @@
-import { finalCta } from "@/data/content";
+import { finalCta } from "@/lib/content";
 import Reveal from "./Reveal";
 import Arrow from "./Arrow";
 import styles from "./CTASection.module.css";

@@ -1,4 +1,4 @@
-import { pointOfView } from "@/data/content";
+import { pointOfView } from "@/lib/content";
 import Reveal from "./Reveal";
 import Media from "./Media";
 import styles from "./PointOfView.module.css";

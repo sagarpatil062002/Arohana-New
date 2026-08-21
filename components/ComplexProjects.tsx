@@ -1,4 +1,4 @@
-import { complexProjects } from "@/data/content";
+import { complexProjects } from "@/lib/content";
 import Reveal from "./Reveal";
 import Media from "./Media";
 import Arrow from "./Arrow";

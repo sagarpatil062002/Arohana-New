@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { site } from "@/data/content";
+import { site } from "@/lib/content";
 import { usePathname } from "next/navigation";
 import Arrow from "./Arrow";
 import styles from "./Header.module.css";

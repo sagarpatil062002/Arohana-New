@@ -1,6 +1,6 @@
 "use client";
 
-import { tourin } from "@/data/content";
+import { tourinData } from "@/lib/content";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
@@ -23,10 +23,10 @@ export default function TourinPage() {
           <div className="container">
             <div className={styles.heroInner}>
               <Reveal as="p" className={`eyebrow ${styles.heroEyebrow}`}>
-                {tourin.eyebrow}
+                {tourinData.meta.eyebrow}
               </Reveal>
               <Reveal as="h1" id="tourin-hero-heading" className={styles.heroHeading} delay={80}>
-                {tourin.headline}
+                {tourinData.meta.headline}
               </Reveal>
               <Reveal as="p" className={`lead ${styles.heroBody}`} delay={140}>
                 Travel beyond the itinerary.
@@ -86,7 +86,7 @@ export default function TourinPage() {
                 </Reveal>
               </div>
               <Reveal className={styles.ladakhMedia} delay={120}>
-                <Media media={tourin.media[0]} ratio="4 / 3" rounded="lg" />
+                <Media media={tourinData.experiences[0].images[0]} ratio="4 / 3" rounded="lg" />
               </Reveal>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function TourinPage() {
             </Reveal>
             <Reveal className={styles.experienceMedia} delay={200}>
               <div className={styles.experienceGrid}>
-                {tourin.media.map((m, i) => (
+                {tourinData.experiences[0].images.map((m, i) => (
                   <Media key={i} media={m} ratio="16 / 9" rounded="lg" />
                 ))}
               </div>
@@ -181,11 +181,11 @@ export default function TourinPage() {
             <Reveal as="p" className={styles.packagesBody} delay={140}>
               From individual travellers and small groups to larger parties, including a 20-biker trip. Each journey is planned around the traveller, not a fixed template.
             </Reveal>
-            <Reveal className={styles.packagesCta} delay={200}>
-              <a href="/contact" className="btn btn--primary">
-                Talk to us about a journey <Arrow />
-              </a>
-            </Reveal>
+              <Reveal className={styles.packagesCta} delay={200}>
+                <a href={tourinData.meta.cta.href} className="btn btn--primary">
+                  Talk to us about a journey <Arrow />
+                </a>
+              </Reveal>
           </div>
         </section>
 
@@ -196,7 +196,7 @@ export default function TourinPage() {
               Come travel differently.
             </Reveal>
             <Reveal className={styles.closingCta} delay={160}>
-              <a href="/contact" className="btn btn--primary">
+              <a href={tourinData.meta.cta.href} className="btn btn--primary">
                 View Ladakh Experiences <Arrow />
               </a>
             </Reveal>

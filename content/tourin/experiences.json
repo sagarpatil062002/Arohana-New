@@ -1,0 +1,60 @@
+{
+  "experiences": [
+    {
+      "slug": "ladakh-journeys",
+      "title": "Ladakh Journeys",
+      "shortDescription": "Experiential travel beginning with Ladakh — built from lived experience rather than a generic destination catalogue.",
+      "longDescription": "Tourin creates experiential journeys for travellers who want more than a checklist of sights. Beginning with Ladakh, each journey is planned around the traveller, not a fixed template. First journeys centre on exploration, culture, landscapes and meaningful encounters — with enough structure for comfort and enough space for the unexpected.",
+      "duration": "Variable",
+      "images": [
+        {
+          "src": "/samples/tourin-1.jpg",
+          "alt": "Ladakh — local people and everyday life.",
+          "label": "Ladakh: people / local interaction (real)."
+        },
+        {
+          "src": "/samples/tourin-2.jpg",
+          "alt": "Ladakh — food and stays.",
+          "label": "Ladakh: food / stays (real)."
+        },
+        {
+          "src": "/samples/tourin-3.jpg",
+          "alt": "Ladakh — roads and sense of place.",
+          "label": "Ladakh: roads / sense of place (real)."
+        }
+      ],
+      "itinerary": [],
+      "highlights": [
+        "Curious rather than checklist-driven travellers",
+        "People who want to understand a destination, not only photograph it",
+        "People who value local experiences and thoughtful pacing",
+        "Small groups, couples, families or individual travellers wanting a more personal journey",
+        "Travellers wanting professional planning without a fixed tourist circuit"
+      ],
+      "inclusions": [],
+      "exclusions": [],
+      "cta": { "label": "Talk to us about a journey", "href": "/contact" },
+      "published": true
+    }
+  ],
+  "meta": {
+    "eyebrow": "An owned brand",
+    "headline": "And then there is Tourin.",
+    "body": "Tourin is an experiential travel brand beginning with Ladakh, built from lived experience rather than a generic destination catalogue. 15+ separate bookings and trips so far — shaped by people, food, stays and the roads in between.",
+    "stat": { "value": "15+", "label": "separate bookings & trips so far" },
+    "why": "The Ladakh many itineraries sell and the Ladakh people experience are not always the same.",
+    "whyBody": "Tourin focuses on the people, food, stories, homes, landscapes, silences and everyday life behind the famous places. Not because the landmarks don't matter, but because they're only part of the story.",
+    "believe": "A good trip should leave travellers with more than photographs.",
+    "believeBody": "It should create a sense of where they were — through food, local families, traditions, connected stays, slower routes and enough time to notice the place. The goal is not to check every landmark. It is to understand a destination, not only photograph it.",
+    "ladakh": "Ladakh is where Tourin begins",
+    "ladakhBody": "Ārohana knows Ladakh closely enough to design experiences beyond the obvious itinerary. First journeys centre on exploration, culture, landscapes and meaningful encounters — with enough structure for comfort and enough space for the unexpected.",
+    "from": "The same instinct, applied to travel",
+    "fromBody": "Tourin extends the same instinct as Ārohana: create something with a clear point of view rather than offering what everyone else offers. Ārohana builds brands and businesses; Tourin applies that thinking to travel.",
+    "next": "Ladakh is the beginning, not the boundary",
+    "nextBody": "The approach can expand to other destinations with enough character, culture and story. The thinking remains the same: ground-level understanding, genuine care for experience, and a refusal to compete on cheap packages or number of destinations.",
+    "packagesHeading": "15+ separate bookings and trips so far",
+    "packagesBody": "From individual travellers and small groups to larger parties, including a 20-biker trip. Each journey is planned around the traveller, not a fixed template.",
+    "cta": { "label": "Talk to us about a journey", "href": "/contact" },
+    "closing": "Come travel differently."
+  }
+}

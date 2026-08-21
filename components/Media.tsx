@@ -1,4 +1,4 @@
-import type { MediaRef } from "@/data/content";
+import type { MediaRef } from "@/lib/content";
 
 type MediaProps = {
   media: MediaRef;

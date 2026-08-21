@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import CaseStudyTemplate from "@/components/CaseStudyTemplate";
-import { caseStudies } from "@/data/content";
+import { getCaseStudies, getCaseStudy } from "@/lib/content/server";
 
 export async function generateStaticParams() {
-  return Object.keys(caseStudies).map((slug) => ({ slug }));
+  return Object.keys(getCaseStudies()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const study = caseStudies[params.slug];
+  const study = getCaseStudy(params.slug);
   if (!study) {
     return {
       title: "Case Study | Ārohana Consultancy",

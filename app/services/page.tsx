@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import RevealMedia from "@/components/RevealMedia";
 import ThreeWays from "@/components/ThreeWays";
 import Arrow from "@/components/Arrow";
-import { services, serviceDetails } from "@/data/content";
+import { services, serviceDetails } from "@/lib/content";
 import styles from "./services.module.css";
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function ServicesPage() {
 
         {/* SERVICE DETAIL SECTIONS */}
         {services.map((service, i) => {
-          const d = serviceDetails[service.title];
+          const d = serviceDetails[service.title as keyof typeof serviceDetails];
           const reverse = i % 2 === 1;
           return (
             <section

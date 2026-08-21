@@ -1,0 +1,113 @@
+{
+  "projects": [
+    {
+      "slug": "raysons-group",
+      "title": "Raysons Group",
+      "sector": "Real Estate & Built Environment",
+      "description": "One group. Multiple businesses. Different communication needs — shaped into a single, coherent way of speaking.",
+      "image": "/samples/work-raysons.jpg",
+      "alt": "Raysons Group — built environment and business portfolio.",
+      "tags": ["Group brand", "Multi-business", "Strategy"],
+      "caseStudy": true,
+      "featured": true,
+      "size": "feature",
+      "href": "/work/raysons-group"
+    },
+    {
+      "slug": "loom-crafts",
+      "title": "Loom Crafts",
+      "sector": "Lifestyle & Consumer Brands",
+      "description": "One brand, two very different buying journeys — communicated without losing a single thread of the story.",
+      "image": "/samples/work-loom.jpg",
+      "alt": "Loom Crafts product and craft environment.",
+      "tags": ["Consumer", "DTC", "Narrative"],
+      "caseStudy": true,
+      "featured": true,
+      "size": "standard",
+      "href": "/work/loom-crafts"
+    },
+    {
+      "slug": "picturetime",
+      "title": "PictureTime",
+      "sector": "Entertainment & Media",
+      "description": "From cinema promotion to a broader brand story — building a narrative bigger than any single release.",
+      "image": "/samples/work-picturetime.jpg",
+      "alt": "PictureTime mobile cinema and audience.",
+      "tags": ["Entertainment", "Brand story", "Media"],
+      "caseStudy": true,
+      "featured": true,
+      "size": "standard",
+      "href": "/work/picturetime"
+    },
+    {
+      "slug": "she",
+      "title": "SHE",
+      "sector": "Institutional / Community",
+      "description": "A community initiative built around health, dignity and sustainability — communication with responsibility at its centre.",
+      "image": "/samples/work-she.jpg",
+      "alt": "SHE community initiative — people and everyday life.",
+      "tags": ["Community", "Health", "Sustainability"],
+      "caseStudy": true,
+      "featured": true,
+      "size": "feature",
+      "href": "/work/she"
+    },
+    {
+      "slug": "misu",
+      "title": "Misu",
+      "sector": "Hospitality & F&B",
+      "description": "Hospitality thinking that goes beyond the dining room — concept, operations and the experience between them.",
+      "image": "/samples/work-misu.jpg",
+      "alt": "Misu hospitality space and service.",
+      "tags": ["Hospitality", "Concept", "Experience"],
+      "caseStudy": true,
+      "featured": true,
+      "size": "standard",
+      "href": "/work/misu"
+    },
+    {
+      "slug": "rr-skins",
+      "title": "RR Skins",
+      "sector": "Healthcare",
+      "description": "Making a specialised healthcare offering easier to understand and trust — clarity as a form of care.",
+      "image": "/samples/work-rrskins.jpg",
+      "alt": "RR Skins specialised healthcare environment.",
+      "tags": ["Healthcare", "Clarity", "Trust"],
+      "caseStudy": true,
+      "featured": true,
+      "size": "standard",
+      "href": "/work/rr-skins"
+    }
+  ],
+  "sectors": [
+    "Hospitality & F&B",
+    "Real Estate & Built Environment",
+    "Healthcare",
+    "Lifestyle & Consumer Brands",
+    "Entertainment & Media",
+    "Travel & Tourism",
+    "Institutional / Community"
+  ],
+  "sectorProjects": {
+    "Hospitality & F&B": ["Misu", "Spice Goa", "Khana Khazana", "Khau Gali", "Resort Blu", "Holiday Village"],
+    "Real Estate & Built Environment": ["Raysons Group", "Citron", "Loom Crafts", "Neora Deck"],
+    "Healthcare": ["RR Skins"],
+    "Lifestyle & Consumer Brands": ["DTK Karekar Jewellery", "Fraganta", "Loom Crafts"],
+    "Entertainment & Media": ["PictureTime"],
+    "Travel & Tourism": ["Tourin", "Holiday Village"],
+    "Institutional / Community": ["SHE", "Operation Sampark", "Indian Army projects", "Western Command"]
+  },
+  "brands": [
+    "Raysons Group",
+    "PictureTime",
+    "Loom Crafts",
+    "Neora Deck",
+    "Misu",
+    "RR Skins",
+    "Blu Resorts",
+    "Qubice",
+    "Kanopy",
+    "Citron",
+    "DTK Karekar Jewellery"
+  ]
+}

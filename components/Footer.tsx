@@ -1,4 +1,4 @@
-import { site } from "@/data/content";
+import { site } from "@/lib/content";
 import styles from "./Footer.module.css";
 
 export default function Footer() {

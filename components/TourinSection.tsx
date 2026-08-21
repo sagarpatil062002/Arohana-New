@@ -1,4 +1,4 @@
-import { tourin } from "@/data/content";
+import { tourinData } from "@/lib/content";
 import Reveal from "./Reveal";
 import Media from "./Media";
 import Arrow from "./Arrow";
@@ -11,23 +11,23 @@ export default function TourinSection() {
         <div className={styles.grid}>
           <div className={styles.text}>
             <Reveal as="p" className="eyebrow">
-              {tourin.eyebrow}
+              {tourinData.meta.eyebrow}
             </Reveal>
             <Reveal as="h2" id="tourin-heading" className={styles.headline} delay={80}>
-              {tourin.headline}
+              {tourinData.meta.headline}
             </Reveal>
             <Reveal as="p" className={styles.body} delay={150}>
-              {tourin.body}
+              {tourinData.meta.body}
             </Reveal>
 
             <Reveal className={styles.stat} delay={210}>
-              <span className={styles.statValue}>{tourin.stat.value}</span>
-              <span className={styles.statLabel}>{tourin.stat.label}</span>
+              <span className={styles.statValue}>{tourinData.meta.stat.value}</span>
+              <span className={styles.statLabel}>{tourinData.meta.stat.label}</span>
             </Reveal>
 
             <Reveal delay={260}>
-              <a href={tourin.cta.href} className="btn btn--ghost">
-                {tourin.cta.label}
+              <a href={tourinData.meta.cta.href} className="btn btn--ghost">
+                {tourinData.meta.cta.label}
                 <Arrow />
               </a>
             </Reveal>
@@ -35,14 +35,14 @@ export default function TourinSection() {
 
           <div className={styles.media}>
             <Reveal className={styles.mediaMain}>
-              <Media media={tourin.media[0]} ratio="4 / 5" />
+              <Media media={tourinData.experiences[0].images[0]} ratio="4 / 5" />
             </Reveal>
             <div className={styles.mediaSide}>
               <Reveal delay={120}>
-                <Media media={tourin.media[1]} ratio="4 / 3" />
+                <Media media={tourinData.experiences[0].images[1]} ratio="4 / 3" />
               </Reveal>
               <Reveal delay={200}>
-                <Media media={tourin.media[2]} ratio="4 / 3" />
+                <Media media={tourinData.experiences[0].images[2]} ratio="4 / 3" />
               </Reveal>
             </div>
           </div>

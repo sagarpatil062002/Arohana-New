@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { MediaRef } from "@/data/content";
+import type { MediaRef } from "@/lib/content";
 
 type HeroMediaProps = {
   media: MediaRef;

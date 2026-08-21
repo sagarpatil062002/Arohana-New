@@ -1,4 +1,4 @@
-import { brands } from "@/data/content";
+import { workProjects } from "@/lib/content";
 import Reveal from "./Reveal";
 import styles from "./LogoStrip.module.css";
 
@@ -17,7 +17,7 @@ export default function LogoStrip() {
 
         <Reveal className={styles.strip} delay={80}>
           <ul className={styles.grid}>
-            {brands.map((name) => (
+            {workProjects.brands.map((name) => (
               <li key={name} className={styles.cell}>
                 <span className={styles.wordmark}>{name}</span>
               </li>

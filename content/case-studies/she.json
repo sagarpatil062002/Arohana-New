@@ -1,0 +1,37 @@
+{
+  "slug": "she",
+  "client": "SHE — Sustainable Health Empowerment",
+  "headline": "A community initiative built around health, dignity and sustainability — communication with responsibility at its centre.",
+  "sector": "Institutional / Community",
+  "location": "Ladakh, India",
+  "engagement": "Identity + communication + documentary content",
+  "duration": "Project-based",
+  "situation": "SHE was a health and hygiene initiative operating across eight remote villages in Ladakh. It needed a name, an identity and a communication strategy that was sensitive to context and community.",
+  "challenge": "Create a brand and communication system for a community initiative that is respectful, clear and effective — without treating the community as a marketing backdrop.",
+  "thinking": "The work began with identity and naming, then moved into communication strategy and documentary content. Every decision was tested against the principle that the initiative serves the community, not the other way around.",
+  "workstreams": [
+    {
+      "title": "Identity & naming",
+      "body": "Developing the name SHE and a visual identity that is simple, dignified and appropriate for a community health context."
+    },
+    {
+      "title": "Communication strategy",
+      "body": "Mapping the audiences — community members, local institutions, donors — and creating content that serves each without losing the core message."
+    },
+    {
+      "title": "Documentary content",
+      "body": "Filming and editing that documents the initiative's impact with honesty and respect, suitable for both internal and external use."
+    }
+  ],
+  "proof": "A recognised identity and communication system for an eight-village initiative, with documentary content that accurately reflects the work and its context.",
+  "gallery": [
+    { "src": "/samples/work-she.jpg", "alt": "SHE community work.", "label": "Community / field still." },
+    { "src": "/samples/work-she.jpg", "alt": "SHE health initiative.", "label": "Health / initiative still." },
+    { "src": "/samples/work-she.jpg", "alt": "SHE documentation.", "label": "Documentary still." }
+  ],
+  "hero": {
+    "image": "/samples/work-she.jpg",
+    "alt": "SHE community work."
+  },
+  "video": null
+}

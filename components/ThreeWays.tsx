@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { services } from "@/data/content";
+import { services } from "@/lib/content";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import Reveal from "./Reveal";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { selectedWork, brands, sectors, sectorProjects } from "@/data/content";
+import { workProjects } from "@/lib/content";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
@@ -78,11 +78,11 @@ export default function WorkPage() {
     return () => window.removeEventListener("mousemove", handleMove);
   }, [reduced, mobile]);
 
-  const handleRowEnter = (item: { media: { src: string; alt: string } }) => {
+  const handleRowEnter = (item: { image: string; alt: string }) => {
     if (reduced || mobile || !imageRef.current) return;
-    hoverImageRef.current = { src: item.media.src, alt: item.media.alt };
-    imageRef.current.src = item.media.src;
-    imageRef.current.alt = item.media.alt;
+    hoverImageRef.current = { src: item.image, alt: item.alt };
+    imageRef.current.src = item.image;
+    imageRef.current.alt = item.alt;
     gsap.to(imageRef.current, { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" });
   };
 
@@ -92,8 +92,8 @@ export default function WorkPage() {
     gsap.to(imageRef.current, { opacity: 0, scale: 0.95, duration: 0.3, ease: "power2.in" });
   };
 
-  const featureProjects = selectedWork.filter((p) => p.size === "feature");
-  const standardProjects = selectedWork.filter((p) => p.size === "standard");
+  const featureProjects = workProjects.projects.filter((p) => p.size === "feature");
+  const standardProjects = workProjects.projects.filter((p) => p.size === "standard");
 
   return (
     <>
@@ -142,9 +142,9 @@ export default function WorkPage() {
               01 — Project Index
             </Reveal>
             <div role="list">
-              {selectedWork.map((item, i) => (
+              {workProjects.projects.map((item, i) => (
                 <div
-                  key={item.name}
+                  key={item.slug}
                   role="listitem"
                   className={styles.projectRow}
                   onMouseEnter={() => handleRowEnter(item)}
@@ -161,7 +161,7 @@ export default function WorkPage() {
                   }}
                 >
                   <span className={styles.projectNum}>{String(i + 1).padStart(2, "0")}</span>
-                  <span className={styles.projectName}>{item.name}</span>
+                  <span className={styles.projectName}>{item.title}</span>
                   <span className={styles.projectMeta}>{item.tags.join(" / ")}</span>
                 </div>
               ))}
@@ -178,7 +178,7 @@ export default function WorkPage() {
 
         {/* FEATURE PROJECTS */}
         {featureProjects.map((item, i) => (
-          <section key={item.name} className={`${styles.feature} section`} aria-labelledby={`feature-${i}-heading`}>
+          <section key={item.slug} className={`${styles.feature} section`} aria-labelledby={`feature-${i}-heading`}>
             <div className="container">
               <div className={styles.featureInner}>
                 <div>
@@ -186,7 +186,7 @@ export default function WorkPage() {
                     Project {String(i + 1).padStart(2, "0")}
                   </Reveal>
                   <Reveal as="h2" id={`feature-${i}-heading`} className={styles.featureTitle} delay={80}>
-                    {item.name}
+                    {item.title}
                   </Reveal>
                   <Reveal className={styles.featureMeta} delay={120}>
                     {item.tags.map((tag) => (
@@ -204,7 +204,7 @@ export default function WorkPage() {
                 </div>
                 <Reveal className={styles.featureMedia} delay={100}>
                   <RevealMedia
-                    media={item.media}
+                    media={{ src: item.image, alt: item.alt, label: item.title }}
                     ratio="16 / 10"
                     sizes="(max-width: 980px) 100vw, 55vw"
                   />
@@ -216,15 +216,15 @@ export default function WorkPage() {
 
         {/* STANDARD PROJECTS */}
         {standardProjects.map((item, i) => (
-          <section key={item.name} className={`${styles.feature} section`} aria-labelledby={`std-${i}-heading`}>
+          <section key={item.slug} className={`${styles.feature} section`} aria-labelledby={`std-${i}-heading`}>
             <div className="container">
               <div className={styles.featureInner}>
                 <div>
                   <Reveal as="p" className="eyebrow">
-                    Project {String(selectedWork.indexOf(item) + 1).padStart(2, "0")}
+                    Project {String(workProjects.projects.indexOf(item) + 1).padStart(2, "0")}
                   </Reveal>
                   <Reveal as="h2" id={`std-${i}-heading`} className={styles.featureTitle} delay={80}>
-                    {item.name}
+                    {item.title}
                   </Reveal>
                   <Reveal className={styles.featureMeta} delay={120}>
                     {item.tags.map((tag) => (
@@ -242,7 +242,7 @@ export default function WorkPage() {
                 </div>
                 <Reveal className={styles.featureMedia} delay={100}>
                   <RevealMedia
-                    media={item.media}
+                    media={{ src: item.image, alt: item.alt, label: item.title }}
                     ratio="4 / 3"
                     sizes="(max-width: 980px) 100vw, 50vw"
                   />
@@ -292,10 +292,10 @@ export default function WorkPage() {
             <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(32px, 4vw, 56px)" }}>
               02 — Client & Project Directory
             </Reveal>
-            {sectors.map((sector, i) => {
-              const projects = sectorProjects[sector] || [];
+            {workProjects.sectors.map((sector, i) => {
+              const projects = (workProjects.sectorProjects as Record<string, string[]>)[sector] || [];
               return (
-                <div key={sector} className={`${styles.sector} ${i !== sectors.length - 1 ? styles.sectorDivider : ""}`}>
+                <div key={sector} className={`${styles.sector} ${i !== workProjects.sectors.length - 1 ? styles.sectorDivider : ""}`}>
                   <Reveal as="h3" className={styles.sectorTitle} delay={60}>
                     {sector}
                   </Reveal>

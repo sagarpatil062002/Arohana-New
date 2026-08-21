@@ -1,0 +1,10 @@
+{
+  "eyebrow": "Let's talk",
+  "headline": "If you're building something serious, let's talk about what it actually needs.",
+  "primaryCta": { "label": "Start a conversation", "href": "/contact" },
+  "contact": {
+    "email": "founder@byarohana.com",
+    "phone": "+91 8380092241",
+    "phoneHref": "tel:+918380092241"
+  }
+}

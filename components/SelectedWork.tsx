@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { selectedWork } from "@/data/content";
+import { workProjects } from "@/lib/content";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIsomorphicLayoutEffect, useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import Reveal from "./Reveal";
@@ -68,18 +68,18 @@ export default function SelectedWork() {
         </Reveal>
 
         <div className={styles.grid}>
-          {selectedWork.map((item, i) => {
+          {workProjects.projects.map((item, i) => {
             const isFeature = item.size === "feature";
             return (
               <Reveal
-                key={item.name}
+                key={item.slug}
                 className={`${styles.card} ${isFeature ? styles.feature : styles.standard}`}
                 delay={100 + (i % 2) * 80}
               >
                 <a href={item.href} className={styles.link} data-cursor="project">
                   <div className={styles.mediaWrap} data-parallax>
                     <Media
-                      media={item.media}
+                      media={{ src: item.image, alt: item.alt, label: item.title }}
                       ratio={isFeature ? "16 / 10" : "4 / 3"}
                       rounded="md"
                       sizes={
@@ -91,7 +91,7 @@ export default function SelectedWork() {
                   </div>
                   <div className={styles.body}>
                     <div className={styles.head}>
-                      <h3 className={styles.title}>{item.name}</h3>
+                      <h3 className={styles.title}>{item.title}</h3>
                       <span className={styles.view}>
                         View case study <Arrow size={15} />
                       </span>

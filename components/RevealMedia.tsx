@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { MediaRef } from "@/data/content";
+import { MediaRef } from "@/lib/content";
 import { gsap } from "@/lib/gsap";
 import { useIsomorphicLayoutEffect, useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import Media from "./Media";

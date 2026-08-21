@@ -1,0 +1,37 @@
+{
+  "slug": "misu",
+  "client": "Misu",
+  "headline": "Hospitality thinking that goes beyond the dining room — concept, operations and the experience between them.",
+  "sector": "Hospitality & F&B",
+  "location": "Goa, India",
+  "engagement": "Hospitality consulting + digital execution",
+  "duration": "Ongoing",
+  "situation": "Misu is a restaurant and bar in Goa operating in a competitive market. The challenge was not just marketing, but the fundamentals of the hospitality business — concept, operations and experience.",
+  "challenge": "Build a hospitality business that is profitable, consistent and memorable — not just a venue that looks good on social media.",
+  "thinking": "We started with the operational fundamentals: menu engineering, food cost, service systems and kitchen control. Digital and creative work followed, grounded in a business that actually works.",
+  "workstreams": [
+    {
+      "title": "Concept & menu",
+      "body": "Refining the menu, pricing and product mix to align with the target audience and operational capacity."
+    },
+    {
+      "title": "Operational systems",
+      "body": "SOPs, kitchen control, staffing and service systems that make the business predictable and scalable."
+    },
+    {
+      "title": "Digital presence",
+      "body": "Social media, content and campaigns that reflect the actual experience, not an aspirational version of it."
+    }
+  ],
+  "proof": "A hospitality business with stronger fundamentals, clearer positioning and a digital presence that reflects the actual guest experience.",
+  "gallery": [
+    { "src": "/samples/work-misu.jpg", "alt": "Misu restaurant.", "label": "Hospitality / restaurant still." },
+    { "src": "/samples/work-misu.jpg", "alt": "Misu menu.", "label": "Menu / product still." },
+    { "src": "/samples/work-misu.jpg", "alt": "Misu service.", "label": "Service / operations still." }
+  ],
+  "hero": {
+    "image": "/samples/work-misu.jpg",
+    "alt": "Misu restaurant."
+  },
+  "video": null
+}

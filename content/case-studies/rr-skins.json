@@ -1,0 +1,37 @@
+{
+  "slug": "rr-skins",
+  "client": "RR Skins",
+  "headline": "Making a specialised healthcare offering easier to understand and trust — clarity as a form of care.",
+  "sector": "Healthcare",
+  "location": "India",
+  "engagement": "Digital brand growth + content strategy",
+  "duration": "Project-based",
+  "situation": "RR Skins offers specialised skincare treatments. The challenge was that the offering is clinical and technical, which can feel distant or intimidating to potential patients.",
+  "challenge": "Translate a specialised healthcare service into communication that builds trust, educates the audience and makes the offering feel accessible — without oversimplifying or losing credibility.",
+  "thinking": "We treated the content strategy as an education problem, not a promotion problem. The goal was to make people feel informed and confident, not sold to.",
+  "workstreams": [
+    {
+      "title": "Content strategy",
+      "body": "Mapping the patient journey and creating content that meets people at each stage — from curiosity to consultation to treatment."
+    },
+    {
+      "title": "Brand clarity",
+      "body": "Simplifying the language, refining the visual identity and creating a digital presence that feels professional but approachable."
+    },
+    {
+      "title": "Platform execution",
+      "body": "Social media, website and campaign content that builds trust through education rather than promotion."
+    }
+  ],
+  "proof": "A clearer, more trusted digital presence for a specialised healthcare brand — with content that educates rather than just advertises.",
+  "gallery": [
+    { "src": "/samples/work-rrskins.jpg", "alt": "RR Skins clinic.", "label": "Healthcare / clinic still." },
+    { "src": "/samples/work-rrskins.jpg", "alt": "RR Skins treatment.", "label": "Treatment / service still." },
+    { "src": "/samples/work-rrskins.jpg", "alt": "RR Skins brand.", "label": "Brand / digital still." }
+  ],
+  "hero": {
+    "image": "/samples/work-rrskins.jpg",
+    "alt": "RR Skins clinic."
+  },
+  "video": null
+}

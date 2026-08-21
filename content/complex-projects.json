@@ -1,0 +1,35 @@
+{
+  "eyebrow": "Beyond the standard brief",
+  "headline": "The work that doesn't fit a standard agency box",
+  "body": "Ārohana's experience extends from remote-community initiatives in Ladakh to films and communication projects for the Indian Army, where environment, audience and responsibility required different preparation. Only approved, non-confidential work is shown.",
+  "cta": { "label": "Explore selected projects", "href": "/indian-army-projects" },
+  "items": [
+    {
+      "name": "SHE",
+      "caption": "Community initiative — health, dignity, sustainability.",
+      "media": {
+        "src": "/samples/complex-2.jpg",
+        "alt": "SHE community work in Ladakh.",
+        "label": "SHE approved field still."
+      }
+    },
+    {
+      "name": "Operation Sampark",
+      "caption": "Homestay training and local capacity building.",
+      "media": {
+        "src": "/samples/complex-1.jpg",
+        "alt": "Homestay training under Operation Sampark.",
+        "label": "Operation Sampark approved still."
+      }
+    },
+    {
+      "name": "Approved film work",
+      "caption": "Documentary / communication still (cleared for public use).",
+      "media": {
+        "src": "/samples/complex-3.jpg",
+        "alt": "Approved Indian Army documentation still.",
+        "label": "Approved Army film/documentation still."
+      }
+    }
+  ]
+}
