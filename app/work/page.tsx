@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { selectedWork } from "@/data/content";
+import { selectedWork, brands, sectors, sectorProjects } from "@/data/content";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import RevealMedia from "@/components/RevealMedia";
 import Media from "@/components/Media";
 import Arrow from "@/components/Arrow";
+import LogoStrip from "@/components/LogoStrip";
 import { gsap } from "@/lib/gsap";
 import { useIsomorphicLayoutEffect, useReducedMotion, useIsMobile } from "@/hooks/useMedia";
 import styles from "./work.module.css";
@@ -60,7 +61,6 @@ export default function WorkPage() {
     return () => ctx.revert();
   }, [reduced, mobile]);
 
-  // Hover image follow effect — no state, purely GSAP-driven
   useEffect(() => {
     if (reduced || mobile || !imageRef.current) return;
 
@@ -111,10 +111,10 @@ export default function WorkPage() {
                 Selected Work
               </Reveal>
               <Reveal as="h1" id="work-hero-heading" className={styles.heroHeading} delay={80}>
-                IDEAS INTO IMPACT.
+                The work is the proof.
               </Reveal>
               <Reveal as="p" className={`lead ${styles.heroSupporting}`} delay={140}>
-                A curated selection of projects, engagements and work delivered by Ārohana — across sectors, scales and geographies.
+                A selection of businesses and projects showing how Ārohana thinks, creates and executes across very different environments.
               </Reveal>
               <Reveal className={styles.heroScroll} delay={220}>
                 Scroll to explore
@@ -283,6 +283,42 @@ export default function WorkPage() {
                 </a>
               </Reveal>
             </div>
+          </div>
+        </section>
+
+        {/* PROJECT DIRECTORY */}
+        <section className={`${styles.directory} section`} aria-labelledby="work-directory-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(32px, 4vw, 56px)" }}>
+              02 — Client & Project Directory
+            </Reveal>
+            {sectors.map((sector, i) => {
+              const projects = sectorProjects[sector] || [];
+              return (
+                <div key={sector} className={`${styles.sector} ${i !== sectors.length - 1 ? styles.sectorDivider : ""}`}>
+                  <Reveal as="h3" className={styles.sectorTitle} delay={60}>
+                    {sector}
+                  </Reveal>
+                  <div className={styles.sectorProjects}>
+                    {projects.map((name) => (
+                      <span key={name} className={styles.sectorProject}>
+                        {name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* LOGO STRIP */}
+        <section className={`${styles.logos} section`} aria-label="Brands and organisations we've worked with">
+          <div className="container">
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+              Brands and organisations we&rsquo;ve worked with
+            </Reveal>
+            <LogoStrip />
           </div>
         </section>
 

@@ -353,6 +353,42 @@
   }
 }
 
+/* Project Directory */
+.directory {
+  padding-block: clamp(60px, 8vw, 120px);
+  border-top: 1px solid var(--line);
+}
+
+.sector {
+  padding-block: clamp(24px, 3vw, 40px);
+}
+
+.sectorDivider {
+  border-bottom: 1px solid var(--line);
+}
+
+.sectorTitle {
+  font-size: var(--fs-h3);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.2rem;
+}
+
+.sectorProjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.6rem;
+}
+
+.sectorProject {
+  font-size: 1rem;
+  color: var(--ink-2);
+}
+
+/* Logo Strip */
+.logos {
+  padding-block: clamp(60px, 8vw, 120px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .heroScroll::after {
     animation: none;
@@ -360,5 +396,8 @@
   .projectRow:hover .projectName,
   .projectRow:hover .projectMeta::after {
     transform: none;
+  }
+  .sectorLink::after {
+    transition: none !important;
   }
 }

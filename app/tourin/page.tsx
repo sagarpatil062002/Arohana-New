@@ -29,165 +29,177 @@ export default function TourinPage() {
                 {tourin.headline}
               </Reveal>
               <Reveal as="p" className={`lead ${styles.heroBody}`} delay={140}>
-                {tourin.body}
+                Travel beyond the itinerary.
               </Reveal>
-              <Reveal className={styles.heroStat} delay={200}>
-                <span className={styles.heroStatValue}>{tourin.stat.value}</span>
-                <span className={styles.heroStatLabel}>{tourin.stat.label}</span>
-              </Reveal>
-              <Reveal className={styles.heroCta} delay={260}>
-                <a href={tourin.cta.href} className="btn btn--primary">
-                  {tourin.cta.label} <Arrow />
-                </a>
+              <Reveal as="p" className={styles.heroSupporting} delay={180}>
+                Some places are better experienced when you stop trying to see everything. Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh.
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* INTRODUCTION */}
-        <section className={`${styles.intro} section`} aria-labelledby="tourin-intro-heading">
+        {/* WHY TOURIN */}
+        <section className={`${styles.why} section`} aria-labelledby="tourin-why-heading">
           <div className="container">
-            <div className={styles.introInner}>
+            <div className={styles.whyInner}>
+              <Reveal as="p" className="eyebrow">
+                01 — Why Tourin
+              </Reveal>
+              <Reveal as="h2" id="tourin-why-heading" className={styles.whyHeading} delay={80}>
+                The Ladakh many itineraries sell and the Ladakh people experience are not always the same.
+              </Reveal>
+              <Reveal as="p" className={styles.whyBody} delay={140}>
+                Tourin focuses on the people, food, stories, homes, landscapes, silences and everyday life behind the famous places. Not because the landmarks don&rsquo;t matter, but because they&rsquo;re only part of the story.
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT WE BELIEVE */}
+        <section className={`${styles.believe} section`} aria-labelledby="tourin-believe-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+              02 — What we believe
+            </Reveal>
+            <Reveal as="h2" id="tourin-believe-heading" className={styles.believeHeading} delay={80}>
+              A good trip should leave travellers with more than photographs.
+            </Reveal>
+            <Reveal as="p" className={styles.believeBody} delay={140}>
+              It should create a sense of where they were — through food, local families, traditions, connected stays, slower routes and enough time to notice the place. The goal is not to check every landmark. It is to understand a destination, not only photograph it.
+            </Reveal>
+          </div>
+        </section>
+
+        {/* WHY LADAKH */}
+        <section className={`${styles.ladakh} section`} aria-labelledby="tourin-ladakh-heading">
+          <div className="container">
+            <div className={styles.ladakhInner}>
               <div>
-                <Reveal as="p" className={`eyebrow ${styles.introLabel}`}>
-                  About Tourin
+                <Reveal as="p" className="eyebrow">
+                  03 — Why Ladakh
                 </Reveal>
-                <Reveal as="h2" id="tourin-intro-heading" className={styles.introHeading} delay={80}>
-                  Experiential travel, built from lived experience.
+                <Reveal as="h2" id="tourin-ladakh-heading" className={styles.ladakhHeading} delay={80}>
+                  Ladakh is where Tourin begins
+                </Reveal>
+                <Reveal as="p" className={styles.ladakhBody} delay={140}>
+                  Ārohana knows Ladakh closely enough to design experiences beyond the obvious itinerary. First journeys centre on exploration, culture, landscapes and meaningful encounters — with enough structure for comfort and enough space for the unexpected.
                 </Reveal>
               </div>
-              <Reveal as="div" className={styles.introBody} delay={140}>
-                <p>
-                  Tourin is an experiential travel brand beginning with Ladakh — built from lived experience rather than a generic destination catalogue.
-                </p>
-                <p>
-                  Every booking and trip so far has been shaped by the people, food, stays and the roads in between. No templates. No packages. Just a different way of moving through a place.
-                </p>
-                <p>
-                  It sits inside the Ārohana ecosystem as an owned brand — separate, but sharing the same DNA of ground-level thinking and genuine care for experience.
-                </p>
+              <Reveal className={styles.ladakhMedia} delay={120}>
+                <Media media={tourin.media[0]} ratio="4 / 3" rounded="lg" />
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* VISUAL STORY — IMAGE SEQUENCE */}
-        <section className={`${styles.sequence} section`} aria-labelledby="tourin-sequence-heading">
+        {/* WHO TOURIN IS FOR */}
+        <section className={`${styles.audience} section`} aria-labelledby="tourin-audience-heading">
           <div className="container">
-            <Reveal as="p" className={`eyebrow`} style={{ marginBottom: "clamp(40px, 5vw, 72px)" }}>
-              A visual journey through Ladakh
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+              04 — Who Tourin is for
             </Reveal>
-            <div>
-              {tourin.media.map((m, i) => (
-                <Reveal key={i} className={styles.sequenceItem} delay={i * 100}>
-                  <div className={styles.sequenceImage}>
-                    <Media media={m} ratio="16 / 9" rounded="lg" />
-                  </div>
-                  <p className={styles.sequenceCaption}>{m.alt}</p>
+            <div className={styles.audienceGrid}>
+              {[
+                "Curious rather than checklist-driven travellers",
+                "People who want to understand a destination, not only photograph it",
+                "People who value local experiences and thoughtful pacing",
+                "Small groups, couples, families or individual travellers wanting a more personal journey",
+                "Travellers wanting professional planning without a fixed tourist circuit",
+              ].map((item, i) => (
+                <Reveal key={i} className={styles.audienceItem} delay={100 + i * 80}>
+                  <span className={styles.audienceNum}>{String(i + 1).padStart(2, "0")}</span>
+                  <p className={styles.audienceBody}>{item}</p>
                 </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        {/* HIGHLIGHTS */}
-        <section className={`${styles.highlights} section`} aria-labelledby="tourin-highlights-heading">
+        {/* THE EXPERIENCE */}
+        <section className={`${styles.experience} section`} aria-labelledby="tourin-experience-heading">
           <div className="container">
-            <Reveal as="p" className={`eyebrow`} style={{ marginBottom: "clamp(40px, 5vw, 72px)" }}>
-              01 — What makes Tourin different
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+              05 — The experience
             </Reveal>
-            <div role="list">
-              <div role="listitem" className={styles.highlightRow}>
-                <span className={styles.highlightNum}>01</span>
-                <div className={styles.highlightContent}>
-                  <h3 className={styles.highlightTitle}>Lived experience, not a catalogue</h3>
-                  <p className={styles.highlightDesc}>
-                    Every route, stay and interaction is shaped by real time spent in Ladakh — not a destination database or a standard itinerary template.
-                  </p>
-                </div>
+            <Reveal as="h2" id="tourin-experience-heading" className={styles.experienceHeading} delay={80}>
+              Carefully chosen stays, local experiences, food, culture, landscapes and practical planning.
+            </Reveal>
+            <Reveal as="p" className={styles.experienceBody} delay={140}>
+              Each element has a reason to be there. No template itineraries. No unnecessary stops. Every route, stay and interaction is shaped by real time spent in Ladakh — not a destination database or a standard template.
+            </Reveal>
+            <Reveal className={styles.experienceMedia} delay={200}>
+              <div className={styles.experienceGrid}>
+                {tourin.media.map((m, i) => (
+                  <Media key={i} media={m} ratio="16 / 9" rounded="lg" />
+                ))}
               </div>
-              <div role="listitem" className={styles.highlightRow}>
-                <span className={styles.highlightNum}>02</span>
-                <div className={styles.highlightContent}>
-                  <h3 className={styles.highlightTitle}>People, food & the roads in between</h3>
-                  <p className={styles.highlightDesc}>
-                    Tourin is built around the moments between the landmarks — local encounters, home-cooked meals and the landscape as it actually is.
-                  </p>
-                </div>
-              </div>
-              <div role="listitem" className={styles.highlightRow}>
-                <span className={styles.highlightNum}>03</span>
-                <div className={styles.highlightContent}>
-                  <h3 className={styles.highlightTitle}>An owned brand, not a reseller</h3>
-                  <p className={styles.highlightDesc}>
-                    Tourin is an independent brand inside the Ārohana ecosystem — designed, operated and owned. No white-labelling, no third-party packaging.
-                  </p>
-                </div>
-              </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
-        {/* GALLERY */}
-        <section className={`${styles.gallery} section`} aria-labelledby="tourin-gallery-heading">
+        {/* FROM AROHANA TO TOURIN */}
+        <section className={`${styles.from} section`} aria-labelledby="tourin-from-heading">
           <div className="container">
-            <Reveal as="p" className={`eyebrow ${styles.galleryEyebrow}`}>
-              02 — From the ground
-            </Reveal>
-            <div>
-              <Reveal className={styles.galleryRow} delay={80}>
-                <div className={styles.galleryMedia}>
-                  <Media media={tourin.media[0]} ratio="4 / 3" rounded="lg" />
-                </div>
-                <div className={styles.galleryText}>
-                  <h3 className={styles.galleryTitle}>People & everyday life</h3>
-                  <p className={styles.galleryDesc}>
-                    The real Ladakh is in the daily rhythm — morning routines, market conversations, and the way communities have learned to live with the landscape.
-                  </p>
-                </div>
+            <div className={styles.fromInner}>
+              <Reveal as="p" className="eyebrow">
+                06 — From Ārohana to Tourin
               </Reveal>
-              <Reveal className={styles.galleryRow} delay={120}>
-                <div className={styles.galleryMedia}>
-                  <Media media={tourin.media[1]} ratio="4 / 3" rounded="lg" />
-                </div>
-                <div className={styles.galleryText}>
-                  <h3 className={styles.galleryTitle}>Food & stays</h3>
-                  <p className={styles.galleryDesc}>
-                    From home kitchens to high-altitude stays, the places you stay and the food you eat become the trip — not afterthoughts.
-                  </p>
-                </div>
+              <Reveal as="h2" id="tourin-from-heading" className={styles.fromHeading} delay={80}>
+                The same instinct, applied to travel
               </Reveal>
-              <Reveal className={styles.galleryRow} delay={160}>
-                <div className={styles.galleryMedia}>
-                  <Media media={tourin.media[2]} ratio="4 / 3" rounded="lg" />
-                </div>
-                <div className={styles.galleryText}>
-                  <h3 className={styles.galleryTitle}>Roads & sense of place</h3>
-                  <p className={styles.galleryDesc}>
-                    Getting there is part of the experience. The routes, the altitude, the landscape unfolding — this is travel that earns its moments.
-                  </p>
-                </div>
+              <Reveal as="p" className={styles.fromBody} delay={140}>
+                Tourin extends the same instinct as Ārohana: create something with a clear point of view rather than offering what everyone else offers. Ārohana builds brands and businesses; Tourin applies that thinking to travel.
               </Reveal>
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className={`${styles.cta} section`} aria-labelledby="tourin-cta-heading">
+        {/* NEXT CHAPTER */}
+        <section className={`${styles.next} section`} aria-labelledby="tourin-next-heading">
           <div className="container">
-            <div className={styles.ctaInner}>
-              <Reveal as="p" className="eyebrow" style={{ justifyContent: "center", marginBottom: "1.4rem" }}>
-                Discover Tourin
-              </Reveal>
-              <Reveal as="h2" id="tourin-cta-heading" className={styles.ctaHeading} delay={80}>
-                Not a destination. A different way of moving through one.
-              </Reveal>
-              <Reveal className={styles.ctaButton} delay={140}>
-                <a href={tourin.cta.href} className="btn btn--primary">
-                  {tourin.cta.label} <Arrow />
-                </a>
-              </Reveal>
-            </div>
+            <Reveal as="p" className="eyebrow">
+              07 — The next chapter
+            </Reveal>
+            <Reveal as="h2" id="tourin-next-heading" className={styles.nextHeading} delay={80}>
+              Ladakh is the beginning, not the boundary
+            </Reveal>
+            <Reveal as="p" className={styles.nextBody} delay={140}>
+              The approach can expand to other destinations with enough character, culture and story. The thinking remains the same: ground-level understanding, genuine care for experience, and a refusal to compete on cheap packages or number of destinations.
+            </Reveal>
+          </div>
+        </section>
+
+        {/* PACKAGES */}
+        <section className={`${styles.packages} section`} aria-labelledby="tourin-packages-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+              Ladakh experiences
+            </Reveal>
+            <Reveal as="h2" id="tourin-packages-heading" className={styles.packagesHeading} delay={80}>
+              15+ separate bookings and trips so far
+            </Reveal>
+            <Reveal as="p" className={styles.packagesBody} delay={140}>
+              From individual travellers and small groups to larger parties, including a 20-biker trip. Each journey is planned around the traveller, not a fixed template.
+            </Reveal>
+            <Reveal className={styles.packagesCta} delay={200}>
+              <a href="/contact" className="btn btn--primary">
+                Talk to us about a journey <Arrow />
+              </a>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* CLOSING */}
+        <section className={`${styles.closing} section`} aria-labelledby="tourin-closing-heading">
+          <div className="container">
+            <Reveal as="h2" id="tourin-closing-heading" className={styles.closingHeading} delay={80}>
+              Come travel differently.
+            </Reveal>
+            <Reveal className={styles.closingCta} delay={160}>
+              <a href="/contact" className="btn btn--primary">
+                View Ladakh Experiences <Arrow />
+              </a>
+            </Reveal>
           </div>
         </section>
       </main>

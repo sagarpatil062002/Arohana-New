@@ -5,47 +5,14 @@ import Reveal from "@/components/Reveal";
 import RevealMedia from "@/components/RevealMedia";
 import ThreeWays from "@/components/ThreeWays";
 import Arrow from "@/components/Arrow";
-import { services } from "@/data/content";
+import { services, serviceDetails } from "@/data/content";
 import styles from "./services.module.css";
 
 export const metadata: Metadata = {
-  title: "Services — Ārohana Consultancy",
+  title: "Services | Ārohana Consultancy",
   description:
-    "Ārohana works across digital brand growth, hospitality consulting and content & brand production — combining strategy, creativity and execution.",
+    "Digital brand growth, content production and hospitality consulting for businesses across India and selected international markets.",
   alternates: { canonical: "/services" },
-};
-
-const details: Record<
-  string,
-  { capabilities: string[]; projects: string[] }
-> = {
-  "Digital Brand Growth": {
-    capabilities: [
-      "Brand & communication strategy",
-      "Social ecosystems & content",
-      "Creative direction & production",
-      "Performance & platform execution",
-    ],
-    projects: ["Raysons Group", "Loom Crafts", "PictureTime"],
-  },
-  "Hospitality Consulting": {
-    capabilities: [
-      "Concept & menu development",
-      "Food cost & pricing",
-      "SOPs & staffing",
-      "Kitchen control & revenue optimisation",
-    ],
-    projects: ["Misu"],
-  },
-  "Content & Brand Production": {
-    capabilities: [
-      "Films & documentaries",
-      "Corporate / institutional videos",
-      "Campaign content",
-      "Scripting, shoots & post-production",
-    ],
-    projects: ["PictureTime", "SHE"],
-  },
 };
 
 export default function ServicesPage() {
@@ -60,25 +27,11 @@ export default function ServicesPage() {
               What we do
             </Reveal>
             <Reveal as="h1" id="services-hero-heading" className={styles.heroHeading} delay={80}>
-              Business thinking, creative communication and execution.
+              What we do depends on what the business actually needs.
             </Reveal>
-            <div className={styles.heroGrid}>
-              <Reveal as="p" className={`lead ${styles.heroLead}`} delay={140}>
-                From digital brand growth and content to hospitality consulting and
-                complex on-ground projects.
-              </Reveal>
-              <Reveal className={styles.heroMedia} delay={120}>
-                <RevealMedia
-                  media={{
-                    src: "/samples/svc-production.jpg",
-                    alt: "Ārohana content and brand production work.",
-                    label: "Film / production still.",
-                  }}
-                  ratio="4 / 3"
-                  sizes="(max-width: 880px) 100vw, 46vw"
-                />
-              </Reveal>
-            </div>
+            <Reveal as="p" className={`lead ${styles.heroLead}`} delay={140}>
+              Ārohana can act as an ongoing digital partner, hospitality consultant, content/production partner or combination. We assemble the right specialists around the brief.
+            </Reveal>
           </div>
         </section>
 
@@ -87,7 +40,7 @@ export default function ServicesPage() {
 
         {/* SERVICE DETAIL SECTIONS */}
         {services.map((service, i) => {
-          const d = details[service.title];
+          const d = serviceDetails[service.title];
           const reverse = i % 2 === 1;
           return (
             <section
@@ -147,16 +100,55 @@ export default function ServicesPage() {
           );
         })}
 
+        {/* ENGAGEMENT MODELS */}
+        <section className={`${styles.models} section`} aria-labelledby="services-models-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow" style={{ marginBottom: "clamp(24px, 3vw, 40px)" }}>
+              How engagements can work
+            </Reveal>
+            <div className={styles.modelsGrid}>
+              {[
+                { title: "Ongoing digital partnership", body: "Brands needing continuous strategy, content, creative and platform management." },
+                { title: "Hospitality consulting", body: "Restaurants, cafés, resorts and hospitality businesses needing operational or commercial intervention." },
+                { title: "Project production", body: "Films, documentaries, launches, campaigns, exhibitions or other defined projects." },
+                { title: "Hybrid engagement", body: "Businesses where business consulting and digital communication need to move together." },
+              ].map((m, i) => (
+                <Reveal key={i} className={styles.modelItem} delay={100 + i * 80}>
+                  <h3 className={styles.modelTitle}>{m.title}</h3>
+                  <p className={styles.modelBody}>{m.body}</p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TEAM NOTE */}
+        <section className={`${styles.team} section`} aria-labelledby="services-team-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow">
+              Team structure
+            </Reveal>
+            <Reveal as="h2" id="services-team-heading" className={styles.teamHeading} delay={80}>
+              The right people for the brief
+            </Reveal>
+            <Reveal as="p" className={styles.teamBody} delay={140}>
+              We don&rsquo;t sell a fixed team chart. The right specialists are assembled around the brief — strategy, design, editing, photography, videography, performance or hospitality specialists as required. The team changes with the work.
+            </Reveal>
+          </div>
+        </section>
+
         {/* CLOSING */}
         <section className="section" aria-labelledby="services-closing-heading">
           <div className="container">
             <Reveal as="h2" id="services-closing-heading" className={styles.closing} delay={60}>
-              Not sure which of these you need? That&rsquo;s where we start.
+              Don&rsquo;t start with a service. Start with the problem.
             </Reveal>
-            <Reveal className={styles.closingCta} delay={140}>
+            <Reveal as="p" className={styles.closingBody} delay={120}>
+              Tell us what you are trying to build, fix or change.
+            </Reveal>
+            <Reveal className={styles.closingCta} delay={180}>
               <a href="/contact" className="btn btn--primary">
-                Start a conversation
-                <Arrow />
+                Start a conversation <Arrow />
               </a>
             </Reveal>
           </div>

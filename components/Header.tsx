@@ -73,19 +73,32 @@ export default function Header() {
         </button>
       </div>
 
+      {open && (
+        <div
+          className={styles.backdrop}
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <div
         id="mobile-menu"
         className={`${styles.mobile} ${open ? styles.mobileOpen : ""}`}
-        hidden={!open}
+        aria-hidden={!open}
       >
         <nav className={styles.mobileNav} aria-label="Mobile">
           {site.nav.map((item) => (
-            <a key={item.href} href={item.href} className={styles.mobileLink}>
+            <a
+              key={item.href}
+              href={item.href}
+              className={styles.mobileLink}
+              onClick={() => setOpen(false)}
+            >
               {item.label}
             </a>
           ))}
         </nav>
-        <a href="/contact" className={`btn btn--primary ${styles.mobileCta}`}>
+        <a href="/contact" className={`btn btn--primary ${styles.mobileCta}`} onClick={() => setOpen(false)}>
           Start a conversation
           <Arrow />
         </a>

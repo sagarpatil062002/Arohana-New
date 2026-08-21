@@ -3,40 +3,16 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import RevealMedia from "@/components/RevealMedia";
-import SectorBand from "@/components/SectorBand";
+import Media from "@/components/Media";
 import Arrow from "@/components/Arrow";
-import { hero, pointOfView } from "@/data/content";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
-  title: "About — Ārohana Consultancy",
+  title: "About Ārohana | Madhura Hawal, Founder",
   description:
-    "Ārohana brings together business thinking, creative communication and execution — working directly with founders, owners and decision-makers across sectors.",
+    "Meet Madhura Hawal, founder of Ārohana Consultancy. From hospitality and entrepreneurship to brand strategy, digital growth and complex on-ground projects.",
   alternates: { canonical: "/about" },
 };
-
-const steps = [
-  {
-    num: "01",
-    title: "Understand",
-    desc: "We start with the business itself — its context, constraints and the people who decide.",
-  },
-  {
-    num: "02",
-    title: "Strategize",
-    desc: "We shape positioning, communication and a roadmap that fits the sector, not a template.",
-  },
-  {
-    num: "03",
-    title: "Execute",
-    desc: "We own the work — from content and production to hospitality operations and on-ground projects.",
-  },
-  {
-    num: "04",
-    title: "Deliver",
-    desc: "We measure against what the business actually needs, and stay through implementation.",
-  },
-];
 
 export default function AboutPage() {
   return (
@@ -50,134 +26,166 @@ export default function AboutPage() {
               About Ārohana
             </Reveal>
             <Reveal as="h1" id="about-hero-heading" className={styles.heroHeading} delay={80}>
-              {hero.headline}
+              I didn&rsquo;t plan to build Ārohana.
             </Reveal>
-            <div className={styles.heroGrid}>
-              <Reveal as="p" className={`lead ${styles.heroLead}`} delay={140}>
-                {hero.supporting}
+            <Reveal as="p" className={`lead ${styles.heroLead}`} delay={140}>
+              The road to Ārohana was anything but straight.
+            </Reveal>
+          </div>
+        </section>
+
+        {/* INTRO */}
+        <section className="section" aria-labelledby="about-intro-heading">
+          <div className="container">
+            <div className={styles.introGrid}>
+              <Reveal as="p" className={styles.introBody} delay={100}>
+                My name is Madhura Hawal. I started in hospitality — not because it was a plan, but because it was the first thing that made sense. Hospitality Management in Muscat. A degree in Goa. Top 13 West Zone Femina Miss India selection. One of 16 students from India selected for the Taj Management Training Programme.
               </Reveal>
-              <Reveal className={styles.heroMedia} delay={120}>
+              <Reveal as="p" className={styles.introBody} delay={140}>
+                I worked in Muscat, returned to Kolhapur and founded Mother India Cafe. Running a cafe teaches you about people, margins, suppliers, staff, customers, decisions, relationships, negotiation and growth — in that order.
+              </Reveal>
+              <Reveal className={styles.introMedia} delay={120}>
                 <RevealMedia
                   media={{
                     src: "/samples/work-raysons.jpg",
-                    alt: "Ārohana project and built-environment work.",
-                    label: "Real estate / built environment still.",
+                    alt: "Madhura Hawal — hospitality and early entrepreneurship.",
+                    label: "Madhura on-ground / hospitality work.",
+                  }}
+                  ratio="4 / 5"
+                  sizes="(max-width: 880px) 100vw, 38vw"
+                />
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* IT STARTED WITH HOSPITALITY */}
+        <section className="section" aria-labelledby="about-hosp-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow">
+              01 — It started with hospitality
+            </Reveal>
+            <Reveal as="h2" id="about-hosp-heading" className={styles.sectionHeading} delay={80}>
+              The business side of people
+            </Reveal>
+            <div className={styles.bodyGrid}>
+              <Reveal as="p" className={styles.body} delay={120}>
+                After Mother India Cafe, I joined Passcode Hospitality as Operations Head for Pings Bia Hoi and Jamun — two very different concepts that both needed operational rigour and commercial clarity.
+              </Reveal>
+              <Reveal as="p" className={styles.body} delay={160}>
+                Later, I moved into institutional business and sales at Latambarcem Brewers Private Limited across Goa and Delhi — working with restaurants, hotels and retail partners on the commercial side of craft beer. The through-line was always the same: understand the business, understand the people, and make decisions that are grounded in reality.
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* UNEXPECTED DETOURS */}
+        <section className={`${styles.alt} section`} aria-labelledby="about-detour-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow">
+              02 — There were a few unexpected detours
+            </Reveal>
+            <Reveal as="h2" id="about-detour-heading" className={styles.sectionHeading} delay={80}>
+              When the cafe closed, something else began
+            </Reveal>
+            <Reveal as="p" className={styles.body} delay={140}>
+              COVID changed the direction. The cafe closed and hospitality work was disrupted. What started as a pause became the beginning of something different. Digital marketing. Content. Projects that had nothing to do with hospitality and everything to do with the same instincts — understanding context, reading audience, executing with care.
+            </Reveal>
+            <Reveal className={styles.detourMedia} delay={200}>
+              <Media
+                media={{
+                  src: "/samples/pov.jpg",
+                  alt: "Transition period — new direction.",
+                  label: "Transition / new direction still.",
+                }}
+                ratio="16 / 9"
+                rounded="lg"
+              />
+            </Reveal>
+          </div>
+        </section>
+
+        {/* THE WORK GOT INTERESTING */}
+        <section className="section" aria-labelledby="about-interesting-heading">
+          <div className="container">
+            <Reveal as="p" className="eyebrow">
+              03 — And then, the work got interesting
+            </Reveal>
+            <Reveal as="h2" id="about-interesting-heading" className={styles.sectionHeading} delay={80}>
+              From digital marketing to restaurants, films and the Army
+            </Reveal>
+            <div className={styles.bodyGrid}>
+              <Reveal as="p" className={styles.body} delay={120}>
+                The work expanded into restaurants and resorts, real estate, healthcare, consumer businesses and entertainment. Requirements ranged from brand strategy and digital presence to campaigns, films, menus and operational problems. Each sector needed a different lens, and the thinking changed with the context.
+              </Reveal>
+              <Reveal as="p" className={styles.body} delay={160}>
+                Then came the Ladakh chapter. Work connected with 14 Corps, Fire & Fury Corps, Operation Sadbhavana and Operation Sampark — later extending to Western Command and 12 Rashtriya Rifles under Delta Force. These were projects where environment, audience and responsibility required a different kind of preparation.
+              </Reveal>
+            </div>
+            <Reveal className={styles.armyMedia} delay={200}>
+              <div className={styles.armyMediaGrid}>
+                <Media
+                  media={{
+                    src: "/samples/complex-1.jpg",
+                    alt: "Approved Army project still.",
+                    label: "Approved work still.",
                   }}
                   ratio="4 / 3"
-                  sizes="(max-width: 880px) 100vw, 46vw"
+                  rounded="lg"
                 />
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* 01 INTRODUCTION */}
-        <section className="section" aria-labelledby="about-intro-heading">
-          <div className="container">
-            <Reveal as="p" className="eyebrow">
-              01 — Introduction
-            </Reveal>
-            <Reveal as="h2" id="about-intro-heading" className={styles.statement} delay={80}>
-              {pointOfView.headline}
-            </Reveal>
-            <Reveal as="p" className={styles.body} delay={150}>
-              {pointOfView.body[0]}
-            </Reveal>
-          </div>
-        </section>
-
-        {/* 02 WHO WE ARE */}
-        <section className="section" aria-labelledby="about-who-heading">
-          <div className="container">
-            <div className={styles.twoCol}>
-              <div>
-                <Reveal as="p" className="eyebrow">
-                  02 — Who we are
-                </Reveal>
-                <Reveal as="h2" id="about-who-heading" className={styles.statement} delay={80}>
-                  A consultancy, a creative studio and a strategic partner.
-                </Reveal>
-              </div>
-              <Reveal as="p" className={styles.body} delay={120}>
-                We are as comfortable in a founder&rsquo;s first conversation as we are
-                on a shoot, in a kitchen, or on the ground in a place most agencies
-                never visit. Ārohana thinks beyond social-media posts — understanding
-                different sectors, owning execution, and working directly with the
-                people who decide.
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* 03 FOUNDER */}
-        <section className="section" aria-labelledby="about-founder-heading">
-          <div className="container">
-            <Reveal as="p" className="eyebrow">
-              03 — Founder
-            </Reveal>
-            <div className={styles.founder}>
-              <Reveal className={styles.founderMedia} delay={100}>
-                <RevealMedia
-                  media={pointOfView.media}
-                  ratio="4 / 5"
-                  sizes="(max-width: 880px) 100vw, 40vw"
+                <Media
+                  media={{
+                    src: "/samples/complex-2.jpg",
+                    alt: "Approved Army project still.",
+                    label: "Approved work still.",
+                  }}
+                  ratio="4 / 3"
+                  rounded="lg"
                 />
-              </Reveal>
-              <div className={styles.founderText}>
-                <Reveal as="h2" id="about-founder-heading" className={styles.founderName} delay={80}>
-                  Madhura
-                </Reveal>
-                <Reveal as="p" className={styles.founderRole} delay={120}>
-                  Founder
-                </Reveal>
-                <Reveal as="p" className={styles.body} delay={160}>
-                  A bridge between business thinking and creative execution, Madhura
-                  works directly with founders, owners and decision-makers. Her
-                  approach is grounded in sector understanding and a willingness to be
-                  on the ground — from hospitality and built-environment projects to
-                  community and field work in Ladakh.
-                </Reveal>
+                <Media
+                  media={{
+                    src: "/samples/complex-3.jpg",
+                    alt: "Approved Army project still.",
+                    label: "Approved work still.",
+                  }}
+                  ratio="4 / 3"
+                  rounded="lg"
+                />
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
-        {/* 04 APPROACH */}
-        <section className="section" aria-labelledby="about-approach-heading">
+        {/* WHERE AROHANA STANDS TODAY */}
+        <section className={`${styles.alt} section`} aria-labelledby="about-today-heading">
           <div className="container">
             <Reveal as="p" className="eyebrow">
-              04 — Our approach
+              04 — Where Ārohana stands today
             </Reveal>
-            <Reveal as="h2" id="about-approach-heading" className="section-title" delay={80}>
-              A sequence, not a service menu.
+            <Reveal as="h2" id="about-today-heading" className={styles.sectionHeading} delay={80}>
+              Clear thinking, sector-aware strategy, strong creative work and disciplined execution
             </Reveal>
-            <div className={styles.approach}>
-              {steps.map((s, i) => (
-                <Reveal key={s.num} className={styles.step} delay={100 + i * 80}>
-                  <span className={styles.stepNum}>{s.num}</span>
-                  <div>
-                    <h3 className={styles.stepTitle}>{s.title}</h3>
-                    <p className={styles.stepDesc}>{s.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            <Reveal as="p" className={styles.body} delay={140}>
+              The category changes but the thinking changes with it. The business may begin with a brand question, a business challenge or something not working. Strategy, communication, creative and execution then come together around what is actually needed — not what a template says should come next.
+            </Reveal>
+            <Reveal as="p" className={styles.body} delay={180}>
+              Ārohana is credible enough for established businesses while remaining flexible enough to work directly with decision-makers. We have real and varied experience, including difficult-to-replicate projects. We can support ongoing partnerships as well as complex, defined projects.
+            </Reveal>
           </div>
         </section>
 
-        {/* 05 EXPERIENCE */}
-        <SectorBand />
-
-        {/* 06 CLOSING */}
-        <section className="section" aria-labelledby="about-closing-heading">
+        {/* CLOSING */}
+        <section className={`${styles.closing} section`} aria-labelledby="about-closing-heading">
           <div className="container">
-            <Reveal as="h2" id="about-closing-heading" className={styles.closing} delay={60}>
-              Let&rsquo;s build what comes next.
+            <Reveal as="blockquote" id="about-closing-heading" className={styles.pullQuote} delay={80}>
+              &ldquo;A brand is only as strong as the thinking behind it.&rdquo;
             </Reveal>
-            <Reveal className={styles.closingCta} delay={140}>
+            <Reveal as="p" className={styles.closingBody} delay={140}>
+              If you&rsquo;re building something worth building, let&rsquo;s talk.
+            </Reveal>
+            <Reveal className={styles.closingCta} delay={200}>
               <a href="/contact" className="btn btn--primary">
-                Start a conversation
-                <Arrow />
+                Start a conversation <Arrow />
               </a>
             </Reveal>
           </div>

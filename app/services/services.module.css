@@ -6,22 +6,12 @@
   margin-top: 1.4rem;
 }
 
-.heroGrid {
-  margin-top: clamp(40px, 6vw, 80px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 72px);
-  align-items: end;
-}
-
 .heroLead {
-  max-width: 48ch;
+  margin-top: 1.4rem;
+  max-width: 52ch;
 }
 
-.heroMedia {
-  width: 100%;
-}
-
+/* Detail sections */
 .detail {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
@@ -107,10 +97,75 @@
   margin-top: clamp(28px, 3vw, 44px);
 }
 
+/* Engagement Models */
+.models {
+  background: var(--bg-2);
+  padding-block: clamp(80px, 12vw, 160px);
+}
+
+.modelsGrid {
+  margin-top: clamp(24px, 3vw, 40px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 3vw, 48px);
+}
+
+.modelItem {
+  padding-block: 1.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.modelItem:first-child {
+  border-top: none;
+}
+
+.modelTitle {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.modelBody {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 44ch;
+}
+
+/* Team */
+.team {
+  padding-block: clamp(80px, 12vw, 160px);
+}
+
+.teamHeading {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
+  max-width: 22ch;
+  margin-top: 1.2rem;
+}
+
+.teamBody {
+  margin-top: 1.4rem;
+  color: var(--ink-soft);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  max-width: 56ch;
+}
+
+/* Closing */
 .closing {
   font-size: var(--fs-statement);
   letter-spacing: -0.03em;
   max-width: 20ch;
+  line-height: var(--lh-tight);
+}
+
+.closingBody {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+  font-size: var(--fs-lead);
 }
 
 .closingCta {
@@ -118,7 +173,6 @@
 }
 
 @media (max-width: 880px) {
-  .heroGrid,
   .detail {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -129,5 +183,18 @@
   .detailCols {
     grid-template-columns: 1fr;
     gap: 1.6rem;
+  }
+  .modelsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section,
+  .models,
+  .team,
+  .closing {
+    animation: none;
   }
 }
