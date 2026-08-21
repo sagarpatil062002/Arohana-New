@@ -5,6 +5,7 @@
 .list {
   position: relative;
   border-top: 1px solid var(--line-2);
+  overflow: hidden;
 }
 
 .row {
@@ -110,6 +111,21 @@
   box-shadow: 0 30px 70px -40px rgba(20, 19, 18, 0.5);
   border: 1px solid var(--line);
   background: var(--bg-2);
+}
+
+@media (max-width: 860px) {
+  .float {
+    position: fixed;
+    top: auto;
+    bottom: 1.5rem;
+    left: 1.5rem !important;
+    right: 1.5rem;
+    width: auto;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    z-index: 50;
+    box-shadow: 0 20px 50px -20px rgba(20, 19, 18, 0.5);
+  }
 }
 
 .floatImg {

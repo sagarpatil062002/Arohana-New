@@ -33,7 +33,7 @@ export default function BrandObject() {
     setWebgl(hasWebGL());
   }, []);
 
-  const show3D = !reduced && !mobile && webgl;
+  const show3D = !reduced && webgl;
 
   return (
     <section className="section" aria-labelledby="brand-object-heading">
@@ -44,7 +44,7 @@ export default function BrandObject() {
               How we think
             </Reveal>
             <Reveal as="h2" id="brand-object-heading" className={styles.headline} delay={80}>
-              Structure, strategy and execution — connected.
+              Structure, strategy and execution —<br />connected.
             </Reveal>
             <Reveal as="p" className={styles.body} delay={150}>
               Ārohana works where commercial context, sector understanding and

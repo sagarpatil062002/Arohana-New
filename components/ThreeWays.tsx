@@ -40,8 +40,16 @@ export default function ThreeWays() {
   const enter = (i: number) => () => {
     if (!interactive) return;
     setActive(i);
-    if (floatRef.current)
-      gsap.to(floatRef.current, { autoAlpha: 1, duration: 0.4 });
+    if (floatRef.current && listRef.current) {
+      const r = listRef.current.getBoundingClientRect();
+      gsap.set(floatRef.current, {
+        x: r.width / 2,
+        y: 0,
+        xPercent: -50,
+        yPercent: 0,
+        autoAlpha: 1,
+      });
+    }
   };
 
   const leave = () => {
@@ -58,10 +66,19 @@ export default function ThreeWays() {
     if (!listRect || !floatRef.current) return;
 
     const rect = target.getBoundingClientRect();
-    const x = rect.left - listRect.left + rect.width / 2;
-    const y = rect.top - listRect.top;
-
-    gsap.set(floatRef.current, { x, y, xPercent: -50, yPercent: 0, autoAlpha: 1 });
+    if (mobile) {
+      gsap.set(floatRef.current, {
+        x: rect.left + rect.width / 2,
+        y: rect.top - 80,
+        xPercent: -50,
+        yPercent: 0,
+        autoAlpha: 1,
+      });
+    } else {
+      const x = rect.left - listRect.left + rect.width / 2;
+      const y = rect.top - listRect.top;
+      gsap.set(floatRef.current, { x, y, xPercent: -50, yPercent: 0, autoAlpha: 1 });
+    }
     setTouchActive(touchActive === i ? null : i);
   };
 
