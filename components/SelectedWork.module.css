@@ -63,6 +63,7 @@
 
 .title {
   font-size: var(--fs-h3);
+  transition: transform var(--dur-hover) var(--ease);
 }
 
 .view {
@@ -73,12 +74,19 @@
   font-weight: 500;
   color: var(--ink-soft);
   white-space: nowrap;
-  transition: color 0.3s ease, gap 0.3s ease;
+  opacity: 0.55;
+  transition: color var(--dur-hover) var(--ease),
+    gap var(--dur-hover) var(--ease), opacity var(--dur-hover) var(--ease);
+}
+
+.link:hover .title {
+  transform: translateX(5px);
 }
 
 .link:hover .view {
   color: var(--accent);
   gap: 0.7em;
+  opacity: 1;
 }
 
 .desc {
@@ -120,11 +128,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .media :global(.media) > img,
-  .media :global(.media) > video {
+  .media :global(.media) > video,
+  .title,
+  .view {
     transition: none !important;
   }
   .link:hover .media :global(.media) > img,
-  .link:hover .media :global(.media) > video {
+  .link:hover .media :global(.media) > video,
+  .link:hover .title {
     transform: none;
   }
 }

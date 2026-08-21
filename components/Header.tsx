@@ -39,11 +39,20 @@ export default function Header() {
         </a>
 
         <nav className={styles.nav} aria-label="Primary">
-          {site.nav.map((item) => (
-            <a key={item.href} href={item.href} className={styles.navLink}>
-              {item.label}
-            </a>
-          ))}
+          {site.nav.map((item) => {
+            const active =
+              item.href !== "/" && pathname.startsWith(item.href);
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                className={`${styles.navLink} ${active ? styles.navLinkActive : ""}`}
+                aria-current={active ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
         <a href="/contact" className={`btn btn--primary ${styles.cta}`}>

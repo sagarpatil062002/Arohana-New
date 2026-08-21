@@ -40,7 +40,7 @@
 
 .cardInner:hover .media :global(.media) > img,
 .cardInner:hover .media :global(.media) > video {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .content {

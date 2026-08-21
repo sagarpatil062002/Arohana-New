@@ -4,18 +4,19 @@
    ========================================================================= */
 
 :root {
-  /* ---- Color ---- */
-  --bg: #f6f4ef;          /* warm off-white background */
-  --bg-2: #efece5;        /* slightly deeper warm panel */
-  --surface: #fbfaf7;     /* card surface, near white */
-  --ink: #141312;         /* near-black typography */
+  /* ---- Color — warm monochrome foundation + restrained warm-orange accent ----
+     Hierarchy: ink (near-black) > warm off-white bg > soft gray > tiny accent */
+  --bg: #f8f7f4;          /* warm off-white background */
+  --bg-2: #f0ede7;        /* slightly deeper warm panel */
+  --surface: #ffffff;      /* card surface */
+  --ink: #141210;          /* near-black typography */
   --ink-2: #2a2724;       /* secondary strong text */
-  --ink-soft: #6f6a62;    /* soft gray secondary text */
+  --ink-soft: #6b6760;    /* soft gray secondary text */
   --ink-faint: #9a958c;   /* faint meta text */
-  --line: #e3ded4;        /* very light gray border */
-  --line-2: #d8d2c6;      /* slightly stronger border */
-  --accent: #c2561a;      /* restrained warm orange */
-  --accent-soft: #e8cdb8; /* warm tint for subtle fills */
+  --line: #e7e5e0;        /* very light gray border */
+  --line-2: #d9d4cb;      /* slightly stronger border */
+  --accent: #e2571e;      /* restrained warm orange — used sparingly */
+  --accent-soft: #f7e6da; /* warm tint for subtle fills */
   --focus: #1d4ed8;       /* accessible focus ring */
 
   /* ---- Radius ---- */
@@ -50,6 +51,13 @@
 
   --tracking-tight: -0.02em;
   --tracking-label: 0.16em;
+
+  /* ---- Motion language (smooth, never bouncy) ---- */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-micro: 200ms;     /* micro-interactions */
+  --dur-hover: 350ms;     /* card / button hover */
+  --dur-reveal: 700ms;    /* image / section reveal */
+  --dur-hero: 900ms;      /* hero entrance */
 }
 
 /* ------------------------------------------------------------------ reset */
@@ -335,9 +343,9 @@ p {
 /* ------------------------------------------------------------- reveal anim */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateY(16px);
+  transition: opacity var(--dur-reveal) var(--ease),
+    transform var(--dur-reveal) var(--ease);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
@@ -378,4 +386,19 @@ p {
   background: var(--line);
   border: 0;
   width: 100%;
+}
+
+/* small warm-orange accent dot — used as a restrained graphic accent */
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+/* occasional highlighted word/line in accent */
+.accent-text {
+  color: var(--accent);
 }

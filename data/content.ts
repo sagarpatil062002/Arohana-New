@@ -2,16 +2,21 @@
    Site content — structured data, kept separate from presentation.
    Swap these arrays/maps for a CMS later without touching components.
 
-   MEDIA NOTE: real assets are not supplied yet. Each media entry carries
-   `src: ""` and a `label` describing the intended real asset. When a real
-   file is dropped into /public, set `src` to its path and the component
-   will render it instead of the clearly-marked placeholder.
+   ┌──────────────────────────────────────────────────────────────────────┐
+   │  DEV SAMPLE MEDIA — NOT REAL ĀROHANA WORK                              │
+   │  Every `src` below points to /public/samples/* which are temporary,   │
+   │  royalty-free development placeholders (photography from Unsplash,    │
+   │  hero clip is a CC0 sample). They are used ONLY so the homepage looks  │
+   │  complete during development and are NOT client/brand imagery.         │
+   │  TO GO LIVE: replace each /public/samples/* file (or its `src`) with   │
+   │  the approved real Ārohana asset described in its `label`/`alt`.      │
+   └──────────────────────────────────────────────────────────────────────┘
    ========================================================================= */
 
 export type MediaRef = {
   src: string; // path under /public, e.g. "/work/raysons.jpg"
   alt: string;
-  label: string; // describes the intended real asset for the placeholder
+  label: string; // describes the intended real asset this placeholder stands for
   poster?: string; // poster/fallback image (used by hero video)
 };
 
@@ -40,10 +45,10 @@ export const hero = {
     "Ārohana brings together business thinking, creative communication and execution — from digital brand growth and content to hospitality consulting and complex on-ground projects.",
   primaryCta: { label: "Start a conversation", href: "/contact" },
   secondaryCta: { label: "See our work", href: "/work" },
-  // Real 8–12s muted montage. Leave empty until the real video is supplied.
+  // TEMP sample: 8–12s muted montage will replace this CC0 clip + poster.
   media: {
-    src: "",
-    poster: "",
+    src: "/samples/hero.mp4",
+    poster: "/samples/hero_poster.jpg",
     alt: "A cinematic montage of Ārohana's real work across hospitality, the built environment, healthcare, PictureTime and Ladakh field projects.",
     label:
       "Cinematic hero montage — hospitality, built environment, healthcare, PictureTime, Ladakh / Army field work (8–12s, muted, loop).",
@@ -58,8 +63,9 @@ export const pointOfView = {
     "Ārohana works where those two things meet — combining commercial context, sector understanding and creative execution into work that actually moves a business forward.",
     "We are as comfortable in a founder's first conversation as we are on a shoot, in a kitchen, or on the ground in a place most agencies never visit.",
   ],
+  // TEMP sample: founder on-ground editorial still.
   media: {
-    src: "",
+    src: "/samples/pov.jpg",
     alt: "Madhura working on-ground in Ladakh, directing or supporting a project.",
     label:
       "Editorial image — Madhura on-ground in Ladakh / directing a project (real work).",
@@ -79,8 +85,9 @@ export const services: Service[] = [
     title: "Digital Brand Growth",
     description:
       "Brand and communication strategy, social ecosystems, content, creative direction, production, performance and platform execution.",
+    // TEMP sample: branding / creative work.
     media: {
-      src: "",
+      src: "/samples/svc-digital.jpg",
       alt: "Digital brand and content work in progress.",
       label: "Real digital / content production still.",
     },
@@ -90,8 +97,9 @@ export const services: Service[] = [
     title: "Hospitality Consulting",
     description:
       "Restaurant concept, menu development, food cost, pricing, SOPs, staffing, kitchen control, revenue optimisation and marketing.",
+    // TEMP sample: restaurant / F&B environment.
     media: {
-      src: "",
+      src: "/samples/svc-hospitality.jpg",
       alt: "Hospitality consulting — restaurant concept and kitchen control.",
       label: "Real hospitality / F&B environment still.",
     },
@@ -101,8 +109,9 @@ export const services: Service[] = [
     title: "Content & Brand Production",
     description:
       "Films, documentaries, corporate/institutional videos, campaign content, scripting, shoots and post-production.",
+    // TEMP sample: film / production.
     media: {
-      src: "",
+      src: "/samples/svc-production.jpg",
       alt: "Film and documentary production on location.",
       label: "Real film / production still.",
     },
@@ -126,8 +135,9 @@ export const selectedWork: WorkItem[] = [
     tags: ["Group brand", "Multi-business", "Strategy"],
     href: "/work/raysons-group",
     size: "feature",
+    // TEMP sample: built environment / real estate.
     media: {
-      src: "",
+      src: "/samples/work-raysons.jpg",
       alt: "Raysons Group — built environment and business portfolio.",
       label: "Raysons Group real environment / business still.",
     },
@@ -139,8 +149,9 @@ export const selectedWork: WorkItem[] = [
     tags: ["Consumer", "DTC", "Narrative"],
     href: "/work/loom-crafts",
     size: "standard",
+    // TEMP sample: furniture / product.
     media: {
-      src: "",
+      src: "/samples/work-loom.jpg",
       alt: "Loom Crafts product and craft environment.",
       label: "Loom Crafts real product / craft still.",
     },
@@ -152,8 +163,9 @@ export const selectedWork: WorkItem[] = [
     tags: ["Entertainment", "Brand story", "Media"],
     href: "/work/picturetime",
     size: "standard",
+    // TEMP sample: cinema / entertainment.
     media: {
-      src: "",
+      src: "/samples/work-picturetime.jpg",
       alt: "PictureTime mobile cinema and audience.",
       label: "PictureTime real cinema / audience still.",
     },
@@ -165,8 +177,9 @@ export const selectedWork: WorkItem[] = [
     tags: ["Community", "Health", "Sustainability"],
     href: "/work/she",
     size: "feature",
+    // TEMP sample: community / people.
     media: {
-      src: "",
+      src: "/samples/work-she.jpg",
       alt: "SHE community initiative — people and everyday life.",
       label: "SHE real community / field still (approved).",
     },
@@ -178,8 +191,9 @@ export const selectedWork: WorkItem[] = [
     tags: ["Hospitality", "Concept", "Experience"],
     href: "/work/misu",
     size: "standard",
+    // TEMP sample: hospitality / restaurant.
     media: {
-      src: "",
+      src: "/samples/work-misu.jpg",
       alt: "Misu hospitality space and service.",
       label: "Misu real hospitality still.",
     },
@@ -191,8 +205,9 @@ export const selectedWork: WorkItem[] = [
     tags: ["Healthcare", "Clarity", "Trust"],
     href: "/work/rr-skins",
     size: "standard",
+    // TEMP sample: healthcare environment.
     media: {
-      src: "",
+      src: "/samples/work-rrskins.jpg",
       alt: "RR Skins specialised healthcare environment.",
       label: "RR Skins real healthcare still.",
     },
@@ -233,8 +248,9 @@ export const complexProjects = {
     {
       name: "SHE",
       caption: "Community initiative — health, dignity, sustainability.",
+      // TEMP sample: community / people (not identifiable Army imagery).
       media: {
-        src: "",
+        src: "/samples/complex-2.jpg",
         alt: "SHE community work in Ladakh.",
         label: "SHE approved field still.",
       },
@@ -242,8 +258,9 @@ export const complexProjects = {
     {
       name: "Operation Sampark",
       caption: "Homestay training and local capacity building.",
+      // TEMP sample: remote field environment.
       media: {
-        src: "",
+        src: "/samples/complex-1.jpg",
         alt: "Homestay training under Operation Sampark.",
         label: "Operation Sampark approved still.",
       },
@@ -251,8 +268,9 @@ export const complexProjects = {
     {
       name: "Approved film work",
       caption: "Documentary / communication still (cleared for public use).",
+      // TEMP sample: mountains / Ladakh-type environment.
       media: {
-        src: "",
+        src: "/samples/complex-3.jpg",
         alt: "Approved Indian Army documentation still.",
         label: "Approved Army film/documentation still.",
       },
@@ -268,17 +286,20 @@ export const tourin = {
   cta: { label: "Explore Tourin", href: "/tourin" },
   media: [
     {
-      src: "",
+      // TEMP sample: road journeys / sense of place.
+      src: "/samples/tourin-1.jpg",
       alt: "Ladakh — local people and everyday life.",
       label: "Ladakh: people / local interaction (real).",
     },
     {
-      src: "",
+      // TEMP sample: food / stays.
+      src: "/samples/tourin-2.jpg",
       alt: "Ladakh — food and stays.",
       label: "Ladakh: food / stays (real).",
     },
     {
-      src: "",
+      // TEMP sample: mountains / landscape.
+      src: "/samples/tourin-3.jpg",
       alt: "Ladakh — roads and sense of place.",
       label: "Ladakh: roads / sense of place (real).",
     },

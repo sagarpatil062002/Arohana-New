@@ -9,6 +9,7 @@ export default function Hero() {
     <section className={styles.hero} aria-labelledby="hero-heading">
       <div className="container">
         <Reveal as="p" className="eyebrow" delay={0}>
+          <span className="dot" aria-hidden="true" />
           {hero.eyebrow}
         </Reveal>
 
