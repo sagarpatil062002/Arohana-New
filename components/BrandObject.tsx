@@ -68,9 +68,6 @@ export default function BrandObject() {
                 // Static, lightweight fallback (mobile / reduced-motion / no WebGL)
                 <div className={styles.fallback}>
                   <span className={styles.mark}>Ā</span>
-                  <span className={styles.fallbackNote}>
-                    Interactive view — enable on desktop
-                  </span>
                 </div>
               )}
             </div>

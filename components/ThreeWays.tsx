@@ -15,19 +15,20 @@ export default function ThreeWays() {
     null
   );
   const [active, setActive] = useState<number | null>(null);
+  const [touchActive, setTouchActive] = useState<number | null>(null);
 
   const reduced = useReducedMotion();
   const mobile = useIsMobile();
   const interactive = !reduced && !mobile;
 
   useEffect(() => {
-    if (!interactive || !floatRef.current) return;
+    if (!floatRef.current) return;
     gsap.set(floatRef.current, { xPercent: -50, yPercent: -50, autoAlpha: 0 });
     quick.current = {
       x: gsap.quickTo(floatRef.current, "x", { duration: 0.55, ease: "power3" }),
       y: gsap.quickTo(floatRef.current, "y", { duration: 0.55, ease: "power3" }),
     };
-  }, [interactive]);
+  }, []);
 
   const onMove = (e: React.MouseEvent) => {
     if (!interactive || !quick.current || !listRef.current) return;
@@ -49,6 +50,26 @@ export default function ThreeWays() {
     if (floatRef.current)
       gsap.to(floatRef.current, { autoAlpha: 0, duration: 0.3 });
   };
+
+  const handleTouchStart = (e: React.TouchEvent, i: number) => {
+    if (interactive) return;
+    const target = e.currentTarget as HTMLDivElement;
+    const listRect = listRef.current?.getBoundingClientRect();
+    if (!listRect || !floatRef.current) return;
+
+    const rect = target.getBoundingClientRect();
+    const x = rect.left - listRect.left + rect.width / 2;
+    const y = rect.top - listRect.top;
+
+    gsap.set(floatRef.current, { x, y, xPercent: -50, yPercent: 0, autoAlpha: 1 });
+    setTouchActive(touchActive === i ? null : i);
+  };
+
+  useEffect(() => {
+    if (touchActive === null && floatRef.current) {
+      gsap.to(floatRef.current, { autoAlpha: 0, duration: 0.3 });
+    }
+  }, [touchActive]);
 
   return (
     <section className="section" aria-labelledby="ways-heading">
@@ -72,15 +93,16 @@ export default function ThreeWays() {
                 key={s.number}
                 className={styles.row}
                 onMouseEnter={enter(i)}
+                onTouchStart={(e) => handleTouchStart(e, i)}
                 data-cursor="view"
               >
                 <span className={styles.num}>{s.number}</span>
                 <div className={styles.main}>
                   <h3 className={styles.title}>{s.title}</h3>
-                  {!interactive && (
+                  {!interactive && !touchActive && (
                     <p className={styles.descStatic}>{s.description}</p>
                   )}
-                  {!interactive && (
+                  {!interactive && !touchActive && (
                     <div className={styles.thumb}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={s.media.src} alt={s.media.alt} loading="lazy" />
@@ -93,7 +115,7 @@ export default function ThreeWays() {
               </div>
             ))}
 
-            {interactive && (
+            {(interactive || touchActive !== null) && (
               <div ref={floatRef} className={styles.float} aria-hidden="true">
                 {services.map((s, i) => (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -102,7 +124,7 @@ export default function ThreeWays() {
                     src={s.media.src}
                     alt=""
                     className={`${styles.floatImg} ${
-                      active === i ? styles.floatImgOn : ""
+                      (interactive ? active === i : touchActive === i) ? styles.floatImgOn : ""
                     }`}
                   />
                 ))}

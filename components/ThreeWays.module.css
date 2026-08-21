@@ -96,7 +96,7 @@
   color: var(--accent);
 }
 
-/* floating cursor-following preview (desktop) */
+/* floating cursor-following preview (desktop) / touch preview (mobile) */
 .float {
   position: absolute;
   top: 0;
