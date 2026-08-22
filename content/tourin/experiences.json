@@ -39,7 +39,9 @@
   ],
   "meta": {
     "eyebrow": "An owned brand",
-    "headline": "And then there is Tourin.",
+    "headline": "Travel beyond the itinerary.",
+    "subheadline": "And then there is Tourin.",
+    "supporting": "Some places are better experienced when you stop trying to see everything. Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh.",
     "body": "Tourin is an experiential travel brand beginning with Ladakh, built from lived experience rather than a generic destination catalogue. 15+ separate bookings and trips so far — shaped by people, food, stays and the roads in between.",
     "stat": { "value": "15+", "label": "separate bookings & trips so far" },
     "why": "The Ladakh many itineraries sell and the Ladakh people experience are not always the same.",
@@ -54,7 +56,8 @@
     "nextBody": "The approach can expand to other destinations with enough character, culture and story. The thinking remains the same: ground-level understanding, genuine care for experience, and a refusal to compete on cheap packages or number of destinations.",
     "packagesHeading": "15+ separate bookings and trips so far",
     "packagesBody": "From individual travellers and small groups to larger parties, including a 20-biker trip. Each journey is planned around the traveller, not a fixed template.",
-    "cta": { "label": "Talk to us about a journey", "href": "/contact" },
+    "primaryCta": { "label": "View Ladakh Experiences", "href": "#experiences" },
+    "secondaryCta": { "label": "Talk to us about a journey", "href": "/contact" },
     "closing": "Come travel differently."
   }
 }

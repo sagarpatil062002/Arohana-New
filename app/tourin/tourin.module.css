@@ -206,6 +206,39 @@
   gap: clamp(16px, 2vw, 32px);
 }
 
+/* Proof */
+.proof {
+  padding-block: clamp(80px, 12vw, 160px);
+  background: var(--bg-2);
+}
+
+.proofHeading {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
+  max-width: 28ch;
+  margin-top: 1.2rem;
+}
+
+.galleryGrid {
+  margin-top: clamp(32px, 4vw, 56px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.5vw, 32px);
+}
+
+.galleryCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.galleryLabel {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
 /* From Arohana */
 .from {
   padding-block: clamp(80px, 12vw, 160px);
@@ -257,6 +290,11 @@
 .packages {
   padding-block: clamp(80px, 12vw, 160px);
   border-top: 1px solid var(--line);
+}
+
+.packageCard {
+  max-width: 60ch;
+  margin-inline: auto;
   text-align: center;
 }
 
@@ -271,7 +309,7 @@
   color: var(--ink-soft);
   font-size: var(--fs-lead);
   line-height: var(--lh-snug);
-  max-width: 48ch;
+  max-width: 56ch;
   margin-inline: auto;
 }
 
@@ -283,6 +321,7 @@
 .closing {
   padding-block: clamp(80px, 12vw, 160px);
   text-align: center;
+  background: var(--bg-alt);
 }
 
 .closingHeading {
@@ -297,6 +336,14 @@
   margin-top: clamp(28px, 3vw, 44px);
 }
 
+.ctaGroup {
+  display: inline-flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 880px) {
   .ladakhInner {
     grid-template-columns: 1fr;
@@ -306,7 +353,8 @@
     grid-template-columns: 1fr;
     gap: 1.6rem;
   }
-  .experienceGrid {
+  .experienceGrid,
+  .galleryGrid {
     grid-template-columns: 1fr;
   }
 }

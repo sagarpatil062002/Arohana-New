@@ -74,6 +74,11 @@ export default function ServicesPage() {
                             </li>
                           ))}
                         </ul>
+                        {service.number === "01" && (
+                          <p className={styles.capabilityNote}>
+                            * Performance marketing, SEO, websites and lead generation are standalone capabilities and scoped according to specific business goals, rather than automatically bundled in standard retainers.
+                          </p>
+                        )}
                       </div>
                       <div>
                         <p className={styles.colLabel}>Seen in</p>

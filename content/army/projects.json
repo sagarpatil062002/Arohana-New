@@ -61,10 +61,11 @@
       "body": "Health and hygiene initiative aligned with Operation Sadbhavana and implemented across eight remote villages. Ārohana developed the name and identity and worked across communication and documentary content. Sensitive community communication with responsibility at its centre.",
       "tags": ["Community", "Health", "Identity"],
       "media": {
-        "src": "/samples/work-she.jpg",
+        "src": "/samples/complex-2.jpg",
         "alt": "SHE community initiative — health and hygiene.",
         "label": "SHE approved field still."
-      }
+      },
+      "caseStudyHref": "/work/she"
     },
     {
       "id": "07",
@@ -83,27 +84,38 @@
       "body": "Communication and video work connected with the Vibrant Villages Programme and border-tourism initiatives in Ladakh, including scripting, voice-over and production. Ārohana's contribution is communication and storytelling connected with these initiatives; the programme is not an Indian Army programme.",
       "tags": ["Communication", "Video", "Storytelling"],
       "media": {
-        "src": "/samples/complex-2.jpg",
+        "src": "/samples/complex-3.jpg",
         "alt": "Vibrant Villages Programme communication work.",
         "label": "Approved initiative still."
       }
     },
     {
       "id": "09",
-      "title": "12 Rashtriya Rifles / Delta Force",
-      "body": "This entry is text-only and approved for public use. No images, locations, dates, deliverables or confidential descriptions are included.",
+      "title": "12 Rashtriya Rifles / Delta Force — Selected Project Work",
+      "body": "This entry is text-only and approved for public use. No project details, locations, dates, deliverables or confidential descriptions are included.",
       "tags": ["Text-only", "Approved"],
       "media": null,
       "confidential": true
     }
   ],
+  "capabilityStatement": {
+    "eyebrow": "Consolidated Capabilities",
+    "headline": "Across these engagements, Ārohana has contributed across communication, visual design, publication design, storytelling, documentary and video production, scripting, voice-over, editing, sound and on-ground execution.",
+    "sub": "Do not repeat the same deliverables under every project. Every engagement is tailored to operational context and strict disclosure standards."
+  },
   "hero": {
     "eyebrow": "Selected Projects",
     "headline": "Selected Indian Army Projects",
-    "supporting": "Communication, storytelling, design and production across different Army environments."
+    "supporting": "Communication, storytelling, design and production across different Army environments.",
+    "media": {
+      "src": "/samples/complex-3.jpg",
+      "alt": "Approved Indian Army project documentation still.",
+      "label": "Approved work still."
+    }
   },
   "closing": {
     "statement": "Different environments. Different audiences. Different briefs. The work changes with the context. The standard of thinking and execution does not.",
-    "cta": { "label": "View all work", "href": "/work" }
+    "cta": { "label": "Start a conversation", "href": "/contact" },
+    "secondaryCta": { "label": "View all work", "href": "/work" }
   }
 }

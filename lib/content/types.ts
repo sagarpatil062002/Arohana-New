@@ -87,6 +87,7 @@ export type ArmyProject = {
   tags: string[];
   media: MediaRef | null;
   confidential?: boolean;
+  caseStudyHref?: string;
 };
 
 export type TourinExperience = {
@@ -109,6 +110,8 @@ export type TourinData = {
   meta: {
     eyebrow: string;
     headline: string;
+    subheadline?: string;
+    supporting?: string;
     body: string;
     stat: { value: string; label: string };
     why: string;
@@ -123,20 +126,29 @@ export type TourinData = {
     nextBody: string;
     packagesHeading: string;
     packagesBody: string;
-    cta: { label: string; href: string };
+    primaryCta?: { label: string; href: string };
+    secondaryCta?: { label: string; href: string };
+    cta?: { label: string; href: string };
     closing: string;
   };
 };
 
 export type ArmyData = {
   projects: ArmyProject[];
+  capabilityStatement?: {
+    eyebrow: string;
+    headline: string;
+    sub?: string;
+  };
   hero: {
     eyebrow: string;
     headline: string;
     supporting: string;
+    media?: MediaRef;
   };
   closing: {
     statement: string;
     cta: { label: string; href: string };
+    secondaryCta?: { label: string; href: string };
   };
 };

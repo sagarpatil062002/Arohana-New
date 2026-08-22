@@ -11,6 +11,11 @@
   max-width: 52ch;
 }
 
+.heroMediaWrap {
+  margin-top: clamp(32px, 5vw, 64px);
+  width: 100%;
+}
+
 /* Project List */
 .list {
   padding-block: 0;
@@ -43,7 +48,7 @@
   max-width: 18ch;
 }
 
-.projectBody {
+.projectContent {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 80px);
@@ -54,11 +59,15 @@
   max-width: 56ch;
 }
 
-.projectBody {
+.projectParagraph {
   color: var(--ink-soft);
   font-size: var(--fs-lead);
   line-height: var(--lh-snug);
-  margin-top: 1.2rem;
+  margin-top: 0;
+}
+
+.projectCaseLink {
+  margin-top: 1.4rem;
 }
 
 .projectTags {
@@ -82,6 +91,35 @@
   width: 100%;
 }
 
+/* Consolidated Capability Statement */
+.capabilitySection {
+  background: var(--bg-alt);
+  padding-block: clamp(60px, 8vw, 120px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.capabilityCard {
+  max-width: 80ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.capabilityHeading {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.02em;
+  line-height: var(--lh-snug);
+  margin-top: 1rem;
+  color: var(--ink);
+}
+
+.capabilitySub {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin-top: 1.4rem;
+  line-height: 1.6;
+}
+
 /* Closing */
 .closing {
   padding-block: clamp(80px, 12vw, 180px);
@@ -91,7 +129,7 @@
 .closingStatement {
   font-size: var(--fs-statement);
   letter-spacing: -0.03em;
-  max-width: 20ch;
+  max-width: 24ch;
   margin-inline: auto;
   line-height: var(--lh-tight);
 }
@@ -100,8 +138,16 @@
   margin-top: clamp(28px, 3vw, 44px);
 }
 
+.ctaGroup {
+  display: inline-flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 880px) {
-  .projectBody {
+  .projectContent {
     grid-template-columns: 1fr;
     gap: 2rem;
   }

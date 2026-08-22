@@ -198,7 +198,7 @@ export default function WorkPage() {
                   </Reveal>
                   <Reveal className={styles.featureCta} delay={200}>
                     <a href={item.href} className="link-underline">
-                      View project <Arrow />
+                      View case study <Arrow />
                     </a>
                   </Reveal>
                 </div>
@@ -236,7 +236,7 @@ export default function WorkPage() {
                   </Reveal>
                   <Reveal className={styles.featureCta} delay={200}>
                     <a href={item.href} className="link-underline">
-                      View project <Arrow />
+                      View case study <Arrow />
                     </a>
                   </Reveal>
                 </div>
@@ -279,7 +279,7 @@ export default function WorkPage() {
               </Reveal>
               <Reveal className={styles.featuredCta} delay={200}>
                 <a href="/work/she" className="btn btn--ghost">
-                  Explore project <Arrow />
+                  View case study <Arrow />
                 </a>
               </Reveal>
             </div>
@@ -327,11 +327,11 @@ export default function WorkPage() {
           <div className="container">
             <div className={styles.closingInner}>
               <Reveal as="h2" id="work-closing-heading" className={styles.closingStatement} delay={60}>
-                Every project starts with a question.
+                Want to see what this could look like for your business?
               </Reveal>
               <Reveal className={styles.closingCta} delay={140}>
                 <a href="/contact" className="btn btn--primary">
-                  Let&rsquo;s start a conversation <Arrow />
+                  Start a conversation <Arrow />
                 </a>
               </Reveal>
             </div>

@@ -34,6 +34,11 @@ export default function IndianArmyProjectsPage() {
             <Reveal as="p" className={`lead ${styles.heroSupporting}`} delay={140}>
               {data.hero.supporting}
             </Reveal>
+            {data.hero.media && (
+              <Reveal className={styles.heroMediaWrap} delay={200}>
+                <Media media={data.hero.media} ratio="21 / 9" rounded="lg" priority />
+              </Reveal>
+            )}
           </div>
         </section>
 
@@ -53,11 +58,18 @@ export default function IndianArmyProjectsPage() {
                     {project.title}
                   </Reveal>
                 </div>
-                <div className={styles.projectBody}>
+                <div className={styles.projectContent}>
                   <div className={styles.projectText}>
-                    <Reveal as="p" className={styles.projectBody} delay={140}>
+                    <Reveal as="p" className={styles.projectParagraph} delay={140}>
                       {project.body}
                     </Reveal>
+                    {project.caseStudyHref && (
+                      <Reveal className={styles.projectCaseLink} delay={160}>
+                        <a href={project.caseStudyHref} className="link-underline">
+                          View full SHE case study <Arrow />
+                        </a>
+                      </Reveal>
+                    )}
                     <Reveal as="div" className={styles.projectTags} delay={180}>
                       {project.tags.map((tag) => (
                         <span key={tag} className={styles.tag}>
@@ -77,6 +89,27 @@ export default function IndianArmyProjectsPage() {
           </div>
         </section>
 
+        {/* CONSOLIDATED CAPABILITY STATEMENT */}
+        {data.capabilityStatement && (
+          <section className={`${styles.capabilitySection} section`} aria-labelledby="army-capabilities-heading">
+            <div className="container">
+              <div className={styles.capabilityCard}>
+                <Reveal as="p" className="eyebrow">
+                  {data.capabilityStatement.eyebrow}
+                </Reveal>
+                <Reveal as="h2" id="army-capabilities-heading" className={styles.capabilityHeading} delay={80}>
+                  {data.capabilityStatement.headline}
+                </Reveal>
+                {data.capabilityStatement.sub && (
+                  <Reveal as="p" className={styles.capabilitySub} delay={140}>
+                    {data.capabilityStatement.sub}
+                  </Reveal>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* CLOSING */}
         <section className={`${styles.closing} section`} aria-labelledby="army-closing-heading">
           <div className="container">
@@ -84,9 +117,16 @@ export default function IndianArmyProjectsPage() {
               {data.closing.statement}
             </Reveal>
             <Reveal className={styles.closingCta} delay={140}>
-              <a href={data.closing.cta.href} className="btn btn--primary">
-                {data.closing.cta.label} <Arrow />
-              </a>
+              <div className={styles.ctaGroup}>
+                <a href={data.closing.cta.href} className="btn btn--primary">
+                  {data.closing.cta.label} <Arrow />
+                </a>
+                {data.closing.secondaryCta && (
+                  <a href={data.closing.secondaryCta.href} className="btn btn--ghost">
+                    {data.closing.secondaryCta.label} <Arrow />
+                  </a>
+                )}
+              </div>
             </Reveal>
           </div>
         </section>

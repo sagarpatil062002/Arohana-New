@@ -31,6 +31,12 @@
       }
     }
   ],
+  "capabilityNote": "Performance marketing, SEO, websites and lead generation are standalone capabilities and are scoped specifically to client objectives, rather than automatically bundled into every standard retainer.",
+  "hero": {
+    "eyebrow": "What we do",
+    "headline": "What we do depends on what the business actually needs.",
+    "supporting": "Ārohana can act as an ongoing digital partner, hospitality consultant, content/production partner or combination."
+  },
   "serviceDetails": {
     "Digital Brand Growth": {
       "capabilities": [
@@ -84,7 +90,13 @@
         "Editing",
         "Sound and post-production"
       ],
-      "projects": ["SHE documentary", "Western Command Investiture Ceremony", "Indian Army project videos", "PictureTime festival/on-ground content", "Raysons industrial/casting film"]
+      "projects": [
+        "SHE documentary/content",
+        "Western Command Investiture Ceremony",
+        "Indian Army project videos",
+        "PictureTime festival/on-ground content",
+        "Raysons industrial/casting film"
+      ]
     }
   }
 }

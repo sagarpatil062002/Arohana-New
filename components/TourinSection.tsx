@@ -14,7 +14,7 @@ export default function TourinSection() {
               {tourinData.meta.eyebrow}
             </Reveal>
             <Reveal as="h2" id="tourin-heading" className={styles.headline} delay={80}>
-              {tourinData.meta.headline}
+              {tourinData.meta.subheadline || "And then there is Tourin."}
             </Reveal>
             <Reveal as="p" className={styles.body} delay={150}>
               {tourinData.meta.body}
@@ -26,8 +26,8 @@ export default function TourinSection() {
             </Reveal>
 
             <Reveal delay={260}>
-              <a href={tourinData.meta.cta.href} className="btn btn--ghost">
-                {tourinData.meta.cta.label}
+              <a href="/tourin" className="btn btn--ghost">
+                Explore Tourin
                 <Arrow />
               </a>
             </Reveal>

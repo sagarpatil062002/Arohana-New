@@ -89,13 +89,42 @@
     "Institutional / Community"
   ],
   "sectorProjects": {
-    "Hospitality & F&B": ["Misu", "Spice Goa", "Khana Khazana", "Khau Gali", "Resort Blu", "Holiday Village"],
-    "Real Estate & Built Environment": ["Raysons Group", "Citron", "Loom Crafts", "Neora Deck"],
-    "Healthcare": ["RR Skins"],
-    "Lifestyle & Consumer Brands": ["DTK Karekar Jewellery", "Fraganta", "Loom Crafts"],
-    "Entertainment & Media": ["PictureTime"],
-    "Travel & Tourism": ["Tourin", "Holiday Village"],
-    "Institutional / Community": ["SHE", "Operation Sampark", "Indian Army projects", "Western Command"]
+    "Hospitality & F&B": [
+      "Neora Deck",
+      "Blu Resorts",
+      "Qubice",
+      "Kanopy",
+      "Sorriso",
+      "Spice Goa",
+      "Khana Khazana",
+      "Khau Gali"
+    ],
+    "Real Estate & Built Environment": [
+      "Raysons Group",
+      "Citron",
+      "Loom Crafts"
+    ],
+    "Healthcare": [
+      "RR Skins",
+      "Specialised Healthcare Work"
+    ],
+    "Lifestyle & Consumer Brands": [
+      "DTK Karekar Jewellery",
+      "Fraganta",
+      "Approved Consumer Work"
+    ],
+    "Entertainment & Media": [
+      "PictureTime"
+    ],
+    "Travel & Tourism": [
+      "Tourin",
+      "Holiday Village"
+    ],
+    "Institutional / Community": [
+      "SHE",
+      "Operation Sampark",
+      "Indian Army-related projects"
+    ]
   },
   "brands": [
     "Raysons Group",
