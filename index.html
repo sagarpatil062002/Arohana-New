@@ -1,917 +1,854 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ĀROHANA — We Build Brands, Businesses & Experiences</title>
+  <meta name="description" content="Business thinking, creative execution and sector experience — brought together around what the business actually needs. Ārohana builds brands, businesses & experiences." />
   
-  <!-- Primary SEO Metadata -->
-  <title>Ārohana Consultancy | Brands, Businesses & Experiences</title>
-  <meta name="title" content="Ārohana Consultancy | Brands, Businesses & Experiences">
-  <meta name="description" content="Ārohana combines business thinking, creative communication and execution across digital brand growth, hospitality consulting and content production.">
-  <meta name="keywords" content="Ārohana Consultancy, brand strategy, hospitality consulting, digital growth, brand production, Madhura Hawal, Tourin Ladakh, real estate branding, healthcare branding">
-  <meta name="author" content="Ārohana Consultancy">
-  <meta name="robots" content="index, follow">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://byarohana.com/">
-  <meta property="og:title" content="Ārohana Consultancy | Brands, Businesses & Experiences">
-  <meta property="og:description" content="Ārohana combines business thinking, creative communication and execution across digital brand growth, hospitality consulting and content production.">
-  <meta property="og:image" content="assets/raysons.jpg">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Ārohana Consultancy | Brands, Businesses & Experiences">
-  <meta property="twitter:description" content="Ārohana combines business thinking, creative communication and execution across digital brand growth, hospitality consulting and content production.">
-  <meta property="twitter:image" content="assets/raysons.jpg">
-
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='24' font-size='24' font-family='serif' fill='%23ffffff'%3EĀ%3C/text%3E%3C/svg%3E">
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
-
-  <!-- Icons & Three.js -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  
+  <!-- Fonts: Syne for bold headlines, Plus Jakarta Sans for body, Space Mono for labels & indices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body>
+<body class="arohana-theme">
 
-  <!-- Background Noise Texture -->
-  <div class="noise-overlay"></div>
-
-  <!-- Custom Interactive Cursor -->
-  <div class="custom-cursor-dot"></div>
-  <div class="custom-cursor-ring"></div>
-
-  <!-- ==========================================================================
-       HEADER & NAVIGATION
-       ========================================================================== -->
+  <!-- ==================== HEADER & NAVBAR ==================== -->
   <header class="site-header" id="site-header">
-    <div class="container container-wide">
-      <div class="header-inner">
-        
-        <!-- Logo -->
-        <a href="#home" class="brand-logo" id="header-logo">
-          ĀROHANA<span class="tm">™</span>
-        </a>
+    <div class="header-container">
+      <a href="#hero" class="brand-logo" aria-label="Ārohana Home">
+        <span class="logo-text">ĀROHANA</span>
+      </a>
 
-        <!-- Location Badge -->
-        <div class="header-location">
-          <span class="sparkle-icon">✦</span>
-          <span>Based in: Kolhapur • Goa • Ladakh, India</span>
-        </div>
+      <nav class="desktop-nav" id="desktop-nav" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="#about" class="nav-link">ABOUT</a></li>
+          <li><a href="#services" class="nav-link">SERVICES</a></li>
+          <li><a href="#work" class="nav-link">WORK</a></li>
+          <li><a href="#tourin" class="nav-link">TOURIN</a></li>
+          <li><a href="#contact" class="nav-link">CONTACT</a></li>
+        </ul>
+      </nav>
 
-        <!-- Navigation Links -->
-        <nav>
-          <ul class="nav-menu">
-            <li><a href="#home" class="nav-link active">.Home</a></li>
-            <li><a href="#about" class="nav-link">About</a></li>
-            <li><a href="#services" class="nav-link">Services</a></li>
-            <li><a href="#work" class="nav-link">Work <span class="badge-count">(06)</span></a></li>
-            <li><a href="#tourin" class="nav-link">Tourin</a></li>
-            <li><a href="#contact" class="nav-link">Contact</a></li>
-          </ul>
-        </nav>
+      <div class="header-actions">
+        <button class="btn-pill btn-pill-outline open-conversation-btn" id="header-cta-btn">
+          START A CONVERSATION
+        </button>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
 
-        <!-- Status & CTA -->
-        <div class="header-actions">
-          <div class="status-pill">
-            <span class="status-dot"></span>
-            <span>Available for Briefs</span>
-          </div>
-          <button class="mobile-menu-btn" aria-label="Toggle Navigation">
-            <i data-lucide="menu"></i>
-          </button>
-        </div>
-
+    <!-- Mobile Drawer Navigation -->
+    <div class="mobile-nav-drawer" id="mobile-drawer">
+      <div class="mobile-nav-inner">
+        <ul class="mobile-nav-list">
+          <li><a href="#hero" class="mobile-nav-link">HOME</a></li>
+          <li><a href="#what-we-do" class="mobile-nav-link">WHAT WE DO</a></li>
+          <li><a href="#about" class="mobile-nav-link">ABOUT</a></li>
+          <li><a href="#services" class="mobile-nav-link">SERVICES</a></li>
+          <li><a href="#work" class="mobile-nav-link">WORK</a></li>
+          <li><a href="#engagement" class="mobile-nav-link">ENGAGEMENT MODELS</a></li>
+          <li><a href="#tourin" class="mobile-nav-link">TOURIN</a></li>
+          <li><a href="#contact" class="mobile-nav-link">CONTACT</a></li>
+        </ul>
+        <button class="btn-pill btn-pill-primary open-conversation-btn mobile-cta">
+          START A CONVERSATION
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile Navigation Drawer -->
-  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-    <button class="mobile-nav-close" aria-label="Close Navigation">✕</button>
-    <a href="#home" class="mobile-nav-link">Home</a>
-    <a href="#about" class="mobile-nav-link">About Founder</a>
-    <a href="#services" class="mobile-nav-link">Services</a>
-    <a href="#work" class="mobile-nav-link">Selected Work</a>
-    <a href="#tourin" class="mobile-nav-link">Tourin Ladakh</a>
-    <a href="#contact" class="mobile-nav-link">Contact</a>
-  </div>
+  <main id="main-content">
 
-  <main>
-    <!-- ==========================================================================
-         01. HERO SECTION
-         ========================================================================== -->
-    <section class="hero-section" id="home">
-      <!-- 3D Three.js WebGL Interactive Background -->
-      <div id="webgl-hero-canvas" class="webgl-hero-container"></div>
-
-      <div class="container container-wide hero-content">
-        <div class="section-badge">
-          <span class="sparkle-icon">✦</span> Master Strategy & Creative Execution
-        </div>
-
-        <h1 class="hero-heading">
-          We build brands, <span class="serif-accent">&</span> businesses <span class="serif-accent">&</span> experiences.
-        </h1>
-
-        <div class="hero-cta-buttons">
-          <a href="#contact" class="btn btn-primary" id="hero-primary-cta">
-            Start a conversation <span class="btn-icon-circle">→</span>
-          </a>
-          <a href="#work" class="btn btn-secondary" id="hero-secondary-cta">
-            See our work
-          </a>
-        </div>
-      </div>
-
-      <div class="container container-wide">
-        <div class="hero-bottom-row">
-          <p class="hero-subtext">
-            <span class="hero-subtext-icon">+</span> Ārohana brings together business thinking, creative communication and execution — from digital brand growth and content to hospitality consulting and complex on-ground projects.
+    <!-- ==================== 1. HERO SECTION (DARK) ==================== -->
+    <section class="section-hero dark-section" id="hero">
+      <div class="hero-container">
+        <div class="hero-left-content">
+          <div class="eyebrow-label">WE BUILD</div>
+          <h1 class="hero-title">
+            <span>BRANDS,</span>
+            <span>BUSINESSES &</span>
+            <span>EXPERIENCES.</span>
+          </h1>
+          <p class="hero-description">
+            Business thinking, creative execution and sector experience — brought together around what the business actually needs.
           </p>
-          <ul class="hero-pillars-list">
-            <li>
-              <a href="#services" class="hero-pillar-item">
-                <span class="hero-pillar-num">(01)</span> Digital Brand Growth
-              </a>
-            </li>
-            <li>
-              <a href="#services" class="hero-pillar-item">
-                <span class="hero-pillar-num">(02)</span> Hospitality Consulting
-              </a>
-            </li>
-            <li>
-              <a href="#services" class="hero-pillar-item">
-                <span class="hero-pillar-num">(03)</span> Content & Brand Production
-              </a>
-            </li>
-          </ul>
+          <div class="hero-scroll-indicator">
+            <a href="#what-we-do" class="scroll-link" aria-label="Scroll to next section">
+              <span>SCROLL</span>
+              <svg class="scroll-arrow" width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 0V14M6 14L1 9M6 14L11 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-right-visual">
+          <div class="sculpture-wrapper">
+            <div class="sculpture-ambient-glow"></div>
+            <img 
+              src="/assets/hero-sculpture.png" 
+              alt="Interlocking Metallic Knot Sculpture representing Brand, Business, and Experience synthesis" 
+              class="sculpture-image floating-anim"
+              id="hero-sculpture-img"
+            />
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         02. POINT OF VIEW (High-Contrast Editorial Statement)
-         ========================================================================== -->
-    <section class="container">
-      <div class="section-editorial-contrast">
-        <div class="container container-narrow">
-          <div class="light-badge">
-            <span class="sparkle-icon">✦</span> Ārohana Point of View
+    <!-- ==================== 2. WHAT WE DO (CREAM CONTRAST SECTION) ==================== -->
+    <section class="section-what-we-do light-cream-section" id="what-we-do">
+      <div class="cream-container">
+        <div class="cream-header">
+          <div class="cream-header-left">
+            <span class="cream-label">WHAT WE DO</span>
+            <h2 class="cream-headline">
+              WHAT WE DO DEPENDS ON WHAT THE BUSINESS ACTUALLY NEEDS.
+            </h2>
           </div>
-          <blockquote class="editorial-statement">
-            Some businesses need better marketing. Others need a better way of thinking about the business itself. 
-            Ārohana works where <span class="serif-accent">those two things meet</span>. We bring the commercial context, sector understanding and creative execution needed to move from an idea to something people can actually see, understand and act on.
-          </blockquote>
+          <div class="cream-header-right">
+            <a href="#services" class="btn-pill btn-pill-dark">
+              EXPLORE SERVICES &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- 3 Feature Cards Grid -->
+        <div class="cream-cards-grid">
+          <!-- Card 1 -->
+          <article class="cream-card" data-service="digital">
+            <div class="cream-card-header">
+              <span class="cream-card-index">01</span>
+              <h3 class="cream-card-title">DIGITAL<br>BRAND GROWTH</h3>
+            </div>
+            <div class="cream-card-media">
+              <img 
+                src="/assets/cream-card-digital.png" 
+                alt="Digital Brand Growth fluid wave visualization" 
+                class="cream-card-img"
+                loading="lazy"
+              />
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="cream-card" data-service="hospitality">
+            <div class="cream-card-header">
+              <span class="cream-card-index">02</span>
+              <h3 class="cream-card-title">HOSPITALITY<br>CONSULTING</h3>
+            </div>
+            <div class="cream-card-media">
+              <img 
+                src="/assets/cream-card-hospitality.png" 
+                alt="Hospitality consulting luxury restaurant dining interior" 
+                class="cream-card-img"
+                loading="lazy"
+              />
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="cream-card" data-service="production">
+            <div class="cream-card-header">
+              <span class="cream-card-index">03</span>
+              <h3 class="cream-card-title">CONTENT &amp;<br>BRAND PRODUCTION</h3>
+            </div>
+            <div class="cream-card-media">
+              <img 
+                src="/assets/cream-card-camera.png" 
+                alt="Content and brand production professional lens" 
+                class="cream-card-img"
+                loading="lazy"
+              />
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         03. THREE WAYS WE WORK / SERVICES
-         ========================================================================== -->
-    <section class="section-spacer" id="services">
-      <div class="container">
-        
-        <div class="section-header">
-          <div class="section-badge">
-            <span class="sparkle-icon">✦</span> Strategic Capabilities
-          </div>
-          <h2 class="section-title">
-            What we do depends on what the <span class="serif-accent">business actually needs</span>.
-          </h2>
-          <p class="section-lead">
-            Ārohana can come in as an ongoing digital partner, a hospitality consultant, a content/production partner or a combination of these.
-          </p>
-        </div>
-
-        <div class="services-interactive-wrapper">
-          
-          <!-- Left: Services Selection List -->
-          <div class="services-list-nav">
-            
-            <div class="service-nav-item active" data-index="0">
-              <div class="service-nav-header">
-                <div class="service-nav-title-group">
-                  <span class="service-nav-num">(01)</span>
-                  <h3 class="service-nav-title">Digital Brand Growth</h3>
-                </div>
-                <div class="service-arrow-badge"><i data-lucide="arrow-right"></i></div>
-              </div>
-              <p class="service-nav-desc">
-                For businesses that need a stronger brand presence, better communication and consistent execution — not just a schedule of posts.
-              </p>
-            </div>
-
-            <div class="service-nav-item" data-index="1">
-              <div class="service-nav-header">
-                <div class="service-nav-title-group">
-                  <span class="service-nav-num">(02)</span>
-                  <h3 class="service-nav-title">Hospitality Consulting</h3>
-                </div>
-                <div class="service-arrow-badge"><i data-lucide="arrow-right"></i></div>
-              </div>
-              <p class="service-nav-desc">
-                Where Ārohana is different from a conventional marketing agency: hands-on F&B mastery, menu engineering, kitchen SOPs and revenue systems.
-              </p>
-            </div>
-
-            <div class="service-nav-item" data-index="2">
-              <div class="service-nav-header">
-                <div class="service-nav-title-group">
-                  <span class="service-nav-num">(03)</span>
-                  <h3 class="service-nav-title">Content & Brand Production</h3>
-                </div>
-                <div class="service-arrow-badge"><i data-lucide="arrow-right"></i></div>
-              </div>
-              <p class="service-nav-desc">
-                When the story needs to be bigger than a post: cinematic institutional films, corporate documentaries, campaigns and high-altitude shoots.
-              </p>
-            </div>
-
-          </div>
-
-          <!-- Right: Dynamic Service Preview Card -->
-          <div class="service-preview-card" id="service-preview-card">
-            <div class="service-preview-header">
-              <div>
-                <h4 class="service-preview-title" id="preview-service-title">Digital Brand Growth</h4>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;" id="preview-service-desc">
-                  Strategic brand positioning, social ecosystems, creative direction and multi-platform growth.
-                </p>
-              </div>
-              <span class="service-preview-timeline" id="preview-service-timeline">⏱ Ongoing / Sprint</span>
-            </div>
-
-            <h5 class="mono-tag" style="margin-bottom: 0.75rem;">Key Workstreams Included:</h5>
-            <div class="service-inclusions-grid" id="preview-service-inclusions">
-              <!-- Dynamically populated via app.js -->
-            </div>
-
-            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 0.85rem; color: var(--text-muted);">Assembled with custom specialists around the brief.</span>
-              <button class="btn btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;" onclick="scrollToContact('Service Inquiry');">
-                Discuss Brief <span class="btn-icon-circle">→</span>
+    <!-- ==================== 3. ABOUT SECTION (DARK MOUNTAIN PANORAMA) ==================== -->
+    <section class="section-about dark-section" id="about">
+      <div class="about-container">
+        <div class="about-hero-block">
+          <div class="about-content-col">
+            <span class="eyebrow-label">ABOUT</span>
+            <h2 class="about-headline">
+              <span>THE ROAD TO</span>
+              <span>ĀROHANA WAS</span>
+              <span>ANYTHING BUT</span>
+              <span>STRAIGHT.</span>
+            </h2>
+            <p class="about-copy">
+              I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people are only after they become responsible for the whole thing.
+            </p>
+            <div class="about-action">
+              <button class="btn-pill btn-pill-outline" id="read-story-btn">
+                READ OUR STORY &rarr;
               </button>
             </div>
           </div>
 
+          <div class="about-visual-col">
+            <div class="about-image-frame">
+              <img 
+                src="/assets/about-mountain.png" 
+                alt="Adventurer on mountain summit overlooking misty valleys" 
+                class="about-mountain-img"
+                loading="lazy"
+              />
+              <div class="about-image-overlay"></div>
+            </div>
+          </div>
         </div>
 
+        <!-- 4 Milestones Bar -->
+        <div class="milestones-timeline-grid">
+          <div class="milestone-item">
+            <span class="milestone-num">01</span>
+            <h4 class="milestone-title">IT STARTED WITH HOSPITALITY</h4>
+          </div>
+          <div class="milestone-item">
+            <span class="milestone-num">02</span>
+            <h4 class="milestone-title">THERE WERE A FEW UNEXPECTED DETOURS</h4>
+          </div>
+          <div class="milestone-item">
+            <span class="milestone-num">03</span>
+            <h4 class="milestone-title">AND THEN, THE WORK GOT INTERESTING</h4>
+          </div>
+          <div class="milestone-item">
+            <span class="milestone-num">04</span>
+            <h4 class="milestone-title">WHERE ĀROHANA STANDS TODAY</h4>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         04. ENGAGEMENT MODELS (Clear Structure, Clear Results)
-         ========================================================================== -->
-    <section class="section-spacer" style="background: #0b0b0f; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
-      <div class="container">
-        
-        <div class="section-header" style="text-align: center; max-width: 780px; margin-left: auto; margin-right: auto;">
-          <div class="section-badge">
-            <span class="sparkle-icon">✦</span> Engagement Models
+    <!-- ==================== 4. SERVICES DETAILED SECTION ==================== -->
+    <section class="section-services dark-section" id="services">
+      <div class="services-container">
+        <div class="services-header">
+          <div class="services-header-left">
+            <span class="eyebrow-label">SERVICES</span>
+            <h2 class="services-main-headline">
+              WHAT WE DO DEPENDS ON<br>WHAT THE BUSINESS<br>ACTUALLY NEEDS.
+            </h2>
           </div>
-          <h2 class="section-title">
-            Structured <span class="serif-accent">collaboration</span>, clear results.
-          </h2>
-          <p class="section-lead" style="margin: 1rem auto 0 auto;">
-            We do not sell fixed agency menus or generic retainer packages. The team and engagement are assembled specifically around the problem.
-          </p>
+          <div class="services-header-right">
+            <span class="huge-index-number">01</span>
+          </div>
         </div>
 
-        <div class="engagement-cards-grid" id="engagement-cards-container">
-          <!-- Dynamically populated via data.js -->
+        <!-- Services Detailed Stack -->
+        <div class="services-stack">
+          <!-- Service 1 -->
+          <div class="service-row" id="service-digital">
+            <div class="service-row-content">
+              <span class="service-row-index">01</span>
+              <div class="service-row-info">
+                <h3 class="service-row-title">DIGITAL BRAND GROWTH</h3>
+                <p class="service-row-desc">
+                  Strategy-led digital presence, content, campaigns and performance systems that build your brand and grow your business.
+                </p>
+                <button class="service-explore-link" data-open-service="digital">
+                  EXPLORE &rarr;
+                </button>
+              </div>
+            </div>
+            <div class="service-row-media">
+              <img 
+                src="/assets/service-digital-large.png" 
+                alt="Digital Brand Growth abstract illuminated wave trails" 
+                class="service-media-img"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <!-- Service 2 -->
+          <div class="service-row" id="service-hospitality">
+            <div class="service-row-content">
+              <span class="service-row-index">02</span>
+              <div class="service-row-info">
+                <h3 class="service-row-title">HOSPITALITY CONSULTING</h3>
+                <p class="service-row-desc">
+                  From concept to operations — we design, streamline and optimize hospitality businesses for consistent experience and profitability.
+                </p>
+                <button class="service-explore-link" data-open-service="hospitality">
+                  EXPLORE &rarr;
+                </button>
+              </div>
+            </div>
+            <div class="service-row-media">
+              <img 
+                src="/assets/service-hospitality-large.png" 
+                alt="Hospitality Consulting fine dining restaurant interior atmosphere" 
+                class="service-media-img"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <!-- Service 3 -->
+          <div class="service-row" id="service-production">
+            <div class="service-row-content">
+              <span class="service-row-index">03</span>
+              <div class="service-row-info">
+                <h3 class="service-row-title">CONTENT &amp; BRAND PRODUCTION</h3>
+                <p class="service-row-desc">
+                  Films, brand stories and visual content that communicate clearly and create impact.
+                </p>
+                <button class="service-explore-link" data-open-service="production">
+                  EXPLORE &rarr;
+                </button>
+              </div>
+            </div>
+            <div class="service-row-media">
+              <img 
+                src="/assets/service-camera-large.png" 
+                alt="High-end cinema camera lens reflection for brand production" 
+                class="service-media-img"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. ENGAGEMENT MODELS ==================== -->
+    <section class="section-engagement dark-section" id="engagement">
+      <div class="engagement-container">
+        <div class="engagement-header">
+          <div class="engagement-header-left">
+            <span class="eyebrow-label">OUR ENGAGEMENT MODELS</span>
+            <h2 class="engagement-headline">BUILT AROUND HOW YOU WORK.</h2>
+          </div>
+          <div class="carousel-nav-buttons">
+            <button class="carousel-btn prev-btn" id="eng-prev-btn" aria-label="Previous Engagement Model">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <button class="carousel-btn next-btn" id="eng-next-btn" aria-label="Next Engagement Model">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
 
-        <!-- Note on Team Structure -->
-        <div class="bento-card" style="margin-top: 2.5rem; background: rgba(255,255,255,0.02); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;">
-          <div>
-            <h4 style="font-size: 1.15rem; margin-bottom: 0.35rem;">A Note on Our Team Structure</h4>
-            <p style="color: var(--text-secondary); font-size: 0.92rem; max-width: 720px;">
-              Rather than selling a bloated, rigid agency hierarchy, Ārohana brings together the exact right strategists, culinary specialists, filmmakers, and digital practitioners tailored specifically to what your business needs to solve.
+        <div class="engagement-cards-track" id="eng-cards-track">
+          <!-- Card 1 -->
+          <div class="engagement-card">
+            <div class="eng-card-top">
+              <span class="eng-index">01</span>
+              <h3 class="eng-title">ONGOING DIGITAL<br>PARTNERSHIP</h3>
+            </div>
+            <div class="eng-card-visual">
+              <img src="/assets/eng-infinity.png" alt="Infinity partnership symbol" class="eng-icon-img" />
+            </div>
+            <p class="eng-desc">
+              Continuous strategy, content, creative and platform management.
             </p>
           </div>
-          <button class="btn btn-secondary" onclick="scrollToContact('Engagement Model Advisory');">
-            Find the right fit <span class="btn-icon-circle">→</span>
-          </button>
-        </div>
 
+          <!-- Card 2 -->
+          <div class="engagement-card">
+            <div class="eng-card-top">
+              <span class="eng-index">02</span>
+              <h3 class="eng-title">HOSPITALITY<br>CONSULTING</h3>
+            </div>
+            <div class="eng-card-visual">
+              <img src="/assets/eng-bell.png" alt="Hospitality cloche service bell" class="eng-icon-img" />
+            </div>
+            <p class="eng-desc">
+              Operational and commercial intervention.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="engagement-card">
+            <div class="eng-card-top">
+              <span class="eng-index">03</span>
+              <h3 class="eng-title">PROJECT<br>PRODUCTION</h3>
+            </div>
+            <div class="eng-card-visual">
+              <img src="/assets/eng-camera.png" alt="Production camera equipment" class="eng-icon-img" />
+            </div>
+            <p class="eng-desc">
+              Films, documentaries, launches, campaigns and exhibitions.
+            </p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="engagement-card">
+            <div class="eng-card-top">
+              <span class="eng-index">04</span>
+              <h3 class="eng-title">HYBRID<br>ENGAGEMENT</h3>
+            </div>
+            <div class="eng-card-visual">
+              <img src="/assets/eng-venn.png" alt="Overlapping rings hybrid symbol" class="eng-icon-img" />
+            </div>
+            <p class="eng-desc">
+              Strategy + execution + support.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         05. SELECTED WORK & CASE STUDIES
-         ========================================================================== -->
-    <section class="section-spacer" id="work">
-      <div class="container">
-        
-        <div class="section-header">
-          <div class="section-badge">
-            <span class="sparkle-icon">✦</span> Featured Case Studies
+    <!-- ==================== 6. OUR WORK / CASE STUDIES & SECTORS ==================== -->
+    <section class="section-work dark-section" id="work">
+      <div class="work-container">
+        <div class="work-header">
+          <div class="work-header-left">
+            <span class="eyebrow-label">OUR WORK</span>
+            <h2 class="work-headline">THE WORK IS THE PROOF.</h2>
           </div>
-          <h2 class="section-title">
-            The work is the <span class="serif-accent">proof</span>.
-          </h2>
-          <p class="section-lead">
-            A few businesses and projects we've helped shape, communicate or build across very different commercial environments.
-          </p>
-        </div>
-
-        <!-- Filter Bar -->
-        <div class="work-filter-bar">
-          <button class="filter-btn active" data-filter="all">All Sectors</button>
-          <button class="filter-btn" data-filter="hospitality">Hospitality & F&B</button>
-          <button class="filter-btn" data-filter="realestate">Real Estate</button>
-          <button class="filter-btn" data-filter="healthcare">Healthcare</button>
-          <button class="filter-btn" data-filter="lifestyle">Lifestyle & Built</button>
-          <button class="filter-btn" data-filter="entertainment">Entertainment & Media</button>
+          <div class="carousel-nav-buttons">
+            <button class="carousel-btn prev-btn" id="work-prev-btn" aria-label="Previous work">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </button>
+            <button class="carousel-btn next-btn" id="work-next-btn" aria-label="Next work">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Case Studies Grid -->
-        <div class="case-studies-grid" id="case-studies-container">
-          <!-- Dynamically populated via data.js -->
+        <div class="work-grid" id="work-grid">
+          <!-- Case Study 01 -->
+          <article class="work-card" data-project="raysons" data-category="real-estate">
+            <div class="work-card-image-wrap">
+              <img src="/assets/work-raysons.png" alt="Raysons Group Real Estate Architecture" class="work-card-img" />
+              <div class="work-card-gradient"></div>
+            </div>
+            <div class="work-card-meta">
+              <span class="work-index">01</span>
+              <h3 class="work-title">RAYSONS GROUP</h3>
+              <p class="work-category">Real Estate</p>
+            </div>
+          </article>
+
+          <!-- Case Study 02 -->
+          <article class="work-card" data-project="loom" data-category="lifestyle">
+            <div class="work-card-image-wrap">
+              <img src="/assets/work-loom.png" alt="Loom Crafts Luxury Interior Design" class="work-card-img" />
+              <div class="work-card-gradient"></div>
+            </div>
+            <div class="work-card-meta">
+              <span class="work-index">02</span>
+              <h3 class="work-title">LOOM CRAFTS</h3>
+              <p class="work-category">Interiors</p>
+            </div>
+          </article>
+
+          <!-- Case Study 03 -->
+          <article class="work-card" data-project="picturetime" data-category="entertainment">
+            <div class="work-card-image-wrap">
+              <img src="/assets/work-picturetime.png" alt="Picturetime Entertainment Media Production" class="work-card-img" />
+              <div class="work-card-gradient"></div>
+            </div>
+            <div class="work-card-meta">
+              <span class="work-index">03</span>
+              <h3 class="work-title">PICTURETIME</h3>
+              <p class="work-category">Entertainment</p>
+            </div>
+          </article>
+
+          <!-- Case Study 04 -->
+          <article class="work-card" data-project="she" data-category="institutional">
+            <div class="work-card-image-wrap">
+              <img src="/assets/work-she.png" alt="SHE Community Initiative Empowerment" class="work-card-img" />
+              <div class="work-card-gradient"></div>
+            </div>
+            <div class="work-card-meta">
+              <span class="work-index">04</span>
+              <h3 class="work-title">SHE</h3>
+              <p class="work-category">Community Initiative</p>
+            </div>
+          </article>
+
+          <!-- Case Study 05 -->
+          <article class="work-card" data-project="misu" data-category="hospitality">
+            <div class="work-card-image-wrap">
+              <img src="/assets/work-misu.png" alt="MISU Food and Beverage Cafe Branding" class="work-card-img" />
+              <div class="work-card-gradient"></div>
+            </div>
+            <div class="work-card-meta">
+              <span class="work-index">05</span>
+              <h3 class="work-title">MISU</h3>
+              <p class="work-category">F&amp;B / Cafe</p>
+            </div>
+          </article>
+
+          <!-- Case Study 06 -->
+          <article class="work-card" data-project="rrskins" data-category="healthcare">
+            <div class="work-card-image-wrap">
+              <img src="/assets/work-rrskins.png" alt="RR Skins Healthcare Dermatology Branding" class="work-card-img" />
+              <div class="work-card-gradient"></div>
+            </div>
+            <div class="work-card-meta">
+              <span class="work-index">06</span>
+              <h3 class="work-title">RR SKINS</h3>
+              <p class="work-category">Healthcare</p>
+            </div>
+          </article>
         </div>
 
-        <!-- Bottom Work CTA -->
-        <div style="text-align: center; margin-top: 4rem;">
-          <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.25rem;">
-            Want to see what this could look like for your business?
-          </p>
-          <button class="btn btn-primary" onclick="scrollToContact('New Business Brief');">
-            Start a conversation <span class="btn-icon-circle">→</span>
-          </button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         06. PRIMARY SECTORS & BRAND MARQUEE
-         ========================================================================== -->
-    <section class="section-spacer" style="background: #09090c; border-top: 1px solid var(--border-subtle);">
-      <div class="container">
-        
-        <div class="section-header">
-          <div class="section-badge">
-            <span class="sparkle-icon">✦</span> Industry Grounding
+        <!-- Across Sectors / Client Logos -->
+        <div class="sectors-section" id="sectors">
+          <div class="sectors-headline-wrap">
+            <h3 class="sectors-headline">ACROSS SECTORS. ACROSS STORIES.</h3>
           </div>
-          <h2 class="section-title">
-            Where our <span class="serif-accent">experience sits</span>.
-          </h2>
-          <p class="section-lead">
-            Deep domain familiarity across primary commercial sectors where product experience and brand communication cannot be separated.
-          </p>
-        </div>
 
-        <div class="bento-grid">
-          
-          <div class="bento-card" style="grid-column: span 12 / span 12;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;">
-              
-              <div>
-                <span class="mono-tag">01 • Commercial</span>
-                <h3 style="font-size: 1.35rem; margin: 0.4rem 0;">Hospitality & F&B</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
-                  Restaurants, cafes, boutique resorts, menu engineering, guest journeys, and back-of-house operational controls.
-                </p>
-              </div>
+          <!-- Filter Tabs -->
+          <div class="sectors-filter-tabs" role="tablist" aria-label="Sectors filter">
+            <button class="filter-tab active" data-filter="all" role="tab">ALL</button>
+            <button class="filter-tab" data-filter="hospitality" role="tab">HOSPITALITY</button>
+            <button class="filter-tab" data-filter="real-estate" role="tab">REAL ESTATE</button>
+            <button class="filter-tab" data-filter="healthcare" role="tab">HEALTHCARE</button>
+            <button class="filter-tab" data-filter="lifestyle" role="tab">LIFESTYLE</button>
+            <button class="filter-tab" data-filter="entertainment" role="tab">ENTERTAINMENT</button>
+            <button class="filter-tab" data-filter="travel" role="tab">TRAVEL</button>
+            <button class="filter-tab" data-filter="institutional" role="tab">INSTITUTIONAL</button>
+          </div>
 
-              <div>
-                <span class="mono-tag">02 • Built Environment</span>
-                <h3 style="font-size: 1.35rem; margin: 0.4rem 0;">Real Estate & Architecture</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
-                  Luxury developments, architectural furniture, specifier funnels, and high-value property positioning.
-                </p>
-              </div>
-
-              <div>
-                <span class="mono-tag">03 • Clinical</span>
-                <h3 style="font-size: 1.35rem; margin: 0.4rem 0;">Healthcare & Medical Trust</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
-                  Dermatology, specialized medical practices, and patient education founded on clinical ethics.
-                </p>
-              </div>
-
-              <div>
-                <span class="mono-tag">04 • Products</span>
-                <h3 style="font-size: 1.35rem; margin: 0.4rem 0;">Lifestyle & Consumer Brands</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
-                  Luxury outdoor living, artisanal craft, e-commerce storytelling, and tactile consumer appeal.
-                </p>
-              </div>
-
-              <div>
-                <span class="mono-tag">05 • Cultural</span>
-                <h3 style="font-size: 1.35rem; margin: 0.4rem 0;">Entertainment & Media</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
-                  High-altitude cinema, festival productions, mobile theatres, and cinematic storytelling.
-                </p>
-              </div>
-
-              <div>
-                <span class="mono-tag">06 • Experiential</span>
-                <h3 style="font-size: 1.35rem; margin: 0.4rem 0;">Travel & Tourism</h3>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5;">
-                  Rooted Himalayan exploration, boutique expeditions, and lived experiential travel.
-                </p>
-              </div>
-
+          <!-- Client Logo Grid -->
+          <div class="client-logo-grid" id="client-logo-grid">
+            <div class="client-logo-cell" data-sector="real-estate hospitality">
+              <span class="client-name">NEORA<br>DECK</span>
+            </div>
+            <div class="client-logo-cell" data-sector="hospitality travel">
+              <span class="client-name">BLU<br><small>RESORTS</small></span>
+            </div>
+            <div class="client-logo-cell" data-sector="institutional real-estate">
+              <span class="client-name">QUBICE</span>
+            </div>
+            <div class="client-logo-cell" data-sector="lifestyle real-estate">
+              <span class="client-name">KANOPY</span>
+            </div>
+            <div class="client-logo-cell" data-sector="hospitality">
+              <span class="client-name">SORRISO</span>
+            </div>
+            <div class="client-logo-cell" data-sector="hospitality">
+              <span class="client-name">SPICE<br>GOA</span>
+            </div>
+            <div class="client-logo-cell" data-sector="hospitality">
+              <span class="client-name">KHANA<br>KHAZANA</span>
+            </div>
+            <div class="client-logo-cell" data-sector="hospitality lifestyle">
+              <span class="client-name">KHAU<br>GALI</span>
             </div>
           </div>
 
-        </div>
-
-      </div>
-
-      <!-- Selected Brands Ticker Marquee -->
-      <div style="margin-top: 4rem;">
-        <div class="container">
-          <p class="mono-tag" style="text-align: center; margin-bottom: 1.5rem; letter-spacing: 0.12em;">
-            BRANDS AND ORGANISATIONS WE'VE WORKED WITH
-          </p>
-        </div>
-        <div class="brand-marquee-wrap">
-          <div class="brand-marquee-track">
-            <span class="brand-marquee-item">RAYSONS GROUP</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">LOOM CRAFTS</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">PICTURETIME</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">MISU</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">SHE INITIATIVE</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">RR SKINS</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">PASSCODE HOSPITALITY</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">SPICE GOA</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">TOURIN LADAKH</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">LATAMBARCEM BREWERS</span>
-            <span class="brand-marquee-item">✦</span>
-            <!-- Duplicate for infinite seamless scroll -->
-            <span class="brand-marquee-item">RAYSONS GROUP</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">LOOM CRAFTS</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">PICTURETIME</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">MISU</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">SHE INITIATIVE</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">RR SKINS</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">PASSCODE HOSPITALITY</span>
-            <span class="brand-marquee-item">✦</span>
-            <span class="brand-marquee-item">SPICE GOA</span>
+          <div class="sectors-footer-action">
+            <button class="view-clients-link" id="view-clients-btn">
+              VIEW ALL CLIENTS &rarr;
+            </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================================================
-         07. SPECIAL PROJECTS (Indian Army & High-Altitude Responsibility)
-         ========================================================================== -->
-    <section class="container">
-      <div class="special-project-banner">
-        <div class="special-project-grid">
-          
-          <div class="special-project-content">
-            <div class="section-badge" style="background: rgba(255,255,255,0.06); width: fit-content;">
-              <span class="sparkle-icon">✦</span> High-Responsibility Contexts
-            </div>
-            <h2 style="font-size: clamp(2rem, 3.5vw, 3rem); margin-bottom: 1rem;">
-              Indian Army & <span class="serif-accent">Institutional Projects</span>
+    <!-- ==================== 7. TOURIN SECTION ==================== -->
+    <section class="section-tourin dark-section" id="tourin">
+      <div class="tourin-container">
+        <div class="tourin-card-box">
+          <div class="tourin-background">
+            <img 
+              src="/assets/tourin-ladakh-motorcycle.png" 
+              alt="Motorcyclist cruising through the high mountains of Ladakh" 
+              class="tourin-bg-image"
+              loading="lazy"
+            />
+            <div class="tourin-gradient-overlay"></div>
+          </div>
+
+          <div class="tourin-content-panel">
+            <span class="eyebrow-label">TOURIN</span>
+            <h2 class="tourin-headline">
+              TRAVEL BEYOND<br>THE ITINERARY.
             </h2>
-            <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.65; margin-bottom: 1.5rem;">
-              From remote-community initiatives in Ladakh to films and communication projects for the Indian Army, Ārohana has also worked on briefs where the environment, audience and responsibility demanded a different level of preparation.
+            <p class="tourin-text">
+              The Ladakh people experience and the Ladakh most itineraries sell are not always the same.
             </p>
-
-            <div class="special-units-list">
-              <div class="special-unit-item">
-                <h4 class="special-unit-name">14 Corps (Fire & Fury)</h4>
-                <p class="special-unit-desc">High-altitude strategic documentary & operational milestones.</p>
-              </div>
-              <div class="special-unit-item">
-                <h4 class="special-unit-name">Operation Sadbhavana</h4>
-                <p class="special-unit-desc">Community bridge initiatives and civic-military integration.</p>
-              </div>
-              <div class="special-unit-item">
-                <h4 class="special-unit-name">Operation Sampark</h4>
-                <p class="special-unit-desc">Himalayan border road engineering triumphs storytelling.</p>
-              </div>
-              <div class="special-unit-item">
-                <h4 class="special-unit-name">Western Command</h4>
-                <p class="special-unit-desc">Investiture ceremony production & official citations.</p>
-              </div>
-            </div>
-
-            <p style="font-size: 0.9rem; color: var(--text-muted); font-style: italic; border-left: 2px solid #ffffff; padding-left: 1rem;">
-              "You cannot create meaningful communication without understanding the people, the environment and the reality behind it."
-            </p>
-          </div>
-
-          <div class="special-project-img-wrap">
-            <img src="assets/army_projects.jpg" alt="Indian Army High-Altitude Projects in Ladakh" class="special-project-img" loading="lazy">
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         08. TOURIN (Experiential Ladakh Travel)
-         ========================================================================== -->
-    <section class="section-spacer" id="tourin">
-      <div class="container">
-        
-        <div class="tourin-hero-banner">
-          <div class="tourin-banner-inner" style="background-image: url('assets/tourin_ladakh.jpg');">
-            <div class="tourin-banner-content">
-              <span class="tourin-stats-pill">
-                <i data-lucide="compass" style="width: 16px; height: 16px;"></i> 15+ Completed Expeditions & Journeys
-              </span>
-              <h2 class="tourin-title">
-                Travel <span class="serif-accent">beyond</span> the itinerary.
-              </h2>
-              <p style="font-size: 1.2rem; color: #f1f5f9; line-height: 1.6; max-width: 680px; margin-bottom: 2rem;">
-                Some places are better experienced when you stop trying to see everything. Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh.
-              </p>
-              <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                <button class="btn btn-primary" onclick="scrollToContact('Tourin Ladakh Expedition Inquiry');">
-                  View Ladakh Experiences <span class="btn-icon-circle">→</span>
-                </button>
-                <button class="btn btn-secondary" onclick="scrollToContact('Tourin Private Group Custom Trip');">
-                  Talk to us about a journey
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bento-grid">
-          
-          <div class="bento-card" style="grid-column: span 12 / span 6;">
-            <span class="mono-tag">Philosophy</span>
-            <h3 style="font-size: 1.5rem; margin: 0.5rem 0 1rem 0;">Why Tourin Exists</h3>
-            <p style="color: var(--text-secondary); line-height: 1.65; font-size: 0.98rem;">
-              Tourin came from a simple realisation: the Ladakh people experience and the Ladakh most itineraries sell are not always the same. There is the Ladakh of famous passes, lakes and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life. Tourin was created to make space for the second one.
-            </p>
-          </div>
-
-          <div class="bento-card" style="grid-column: span 12 / span 6;">
-            <span class="mono-tag">From Ārohana to Tourin</span>
-            <h3 style="font-size: 1.5rem; margin: 0.5rem 0 1rem 0;">A Rooted Point of View</h3>
-            <p style="color: var(--text-secondary); line-height: 1.65; font-size: 0.98rem;">
-              Tourin is an extension of the same instinct that sits behind Ārohana: create something with a clear point of view rather than simply offering what everyone else offers. Ārohana builds brands and businesses. Tourin applies that thinking to travel — turning a destination into an experience people can truly connect with.
-            </p>
-          </div>
-
-        </div>
-
-        <!-- Curated Experiences Grid -->
-        <div class="tourin-experiences-grid">
-          
-          <div class="tourin-exp-card">
-            <span class="tourin-exp-duration">7 Days / 6 Nights</span>
-            <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem;">The High Valley Monastic Trail</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1;">
-              Hidden Gompas, early morning monastic chants, traditional Ladakhi home feasts and village apricot orchard walks.
-            </p>
-            <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.82rem;" onclick="scrollToContact('Tourin Monastic Trail');">
-              Inquire Journey <span class="btn-icon-circle">→</span>
-            </button>
-          </div>
-
-          <div class="tourin-exp-card">
-            <span class="tourin-exp-duration">8 Days / 7 Nights</span>
-            <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Nubra & Changthang High Plateau</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1;">
-              Remote Changpa nomadic settlements, high-altitude turquoise salt lakes, starlit boutique camping, and quiet mountain passes.
-            </p>
-            <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.82rem;" onclick="scrollToContact('Tourin Changthang Plateau');">
-              Inquire Journey <span class="btn-icon-circle">→</span>
-            </button>
-          </div>
-
-          <div class="tourin-exp-card">
-            <span class="tourin-exp-duration">Custom Duration</span>
-            <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Bespoke Family & Motor Expeditions</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; flex-grow: 1;">
-              Tailored private family journeys or full 20+ biker group motorcycle expeditions with complete mechanical, medical, and logistics backup.
-            </p>
-            <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.82rem;" onclick="scrollToContact('Tourin Bespoke Motor Expedition');">
-              Inquire Journey <span class="btn-icon-circle">→</span>
-            </button>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         09. ABOUT PAGE (Founder Story: Madhura Hawal)
-         ========================================================================== -->
-    <section class="section-spacer" id="about" style="background: #09090d; border-top: 1px solid var(--border-subtle);">
-      <div class="container">
-        
-        <div class="founder-profile-grid">
-          
-          <div class="founder-img-frame">
-            <img src="assets/founder_madhura.jpg" alt="Madhura Hawal - Founder of Ārohana Consultancy" class="founder-img" loading="lazy">
-          </div>
-
-          <div>
-            <div class="section-badge">
-              <span class="sparkle-icon">✦</span> Founder Narrative
-            </div>
-            <h2 style="font-size: clamp(2.4rem, 4.5vw, 3.8rem); line-height: 1.05; margin-bottom: 1.5rem;">
-              I didn't plan to build <span class="serif-accent">Ārohana</span>.
-            </h2>
-            <p style="font-size: 1.15rem; color: #cbd5e1; line-height: 1.7; margin-bottom: 1.5rem;">
-              The road to Ārohana was anything but straight. I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people see only after they become responsible for the whole thing.
-            </p>
-            <p style="font-size: 1.02rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 2rem;">
-              Today, Ārohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building.
-            </p>
-            
-            <div style="display: flex; gap: 1.5rem; align-items: center;">
-              <div>
-                <h4 style="font-size: 1.15rem; color: #ffffff;">Madhura Hawal</h4>
-                <p class="mono-tag" style="color: var(--text-muted);">Founder & Strategic Director</p>
-              </div>
-              <button class="btn btn-primary" onclick="scrollToContact('Consultation with Founder');">
-                Start a conversation <span class="btn-icon-circle">→</span>
+            <div class="tourin-action">
+              <button class="btn-pill btn-pill-outline" id="discover-tourin-btn">
+                DISCOVER TOURIN &rarr;
               </button>
             </div>
           </div>
-
         </div>
-
-        <!-- Founder Journey Milestones Timeline -->
-        <div class="container container-narrow">
-          <div class="section-badge" style="margin-bottom: 2rem;">The Milestones That Shaped Ārohana</div>
-          <div class="founder-timeline">
-            
-            <div class="timeline-milestone">
-              <span class="timeline-dot"></span>
-              <div class="timeline-phase">Phase 01 • Early Foundation</div>
-              <h3 class="timeline-title">It Started With Hospitality & Femina Miss India</h3>
-              <p class="timeline-body">
-                My first world was hospitality. I studied Hospitality Management in Muscat before completing my degree in Goa. While I was studying in Goa, I was selected among the Top 13 finalists from the West Zone for Femina Miss India — an unexpected opportunity that took me into a completely different world and taught me a great deal about confidence, communication and being comfortable outside my comfort zone.
-              </p>
-            </div>
-
-            <div class="timeline-milestone">
-              <span class="timeline-dot"></span>
-              <div class="timeline-phase">Phase 02 • Executive Rigor</div>
-              <h3 class="timeline-title">Taj Management Training & Mother India Cafe</h3>
-              <p class="timeline-body">
-                Not long after, I was selected as one of just 16 students from across India for the Taj Management Training Programme. Over the years, I worked in Muscat, returned to Kolhapur and eventually decided to build something of my own — Mother India Cafe. Running a café teaches you things no business textbook can quite prepare you for. You learn about people, margins, suppliers, staff, customers, bad days, good days and the uncomfortable reality that every decision eventually shows up in the numbers.
-              </p>
-            </div>
-
-            <div class="timeline-milestone">
-              <span class="timeline-dot"></span>
-              <div class="timeline-phase">Phase 03 • Operations at Scale</div>
-              <h3 class="timeline-title">Passcode Hospitality (Pings & Jamun) & Latambarcem Brewers</h3>
-              <p class="timeline-body">
-                While the café was still running, another opportunity took me to Goa. I joined Passcode Hospitality as Operations Head and worked on two upcoming restaurants, Pings Bia Hoi and Jamun. That experience took me deeper into the machinery behind a hospitality business — not just how a brand looks, but how an experience is actually built. Later, I moved into institutional business and sales with Latambarcem Brewers Private Limited, working across Goa and Delhi. It gave me another perspective on business: relationships, commercial thinking, negotiation and growth.
-              </p>
-            </div>
-
-            <div class="timeline-milestone">
-              <span class="timeline-dot"></span>
-              <div class="timeline-phase">Phase 04 • The Pivot</div>
-              <h3 class="timeline-title">COVID Detour & The Birth of Ārohana</h3>
-              <p class="timeline-body">
-                And then, like it did for so many people, COVID changed the direction of things. The café had to close. My work in hospitality was disrupted. What came next wasn't a carefully planned five-year strategy. It was the beginning of a different kind of work. What began with digital marketing projects slowly expanded into real-estate, healthcare, consumer businesses and entertainment.
-              </p>
-            </div>
-
-            <div class="timeline-milestone">
-              <span class="timeline-dot"></span>
-              <div class="timeline-phase">Phase 05 • High-Altitude Responsibility</div>
-              <h3 class="timeline-title">Indian Army & Institutional Projects in Ladakh</h3>
-              <p class="timeline-body">
-                My work in Ladakh became one of those chapters. There, I worked on projects associated with the Indian Army, including 14 Corps, Fire & Fury Corps, Operation Sadbhavana and Operation Sampark, extending to Western Command and 12 Rashtriya Rifles. That experience reinforced something I had already learnt from hospitality: you cannot create meaningful communication without understanding the people, the environment and the reality behind it.
-              </p>
-            </div>
-
-            <div class="timeline-milestone">
-              <span class="timeline-dot"></span>
-              <div class="timeline-phase">Phase 06 • Present Day</div>
-              <h3 class="timeline-title">Where Ārohana Stands Today</h3>
-              <p class="timeline-body">
-                A brand is only as strong as the thinking behind it. That thinking comes from years of being inside businesses — building, running, selling, solving and starting again. Today, it is what we bring to the businesses we work with. If you're building something worth building, let's talk.
-              </p>
-            </div>
-
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <!-- ==========================================================================
-         10. CONTACT & DISCOVERY CALL (Clear Pricing, Clear Results)
-         ========================================================================== -->
-    <section class="section-spacer" id="contact" style="background: #060608; border-top: 1px solid var(--border-subtle);">
-      <div class="container">
-        
-        <div class="section-header" style="text-align: center; max-width: 820px; margin: 0 auto 3.5rem auto;">
-          <div class="section-badge">
-            <span class="sparkle-icon">✦</span> Start A Conversation
-          </div>
-          <h2 class="section-title">
-            If you're building something serious, let's talk about what it <span class="serif-accent">actually needs</span>.
-          </h2>
-          <p class="section-lead" style="margin: 1rem auto 0 auto;">
-            Don't start with a service. Start with the problem. Tell us what you are trying to build, fix or change.
-          </p>
-        </div>
-
-        <div class="discovery-widget-box">
-          
-          <!-- Left: Consultation Form -->
-          <form id="consultation-form">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-              <div class="contact-form-group">
-                <label for="contact-name" class="contact-label">Your Name *</label>
-                <input type="text" id="contact-name" class="contact-input" placeholder="e.g. Rahul Sharma" required>
-              </div>
-              <div class="contact-form-group">
-                <label for="contact-email" class="contact-label">Email Address *</label>
-                <input type="email" id="contact-email" class="contact-input" placeholder="e.g. rahul@company.com" required>
-              </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
-              <div class="contact-form-group">
-                <label for="contact-phone" class="contact-label">Phone / WhatsApp</label>
-                <input type="tel" id="contact-phone" class="contact-input" placeholder="+91 98000 00000">
-              </div>
-              <div class="contact-form-group">
-                <label for="contact-sector" class="contact-label">Primary Sector</label>
-                <select id="contact-sector" class="contact-select">
-                  <option value="Hospitality & F&B">Hospitality & F&B</option>
-                  <option value="Real Estate & Architecture">Real Estate & Built Environment</option>
-                  <option value="Healthcare & Clinical">Healthcare & Medical Trust</option>
-                  <option value="Lifestyle & Consumer">Lifestyle & Consumer Brands</option>
-                  <option value="Entertainment & Media">Entertainment & Media</option>
-                  <option value="Tourin / Experiential Travel">Tourin / Ladakh Travel</option>
-                  <option value="Institutional / Other">Institutional / Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="contact-form-group">
-              <label for="contact-message" class="contact-label">Tell us about your business & what you're looking to build *</label>
-              <textarea id="contact-message" class="contact-textarea" placeholder="Describe the problem, the context, and what success looks like..." required></textarea>
-            </div>
-
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem;">
-              <button type="submit" class="btn btn-primary" id="contact-submit-btn">
-                Submit Consultation Request <span class="btn-icon-circle">→</span>
-              </button>
-              <div style="font-size: 0.85rem; color: var(--text-muted);">
-                Replies within 24 hours directly from founder.
-              </div>
-            </div>
-          </form>
-
-          <!-- Right: Founder Direct Card -->
-          <div class="founder-direct-card">
-            <div>
-              <div class="founder-avatar-row">
-                <img src="assets/founder_madhura.jpg" alt="Madhura Hawal" class="founder-mini-avatar">
-                <div class="status-pill" style="background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2);">
-                  <span class="status-dot"></span>
-                  <span style="color: #4ade80;">3 Spots Available</span>
-                </div>
-              </div>
-
-              <h4 style="font-size: 1.35rem; margin-bottom: 0.4rem;">Direct Strategic Advisory</h4>
-              <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.55; margin-bottom: 1.5rem;">
-                Prefer a direct conversation? Connect directly with Madhura Hawal to discuss your brand or hospitality requirements.
-              </p>
-
-              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
-                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="copyToClipboard('founder@byarohana.com', 'Founder Email');">
-                  <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
-                  <span>founder@byarohana.com</span>
-                </button>
-                <button class="btn btn-secondary" style="justify-content: flex-start;" onclick="copyToClipboard('+918380092241', 'Founder Phone');">
-                  <i data-lucide="phone" style="width: 16px; height: 16px;"></i>
-                  <span>+91 8380092241</span>
-                </button>
-              </div>
-            </div>
-
-            <div style="padding-top: 1rem; border-top: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-muted);">
-              Based between Kolhapur, Goa, Ladakh and Delhi NCR.
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
   </main>
 
-  <!-- ==========================================================================
-       GIANT KINETIC FOOTER
-       ========================================================================== -->
-  <footer class="site-footer">
-    <div class="container container-wide">
-      
-      <div class="footer-top">
-        
-        <div>
-          <h3 class="footer-headline">
-            We build brands, businesses <span class="serif-accent">&</span> experiences.
-          </h3>
-          <p style="color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6; max-width: 420px; margin-bottom: 1.5rem;">
-            Ārohana combines business thinking, creative communication and execution across digital brand growth, hospitality consulting and content production.
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer dark-section" id="contact">
+    <div class="footer-container">
+      <!-- Footer Top / Main Columns -->
+      <div class="footer-grid">
+        <!-- Brand Info Column -->
+        <div class="footer-col brand-col">
+          <div class="footer-logo">ĀROHANA</div>
+          <p class="footer-tagline">
+            We build brands,<br>businesses &amp; experiences.
           </p>
-          <a href="mailto:founder@byarohana.com" class="footer-email-link">
-            founder@byarohana.com <i data-lucide="arrow-up-right"></i>
-          </a>
-          <div class="footer-phone">+91 8380092241</div>
+          <div class="footer-socials">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-icon">
+              <span>in</span>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="social-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <div class="footer-nav-col">
-          <h4>Navigation</h4>
-          <ul class="footer-links-list">
-            <li class="footer-link-item"><a href="#home">Home</a></li>
-            <li class="footer-link-item"><a href="#about">About Madhura Hawal</a></li>
-            <li class="footer-link-item"><a href="#services">Strategic Services</a></li>
-            <li class="footer-link-item"><a href="#work">Case Studies</a></li>
-            <li class="footer-link-item"><a href="#tourin">Tourin Ladakh</a></li>
-            <li class="footer-link-item"><a href="#contact">Start a Conversation</a></li>
+        <!-- Navigation Links Column -->
+        <div class="footer-col nav-col">
+          <div class="footer-col-title">NAVIGATION</div>
+          <ul class="footer-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#tourin">Tourin</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
 
-        <div class="footer-nav-col">
-          <h4>Sectors</h4>
-          <ul class="footer-links-list">
-            <li class="footer-link-item"><a href="#work">Hospitality & F&B</a></li>
-            <li class="footer-link-item"><a href="#work">Real Estate & Built Environment</a></li>
-            <li class="footer-link-item"><a href="#work">Healthcare & Clinical Trust</a></li>
-            <li class="footer-link-item"><a href="#work">Lifestyle & Luxury</a></li>
-            <li class="footer-link-item"><a href="#work">Entertainment & Cinema</a></li>
-            <li class="footer-link-item"><a href="#tourin">Experiential Travel</a></li>
+        <!-- Services Links Column -->
+        <div class="footer-col services-col">
+          <div class="footer-col-title">SERVICES</div>
+          <ul class="footer-links">
+            <li><a href="#services">Digital Brand Growth</a></li>
+            <li><a href="#services">Hospitality Consulting</a></li>
+            <li><a href="#services">Content &amp; Brand Production</a></li>
+            <li><a href="#engagement">Engagement Models</a></li>
           </ul>
         </div>
 
-      </div>
-
-      <!-- Giant Kinetic Logo -->
-      <div class="footer-giant-logo">
-        ĀROHANA
-      </div>
-
-      <!-- Bottom Bar -->
-      <div class="footer-bottom-bar">
-        <div>© 2026 Ārohana Consultancy. All rights reserved.</div>
-        <div style="display: flex; gap: 1.5rem;">
-          <span>Kolhapur</span> • <span>Goa</span> • <span>Ladakh</span> • <span>Delhi NCR</span>
+        <!-- Contact & CTA Column -->
+        <div class="footer-col contact-col">
+          <div class="footer-col-title">CONTACT</div>
+          <ul class="footer-links contact-info-list">
+            <li><a href="mailto:hello@arohana.co.in">hello@arohana.co.in</a></li>
+            <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+            <li class="location-text">Kolhapur, India</li>
+          </ul>
+          <div class="footer-cta-wrap">
+            <button class="btn-pill btn-pill-outline footer-conversation-btn open-conversation-btn">
+              START A CONVERSATION
+            </button>
+          </div>
         </div>
-        <div>Designed with Dark Kinetic Precision</div>
       </div>
 
+      <!-- Footer Bottom Sub-bar -->
+      <div class="footer-subbar">
+        <div class="copyright-text">
+          &copy; 2024 Ārohana Consultancy. All rights reserved.
+        </div>
+        <div class="legal-links">
+          <a href="#" class="legal-link" id="open-privacy-link">Privacy Policy</a>
+          <a href="#" class="legal-link" id="open-terms-link">Terms &amp; Conditions</a>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- ==========================================================================
-       CASE STUDY FULL EDITORIAL MODAL DRAWER
-       ========================================================================== -->
-  <div class="case-modal-backdrop" id="case-study-modal">
-    <div class="case-modal-drawer">
-      <button class="modal-close-btn" id="modal-close-btn" aria-label="Close Case Study">✕</button>
-      <div id="case-modal-drawer-content">
-        <!-- Dynamically populated via app.js -->
+  <!-- ==================== MODALS & DRAWERS ==================== -->
+
+  <!-- 1. "START A CONVERSATION" INQUIRY DRAWER / MODAL -->
+  <div class="modal-backdrop" id="conversation-modal" aria-hidden="true" role="dialog" aria-labelledby="convo-title">
+    <div class="modal-dialog conversation-drawer">
+      <button class="modal-close-btn" id="close-conversation-modal" aria-label="Close modal">&times;</button>
+      <div class="modal-header">
+        <span class="eyebrow-label">INQUIRY &amp; CONSULTATION</span>
+        <h2 class="modal-title" id="convo-title">START A CONVERSATION</h2>
+        <p class="modal-subtitle">Tell us about your brand, challenges, and aspirations. We will craft a bespoke approach.</p>
+      </div>
+
+      <form class="conversation-form" id="conversation-form">
+        <div class="form-group">
+          <label class="form-label">I'M INTERESTED IN</label>
+          <div class="pill-checkbox-group">
+            <label class="checkbox-pill">
+              <input type="checkbox" name="services" value="Digital Brand Growth" checked />
+              <span>Digital Brand Growth</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="services" value="Hospitality Consulting" />
+              <span>Hospitality Consulting</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="services" value="Content & Brand Production" />
+              <span>Content &amp; Brand Production</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" name="services" value="Tourin Experiences" />
+              <span>Tourin Experiences</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="convo-name" class="form-label">YOUR NAME *</label>
+            <input type="text" id="convo-name" class="form-input" placeholder="e.g. Sagar Patil" required />
+          </div>
+          <div class="form-group">
+            <label for="convo-email" class="form-label">EMAIL ADDRESS *</label>
+            <input type="email" id="convo-email" class="form-input" placeholder="name@company.com" required />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label for="convo-phone" class="form-label">PHONE NUMBER</label>
+            <input type="tel" id="convo-phone" class="form-input" placeholder="+91 98765 43210" />
+          </div>
+          <div class="form-group">
+            <label for="convo-company" class="form-label">COMPANY / BRAND</label>
+            <input type="text" id="convo-company" class="form-input" placeholder="Brand Name" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="convo-message" class="form-label">ABOUT YOUR PROJECT OR OBJECTIVES</label>
+          <textarea id="convo-message" rows="4" class="form-textarea" placeholder="Share a few details on your goals, timelines, and current bottlenecks..."></textarea>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn-pill btn-pill-primary submit-btn">
+            SEND INQUIRY &rarr;
+          </button>
+          <span class="form-status" id="form-status"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. "READ OUR STORY" MODAL -->
+  <div class="modal-backdrop" id="story-modal" aria-hidden="true" role="dialog" aria-labelledby="story-modal-title">
+    <div class="modal-dialog story-modal-dialog">
+      <button class="modal-close-btn" id="close-story-modal" aria-label="Close story modal">&times;</button>
+      <div class="story-modal-body">
+        <span class="eyebrow-label">OUR JOURNEY</span>
+        <h2 class="modal-title" id="story-modal-title">THE ROAD TO ĀROHANA</h2>
+        <div class="story-prose">
+          <p class="lead-quote">
+            "I built Ārohana after spending years inside businesses — learning what makes them work, what makes them struggle, and what people are only after they become responsible for the whole thing."
+          </p>
+          <div class="story-chapters">
+            <div class="chapter-item">
+              <span class="chapter-num">01</span>
+              <div>
+                <h3>It Started With Hospitality</h3>
+                <p>Hospitality teaches you what no business textbook can: obsessive attention to customer touchpoints, micro-moments of delight, and brutal operational precision where margins matter every single shift.</p>
+              </div>
+            </div>
+            <div class="chapter-item">
+              <span class="chapter-num">02</span>
+              <div>
+                <h3>There Were A Few Unexpected Detours</h3>
+                <p>Venturing across real estate, manufacturing, digital products, and independent ventures revealed a common thread: great products often fail not because of product flaws, but because brand strategy and commercial reality never talk to each other.</p>
+              </div>
+            </div>
+            <div class="chapter-item">
+              <span class="chapter-num">03</span>
+              <div>
+                <h3>And Then, The Work Got Interesting</h3>
+                <p>We eliminated the agency fluff. No vanity pitch decks. No disconnected creative departments. We began structuring hybrid teams that sit right at the intersection of brand narrative, physical experience, and bottom-line revenue.</p>
+              </div>
+            </div>
+            <div class="chapter-item">
+              <span class="chapter-num">04</span>
+              <div>
+                <h3>Where Ārohana Stands Today</h3>
+                <p>Today, Ārohana partners with founders and enterprises across India and beyond, crafting timeless brands, scaling hospitality ventures, and documenting transformative stories.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. CASE STUDY / WORK DETAILS MODAL -->
+  <div class="modal-backdrop" id="work-modal" aria-hidden="true" role="dialog" aria-labelledby="work-modal-title">
+    <div class="modal-dialog work-modal-dialog">
+      <button class="modal-close-btn" id="close-work-modal" aria-label="Close case study modal">&times;</button>
+      <div class="work-modal-content" id="work-modal-dynamic">
+        <!-- Content inserted dynamically by main.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TOURIN MODAL -->
+  <div class="modal-backdrop" id="tourin-modal" aria-hidden="true" role="dialog" aria-labelledby="tourin-modal-title">
+    <div class="modal-dialog tourin-modal-dialog">
+      <button class="modal-close-btn" id="close-tourin-modal" aria-label="Close Tourin modal">&times;</button>
+      <div class="tourin-modal-content">
+        <span class="eyebrow-label">TOURIN BY ĀROHANA</span>
+        <h2 class="modal-title" id="tourin-modal-title">TRAVEL BEYOND THE ITINERARY</h2>
+        <p class="tourin-modal-intro">
+          The Ladakh people experience and the Ladakh most itineraries sell are not always the same. Tourin is our experiential curation unit — exploring raw frontiers, remote Himalayan communities, and mindful expeditions.
+        </p>
+        <div class="tourin-features-grid">
+          <div class="tourin-feature-card">
+            <h4>Raw Expedition Routes</h4>
+            <p>Passes beyond the tourist trails. Curated routes with vetted safety, support vehicles, and unmatched vistas.</p>
+          </div>
+          <div class="tourin-feature-card">
+            <h4>Local Cultural Immersion</h4>
+            <p>Stay with local families, break bread in remote monasteries, and support indigenous Himalayan arts.</p>
+          </div>
+          <div class="tourin-feature-card">
+            <h4>Bespoke Group &amp; Solo Outings</h4>
+            <p>From Enfield motorcycle rallies to quiet mountain retreats, designed for discerning travelers.</p>
+          </div>
+        </div>
+        <div class="tourin-cta-row">
+          <button class="btn-pill btn-pill-primary open-conversation-btn" data-preset="Tourin Experiences">
+            INQUIRE FOR UPCOMING EXPEDITIONS &rarr;
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Scripts -->
-  <script src="js/data.js"></script>
-  <script src="js/three-scene.js"></script>
-  <script src="js/app.js"></script>
-  <script>
-    if (window.lucide) {
-      lucide.createIcons();
-    }
-  </script>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>
