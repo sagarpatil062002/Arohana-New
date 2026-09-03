@@ -1,0 +1,135 @@
+/* src/components/LoadingScreen.css */
+.loading-screen-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #04070e;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  color: #ffffff;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.loading-screen-root.fading-out {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+.loading-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.loading-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto 0;
+}
+
+.monogram-symbol {
+  font-family: 'Cinzel', serif;
+  font-size: 5.5rem;
+  font-weight: 700;
+  color: #C5A46D;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 35px rgba(197, 164, 109, 0.45);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-reveal-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.brand-reveal-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #C5A46D;
+  margin-bottom: 2rem;
+}
+
+.loading-progress-bar-container {
+  width: 220px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.loading-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #C5A46D;
+  box-shadow: 0 0 10px #C5A46D;
+  transition: width 0.15s ease-out;
+}
+
+.enter-button {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #04070e;
+  background: #C5A46D;
+  padding: 0.75rem 2rem;
+  border-radius: 2px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(197, 164, 109, 0.35);
+  margin-top: 1rem;
+}
+
+.enter-button:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(255, 255, 255, 0.4);
+}
+
+.loading-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.18em;
+}
+
+@media (max-width: 768px) {
+  .loading-screen-root {
+    padding: 1.5rem;
+  }
+  .monogram-symbol {
+    font-size: 4rem;
+  }
+  .brand-reveal-title {
+    font-size: 1.6rem;
+    letter-spacing: 0.18em;
+  }
+}

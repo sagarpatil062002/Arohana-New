@@ -1,0 +1,216 @@
+/* ==========================================================================
+   ĀROHANA CONSULTANCY — SPATIAL LUXURY DESIGN SYSTEM
+   ========================================================================== */
+
+:root {
+  /* Color System */
+  --bg-primary: #04070e;
+  --bg-secondary: #070c18;
+  --bg-card: rgba(10, 16, 28, 0.72);
+  --bg-card-hover: rgba(16, 24, 40, 0.85);
+  
+  --gold-accent: #C5A46D;
+  --gold-glow: rgba(197, 164, 109, 0.35);
+  --gold-subtle: rgba(197, 164, 109, 0.12);
+  
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-muted: rgba(255, 255, 255, 0.42);
+  --text-faint: rgba(255, 255, 255, 0.22);
+  --text-editorial: #F3EFE6;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-gold: rgba(197, 164, 109, 0.45);
+
+  /* Typography Stacks */
+  --font-display: 'Clash Display', 'Syne', sans-serif;
+  --font-serif: 'Cinzel', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Layout & Depth */
+  --header-height: 80px;
+  --max-width: 1440px;
+}
+
+/* Reset & Base Rules */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto;
+}
+
+/* Lenis Recommended CSS */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  position: relative;
+  selection-background-color: var(--gold-accent);
+  selection-color: #04070e;
+}
+
+::selection {
+  background: var(--gold-accent);
+  color: #04070e;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Typography Utility Classes */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(197, 164, 109, 0.3);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-accent);
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.4s ease, background-color 0.4s ease, transform 0.4s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-gold);
+  background: var(--bg-card-hover);
+}
+
+/* HUD Tactical Corner Accents */
+.tactical-box {
+  position: relative;
+}
+
+.tactical-box::before,
+.tactical-box::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  border-color: rgba(255, 255, 255, 0.25);
+  transition: border-color 0.3s ease;
+}
+
+.tactical-box::before {
+  top: 6px;
+  left: 6px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.tactical-box::after {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.tactical-box:hover::before,
+.tactical-box:hover::after {
+  border-color: var(--gold-accent);
+}
+
+/* Keyframe Animations */
+@keyframes subtlePulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.04); }
+}
+
+@keyframes floatMote {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+@keyframes gridGaze {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+.animate-pulse-slow {
+  animation: subtlePulse 4s infinite ease-in-out;
+}
+
+/* Button & Link Styles */
+button, a {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--gold-accent);
+  outline-offset: 3px;
+}
