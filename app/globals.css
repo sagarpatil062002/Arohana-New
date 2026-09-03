@@ -202,3 +202,31 @@ img {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes marqueeLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+@keyframes marqueeRight {
+  0% {
+    transform: translateX(-33.333%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+

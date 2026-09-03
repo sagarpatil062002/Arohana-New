@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import LoadingExperience from "@/components/LoadingExperience";
+import RootNavWrapper from "@/components/RootNavWrapper";
+import FooterWrapper from "@/components/FooterWrapper";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
@@ -68,11 +67,10 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=clash-display@300,400,500,600,700&display=swap"
         />
       </head>
-      <body className="bg-[#0D1524] text-white flex flex-col min-h-screen selection:bg-[#C5A46D] selection:text-[#0A0F14]">
-        <LoadingExperience />
-        <Navbar />
+      <body className="bg-[#050811] text-white flex flex-col min-h-screen selection:bg-[#C5A46D] selection:text-[#0A0F14]">
+        <RootNavWrapper />
         <main className="flex-grow">{children}</main>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );

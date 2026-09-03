@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { siteConfig } from "@/data/site";
-import { Menu, X, ArrowRight } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -25,145 +23,136 @@ export default function Navbar() {
   }, [pathname]);
 
   const navLinks = [
-    { label: "ABOUT", href: "/about" },
-    { label: "SERVICES", href: "/services" },
-    { label: "WORK", href: "/work" },
-    { label: "ARMY PROJECTS", href: "/army-projects" },
-    { label: "TOURIN", href: "/tourin" },
-    { label: "CONTACT", href: "/contact" }
+    { label: "Work", href: "/work" },
+    { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
+    { label: "Tourin", href: "/tourin" },
+    { label: "Contact", href: "/contact" }
   ];
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled
-            ? "bg-[#0A0F14]/90 backdrop-blur-md border-b border-white/10 py-3.5"
-            : "bg-gradient-to-b from-[#0A0F14]/80 to-transparent py-5"
+            ? "bg-[#070B14]/90 backdrop-blur-md border-b border-white/[0.06] py-4"
+            : "bg-transparent py-6 sm:py-8"
         }`}
       >
-        <div className="max-w-[1360px] mx-auto px-6 sm:px-10 flex items-center justify-between">
-          {/* Brand Logo & Wordmark matching Figma */}
+        <div className="max-w-[1440px] mx-auto px-6 sm:px-10 md:px-14 flex items-center justify-between">
+          {/* Brand Mark Logo (Authentic Ārohana Asset) */}
           <Link
             href="/"
-            className="flex items-center gap-2 select-none group"
+            className="flex items-center group transition-opacity hover:opacity-85"
             aria-label="Ārohana Consultancy Home"
           >
-            <div className="flex items-center gap-2.5">
-              <div className="relative w-7 h-7 flex-shrink-0">
-                <Image
-                  src="/images/arohana-logo.png"
-                  alt="ĀROHANA"
-                  fill
-                  sizes="28px"
-                  style={{ objectFit: "contain" }}
-                  className="invert brightness-200"
-                  priority
-                />
-              </div>
-              <span className="font-clash font-semibold text-lg tracking-[0.18em] text-white uppercase group-hover:text-[#C5A46D] transition-colors">
-                ĀROHANA
-              </span>
+            <div className="relative w-28 sm:w-32 md:w-36 h-6 sm:h-7">
+              <Image
+                src="/images/arohana-logo.png"
+                alt="ĀROHANA"
+                fill
+                sizes="(max-width: 640px) 112px, 144px"
+                style={{
+                  objectFit: "contain",
+                  filter: "brightness(0) invert(1)"
+                }}
+                priority
+              />
             </div>
           </Link>
 
-          {/* Desktop Navigation Links matching Figma Screen 02/03 */}
+          {/* Clean Desktop Editorial Navigation */}
           <nav
-            className="hidden lg:flex items-center space-x-7"
+            className="hidden md:flex items-center space-x-8 lg:space-x-10"
             aria-label="Primary Navigation"
           >
             {navLinks.map((item) => {
-              const isActive = pathname.startsWith(item.href);
+              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-[11px] font-medium tracking-[0.14em] uppercase transition-all duration-200 relative py-1 ${
-                    isActive
-                      ? "text-white font-semibold"
-                      : "text-[#8A919D] hover:text-white"
+                  className={`text-[11px] lg:text-xs font-mono tracking-[0.18em] uppercase transition-colors duration-200 relative py-1 ${
+                    isActive ? "text-white font-medium" : "text-white/60 hover:text-white"
                   }`}
                 >
                   <span>{item.label}</span>
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#C5A46D] rounded-full" />
+                    <span className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-[#C5A46D]" />
                   )}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right Action: Pill Button with Arrow + Hamburger */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/contact"
-              className="hidden sm:inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-white/20 hover:border-[#C5A46D] bg-[#101622]/60 hover:bg-[#101622] text-white font-medium text-[11px] tracking-[0.12em] uppercase transition-all duration-300 group"
-            >
-              <span className="group-hover:text-[#C5A46D] transition-colors">START A CONVERSATION</span>
-              <ArrowRight className="w-3.5 h-3.5 text-white/70 group-hover:text-[#C5A46D] group-hover:translate-x-0.5 transition-all" />
-            </Link>
-
-            {/* Hamburger Icon */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-full border border-white/15 text-white hover:border-[#C5A46D] hover:text-[#C5A46D] transition-colors focus:outline-none"
-              aria-label="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden flex items-center gap-2 text-white/80 hover:text-white font-mono text-xs tracking-widest uppercase transition-colors"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            <span>{mobileMenuOpen ? "CLOSE" : "MENU"}</span>
+            <div className="w-5 h-4 relative flex flex-col justify-between">
+              <span
+                className={`w-full h-[1.5px] bg-white transition-transform duration-300 origin-center ${
+                  mobileMenuOpen ? "rotate-45 translate-y-[7px]" : ""
+                }`}
+              />
+              <span
+                className={`w-full h-[1.5px] bg-white transition-opacity duration-300 ${
+                  mobileMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`w-full h-[1.5px] bg-white transition-transform duration-300 origin-center ${
+                  mobileMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""
+                }`}
+              />
+            </div>
+          </button>
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation */}
+      {/* Mobile Drawer Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-[#0A0F14]/98 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between p-8 sm:p-12 pt-28 ${
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-30 bg-[#060911] text-white flex flex-col justify-between p-8 pt-28 transition-all duration-500 md:hidden ${
+          mobileMenuOpen
+            ? "opacity-100 pointer-events-auto translate-y-0"
+            : "opacity-0 pointer-events-none -translate-y-4"
         }`}
       >
-        <div className="flex flex-col space-y-5">
-          <span className="text-[10px] font-mono text-[#8A919D] tracking-[0.2em] uppercase">
-            NAVIGATION
+        <div className="flex flex-col space-y-6">
+          <span className="font-mono text-[10px] tracking-[0.24em] text-[#C5A46D] uppercase">
+            NAVIGATION // INDEX
           </span>
-          <Link
-            href="/"
-            className={`font-clash text-2xl uppercase transition-colors ${
-              pathname === "/" ? "text-[#C5A46D] font-bold" : "text-white/70 hover:text-white"
-            }`}
-          >
-            HOME
-          </Link>
-          {navLinks.map((item) => {
-            const isActive = pathname.startsWith(item.href);
-            return (
+          <nav className="flex flex-col space-y-5">
+            {navLinks.map((item, index) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-clash text-2xl uppercase transition-colors flex items-center justify-between ${
-                  isActive ? "text-[#C5A46D] font-bold" : "text-white/70 hover:text-white"
-                }`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="font-clash text-2xl sm:text-3xl font-light tracking-tight text-white/80 hover:text-white flex items-center justify-between border-b border-white/[0.08] pb-3"
               >
                 <span>{item.label}</span>
-                {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#C5A46D]" />}
+                <span className="font-mono text-xs text-white/40">0{index + 1}</span>
               </Link>
-            );
-          })}
+            ))}
+          </nav>
         </div>
 
-        <div className="border-t border-white/10 pt-6 space-y-4">
-          <Link
-            href="/contact"
-            className="w-full flex items-center justify-center gap-2 py-3.5 rounded-full bg-[#C5A46D] text-[#0A0F14] font-bold text-xs uppercase tracking-wider hover:bg-[#D8BC8A] transition-colors"
-          >
-            <span>START A CONVERSATION</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <div className="text-center font-mono text-[11px] text-[#8A919D]">
-            hello@arohana.co.in · Kolhapur, India
-          </div>
+        <div className="border-t border-white/[0.08] pt-6 flex flex-col space-y-2">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-white/40 uppercase">
+            ĀROHANA CONSULTANCY
+          </span>
+          <span className="font-mono text-xs text-white/60">
+            We build brands, businesses &amp; experiences.
+          </span>
+          <span className="font-mono text-[10px] text-white/40 pt-2">
+            MUMBAI · GOA · LADAKH
+          </span>
         </div>
       </div>
     </>
   );
 }
-

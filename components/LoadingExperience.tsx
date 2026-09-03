@@ -1,149 +1,232 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
-const INTRO_DURATION = 5000; // 5 seconds
-
 export default function LoadingExperience() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(5);
-  const [isExiting, setIsExiting] = useState(false);
+  const [stage, setStage] = useState<"initial" | "revealing" | "moment" | "exiting" | "hidden">("initial");
+  const [progress, setProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check if user already saw intro in this session
-    const hasSeenIntro = sessionStorage.getItem("arohana_intro_completed");
-    if (hasSeenIntro) {
+    // 1. Accessibility: Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // 2. Intelligent repeat visit handling: Check session storage
+    const hasSeenIntro = sessionStorage.getItem("arohana_intro_seen_v3");
+
+    if (prefersReducedMotion || hasSeenIntro) {
+      setStage("hidden");
+      window.dispatchEvent(new CustomEvent("arohana:hero-ready"));
       return;
     }
 
-    setIsVisible(true);
-    const startTime = Date.now();
+    // Step 1: Start reveal almost immediately
+    const t1 = setTimeout(() => {
+      setStage("revealing");
+    }, 120);
 
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const remaining = Math.max(0, Math.ceil((INTRO_DURATION - elapsed) / 1000));
-      setTimeLeft(remaining);
+    // Progress counter animation from 0 to 100 in ~1100ms
+    const startProgressTime = Date.now();
+    const duration = 1200;
 
-      if (elapsed >= INTRO_DURATION) {
-        finishIntro();
+    const progressInterval = setInterval(() => {
+      const elapsed = Date.now() - startProgressTime;
+      const pct = Math.min(100, Math.round((elapsed / duration) * 100));
+      setProgress(pct);
+
+      if (pct >= 100) {
+        clearInterval(progressInterval);
       }
-    }, 100);
+    }, 24);
 
+    // Step 2: Brand moment reveal at ~700ms
+    const t2 = setTimeout(() => {
+      setStage("moment");
+    }, 700);
+
+    // Step 3: Screen transition curtain release at ~1800ms
+    const t3 = setTimeout(() => {
+      setStage("exiting");
+      window.dispatchEvent(new CustomEvent("arohana:hero-ready"));
+    }, 1850);
+
+    // Step 4: Final unmount at ~2500ms
+    const t4 = setTimeout(() => {
+      setStage("hidden");
+      sessionStorage.setItem("arohana_intro_seen_v3", "true");
+    }, 2550);
+
+    // Skip handler (Escape key or click)
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        finishIntro();
+        skipIntro();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
-    function finishIntro() {
-      clearInterval(interval);
-      window.removeEventListener("keydown", handleKeyDown);
-      setIsExiting(true);
+    function skipIntro() {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearInterval(progressInterval);
+      setStage("exiting");
+      window.dispatchEvent(new CustomEvent("arohana:hero-ready"));
       setTimeout(() => {
-        setIsVisible(false);
-        sessionStorage.setItem("arohana_intro_completed", "true");
-      }, 700);
+        setStage("hidden");
+        sessionStorage.setItem("arohana_intro_seen_v3", "true");
+      }, 400);
     }
 
     return () => {
-      clearInterval(interval);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearInterval(progressInterval);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
-  if (!isVisible) return null;
-
-  const formattedTime = timeLeft < 10 ? `0${timeLeft}` : `${timeLeft}`;
-
-  const handleSkip = () => {
-    setIsExiting(true);
-    setTimeout(() => {
-      setIsVisible(false);
-      sessionStorage.setItem("arohana_intro_completed", "true");
-    }, 700);
-  };
+  if (stage === "hidden") return null;
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col justify-between p-8 md:p-14 bg-[#080E18] text-white transition-opacity duration-700 ease-out ${
-        isExiting ? "opacity-0 pointer-events-none" : "opacity-100"
+      ref={containerRef}
+      role="dialog"
+      aria-label="Ārohana Identity Intro"
+      className={`fixed inset-0 z-[99999] flex flex-col justify-between p-6 sm:p-10 md:p-16 select-none overflow-hidden transition-all duration-700 pointer-events-auto ${
+        stage === "exiting"
+          ? "-translate-y-full opacity-90 ease-[cubic-bezier(0.76,0,0.24,1)]"
+          : "translate-y-0 opacity-100"
       }`}
       style={{
-        background: "radial-gradient(circle at center, #0e1726 0%, #060a10 100%)"
+        backgroundColor: "#060911",
+        backgroundImage: `
+          radial-gradient(ellipse 80% 50% at 50% 50%, rgba(14, 23, 38, 0.7) 0%, rgba(6, 9, 17, 1) 100%),
+          linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px)
+        `,
+        backgroundSize: "100% 100%, 80px 80px, 80px 80px"
       }}
-      aria-label="Loading Experience"
+      onClick={() => {
+        if (stage !== "exiting") {
+          setStage("exiting");
+          window.dispatchEvent(new CustomEvent("arohana:hero-ready"));
+          setTimeout(() => {
+            setStage("hidden");
+            sessionStorage.setItem("arohana_intro_seen_v3", "true");
+          }, 400);
+        }
+      }}
     >
-      {/* Top Header: 01 LOADING EXPERIENCE | ESC TO SKIP */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-4">
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-xs text-[#C5A46D] font-semibold">01</span>
-          <span className="font-mono text-[11px] tracking-[0.18em] text-[#8A919D] uppercase">
-            LOADING EXPERIENCE
+      {/* Top Editorial Metadata Bar */}
+      <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+        <div className="flex items-center gap-3">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#C5A46D] animate-pulse" />
+          <span className="font-mono text-[10px] tracking-[0.24em] text-white/50 uppercase">
+            ĀROHANA CONSULTANCY // 01
           </span>
         </div>
-        <button
-          onClick={handleSkip}
-          className="font-mono text-[11px] tracking-[0.16em] text-[#8A919D] hover:text-white uppercase transition-colors"
-        >
-          ESC TO SKIP
-        </button>
+        <div className="flex items-center gap-6">
+          <span className="hidden sm:inline-block font-mono text-[10px] tracking-[0.2em] text-white/40 uppercase">
+            BRAND · BUSINESS · EXPERIENCE
+          </span>
+          <span className="font-mono text-[10px] tracking-[0.18em] text-white/30 uppercase hover:text-white/70 transition-colors cursor-pointer">
+            [ ESC TO SKIP ]
+          </span>
+        </div>
       </div>
 
-      {/* Center: Gold 3D Emblem & ĀROHANA CONSULTANCY */}
-      <div className="flex flex-col items-center justify-center text-center my-auto space-y-6 max-w-lg mx-auto">
-        {/* Intertwined Metallic Rings Emblem */}
-        <div className="relative w-28 h-28 md:w-36 md:h-36 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full border border-[#C5A46D]/20 animate-spin" style={{ animationDuration: '18s' }} />
-          <div className="absolute inset-3 rounded-full border border-dashed border-[#C5A46D]/40 animate-spin" style={{ animationDuration: '12s', animationDirection: 'reverse' }} />
-          <div className="w-16 h-16 md:w-20 md:h-20 relative">
+      {/* Center Cinematic Brand Reveal */}
+      <div className="flex flex-col items-center justify-center my-auto w-full max-w-3xl mx-auto text-center px-4">
+        {/* Subtle Category Microtag */}
+        <div
+          className={`overflow-hidden mb-6 transition-all duration-700 ease-out ${
+            stage === "revealing" || stage === "moment" || stage === "exiting"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-3"
+          }`}
+        >
+          <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.32em] text-[#C5A46D] uppercase">
+            EST. 2020 · STRATEGIC PRACTICE
+          </span>
+        </div>
+
+        {/* Authentic Ārohana Brand Logo Asset */}
+        <div className="relative w-full max-w-[320px] sm:max-w-[420px] md:max-w-[500px] h-16 sm:h-20 md:h-24 mx-auto overflow-hidden">
+          <div
+            className={`w-full h-full relative transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              stage === "revealing" || stage === "moment" || stage === "exiting"
+                ? "opacity-100 scale-100 translate-y-0"
+                : "opacity-0 scale-95 translate-y-5"
+            }`}
+          >
             <Image
               src="/images/arohana-logo.png"
               alt="ĀROHANA"
               fill
-              sizes="80px"
-              style={{ objectFit: "contain" }}
-              className="invert brightness-200"
+              priority
+              sizes="(max-width: 640px) 320px, (max-width: 768px) 420px, 500px"
+              style={{
+                objectFit: "contain",
+                filter: "brightness(0) invert(1)"
+              }}
             />
           </div>
         </div>
 
-        <div className="space-y-2">
-          <h1 className="font-clash text-2xl md:text-3xl font-semibold tracking-[0.22em] uppercase text-white">
-            ĀROHANA
-          </h1>
-          <span className="block font-mono text-[10px] tracking-[0.25em] text-[#8A919D] uppercase">
-            CONSULTANCY
-          </span>
-          <p className="text-xs md:text-sm text-[#8A919D] pt-2 font-normal">
+        {/* Separator Hairline */}
+        <div
+          className={`h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent my-6 sm:my-8 transition-all duration-700 ease-out ${
+            stage === "moment" || stage === "exiting"
+              ? "w-48 sm:w-72 opacity-100"
+              : "w-0 opacity-0"
+          }`}
+        />
+
+        {/* Brand Moment Statement */}
+        <div
+          className={`overflow-hidden transition-all duration-800 delay-100 ease-out ${
+            stage === "moment" || stage === "exiting"
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-4"
+          }`}
+        >
+          <p className="font-sans text-xs sm:text-sm md:text-base font-light text-white/70 tracking-[0.06em] max-w-lg mx-auto">
             We build brands, businesses &amp; experiences.
           </p>
         </div>
       </div>
 
-      {/* Bottom Bar: ENTERING THE EXPERIENCE 05 SECONDS */}
-      <div className="flex flex-col items-center justify-center text-center space-y-2 pt-6 border-t border-white/10">
-        <span className="font-mono text-[10px] tracking-[0.22em] text-[#8A919D] uppercase">
-          ENTERING THE EXPERIENCE
-        </span>
-        <div className="flex items-baseline gap-2">
-          <span className="font-clash text-5xl md:text-6xl font-light text-white tracking-tight tabular-nums">
-            {formattedTime}
+      {/* Bottom Editorial Coordinates & Progress */}
+      <div className="flex items-end justify-between border-t border-white/[0.08] pt-4">
+        <div className="hidden sm:flex flex-col text-left">
+          <span className="font-mono text-[9px] tracking-[0.2em] text-white/40 uppercase">
+            GEOGRAPHIC FOCUS
           </span>
-          <span className="font-mono text-[11px] text-[#8A919D] tracking-widest uppercase">
-            SECONDS
+          <span className="font-mono text-[10px] tracking-[0.16em] text-white/60">
+            MUMBAI · GOA · LADAKH · KOLHAPUR
           </span>
         </div>
-        <button
-          onClick={handleSkip}
-          className="font-mono text-[10px] tracking-[0.16em] text-[#8A919D] hover:text-[#C5A46D] transition-colors pt-2 uppercase"
-        >
-          PRESS ESC TO SKIP
-        </button>
+
+        <div className="flex items-baseline gap-3 mx-auto sm:mx-0">
+          <span className="font-mono text-[10px] tracking-[0.22em] text-white/40 uppercase">
+            INITIALIZING
+          </span>
+          <span className="font-mono text-sm sm:text-base font-medium text-white tabular-nums tracking-wider">
+            {progress < 10 ? `00${progress}` : progress < 100 ? `0${progress}` : progress}%
+          </span>
+        </div>
       </div>
+
+      {/* Subtle Bottom Gold Hairline Sweep */}
+      <div
+        className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[#C5A46D] to-[#E7D5B6] transition-all duration-300 ease-out"
+        style={{ width: `${progress}%` }}
+      />
     </div>
   );
 }
-
