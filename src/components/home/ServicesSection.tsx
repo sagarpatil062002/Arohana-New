@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
@@ -9,275 +9,241 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function ServicesSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
-
-  const previewWrapRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  // Position tracking with smooth lerp
-  const mousePos = useRef({ x: 0, y: 0 });
-  const previewPos = useRef({ x: 0, y: 0 });
-  const isHoveringRef = useRef(false);
 
   const services = [
     {
-      num: '01',
+      num: '1',
+      fullNum: '01',
       title: 'Digital Brand Growth',
-      category: 'Brand Systems & Performance',
       summary:
         'Building full digital brand infrastructure — positioning, visual identity, customer acquisition, content velocity, and revenue pipelines.',
-      deliverables: ['Positioning & Identity', 'Performance Marketing', 'Website Systems', 'Conversion Strategy'],
+      tags: ['Positioning & Identity', 'Performance Marketing', 'Website Systems', 'Conversion Strategy'],
       image: '/images/services/digital-growth.jpg',
       href: '/services#digital',
     },
     {
-      num: '02',
+      num: '2',
+      fullNum: '02',
       title: 'Hospitality Consulting',
-      category: 'Concept, Menu & Revenue',
       summary:
         'End-to-end consulting for restaurants, cafes, boutique resorts, and experiential dining — menu engineering, customer journey, and operational economics.',
-      deliverables: ['Concept & Narrative', 'Menu Architecture', 'Staff & Service Experience', 'Repeat Guest Strategy'],
+      tags: ['Concept & Narrative', 'Menu Architecture', 'Staff & Service Experience', 'Repeat Guest Strategy'],
       image: '/images/services/hospitality-consulting.jpg',
       href: '/services#hospitality',
     },
     {
-      num: '03',
+      num: '3',
+      fullNum: '03',
       title: 'Content & Brand Production',
-      category: 'Cinematic & Documentary Media',
       summary:
         'Full-scale production for films, architectural shoots, brand documentaries, and narrative social assets designed to shift market perception.',
-      deliverables: ['Film & Shoot Direction', 'Architectural Stills', 'Post-production & Sound', 'Digital Asset Libraries'],
+      tags: ['Film & Shoot Direction', 'Architectural Stills', 'Post-production & Sound', 'Digital Asset Libraries'],
       image: '/images/services/content-production.jpg',
       href: '/services#content',
     },
     {
-      num: '04',
+      num: '4',
+      fullNum: '04',
       title: 'Special & Field Projects',
-      category: 'High-Altitude & Sensitive Operations',
       summary:
         'Deploying communication, documentation, and operational initiatives across complex environments — including Ladakh communities and the Indian Army.',
-      deliverables: ['High-Altitude Fieldwork', 'Military Ceremonial Films', 'Community Communication', 'On-ground Execution'],
+      tags: ['High-Altitude Fieldwork', 'Military Ceremonial Films', 'Community Communication', 'On-ground Execution'],
       image: '/images/home/strip-army.jpg',
       href: '/indian-army-projects',
     },
   ];
 
-  // Smooth lerp mouse tracking loop for the floating image container
-  useEffect(() => {
-    const section = sectionRef.current;
-    const previewEl = previewWrapRef.current;
-    if (!section || !previewEl) return;
-
-    let rafId: number;
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect();
-      mousePos.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
-    };
-
-    const loop = () => {
-      if (isHoveringRef.current) {
-        // Interpolate preview position towards mouse position with a 0.12 lerp factor
-        previewPos.current.x += (mousePos.current.x + 40 - previewPos.current.x) * 0.12;
-        previewPos.current.y += (mousePos.current.y - 140 - previewPos.current.y) * 0.12;
-
-        gsap.set(previewEl, {
-          x: previewPos.current.x,
-          y: previewPos.current.y,
-        });
-      }
-      rafId = requestAnimationFrame(loop);
-    };
-
-    section.addEventListener('mousemove', onMouseMove);
-    rafId = requestAnimationFrame(loop);
-
-    return () => {
-      section.removeEventListener('mousemove', onMouseMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  // Mobile scroll-driven activation
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const isMobile = window.innerWidth < 992;
-    if (!isMobile) return;
+    const rows = gsap.utils.toArray<HTMLElement>('.service-row-item');
+    if (!rows || rows.length === 0) return;
 
-    const triggers = services.map((_, idx) =>
-      ScrollTrigger.create({
-        trigger: `#mobile-service-${idx}`,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => setMobileActiveIndex(idx),
-        onEnterBack: () => setMobileActiveIndex(idx),
-      })
-    );
+    rows.forEach((row) => {
+      gsap.fromTo(
+        row,
+        { opacity: 0, y: 35 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: row,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+    });
 
-    return () => triggers.forEach((t) => t.kill());
-  }, [services.length]);
-
-  const handleMouseEnter = (index: number) => {
-    isHoveringRef.current = true;
-    setHoveredIndex(index);
-
-    if (previewWrapRef.current) {
-      gsap.to(previewWrapRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: 'power3.out',
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.vars.trigger && (t.vars.trigger as HTMLElement).classList?.contains('service-row-item')) {
+          t.kill();
+        }
       });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    isHoveringRef.current = false;
-    setHoveredIndex(null);
-
-    if (previewWrapRef.current) {
-      gsap.to(previewWrapRef.current, {
-        opacity: 0,
-        scale: 0.9,
-        duration: 0.35,
-        ease: 'power3.out',
-      });
-    }
-  };
+    };
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       className="section-dark"
       style={{
-        paddingTop: '9rem',
+        paddingTop: '8rem',
         paddingBottom: '9rem',
         position: 'relative',
         overflow: 'hidden',
         backgroundColor: '#0b0b0c',
+        color: '#ffffff',
       }}
     >
       <div className="padding-global container-large" style={{ position: 'relative', zIndex: 10 }}>
-        {/* Section Header */}
+        {/* Alture Reference Header (Frame 20): Services + + + + (04) */}
         <div
+          className="services-header-row"
           style={{
             display: 'flex',
-            flexWrap: 'wrap',
             justifyContent: 'space-between',
-            alignItems: 'baseline',
-            marginBottom: '6rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+            alignItems: 'center',
+            marginBottom: '4.5rem',
             paddingBottom: '2.5rem',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
           }}
         >
-          <div>
-            <div
-              className="tag-mono"
-              style={{
-                color: 'rgba(255, 255, 255, 0.6)',
-                marginBottom: '1rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-              }}
-            >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ff3b30',
-                }}
-              />
-              THREE CORE PILLARS & SPECIAL BRIEF
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(2.5rem, 6vw, 5.2rem)',
-                fontWeight: 400,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.05,
-                color: '#ffffff',
-              }}
-            >
-              Services.
-            </h2>
-          </div>
-
-          <p
+          {/* Left: Services */}
+          <h2
             style={{
-              fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)',
-              color: 'rgba(255, 255, 255, 0.7)',
-              maxWidth: '460px',
-              lineHeight: 1.6,
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(3rem, 7vw, 6.5rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              lineHeight: 1,
+              color: '#ffffff',
+              margin: 0,
             }}
           >
-            Don't start with a service. Start with the problem. We assemble the right specialists
-            around each specific brief.
-          </p>
+            Services
+          </h2>
+
+          {/* Center: Four delicate plus crosses (+ + + +) */}
+          <div
+            className="header-crosses"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'clamp(2rem, 5vw, 4.5rem)',
+              color: 'rgba(255, 255, 255, 0.35)',
+              fontSize: '1.25rem',
+              fontFamily: 'var(--font-mono)',
+              userSelect: 'none',
+            }}
+          >
+            <span>+</span>
+            <span>+</span>
+            <span>+</span>
+            <span>+</span>
+          </div>
+
+          {/* Right: (04) */}
+          <div
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(3rem, 7vw, 6.5rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              lineHeight: 1,
+              color: '#ffffff',
+              margin: 0,
+            }}
+          >
+            (04)
+          </div>
         </div>
 
-        {/* Services List with Typographic Dominance */}
-        <div style={{ display: 'flex', flexDirection: 'column' }} onMouseLeave={handleMouseLeave}>
+        {/* Services List matching Video (Frames 22, 24) */}
+        <div
+          style={{ display: 'flex', flexDirection: 'column' }}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
           {services.map((service, index) => {
             const isHovered = hoveredIndex === index;
             const isAnyHovered = hoveredIndex !== null;
 
             return (
               <div
-                key={service.num}
-                id={`mobile-service-${index}`}
-                onMouseEnter={() => handleMouseEnter(index)}
+                key={service.fullNum}
+                className="service-row-item"
+                onMouseEnter={() => setHoveredIndex(index)}
                 style={{
                   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                  paddingTop: '3rem',
-                  paddingBottom: '3rem',
-                  transition:
-                    'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
-                  opacity: isAnyHovered && !isHovered ? 0.25 : 1,
-                  transform: isHovered ? 'translateX(16px)' : 'translateX(0)',
-                  cursor: 'pointer',
+                  paddingTop: 'clamp(3rem, 5vw, 4.5rem)',
+                  paddingBottom: 'clamp(3rem, 5vw, 4.5rem)',
+                  transition: 'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+                  opacity: isAnyHovered && !isHovered ? 0.3 : 1,
                 }}
               >
                 <div
+                  className="service-grid-layout"
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                    alignItems: 'center',
-                    gap: '2.5rem',
+                    gridTemplateColumns: '1.1fr 1fr',
+                    gap: 'clamp(2.5rem, 5vw, 5rem)',
+                    alignItems: 'flex-start',
                   }}
                 >
-                  {/* Left: Number & Giant Service Title */}
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '2rem' }}>
-                    <span
+                  {/* Left Column: Number Circle + Title + Tag Capsules (Frame 22, 24) */}
+                  <div>
+                    {/* Circle badge with number + Title */}
+                    <div
                       style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '1.25rem',
-                        color: isHovered ? '#ff3b30' : 'rgba(255, 255, 255, 0.35)',
-                        transition: 'color 0.3s ease',
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        gap: '1.25rem',
+                        marginBottom: '2rem',
                       }}
                     >
-                      {service.num}
-                    </span>
-                    <div>
+                      {/* Orange circular number badge */}
+                      <span
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          backgroundColor: '#ff5500',
+                          color: '#ffffff',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '0.9rem',
+                          fontWeight: 700,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          transform: 'translateY(-4px)',
+                          boxShadow: '0 2px 8px rgba(255, 85, 0, 0.4)',
+                        }}
+                      >
+                        {service.num}
+                      </span>
+
+                      {/* Title */}
                       <Link
                         href={service.href}
                         style={{
                           fontFamily: 'var(--font-display)',
-                          fontSize: 'clamp(2rem, 4vw, 3.8rem)',
+                          fontSize: 'clamp(2rem, 3.8vw, 3.4rem)',
                           fontWeight: 400,
-                          letterSpacing: '-0.03em',
+                          letterSpacing: '-0.025em',
                           lineHeight: 1.1,
                           color: '#ffffff',
+                          textDecoration: 'none',
                           display: 'inline-flex',
                           alignItems: 'center',
-                          gap: '1rem',
-                          textDecoration: 'none',
+                          gap: '0.75rem',
+                          transition: 'color 0.3s ease',
                         }}
+                        className="hover:text-neutral-200"
                       >
                         <span>{service.title}</span>
                         <ArrowUpRight
@@ -286,71 +252,107 @@ export default function ServicesSection() {
                             opacity: isHovered ? 1 : 0.25,
                             transform: isHovered ? 'translate(4px, -4px)' : 'none',
                             transition: 'all 0.3s ease',
-                            color: isHovered ? '#ff3b30' : '#ffffff',
+                            color: isHovered ? '#ff5500' : '#ffffff',
                           }}
                         />
                       </Link>
-                      <div
-                        className="tag-mono"
-                        style={{
-                          color: 'rgba(255, 255, 255, 0.5)',
-                          marginTop: '0.4rem',
-                          fontSize: '0.8rem',
-                        }}
-                      >
-                        {service.category}
-                      </div>
                     </div>
-                  </div>
 
-                  {/* Right: Summary & Deliverables */}
-                  <div>
-                    <p
+                    {/* Tag Badges in Sleek Dark Capsules */}
+                    <div
                       style={{
-                        fontSize: '1rem',
-                        color: 'rgba(255, 255, 255, 0.75)',
-                        lineHeight: 1.6,
-                        marginBottom: '1.25rem',
+                        display: 'flex',
+                        gap: '0.65rem',
+                        flexWrap: 'wrap',
                         maxWidth: '520px',
                       }}
                     >
-                      {service.summary}
-                    </p>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      {service.deliverables.map((item) => (
+                      {service.tags.map((tag) => (
                         <span
-                          key={item}
+                          key={tag}
                           style={{
-                            fontSize: '0.75rem',
+                            fontSize: '0.825rem',
                             fontFamily: 'var(--font-mono)',
-                            padding: '4px 10px',
+                            padding: '0.5rem 1.15rem',
                             borderRadius: '9999px',
                             backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            color: 'rgba(255, 255, 255, 0.8)',
+                            border: '1px solid rgba(255, 255, 255, 0.12)',
+                            color: 'rgba(255, 255, 255, 0.85)',
+                            letterSpacing: '0.02em',
+                            transition: 'all 0.25s ease',
                           }}
                         >
-                          {item}
+                          {tag}
                         </span>
                       ))}
                     </div>
                   </div>
-                </div>
 
-                {/* Mobile Inline Image (Scroll-driven activation) */}
-                <div
-                  className="mobile-service-img"
-                  style={{
-                    display: 'none',
-                    marginTop: '1.75rem',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    aspectRatio: '16/9',
-                    position: 'relative',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                  }}
-                >
-                  <Image src={service.image} alt={service.title} fill style={{ objectFit: 'cover' }} />
+                  {/* Right Column: In-Layout Rounded Image Card + Description (Frame 22, 24) */}
+                  <div>
+                    {/* Rounded Image Card */}
+                    <Link
+                      href={service.href}
+                      style={{
+                        display: 'block',
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '16/10',
+                        borderRadius: '24px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        backgroundColor: '#161618',
+                        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.4)',
+                      }}
+                      className="group"
+                    >
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        sizes="(max-width: 900px) 95vw, 540px"
+                        style={{
+                          objectFit: 'cover',
+                          transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                        className="group-hover:scale-105"
+                      />
+                    </Link>
+
+                    {/* Summary Description Paragraph */}
+                    <p
+                      style={{
+                        fontSize: 'clamp(0.95rem, 1.3vw, 1.05rem)',
+                        color: 'rgba(255, 255, 255, 0.72)',
+                        lineHeight: 1.65,
+                        marginTop: '1.5rem',
+                        marginBottom: '1rem',
+                        maxWidth: '560px',
+                      }}
+                    >
+                      {service.summary}
+                    </p>
+
+                    {/* Subtle Explore Link */}
+                    <Link
+                      href={service.href}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.45rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#ff5500',
+                        textDecoration: 'none',
+                        letterSpacing: '0.04em',
+                      }}
+                      className="hover:underline"
+                    >
+                      <span>EXPLORE PRACTICE AREA</span>
+                      <ArrowUpRight size={14} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             );
@@ -358,81 +360,14 @@ export default function ServicesSection() {
         </div>
       </div>
 
-      {/* DESKTOP FLOATING PREVIEW IMAGE WITH LERP CURSOR-FOLLOW & CLIP-PATH CROSSFADE */}
-      <div
-        ref={previewWrapRef}
-        className="desktop-floating-preview"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '380px',
-          height: '260px',
-          borderRadius: '24px',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          zIndex: 50,
-          opacity: 0,
-          transform: 'scale(0.9)',
-          boxShadow: '0 24px 70px rgba(0, 0, 0, 0.65)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          willChange: 'transform, opacity',
-        }}
-      >
-        {services.map((service, index) => {
-          const isActive = hoveredIndex === index;
-
-          return (
-            <div
-              key={service.num}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                opacity: isActive ? 1 : 0,
-                transform: isActive ? 'scale(1)' : 'scale(1.06)',
-                clipPath: isActive ? 'inset(0% 0% 0% 0%)' : 'inset(8% 8% 8% 8%)',
-                transition:
-                  'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                willChange: 'transform, opacity, clip-path',
-              }}
-            >
-              <Image
-                src={service.image}
-                alt={service.title}
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '1rem',
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%)',
-                  color: '#fff',
-                  fontSize: '0.8rem',
-                  fontFamily: 'var(--font-mono)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <span>{service.title}</span>
-                <span style={{ color: '#ff3b30' }}>{service.num}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
       <style jsx>{`
-        @media (max-width: 991px) {
-          .desktop-floating-preview {
-            display: none !important;
+        @media (max-width: 900px) {
+          .service-grid-layout {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
           }
-          .mobile-service-img {
-            display: block !important;
+          .header-crosses {
+            display: none !important;
           }
         }
       `}</style>
