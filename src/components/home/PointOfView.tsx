@@ -4,14 +4,15 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import MaskedHeading from '@/components/motion/MaskedHeading';
 
 export default function PointOfView() {
   return (
     <section
       className="section-light"
       style={{
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: '7rem',
+        paddingBottom: '7rem',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -48,7 +49,8 @@ export default function PointOfView() {
               A POINT OF VIEW
             </div>
 
-            <h2
+            <MaskedHeading
+              as="h2"
               style={{
                 fontSize: 'clamp(2.4rem, 4.5vw, 4.2rem)',
                 lineHeight: 1.05,
@@ -59,7 +61,7 @@ export default function PointOfView() {
               }}
             >
               Some businesses need better marketing. Others need a better way of thinking about the business itself.
-            </h2>
+            </MaskedHeading>
 
             <p
               style={{
@@ -98,7 +100,7 @@ export default function PointOfView() {
             </div>
           </div>
 
-          {/* Right: Editorial Portrait in Ladakh */}
+          {/* Right: Editorial Portrait in Ladakh with Parallax Image */}
           <div>
             <div
               style={{
@@ -123,7 +125,7 @@ export default function PointOfView() {
                   right: 0,
                   padding: '1.5rem',
                   background:
-                    'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.75) 100%)',
+                    'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%)',
                   color: '#ffffff',
                 }}
               >

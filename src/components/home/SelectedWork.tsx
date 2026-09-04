@@ -9,7 +9,9 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function SelectedWork() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const stickyContainerRef = useRef<HTMLDivElement>(null);
+  const prevIndexRef = useRef(0);
 
   const projects = [
     {
@@ -23,7 +25,7 @@ export default function SelectedWork() {
       description:
         'Transitioning an established industrial group into a unified commercial brand across manufacturing, commercial real estate, and hospitality.',
       image: '/images/case-studies/raysons/casting-hero.jpg',
-      link: '/work/raysons',
+      link: '/work/raysons-group',
       tags: ['Corporate Architecture', 'Brand Positioning', 'Digital Systems'],
     },
     {
@@ -101,356 +103,476 @@ export default function SelectedWork() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const ctx = gsap.context(() => {
-      const triggers: ScrollTrigger[] = [];
+    const section = sectionRef.current;
+    const stickyContainer = stickyContainerRef.current;
+    if (!section || !stickyContainer) return;
 
-      projects.forEach((_, index) => {
-        const trigger = ScrollTrigger.create({
-          trigger: `#work-step-${index}`,
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 992;
+
+    if (prefersReducedMotion || isMobile) {
+      // Mobile fallback: simple scroll-based trigger
+      const triggers = projects.map((_, i) =>
+        ScrollTrigger.create({
+          trigger: `#mobile-work-item-${i}`,
           start: 'top center',
           end: 'bottom center',
-          onEnter: () => setActiveIndex(index),
-          onEnterBack: () => setActiveIndex(index),
-        });
-        triggers.push(trigger);
-      });
+          onEnter: () => setActiveIndex(i),
+          onEnterBack: () => setActiveIndex(i),
+        })
+      );
+      return () => triggers.forEach((t) => t.kill());
+    }
 
-      return () => {
-        triggers.forEach((t) => t.kill());
-      };
-    }, containerRef);
+    // DESKTOP: True pinned scroll experience with scrubbed project transitions
+    const numProjects = projects.length;
 
-    return () => ctx.revert();
-  }, [projects]);
+    const mainTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: `+=${(numProjects - 1) * 100}%`,
+      pin: stickyContainer,
+      anticipatePin: 1,
+      scrub: 0.6,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        // Calculate current active project index based on scroll progress
+        const rawIndex = progress * (numProjects - 1);
+        const newIndex = Math.min(numProjects - 1, Math.max(0, Math.round(rawIndex)));
+
+        if (newIndex !== prevIndexRef.current) {
+          prevIndexRef.current = newIndex;
+          setActiveIndex(newIndex);
+        }
+      },
+    });
+
+    return () => {
+      mainTrigger.kill();
+    };
+  }, [projects.length]);
 
   return (
     <section
-      ref={containerRef}
+      ref={sectionRef}
       className="section-light"
       style={{
-        paddingTop: '6rem',
-        paddingBottom: '8rem',
-        borderTop: '1px solid rgba(0, 0, 0, 0.08)',
         position: 'relative',
+        backgroundColor: '#f5f5f3',
       }}
     >
-      <div className="padding-global container-large">
-        {/* Header with Project Counter Badge */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-            marginBottom: '4rem',
-          }}
-        >
-          <div>
-            <div
-              className="tag-mono"
-              style={{
-                color: '#777777',
-                marginBottom: '1rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-              }}
-            >
-              <span
+      {/* DESKTOP PINNED VIEWPORT */}
+      <div
+        ref={stickyContainerRef}
+        className="desktop-sticky-viewport"
+        style={{
+          height: '100vh',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          paddingTop: '5rem',
+          paddingBottom: '2.5rem',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        <div className="padding-global container-large" style={{ width: '100%' }}>
+          {/* Top Bar: Section Tag & Project Navigation */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+              paddingBottom: '1.25rem',
+              marginBottom: '2rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div
+                className="tag-mono"
                 style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ff3b30',
-                }}
-              />
-              PORTFOLIO ARCHITECTURE
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(2.4rem, 5.5vw, 4.8rem)',
-                fontWeight: 400,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.05,
-              }}
-            >
-              Selected Work.
-            </h2>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.5rem 1.25rem',
-                borderRadius: '9999px',
-                backgroundColor: '#ffffff',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                fontSize: '0.85rem',
-                fontFamily: 'var(--font-mono)',
-              }}
-            >
-              <span>CURATED CASES</span>
-              <span
-                style={{
-                  padding: '2px 8px',
-                  borderRadius: '9999px',
-                  backgroundColor: '#111',
-                  color: '#fff',
-                  fontSize: '0.75rem',
+                  color: '#777777',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
                 }}
               >
-                06
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: '#ff3b30',
+                  }}
+                />
+                SELECTED WORK
+              </div>
+
+              <span
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.85rem',
+                  color: '#111',
+                  fontWeight: 600,
+                  backgroundColor: '#ffffff',
+                  padding: '3px 10px',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(0,0,0,0.06)',
+                }}
+              >
+                {projects[activeIndex].num} / 06
               </span>
             </div>
 
-            <Link href="/work" className="button-editorial">
-              <div className="button-texts-slider">
-                <span className="button-text-item">View all projects</span>
-                <span className="button-text-item">View all projects</span>
-              </div>
-              <ArrowUpRight size={16} />
-            </Link>
-          </div>
-        </div>
-
-        {/* Sticky Showcase Layout */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: 'clamp(2rem, 5vw, 4.5rem)',
-            position: 'relative',
-          }}
-        >
-          {/* Sticky Left / Info Panel */}
-          <div
-            style={{
-              position: 'sticky',
-              top: '120px',
-              height: 'fit-content',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              zIndex: 2,
-            }}
-          >
-            {/* Active Project Details with Smooth Fade */}
-            <div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  marginBottom: '1.5rem',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '1.25rem',
-                    fontWeight: 600,
-                    color: '#ff3b30',
-                  }}
-                >
-                  {projects[activeIndex].num} / 06
-                </span>
-                <span
-                  className="tag-mono"
-                  style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                    padding: '4px 12px',
-                    borderRadius: '9999px',
-                    color: '#444',
-                  }}
-                >
-                  {projects[activeIndex].sector}
-                </span>
-              </div>
-
-              <h3
-                style={{
-                  fontSize: 'clamp(2rem, 3.8vw, 3.2rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  lineHeight: 1.1,
-                  marginBottom: '0.75rem',
-                  color: '#111111',
-                }}
-              >
-                {projects[activeIndex].title}
-              </h3>
-
-              <div
-                style={{
-                  fontSize: '1.1rem',
-                  color: '#444444',
-                  fontWeight: 500,
-                  marginBottom: '1.5rem',
-                }}
-              >
-                {projects[activeIndex].subtitle}
-              </div>
-
-              <p
-                style={{
-                  fontSize: '1rem',
-                  color: '#666666',
-                  lineHeight: 1.6,
-                  marginBottom: '2rem',
-                }}
-              >
-                {projects[activeIndex].description}
-              </p>
-
-              {/* Tags */}
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                {projects[activeIndex].tags.map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontSize: '0.75rem',
-                      fontFamily: 'var(--font-mono)',
-                      padding: '4px 10px',
-                      borderRadius: '6px',
-                      backgroundColor: '#ffffff',
-                      border: '1px solid rgba(0, 0, 0, 0.08)',
-                      color: '#555',
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <Link
-                href={projects[activeIndex].link}
-                className="button-editorial button-editorial-dark"
-                style={{ height: '48px', padding: '0 1.5rem' }}
-              >
-                <div className="button-texts-slider">
-                  <span className="button-text-item">Read full case study</span>
-                  <span className="button-text-item">Read full case study</span>
-                </div>
-                <ArrowUpRight size={16} />
-              </Link>
-            </div>
-
-            {/* Quick Project Switcher Dots */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                marginTop: '3.5rem',
-                paddingTop: '2rem',
-                borderTop: '1px solid rgba(0, 0, 0, 0.08)',
-              }}
-            >
+            {/* Indicator progress bar */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               {projects.map((p, idx) => (
-                <button
+                <div
                   key={p.id}
-                  onClick={() => {
-                    const el = document.getElementById(`work-step-${idx}`);
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    fontSize: '0.75rem',
-                    fontFamily: 'var(--font-mono)',
-                    color: activeIndex === idx ? '#111' : '#999',
-                    fontWeight: activeIndex === idx ? 600 : 400,
+                    height: '4px',
+                    width: activeIndex === idx ? '36px' : '10px',
+                    backgroundColor: activeIndex === idx ? '#ff3b30' : 'rgba(0, 0, 0, 0.15)',
+                    borderRadius: '2px',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
-                >
-                  <span
-                    style={{
-                      width: activeIndex === idx ? '24px' : '8px',
-                      height: '4px',
-                      borderRadius: '2px',
-                      backgroundColor: activeIndex === idx ? '#ff3b30' : '#ccc',
-                      transition: 'all 0.3s ease',
-                    }}
-                  />
-                  <span>{p.num}</span>
-                </button>
+                />
               ))}
             </div>
+
+            <Link href="/work" className="button-editorial" style={{ height: '38px', padding: '0 1.25rem' }}>
+              <div className="button-texts-slider">
+                <span className="button-text-item">All Work (06)</span>
+                <span className="button-text-item">All Work (06)</span>
+              </div>
+              <ArrowUpRight size={14} />
+            </Link>
           </div>
 
-          {/* Scrolling Right / Image Cards Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-            {projects.map((project, index) => (
-              <div
-                key={project.id}
-                id={`work-step-${index}`}
-                style={{
-                  minHeight: '75vh',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}
-              >
-                <Link
-                  href={project.link}
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    aspectRatio: '16/11',
-                    borderRadius: 'clamp(20px, 3vw, 36px)',
-                    overflow: 'hidden',
-                    backgroundColor: '#e6e6e4',
-                    boxShadow:
-                      activeIndex === index
-                        ? '0 24px 60px rgba(0, 0, 0, 0.16)'
-                        : '0 8px 24px rgba(0, 0, 0, 0.06)',
-                    transform: activeIndex === index ? 'scale(1)' : 'scale(0.97)',
-                    transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    display: 'block',
-                  }}
-                >
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    style={{
-                      objectFit: 'cover',
-                      transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                  />
+          {/* Main Visual Display & Info Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1.25fr 1fr',
+              gap: 'clamp(2.5rem, 5vw, 5rem)',
+              alignItems: 'center',
+              height: 'calc(100vh - 200px)',
+              maxHeight: '740px',
+            }}
+          >
+            {/* Left: Large Choreographed Project Image with Masked Reveal & Inner Movement */}
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                borderRadius: 'clamp(20px, 3vw, 36px)',
+                overflow: 'hidden',
+                backgroundColor: '#0c0c0e',
+                boxShadow: '0 24px 70px rgba(0, 0, 0, 0.12)',
+              }}
+            >
+              {projects.map((proj, idx) => {
+                const isActive = activeIndex === idx;
+                const isPast = idx < activeIndex;
 
-                  {/* Corner Badge */}
+                return (
                   <div
+                    key={proj.id}
                     style={{
                       position: 'absolute',
-                      top: '1.25rem',
-                      right: '1.25rem',
-                      padding: '0.45rem 0.95rem',
-                      borderRadius: '9999px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                      backdropFilter: 'blur(8px)',
-                      color: '#111',
-                      fontSize: '0.75rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.35rem',
+                      inset: 0,
+                      opacity: isActive ? 1 : 0,
+                      transform: isActive
+                        ? 'scale(1)'
+                        : isPast
+                        ? 'scale(1.05)'
+                        : 'scale(0.96)',
+                      clipPath: isActive
+                        ? 'inset(0% 0% 0% 0%)'
+                        : isPast
+                        ? 'inset(0% 0% 8% 0%)'
+                        : 'inset(8% 0% 0% 0%)',
+                      transition:
+                        'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.75s cubic-bezier(0.16, 1, 0.3, 1)',
+                      willChange: 'transform, opacity, clip-path',
                     }}
                   >
-                    <span>CASE STUDY</span>
-                    <ArrowUpRight size={14} />
+                    <Image
+                      src={proj.image}
+                      alt={proj.title}
+                      fill
+                      priority={idx <= 1}
+                      style={{
+                        objectFit: 'cover',
+                        transform: isActive ? 'scale(1.02)' : 'scale(1.08)',
+                        transition: 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                    />
+
+                    {/* Corner Tag */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '1.5rem',
+                        right: '1.5rem',
+                        padding: '0.45rem 1rem',
+                        borderRadius: '9999px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(10px)',
+                        color: '#111',
+                        fontSize: '0.75rem',
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
+                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
+                      }}
+                    >
+                      <span>VIEW CASE</span>
+                      <ArrowUpRight size={14} />
+                    </div>
                   </div>
-                </Link>
-              </div>
-            ))}
+                );
+              })}
+            </div>
+
+            {/* Right: Choreographed Project Details & Staggered Text */}
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                paddingLeft: '1rem',
+              }}
+            >
+              {projects.map((proj, idx) => {
+                const isActive = activeIndex === idx;
+
+                return (
+                  <div
+                    key={proj.id}
+                    style={{
+                      position: idx === 0 ? 'relative' : 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      opacity: isActive ? 1 : 0,
+                      pointerEvents: isActive ? 'auto' : 'none',
+                      transform: isActive ? 'translateY(0)' : 'translateY(24px)',
+                      transition:
+                        'opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                      visibility: isActive ? 'visible' : 'hidden',
+                    }}
+                  >
+                    {/* Sector Tag */}
+                    <div
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.75rem',
+                        marginBottom: '1rem',
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: '1.25rem',
+                          fontWeight: 600,
+                          color: '#ff3b30',
+                        }}
+                      >
+                        {proj.num}
+                      </span>
+                      <span
+                        className="tag-mono"
+                        style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                          padding: '4px 12px',
+                          borderRadius: '9999px',
+                          color: '#333',
+                          fontSize: '0.75rem',
+                        }}
+                      >
+                        {proj.sector}
+                      </span>
+                    </div>
+
+                    {/* Masked Title Reveal */}
+                    <div style={{ overflow: 'hidden', marginBottom: '0.75rem' }}>
+                      <h3
+                        style={{
+                          fontSize: 'clamp(2.4rem, 4.2vw, 3.8rem)',
+                          fontWeight: 500,
+                          letterSpacing: '-0.03em',
+                          lineHeight: 1.05,
+                          color: '#111111',
+                          transform: isActive ? 'translateY(0)' : 'translateY(100%)',
+                          transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                        }}
+                      >
+                        {proj.title}
+                      </h3>
+                    </div>
+
+                    {/* Subtitle */}
+                    <div
+                      style={{
+                        fontSize: 'clamp(1.05rem, 1.6vw, 1.25rem)',
+                        color: '#444444',
+                        fontWeight: 500,
+                        lineHeight: 1.4,
+                        marginBottom: '1.25rem',
+                      }}
+                    >
+                      {proj.subtitle}
+                    </div>
+
+                    {/* Description */}
+                    <p
+                      style={{
+                        fontSize: '0.95rem',
+                        color: '#666666',
+                        lineHeight: 1.6,
+                        marginBottom: '1.75rem',
+                        maxWidth: '480px',
+                      }}
+                    >
+                      {proj.description}
+                    </p>
+
+                    {/* Tags */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '0.5rem',
+                        flexWrap: 'wrap',
+                        marginBottom: '2.5rem',
+                      }}
+                    >
+                      {proj.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          style={{
+                            fontSize: '0.75rem',
+                            fontFamily: 'var(--font-mono)',
+                            padding: '4px 12px',
+                            borderRadius: '6px',
+                            backgroundColor: '#ffffff',
+                            border: '1px solid rgba(0, 0, 0, 0.08)',
+                            color: '#555',
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* CTA Button */}
+                    <Link
+                      href={proj.link}
+                      className="button-editorial button-editorial-dark"
+                      style={{ height: '48px', padding: '0 1.75rem' }}
+                    >
+                      <div className="button-texts-slider">
+                        <span className="button-text-item">Read full case study</span>
+                        <span className="button-text-item">Read full case study</span>
+                      </div>
+                      <ArrowUpRight size={16} />
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* MOBILE FALLBACK VIEWPORT (Smooth touch list with active detection) */}
+      <div className="mobile-work-container" style={{ display: 'none', padding: '4rem 1.25rem' }}>
+        <div style={{ marginBottom: '3rem' }}>
+          <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '0.75rem' }}>
+            SELECTED WORK • CURATED CASES
+          </div>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 500, letterSpacing: '-0.03em' }}>
+            Selected Work.
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
+          {projects.map((proj, i) => (
+            <div key={proj.id} id={`mobile-work-item-${i}`} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  aspectRatio: '16/11',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  backgroundColor: '#0c0c0e',
+                  boxShadow: '0 12px 30px rgba(0,0,0,0.08)',
+                }}
+              >
+                <Image src={proj.image} alt={proj.title} fill style={{ objectFit: 'cover' }} />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
+                    backgroundColor: 'rgba(255,255,255,0.9)',
+                    padding: '4px 10px',
+                    borderRadius: '9999px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                  }}
+                >
+                  {proj.num} / 06
+                </div>
+              </div>
+
+              <div>
+                <div className="tag-mono" style={{ color: '#ff3b30', fontSize: '0.75rem', marginBottom: '0.35rem' }}>
+                  {proj.sector}
+                </div>
+                <h3 style={{ fontSize: '1.85rem', fontWeight: 500, marginBottom: '0.5rem', color: '#111' }}>
+                  {proj.title}
+                </h3>
+                <p style={{ fontSize: '0.9rem', color: '#666', lineHeight: 1.5, marginBottom: '1.25rem' }}>
+                  {proj.description}
+                </p>
+                <Link
+                  href={proj.link}
+                  className="button-editorial button-editorial-dark"
+                  style={{ height: '42px', padding: '0 1.25rem' }}
+                >
+                  <div className="button-texts-slider">
+                    <span className="button-text-item">Explore case study</span>
+                    <span className="button-text-item">Explore case study</span>
+                  </div>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style jsx>{`
+        @media (max-width: 991px) {
+          .desktop-sticky-viewport {
+            display: none !important;
+          }
+          .mobile-work-container {
+            display: block !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

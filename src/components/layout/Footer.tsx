@@ -1,10 +1,36 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function Footer() {
+  const brandRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const el = brandRef.current;
+    if (!el) return;
+
+    gsap.fromTo(
+      el,
+      { y: 80, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.1,
+        ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 92%',
+          once: true,
+        },
+      }
+    );
+  }, []);
   return (
     <footer
       style={{
@@ -216,8 +242,9 @@ export default function Footer() {
           <div>Authentic Strategy & Brand Practice</div>
         </div>
 
-        {/* Giant Oversized Brand Typography */}
+        {/* Giant Oversized Brand Typography with ScrollTrigger Reveal */}
         <div
+          ref={brandRef}
           style={{
             width: '100%',
             overflow: 'hidden',

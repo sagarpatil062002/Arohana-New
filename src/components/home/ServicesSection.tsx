@@ -5,12 +5,19 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function ServicesSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const previewRef = useRef<HTMLDivElement>(null);
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+
+  const previewWrapRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Position tracking with smooth lerp
+  const mousePos = useRef({ x: 0, y: 0 });
+  const previewPos = useRef({ x: 0, y: 0 });
+  const isHoveringRef = useRef(false);
 
   const services = [
     {
@@ -55,45 +62,103 @@ export default function ServicesSection() {
     },
   ];
 
-  // Mouse move tracker for smooth floating preview image
+  // Smooth lerp mouse tracking loop for the floating image container
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      setMousePos({ x, y });
+    const section = sectionRef.current;
+    const previewEl = previewWrapRef.current;
+    if (!section || !previewEl) return;
 
-      if (previewRef.current && hoveredIndex !== null) {
-        gsap.to(previewRef.current, {
-          x: x + 30,
-          y: y - 180,
-          duration: 0.5,
-          ease: 'power3.out',
+    let rafId: number;
+
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      mousePos.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
+    const loop = () => {
+      if (isHoveringRef.current) {
+        // Interpolate preview position towards mouse position with a 0.12 lerp factor
+        previewPos.current.x += (mousePos.current.x + 40 - previewPos.current.x) * 0.12;
+        previewPos.current.y += (mousePos.current.y - 140 - previewPos.current.y) * 0.12;
+
+        gsap.set(previewEl, {
+          x: previewPos.current.x,
+          y: previewPos.current.y,
         });
       }
+      rafId = requestAnimationFrame(loop);
     };
 
-    const sectionEl = sectionRef.current;
-    if (sectionEl) {
-      sectionEl.addEventListener('mousemove', handleMouseMove);
-    }
+    section.addEventListener('mousemove', onMouseMove);
+    rafId = requestAnimationFrame(loop);
+
     return () => {
-      if (sectionEl) {
-        sectionEl.removeEventListener('mousemove', handleMouseMove);
-      }
+      section.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(rafId);
     };
-  }, [hoveredIndex]);
+  }, []);
+
+  // Mobile scroll-driven activation
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const isMobile = window.innerWidth < 992;
+    if (!isMobile) return;
+
+    const triggers = services.map((_, idx) =>
+      ScrollTrigger.create({
+        trigger: `#mobile-service-${idx}`,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => setMobileActiveIndex(idx),
+        onEnterBack: () => setMobileActiveIndex(idx),
+      })
+    );
+
+    return () => triggers.forEach((t) => t.kill());
+  }, [services.length]);
+
+  const handleMouseEnter = (index: number) => {
+    isHoveringRef.current = true;
+    setHoveredIndex(index);
+
+    if (previewWrapRef.current) {
+      gsap.to(previewWrapRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.4,
+        ease: 'power3.out',
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    isHoveringRef.current = false;
+    setHoveredIndex(null);
+
+    if (previewWrapRef.current) {
+      gsap.to(previewWrapRef.current, {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.35,
+        ease: 'power3.out',
+      });
+    }
+  };
 
   return (
     <section
       ref={sectionRef}
       className="section-dark"
       style={{
-        paddingTop: '8rem',
-        paddingBottom: '8rem',
+        paddingTop: '9rem',
+        paddingBottom: '9rem',
         position: 'relative',
         overflow: 'hidden',
+        backgroundColor: '#0b0b0c',
       }}
     >
       <div className="padding-global container-large" style={{ position: 'relative', zIndex: 10 }}>
@@ -104,7 +169,7 @@ export default function ServicesSection() {
             flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignItems: 'baseline',
-            marginBottom: '5rem',
+            marginBottom: '6rem',
             borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
             paddingBottom: '2.5rem',
           }}
@@ -128,7 +193,7 @@ export default function ServicesSection() {
                   backgroundColor: '#ff3b30',
                 }}
               />
-              THREE CORE PILLARS & SPECIAL OPERATIONS
+              THREE CORE PILLARS & SPECIAL BRIEF
             </div>
             <h2
               style={{
@@ -156,8 +221,8 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Services List with Typographic Presence & Hover Focus */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* Services List with Typographic Dominance */}
+        <div style={{ display: 'flex', flexDirection: 'column' }} onMouseLeave={handleMouseLeave}>
           {services.map((service, index) => {
             const isHovered = hoveredIndex === index;
             const isAnyHovered = hoveredIndex !== null;
@@ -165,15 +230,17 @@ export default function ServicesSection() {
             return (
               <div
                 key={service.num}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                id={`mobile-service-${index}`}
+                onMouseEnter={() => handleMouseEnter(index)}
                 style={{
                   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-                  paddingTop: '2.75rem',
-                  paddingBottom: '2.75rem',
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  opacity: isAnyHovered && !isHovered ? 0.35 : 1,
-                  transform: isHovered ? 'translateX(12px)' : 'translateX(0)',
+                  paddingTop: '3rem',
+                  paddingBottom: '3rem',
+                  transition:
+                    'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+                  opacity: isAnyHovered && !isHovered ? 0.25 : 1,
+                  transform: isHovered ? 'translateX(16px)' : 'translateX(0)',
+                  cursor: 'pointer',
                 }}
               >
                 <div
@@ -181,16 +248,16 @@ export default function ServicesSection() {
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                     alignItems: 'center',
-                    gap: '2rem',
+                    gap: '2.5rem',
                   }}
                 >
-                  {/* Left: Number & Service Title */}
+                  {/* Left: Number & Giant Service Title */}
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '2rem' }}>
                     <span
                       style={{
                         fontFamily: 'var(--font-mono)',
                         fontSize: '1.25rem',
-                        color: isHovered ? '#ff3b30' : 'rgba(255, 255, 255, 0.4)',
+                        color: isHovered ? '#ff3b30' : 'rgba(255, 255, 255, 0.35)',
                         transition: 'color 0.3s ease',
                       }}
                     >
@@ -209,13 +276,14 @@ export default function ServicesSection() {
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '1rem',
+                          textDecoration: 'none',
                         }}
                       >
                         <span>{service.title}</span>
                         <ArrowUpRight
                           size={28}
                           style={{
-                            opacity: isHovered ? 1 : 0.3,
+                            opacity: isHovered ? 1 : 0.25,
                             transform: isHovered ? 'translate(4px, -4px)' : 'none',
                             transition: 'all 0.3s ease',
                             color: isHovered ? '#ff3b30' : '#ffffff',
@@ -269,16 +337,17 @@ export default function ServicesSection() {
                   </div>
                 </div>
 
-                {/* Mobile Inline Image (Fallback for non-hover touch devices) */}
+                {/* Mobile Inline Image (Scroll-driven activation) */}
                 <div
                   className="mobile-service-img"
                   style={{
                     display: 'none',
-                    marginTop: '1.5rem',
+                    marginTop: '1.75rem',
                     borderRadius: '16px',
                     overflow: 'hidden',
                     aspectRatio: '16/9',
                     position: 'relative',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
                   }}
                 >
                   <Image src={service.image} alt={service.title} fill style={{ objectFit: 'cover' }} />
@@ -289,9 +358,10 @@ export default function ServicesSection() {
         </div>
       </div>
 
-      {/* Floating Desktop Cursor Preview Container */}
+      {/* DESKTOP FLOATING PREVIEW IMAGE WITH LERP CURSOR-FOLLOW & CLIP-PATH CROSSFADE */}
       <div
-        ref={previewRef}
+        ref={previewWrapRef}
+        className="desktop-floating-preview"
         style={{
           position: 'absolute',
           top: 0,
@@ -302,48 +372,58 @@ export default function ServicesSection() {
           overflow: 'hidden',
           pointerEvents: 'none',
           zIndex: 50,
-          opacity: hoveredIndex !== null ? 1 : 0,
-          transform: 'scale(0.95)',
-          transition: 'opacity 0.3s ease, transform 0.3s ease',
-          boxShadow: '0 24px 70px rgba(0, 0, 0, 0.6)',
+          opacity: 0,
+          transform: 'scale(0.9)',
+          boxShadow: '0 24px 70px rgba(0, 0, 0, 0.65)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
+          willChange: 'transform, opacity',
         }}
-        className="desktop-floating-preview"
       >
-        {services.map((service, index) => (
-          <div
-            key={service.num}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: hoveredIndex === index ? 1 : 0,
-              transform: hoveredIndex === index ? 'scale(1)' : 'scale(1.06)',
-              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            <Image
-              src={service.image}
-              alt={service.title}
-              fill
-              style={{ objectFit: 'cover' }}
-            />
+        {services.map((service, index) => {
+          const isActive = hoveredIndex === index;
+
+          return (
             <div
+              key={service.num}
               style={{
                 position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                padding: '1rem',
-                background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%)',
-                color: '#fff',
-                fontSize: '0.8rem',
-                fontFamily: 'var(--font-mono)',
+                inset: 0,
+                opacity: isActive ? 1 : 0,
+                transform: isActive ? 'scale(1)' : 'scale(1.06)',
+                clipPath: isActive ? 'inset(0% 0% 0% 0%)' : 'inset(8% 8% 8% 8%)',
+                transition:
+                  'opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                willChange: 'transform, opacity, clip-path',
               }}
             >
-              PREVIEW • {service.title}
+              <Image
+                src={service.image}
+                alt={service.title}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '1rem',
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%)',
+                  color: '#fff',
+                  fontSize: '0.8rem',
+                  fontFamily: 'var(--font-mono)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{service.title}</span>
+                <span style={{ color: '#ff3b30' }}>{service.num}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <style jsx>{`

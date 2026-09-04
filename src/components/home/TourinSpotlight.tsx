@@ -4,13 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
+import MaskedHeading from '@/components/motion/MaskedHeading';
 
 export default function TourinSpotlight() {
   return (
     <section
       className="section-light"
       style={{
-        paddingTop: '6rem',
+        paddingTop: '7rem',
         paddingBottom: '8rem',
         borderTop: '1px solid rgba(0, 0, 0, 0.08)',
         position: 'relative',
@@ -20,14 +21,14 @@ export default function TourinSpotlight() {
         <div
           style={{
             borderRadius: 'clamp(24px, 4vw, 40px)',
-            backgroundColor: '#0e0e10',
+            backgroundColor: '#0c0c0e',
             color: '#ffffff',
             padding: 'clamp(2.5rem, 5vw, 5rem)',
             position: 'relative',
             overflow: 'hidden',
           }}
         >
-          {/* Subtle Background Pattern / Glow */}
+          {/* Subtle Background Glow */}
           <div
             style={{
               position: 'absolute',
@@ -36,7 +37,7 @@ export default function TourinSpotlight() {
               width: '500px',
               height: '500px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255, 59, 48, 0.15) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(255, 59, 48, 0.12) 0%, transparent 70%)',
               pointerEvents: 'none',
             }}
           />
@@ -74,17 +75,19 @@ export default function TourinSpotlight() {
                 OWNED EXPERIENTIAL TRAVEL BRAND
               </div>
 
-              <h2
+              <MaskedHeading
+                as="h2"
                 style={{
                   fontSize: 'clamp(2.5rem, 5vw, 4.8rem)',
                   fontWeight: 400,
                   letterSpacing: '-0.03em',
                   lineHeight: 1.05,
                   marginBottom: '1.5rem',
+                  color: '#ffffff',
                 }}
               >
                 And then there is Tourin.
-              </h2>
+              </MaskedHeading>
 
               <p
                 style={{
@@ -157,6 +160,7 @@ export default function TourinSpotlight() {
                   borderRadius: '20px',
                   overflow: 'hidden',
                   marginTop: '2rem',
+                  boxShadow: '0 16px 40px rgba(0,0,0,0.4)',
                 }}
               >
                 <Image
@@ -174,6 +178,7 @@ export default function TourinSpotlight() {
                   borderRadius: '20px',
                   overflow: 'hidden',
                   marginBottom: '2rem',
+                  boxShadow: '0 16px 40px rgba(0,0,0,0.4)',
                 }}
               >
                 <Image
