@@ -284,6 +284,3 @@ export const TOURIN_CONTENT = {
     },
   ] as TourinExperienceItem[],
 };
-
-export const TOURIN_EXPERIENCES = TOURIN_CONTENT.experiences;
-export const TOURIN_GALLERY = TOURIN_CONTENT.proof.gallery;

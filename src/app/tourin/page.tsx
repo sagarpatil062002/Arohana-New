@@ -1,314 +1,407 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import FroxenButton from '@/components/ui/FroxenButton';
-import { TOURIN_EXPERIENCES, TOURIN_GALLERY } from '@/data/tourin';
+import Image from 'next/image';
+import { ArrowLeft, ArrowUpRight, Compass, Check } from 'lucide-react';
 
 export default function TourinPage() {
+  const journeys = [
+    {
+      title: 'The Slow Ladakh Odyssey',
+      duration: '8 Days / 7 Nights',
+      type: 'Cultural Immersion & Slow Exploration',
+      desc: 'Leh, Sham Valley, Thiksey, and hidden Indus villages. Staying at heritage homestays, eating local cuisine, and walking ancient paths without rushing.',
+      image: '/images/tourin/tourin-gallery-1.jpg',
+    },
+    {
+      title: 'Nubra Valley & The Silk Route',
+      duration: '7 Days / 6 Nights',
+      type: 'High Passes, Deserts & Monasteries',
+      desc: 'Crossing Khardung La into the dramatic dune valleys of Hunder and Diskit, spending time with local artisans, and discovering village monasteries.',
+      image: '/images/tourin/tourin-gallery-2.jpg',
+    },
+    {
+      title: 'Changthang High Lakes & Nomads',
+      duration: '9 Days / 8 Nights',
+      type: 'Wild Plateaus & High-Altitude Waters',
+      desc: 'Expedition across Pangong Tso, Tso Moriri, and the Changpa nomadic settlements. Experience raw silence and vast Himalayan skies.',
+      image: '/images/tourin/tourin-gallery-3.jpg',
+    },
+  ];
+
+  const galleryImages = [
+    '/images/tourin/tourin-hero.jpg',
+    '/images/tourin/tourin-1.jpg',
+    '/images/tourin/tourin-2.jpg',
+    '/images/tourin/tourin-3.jpg',
+    '/images/tourin/tourin-gallery-4.jpg',
+    '/images/tourin/tourin-gallery-5.jpg',
+  ];
+
   return (
-    <div className="bg-[#060607] min-h-screen text-[#ECECEF] pt-32 pb-28 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Eyebrow */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="pulse-dot" />
-          <span className="text-xs font-mono uppercase tracking-[0.25em] text-neutral-400">
-            Tourin · An Ārohana Experiential Brand
-          </span>
+    <div className="section-light" style={{ paddingTop: '3rem', paddingBottom: '8rem' }}>
+      <div className="padding-global container-large">
+        {/* Back Link */}
+        <div style={{ marginBottom: '2.5rem' }}>
+          <Link
+            href="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-mono)',
+              color: '#666',
+              textDecoration: 'none',
+            }}
+          >
+            <ArrowLeft size={16} /> BACK TO HOME
+          </Link>
         </div>
 
         {/* Hero Section */}
-        <div className="mb-20 pb-16 border-b border-white/10">
-          <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase text-white leading-[0.86] tracking-tight mb-8">
-            Travel beyond <br />
-            <span className="text-froxen-lime">the itinerary.</span>
+        <div style={{ maxWidth: '1080px', marginBottom: '4rem' }}>
+          <div
+            className="tag-mono"
+            style={{
+              color: '#ff3b30',
+              marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+            }}
+          >
+            <Compass size={16} />
+            OWNED EXPERIENTIAL TRAVEL BRAND
+          </div>
+
+          <h1
+            style={{
+              fontSize: 'clamp(3rem, 7vw, 6.2rem)',
+              lineHeight: 1.05,
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#111111',
+              marginBottom: '1.75rem',
+            }}
+          >
+            Travel beyond the itinerary.
           </h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
-            <div className="lg:col-span-8 space-y-4">
-              <p className="text-xl sm:text-2xl text-neutral-200 font-medium">
-                Some places are better experienced when you stop trying to see everything.
-              </p>
-              <p className="text-base sm:text-lg text-neutral-400 leading-relaxed max-w-2xl font-normal">
-                Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh.
-              </p>
-            </div>
-
-            <div className="lg:col-span-4 flex flex-wrap gap-4 lg:justify-end">
-              <FroxenButton href="#experiences" variant="lime">
-                View Ladakh Experiences
-              </FroxenButton>
-              <FroxenButton href="/contact" variant="outline">
-                Talk to Us
-              </FroxenButton>
-            </div>
-          </div>
+          <p
+            style={{
+              fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)',
+              color: '#444444',
+              lineHeight: 1.5,
+              maxWidth: '860px',
+            }}
+          >
+            Some places are better experienced when you stop trying to see everything. Tourin creates
+            experiential journeys for travellers who want more than a checklist of sights — beginning with
+            Ladakh.
+          </p>
         </div>
 
-        {/* Large Human-Focused Hero Visual */}
-        <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#0e0e11] mb-28 shadow-2xl">
-          <div className="relative aspect-[16/9] md:aspect-[21/9] w-full">
+        {/* Hero Image */}
+        <div style={{ marginBottom: '6rem' }}>
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              aspectRatio: '16/9',
+              borderRadius: 'clamp(24px, 3.5vw, 40px)',
+              overflow: 'hidden',
+              backgroundColor: '#0c0c0e',
+              boxShadow: '0 24px 70px rgba(0, 0, 0, 0.12)',
+            }}
+          >
             <Image
               src="/images/tourin/tourin-hero.jpg"
-              alt="Authentic human moments and living culture in Ladakh"
+              alt="Tourin Experiential Ladakh"
               fill
-              className="object-cover object-center brightness-95"
-              sizes="100vw"
               priority
+              style={{ objectFit: 'cover' }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#060607] via-transparent to-transparent opacity-70" />
-            <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 text-xs font-mono uppercase tracking-widest text-neutral-300 bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
-              LIVED-IN MOMENTS · UNHURRIED LADAKH
-            </div>
           </div>
+          <p
+            style={{
+              marginTop: '1rem',
+              fontSize: '0.85rem',
+              color: '#666',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            Lived moments, high mountain passes and authentic cultural roots across Ladakh.
+          </p>
         </div>
 
-        {/* WHY TOURIN & WHAT WE BELIEVE */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pb-24 border-b border-white/10 mb-28">
-          <div className="lg:col-span-6 space-y-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              01 / The Realisation
-            </span>
-            <h2 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight">
-              WHY TOURIN
+        {/* Narrative Grid: Why Tourin & What We Believe */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 'clamp(2.5rem, 5vw, 5rem)',
+            marginBottom: '7rem',
+          }}
+        >
+          <div
+            style={{
+              padding: 'clamp(2rem, 3.5vw, 3.5rem)',
+              borderRadius: '28px',
+              backgroundColor: '#ffffff',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+            }}
+          >
+            <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+              01 • THE GENESIS
+            </div>
+            <h2 style={{ fontSize: '1.85rem', fontWeight: 500, marginBottom: '1.25rem', color: '#111' }}>
+              Why Tourin came to be
             </h2>
-            <div className="space-y-4 text-neutral-300 text-base sm:text-lg leading-relaxed font-normal">
-              <p>
-                Tourin came from a simple realisation: the Ladakh people experience and the Ladakh most itineraries sell are not always the same.
-              </p>
-              <p>
-                There is the Ladakh of famous passes, lakes and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.
-              </p>
-              <p className="font-medium text-white">
-                Tourin was created to make space for the second one. Not by avoiding the places people want to see, but by changing the way the journey is experienced.
-              </p>
-            </div>
+            <p style={{ fontSize: '1.05rem', color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
+              Tourin came from a simple realisation: the Ladakh people experience and the Ladakh most
+              commercial itineraries sell are not always the same.
+            </p>
+            <p style={{ fontSize: '1rem', color: '#666', lineHeight: 1.6 }}>
+              There is the Ladakh of famous passes, lakes and tourist photos. And then there is the place
+              behind them — its people, food, stories, homes, landscapes, silences and everyday life.
+              Tourin was created to make space for the second one.
+            </p>
           </div>
 
-          <div className="lg:col-span-6 space-y-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              02 / Philosophy
-            </span>
-            <h2 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight">
-              WHAT WE BELIEVE
+          <div
+            style={{
+              padding: 'clamp(2rem, 3.5vw, 3.5rem)',
+              borderRadius: '28px',
+              backgroundColor: '#ffffff',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+            }}
+          >
+            <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
+              02 • TRAVEL PHILOSOPHY
+            </div>
+            <h2 style={{ fontSize: '1.85rem', fontWeight: 500, marginBottom: '1.25rem', color: '#111' }}>
+              What we believe
             </h2>
-            <div className="space-y-4 text-neutral-300 text-base sm:text-lg leading-relaxed font-normal">
-              <p>A good trip should leave you with more than photographs.</p>
-              <p className="text-froxen-lime font-medium">
-                It should give you a sense of where you were.
+            <p style={{ fontSize: '1.05rem', color: '#444', lineHeight: 1.6, marginBottom: '1rem' }}>
+              A good trip should leave you with more than photographs. It should give you a sense of
+              where you were.
+            </p>
+            <p style={{ fontSize: '1rem', color: '#666', lineHeight: 1.6 }}>
+              That means eating something you have never tried, spending time with a local family,
+              staying somewhere deeply connected to its surroundings, taking a slower route, or simply
+              having enough time to notice the place instead of rushing through it.
+            </p>
+          </div>
+        </div>
+
+        {/* Verified Proof Banner */}
+        <div
+          style={{
+            borderRadius: '28px',
+            backgroundColor: '#0c0c0e',
+            color: '#ffffff',
+            padding: 'clamp(2.5rem, 5vw, 4.5rem)',
+            marginBottom: '7rem',
+          }}
+        >
+          <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
+            VERIFIED PROOF OF EXECUTION
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '2.5rem',
+            }}
+          >
+            <div style={{ maxWidth: '650px' }}>
+              <h3 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 400, lineHeight: 1.15, marginBottom: '1rem' }}>
+                15+ separate curated journeys completed.
+              </h3>
+              <p style={{ fontSize: '1.05rem', color: 'rgba(255, 255, 255, 0.8)', lineHeight: 1.6 }}>
+                From solo cultural travellers and couples to a full 20-biker Himalayan expedition —
+                demonstrating reliable on-ground high-altitude logistical execution.
               </p>
-              <p>
-                That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.
-              </p>
-              <p className="text-neutral-400 text-sm">
-                We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.
-              </p>
+            </div>
+
+            <div
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'clamp(4rem, 8vw, 7.5rem)',
+                fontWeight: 600,
+                color: '#ff3b30',
+                lineHeight: 0.9,
+              }}
+            >
+              15+
             </div>
           </div>
         </div>
 
-        {/* WHY LADAKH & WHO IS TOURIN FOR */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-24 border-b border-white/10 mb-28">
-          <div className="lg:col-span-5 space-y-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              03 / The Territory
-            </span>
-            <h3 className="font-display font-black text-3xl sm:text-4xl uppercase text-white tracking-tight">
-              WHY LADAKH
-            </h3>
-            <p className="text-neutral-300 text-base leading-relaxed">
-              Ladakh is where Tourin begins because it is a place we know closely enough to design experiences around more than the obvious itinerary.
-            </p>
-            <p className="text-neutral-400 text-sm leading-relaxed">
-              The first journeys are built around exploration, culture, landscapes and meaningful encounters — with enough structure to make the trip comfortable and enough space for the unexpected.
-            </p>
-            <div className="p-4 rounded-xl bg-white/[0.03] border border-white/8 text-xs font-mono text-neutral-400">
-              POSITIONING: Not an "offbeat tour company". We do not compete on cheap packages or rushed stops.
-            </div>
+        {/* Curated Journeys */}
+        <div style={{ marginBottom: '7rem' }}>
+          <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+            OUR JOURNEYS
           </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.2rem, 4vw, 3.6rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              marginBottom: '3.5rem',
+              color: '#111',
+            }}
+          >
+            Thoughtfully planned Ladakh itineraries
+          </h2>
 
-          <div className="lg:col-span-7 space-y-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              04 / Traveller Profile
-            </span>
-            <h3 className="font-display font-black text-3xl sm:text-4xl uppercase text-white tracking-tight">
-              WHO IS TOURIN FOR?
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { title: 'Curious Explorers', desc: 'Travellers who are curious rather than purely checklist-driven.' },
-                { title: 'Cultural Depth', desc: 'People who want to understand a destination, not only photograph it.' },
-                { title: 'Thoughtful Pacing', desc: 'Those who value authentic local encounters and slow travel pacing.' },
-                { title: 'Small Groups & Solo', desc: 'Small groups, couples, families or solo travellers seeking intimacy.' },
-                { title: 'Professional Planning', desc: 'Logistical precision without feeling like a crowded tourist circuit.' },
-                { title: 'Special Expeditions', desc: 'Custom groups including cross-country motorcyclists and photographers.' },
-              ].map((item, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-[#0e0e11] border border-white/8">
-                  <h4 className="font-display font-bold text-lg uppercase text-white mb-1">
-                    {item.title}
-                  </h4>
-                  <p className="text-xs text-neutral-400 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* PROOF THAT THE IDEA WORKS */}
-        <div className="p-8 sm:p-14 rounded-3xl bg-[#0e0e11] border border-white/10 mb-28">
-          <div className="max-w-3xl mb-10">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-              Demonstrated Ground Truth
-            </span>
-            <h3 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight">
-              PROOF THAT THE IDEA WORKS
-            </h3>
-            <p className="text-neutral-300 text-base sm:text-lg mt-4 leading-relaxed font-normal">
-              Tourin has already completed 15+ separate bookings, ranging from individual travellers and small groups to larger groups, including a 20-biker expedition.
-            </p>
-            <p className="text-neutral-400 text-sm mt-2 font-mono">
-              These are early proof that there is an audience for the kind of travel Tourin is building.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-white/10 text-xs font-mono">
-            <div>
-              <span className="font-display text-4xl font-black text-froxen-lime block">15+</span>
-              <span className="text-neutral-400 uppercase">Completed Bookings</span>
-            </div>
-            <div>
-              <span className="font-display text-4xl font-black text-white block">20</span>
-              <span className="text-neutral-400 uppercase">Bikers in Single Tour</span>
-            </div>
-            <div>
-              <span className="font-display text-4xl font-black text-froxen-lime block">100%</span>
-              <span className="text-neutral-400 uppercase">Bespoke Curation</span>
-            </div>
-            <div>
-              <span className="font-display text-4xl font-black text-white block">0</span>
-              <span className="text-neutral-400 uppercase">Rushed Circuits</span>
-            </div>
-          </div>
-        </div>
-
-        {/* CURATED LADAKH EXPERIENCES (PACKAGES SIT LOWER) */}
-        <section id="experiences" className="pb-28 border-b border-white/10 mb-28">
-          <div className="max-w-3xl mb-12">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-              Sample Journeys
-            </span>
-            <h2 className="font-display font-black text-4xl sm:text-6xl uppercase text-white tracking-tight leading-[0.9]">
-              CURATED LADAKH EXPERIENCES
-            </h2>
-            <p className="text-sm text-neutral-400 mt-2 font-mono">
-              SAMPLE EXPERIENTIAL ITINERARIES · CUSTOMIZED ACCORDING TO SEASON AND TRAVEL PREFERENCES
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TOURIN_EXPERIENCES.map((exp) => (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '2.5rem',
+            }}
+          >
+            {journeys.map((j) => (
               <div
-                key={exp.id}
-                className="group rounded-3xl overflow-hidden border border-white/10 bg-[#0e0e11] hover:border-froxen-lime/40 transition-all flex flex-col justify-between"
+                key={j.title}
+                style={{
+                  borderRadius: '24px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.04)',
+                }}
               >
-                <div>
-                  <div className="relative aspect-[16/10] w-full overflow-hidden">
-                    <Image
-                      src={exp.image}
-                      alt={exp.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-90"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-mono text-froxen-lime">
-                      {exp.duration}
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <h3 className="font-display font-black text-2xl uppercase text-white mb-1">
-                      {exp.title}
-                    </h3>
-                    <p className="text-xs font-mono text-froxen-lime mb-3">
-                      {exp.subtitle}
-                    </p>
-                    <p className="text-xs text-neutral-400 leading-relaxed mb-4">
-                      {exp.overview}
-                    </p>
-
-                    <div className="space-y-1.5 pt-3 border-t border-white/5">
-                      {exp.highlights.slice(0, 3).map((h, hIdx) => (
-                        <div key={hIdx} className="flex items-center gap-2 text-[11px] text-neutral-300">
-                          <span className="text-froxen-lime font-bold">✦</span>
-                          <span>{h}</span>
-                        </div>
-                      ))}
-                    </div>
+                <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10' }}>
+                  <Image src={j.image} alt={j.title} fill style={{ objectFit: 'cover' }} />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '1rem',
+                      padding: '4px 10px',
+                      borderRadius: '9999px',
+                      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                      color: '#fff',
+                      fontSize: '0.75rem',
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
+                    {j.duration}
                   </div>
                 </div>
 
-                <div className="p-6 pt-0">
-                  <FroxenButton href="/contact" variant="outline" className="w-full text-center">
-                    Inquire About This Journey
-                  </FroxenButton>
+                <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div className="tag-mono" style={{ color: '#ff3b30', fontSize: '0.75rem', marginBottom: '0.5rem' }}>
+                    {j.type}
+                  </div>
+                  <h3 style={{ fontSize: '1.45rem', fontWeight: 500, marginBottom: '0.75rem', color: '#111' }}>
+                    {j.title}
+                  </h3>
+                  <p style={{ fontSize: '0.95rem', color: '#555', lineHeight: 1.5, marginBottom: '1.5rem', flex: 1 }}>
+                    {j.desc}
+                  </p>
+                  <Link
+                    href="/contact"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      fontSize: '0.85rem',
+                      fontFamily: 'var(--font-mono)',
+                      color: '#111',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                    }}
+                  >
+                    INQUIRE ABOUT THIS TRIP <ArrowUpRight size={14} />
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
 
-        {/* FROM ĀROHANA TO TOURIN & THE NEXT CHAPTER */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-24 border-b border-white/10 mb-28">
-          <div className="lg:col-span-6 space-y-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              The Lineage
-            </span>
-            <h3 className="font-display font-black text-3xl sm:text-4xl uppercase text-white tracking-tight">
-              FROM ĀROHANA TO TOURIN
-            </h3>
-            <p className="text-neutral-300 text-base leading-relaxed">
-              Tourin is an extension of the same instinct that sits behind Ārohana: create something with a clear point of view rather than simply offering what everyone else offers.
-            </p>
-            <p className="text-neutral-400 text-sm leading-relaxed">
-              Ārohana builds brands and businesses. Tourin applies that thinking to travel — turning a destination into an experience people can connect with.
-            </p>
+        {/* Visual Gallery */}
+        <div style={{ marginBottom: '7rem' }}>
+          <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+            ON-GROUND GALLERY
           </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.2rem, 4vw, 3.6rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              marginBottom: '3.5rem',
+              color: '#111',
+            }}
+          >
+            Moments, landscapes and people
+          </h2>
 
-          <div className="lg:col-span-6 space-y-6">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              The Future
-            </span>
-            <h3 className="font-display font-black text-3xl sm:text-4xl uppercase text-white tracking-tight">
-              THE NEXT CHAPTER
-            </h3>
-            <p className="text-neutral-300 text-base leading-relaxed">
-              Ladakh is the beginning, not the boundary. As Tourin grows, the intention is to take the same approach to other destinations — places with enough character, culture and story to create journeys worth remembering.
-            </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '1.5rem',
+            }}
+          >
+            {galleryImages.map((src, i) => (
+              <div
+                key={i}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  aspectRatio: '4/3',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  backgroundColor: '#eee',
+                }}
+              >
+                <Image src={src} alt="Tourin Ladakh" fill style={{ objectFit: 'cover' }} />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* CLOSING CALL TO ACTION */}
-        <div className="p-8 sm:p-14 rounded-3xl bg-[#09090c] border border-white/10 text-center">
-          <span className="text-xs font-mono uppercase tracking-widest text-froxen-lime block mb-2">
-            COME TRAVEL DIFFERENTLY
-          </span>
-          <h2 className="font-display font-black text-4xl sm:text-6xl uppercase text-white tracking-tight mb-4">
-            EXPLORE OUR LADAKH JOURNEYS
-          </h2>
-          <p className="text-neutral-400 text-sm sm:text-base max-w-lg mx-auto mb-8 font-normal">
-            Whether for an unhurried solo retreat, couple or private group journey — let's design your time in Ladakh with intention.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <FroxenButton href="/contact" variant="lime">
-              Talk to Us About a Journey
-            </FroxenButton>
-            <FroxenButton href="/work" variant="outline">
-              Back to Ārohana Work
-            </FroxenButton>
+        {/* Closing CTA */}
+        <div
+          style={{
+            padding: '4rem clamp(1.5rem, 4vw, 4rem)',
+            borderRadius: '28px',
+            backgroundColor: '#ffffff',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '2rem',
+          }}
+        >
+          <div>
+            <h3 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 500, color: '#111' }}>
+              Come travel differently.
+            </h3>
+            <p style={{ color: '#666', marginTop: '0.5rem', fontSize: '1.05rem' }}>
+              Talk to us about designing a custom Ladakh journey for you or your group.
+            </p>
           </div>
+
+          <Link href="/contact" className="button-editorial button-editorial-dark" style={{ height: '48px', padding: '0 1.75rem' }}>
+            <div className="button-texts-slider">
+              <span className="button-text-item">Plan a Journey</span>
+              <span className="button-text-item">Plan a Journey</span>
+            </div>
+            <ArrowUpRight size={16} />
+          </Link>
         </div>
       </div>
     </div>

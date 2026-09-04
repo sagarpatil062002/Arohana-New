@@ -1,108 +1,407 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import ContactForm from '@/components/contact/ContactForm';
-import FroxenButton from '@/components/ui/FroxenButton';
-
-const STUDIO_LOCATIONS = [
-  { city: 'Goa', role: 'Creative Studio & Operations', detail: 'Passcode & Coastal Hospitality Hub' },
-  { city: 'Ladakh', role: 'Field Office & Tourin Operations', detail: 'High-Altitude Documentary & Border Sectors' },
-  { city: 'Mumbai', role: 'Client Relations & Commercial Advisory', detail: 'Western Region Business Network' },
-  { city: 'Kolhapur', role: 'Origins & Commercial Roots', detail: 'Mother India Cafe Heritage & Industry' },
-];
+import { ArrowLeft, ArrowUpRight, Mail, Phone, MapPin, CheckCircle2 } from 'lucide-react';
 
 export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    organization: '',
+    serviceInterest: 'Digital Brand Growth',
+    message: '',
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
   return (
-    <div className="bg-[#060607] min-h-screen text-[#ECECEF] pt-32 pb-28 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Eyebrow */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="pulse-dot" />
-          <span className="text-xs font-mono uppercase tracking-[0.25em] text-neutral-400">
-            Direct Access · Founder &amp; Advisory Team
-          </span>
+    <div className="section-light" style={{ paddingTop: '3rem', paddingBottom: '8rem' }}>
+      <div className="padding-global container-large">
+        {/* Back Link */}
+        <div style={{ marginBottom: '2.5rem' }}>
+          <Link
+            href="/"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-mono)',
+              color: '#666',
+              textDecoration: 'none',
+            }}
+          >
+            <ArrowLeft size={16} /> BACK TO HOME
+          </Link>
         </div>
 
-        {/* Hero Section */}
-        <div className="mb-20 pb-12 border-b border-white/10">
-          <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase text-white leading-[0.86] tracking-tight mb-8">
-            START A <br />
-            <span className="text-froxen-lime">CONVERSATION.</span>
+        {/* Header */}
+        <div style={{ maxWidth: '1020px', marginBottom: '5rem' }}>
+          <div
+            className="tag-mono"
+            style={{
+              color: '#ff3b30',
+              marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+            }}
+          >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: '#ff3b30',
+              }}
+            />
+            DIRECT ENGAGEMENT
+          </div>
+
+          <h1
+            style={{
+              fontSize: 'clamp(3rem, 7vw, 6.2rem)',
+              lineHeight: 1.05,
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#111111',
+              marginBottom: '1.5rem',
+            }}
+          >
+            Start a conversation.
           </h1>
-          <p className="text-lg sm:text-xl text-neutral-300 max-w-2xl leading-relaxed font-normal">
-            If you're building something serious, let's talk about what it actually needs. Every conversation begins with understanding your business.
+
+          <p
+            style={{
+              fontSize: 'clamp(1.15rem, 2vw, 1.45rem)',
+              color: '#555555',
+              lineHeight: 1.5,
+              maxWidth: '780px',
+            }}
+          >
+            Don't start with a service. Start with the problem. Tell us what you are trying to build,
+            fix or change. We review every brief personally within 24 hours.
           </p>
         </div>
 
-        {/* Grid: Inquiry Form (Left) + Direct Contact Details & Studios (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start mb-28">
-          {/* Form Column */}
-          <div className="lg:col-span-7 p-8 sm:p-12 rounded-3xl bg-[#09090c] border border-white/10 shadow-2xl">
-            <h2 className="font-display font-black text-2xl sm:text-3xl uppercase text-white mb-2 tracking-tight">
-              Tell Us About The Brief
-            </h2>
-            <p className="text-xs font-mono text-neutral-400 uppercase tracking-wider mb-8">
-              DIRECT INQUIRY · DIRECT FOUNDER REVIEW
-            </p>
-            <ContactForm />
+        {/* 2-Column Grid: Direct Info + Form */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 'clamp(3rem, 6vw, 6rem)',
+          }}
+        >
+          {/* Left: Contact Channels */}
+          <div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+              <div
+                style={{
+                  padding: '2.5rem',
+                  borderRadius: '24px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                }}
+              >
+                <div className="tag-mono" style={{ color: '#888', marginBottom: '1.25rem' }}>
+                  DIRECT CHANNELS
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                      <Mail size={16} /> Direct Email
+                    </div>
+                    <a
+                      href="mailto:founder@byarohana.com"
+                      style={{
+                        fontSize: '1.25rem',
+                        fontWeight: 500,
+                        color: '#111',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      founder@byarohana.com
+                    </a>
+                  </div>
+
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                      <Phone size={16} /> Direct Phone / WhatsApp
+                    </div>
+                    <a
+                      href="tel:+918380092241"
+                      style={{
+                        fontSize: '1.25rem',
+                        fontWeight: 500,
+                        color: '#111',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      +91 8380092241
+                    </a>
+                  </div>
+
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', fontSize: '0.85rem', marginBottom: '0.25rem' }}>
+                      <MapPin size={16} /> Locations & Base
+                    </div>
+                    <div style={{ fontSize: '1.05rem', color: '#222', fontWeight: 500 }}>
+                      Pune • Ladakh • Pan-India Engagements
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Engagement Standards Note */}
+              <div
+                style={{
+                  padding: '2.5rem',
+                  borderRadius: '24px',
+                  backgroundColor: '#0c0c0e',
+                  color: '#ffffff',
+                }}
+              >
+                <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
+                  CONVERSATION ETHICS
+                </div>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 500, marginBottom: '1rem' }}>
+                  What happens next?
+                </h3>
+                <p style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                  You will speak directly with Madhura, not an account executive or sales rep. We
+                  assess feasibility, commercial context and scope before proposing a working
+                  structure.
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Direct Details Column */}
-          <div className="lg:col-span-5 space-y-10">
-            {/* Direct Cards */}
-            <div className="p-8 rounded-3xl bg-[#0e0e11] border border-white/10 space-y-6">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-                Direct Channels
-              </span>
-
-              <div>
-                <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">
-                  Email
-                </p>
-                <a
-                  href="mailto:founder@byarohana.com"
-                  className="text-lg sm:text-xl font-medium text-white hover:text-froxen-lime transition-colors block"
+          {/* Right: Sequential Inquiry Form */}
+          <div
+            style={{
+              padding: 'clamp(2rem, 4vw, 3.5rem)',
+              borderRadius: '28px',
+              backgroundColor: '#ffffff',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.03)',
+            }}
+          >
+            {submitted ? (
+              <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    backgroundColor: '#e8f7ec',
+                    color: '#28cd41',
+                    marginBottom: '1.5rem',
+                  }}
                 >
-                  founder@byarohana.com
-                </a>
-              </div>
-
-              <div>
-                <p className="text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1">
-                  Direct Phone &amp; WhatsApp
+                  <CheckCircle2 size={36} />
+                </div>
+                <h3 style={{ fontSize: '2rem', fontWeight: 500, marginBottom: '1rem' }}>
+                  Inquiry Received.
+                </h3>
+                <p style={{ color: '#666', fontSize: '1.05rem', lineHeight: 1.6, maxWidth: '420px', margin: '0 auto 2rem auto' }}>
+                  Thank you for sharing your context. We will review your inquiry and reach out within
+                  24 hours.
                 </p>
-                <a
-                  href="tel:+918380092241"
-                  className="text-lg sm:text-xl font-medium text-white hover:text-froxen-lime transition-colors block"
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="button-editorial"
+                  style={{ height: '46px', padding: '0 1.5rem' }}
                 >
-                  +91 8380092241
-                </a>
+                  Submit another inquiry
+                </button>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      color: '#666',
+                      marginBottom: '0.5rem',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    YOUR FULL NAME *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Vikramaditya Sharma"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    style={{
+                      width: '100%',
+                      height: '52px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      padding: '0 1.25rem',
+                      fontSize: '1rem',
+                      backgroundColor: '#fafafa',
+                      outline: 'none',
+                    }}
+                  />
+                </div>
 
-              <div className="pt-4 border-t border-white/8 text-xs font-mono text-neutral-400 leading-relaxed">
-                Expect a response within 24 to 48 business hours directly from Madhura Hawal or senior practice leads.
-              </div>
-            </div>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      color: '#666',
+                      marginBottom: '0.5rem',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    WORK EMAIL *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. vikram@enterprise.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    style={{
+                      width: '100%',
+                      height: '52px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      padding: '0 1.25rem',
+                      fontSize: '1rem',
+                      backgroundColor: '#fafafa',
+                      outline: 'none',
+                    }}
+                  />
+                </div>
 
-            {/* Studio Locations Grid */}
-            <div className="p-8 rounded-3xl bg-[#0e0e11] border border-white/10">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-6">
-                Studio Footprint
-              </span>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      color: '#666',
+                      marginBottom: '0.5rem',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    COMPANY / ORGANISATION
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Heritage Group or New Venture"
+                    value={formData.organization}
+                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                    style={{
+                      width: '100%',
+                      height: '52px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      padding: '0 1.25rem',
+                      fontSize: '1rem',
+                      backgroundColor: '#fafafa',
+                      outline: 'none',
+                    }}
+                  />
+                </div>
 
-              <div className="space-y-6">
-                {STUDIO_LOCATIONS.map((loc) => (
-                  <div key={loc.city} className="pb-4 border-b border-white/5 last:border-none last:pb-0">
-                    <h3 className="font-display font-bold text-xl uppercase text-white tracking-tight">
-                      {loc.city}
-                    </h3>
-                    <p className="text-xs text-neutral-300 font-medium">{loc.role}</p>
-                    <p className="text-[11px] font-mono text-neutral-500 mt-0.5">{loc.detail}</p>
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      color: '#666',
+                      marginBottom: '0.5rem',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    AREA OF INTEREST
+                  </label>
+                  <select
+                    value={formData.serviceInterest}
+                    onChange={(e) => setFormData({ ...formData, serviceInterest: e.target.value })}
+                    style={{
+                      width: '100%',
+                      height: '52px',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      padding: '0 1.25rem',
+                      fontSize: '1rem',
+                      backgroundColor: '#fafafa',
+                      outline: 'none',
+                    }}
+                  >
+                    <option value="Digital Brand Growth">Digital Brand Growth & Systems</option>
+                    <option value="Hospitality Consulting">Hospitality & F&B Consulting</option>
+                    <option value="Content & Brand Production">Content & Brand Production</option>
+                    <option value="Tourin Ladakh Travel">Tourin Ladakh Experiential Travel</option>
+                    <option value="Special Brief">Special Brief / Multiple Areas</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.75rem',
+                      color: '#666',
+                      marginBottom: '0.5rem',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    TELL US WHAT YOU ARE TRYING TO BUILD, FIX OR CHANGE *
+                  </label>
+                  <textarea
+                    required
+                    rows={5}
+                    placeholder="Provide as much context as possible about your challenge, stage, and goals..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    style={{
+                      width: '100%',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      padding: '1rem 1.25rem',
+                      fontSize: '1rem',
+                      backgroundColor: '#fafafa',
+                      outline: 'none',
+                      fontFamily: 'inherit',
+                      resize: 'vertical',
+                    }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="button-editorial button-editorial-dark"
+                  style={{ height: '52px', padding: '0 2rem', width: '100%', justifyContent: 'center' }}
+                >
+                  <div className="button-texts-slider">
+                    <span className="button-text-item">Send Inquiry</span>
+                    <span className="button-text-item">Send Inquiry</span>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <ArrowUpRight size={16} />
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

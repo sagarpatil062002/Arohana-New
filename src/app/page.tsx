@@ -1,89 +1,47 @@
-'use client';
-
 import React from 'react';
-import FroxenHero from '@/components/home/FroxenHero';
-import PointOfViewSection from '@/components/home/PointOfViewSection';
-import ThreeWaysWeWork from '@/components/home/ThreeWaysWeWork';
-import SelectedWorkEditorial from '@/components/home/SelectedWorkEditorial';
-import SpecialProjectsStrip from '@/components/home/SpecialProjectsStrip';
+import Hero from '@/components/home/Hero';
+import BrandsMarquee from '@/components/home/BrandsMarquee';
+import PointOfView from '@/components/home/PointOfView';
+import SelectedWork from '@/components/home/SelectedWork';
+import ServicesSection from '@/components/home/ServicesSection';
+import SectorMontage from '@/components/home/SectorMontage';
+import StatsProof from '@/components/home/StatsProof';
+import IndianArmySpotlight from '@/components/home/IndianArmySpotlight';
 import TourinSpotlight from '@/components/home/TourinSpotlight';
-import CreativeProcessSection from '@/components/home/CreativeProcessSection';
-import MarqueeTicker from '@/components/ui/MarqueeTicker';
-
-const SECTORS_LIST = [
-  'Hospitality & F&B',
-  'Real Estate & Built Environment',
-  'Healthcare',
-  'Lifestyle & Consumer Brands',
-  'Entertainment & Media',
-  'Travel & Tourism',
-  'Institutional & Defence Briefs',
-];
-
-const BRANDS_LIST = [
-  'Raysons Group',
-  'PictureTime',
-  'Loom Crafts',
-  'Neora Deck',
-  'Misu',
-  'RR Skins',
-  'Blu Resorts',
-  'Qubice',
-  'Kanopy',
-  'Citron',
-  'DTK Karekar Jewellery',
-  'Holiday Village',
-  'Spice Goa',
-  'Khana Khazana',
-];
+import InteractiveCTA from '@/components/home/InteractiveCTA';
 
 export default function HomePage() {
   return (
-    <div className="bg-[#060607] min-h-screen text-[#ECECEF]">
-      {/* 01: Hero Section */}
-      <FroxenHero />
+    <>
+      {/* 01: Alture-Style Hero with Split Display Typography & Video Container */}
+      <Hero />
 
-      {/* Ticker 1: Sectors Experience Band */}
-      <MarqueeTicker
-        items={SECTORS_LIST}
-        separator="✦"
-        speed="slow"
-        className="bg-[#09090c] border-y border-white/10"
-      />
+      {/* 02: Selected Brands & Organisations Marquee */}
+      <BrandsMarquee />
 
-      {/* 02: Point of View Section */}
-      <PointOfViewSection />
+      {/* 03: Editorial Introduction / A Point of View */}
+      <PointOfView />
 
-      {/* 03: Three Ways We Work */}
-      <ThreeWaysWeWork />
+      {/* 04: Selected Work Sticky Scroll Showcase */}
+      <SelectedWork />
 
-      {/* Ticker 2: Brands & Organisations Marquee */}
-      <div className="py-8 bg-[#09090c] border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-6 mb-3">
-          <p className="text-[11px] font-mono uppercase tracking-[0.25em] text-neutral-500">
-            Brands and organisations we've worked with
-          </p>
-        </div>
-        <MarqueeTicker
-          items={BRANDS_LIST}
-          separator="✳"
-          speed="normal"
-          reverse={true}
-          className="border-none py-2"
-        />
-      </div>
+      {/* 05: Deep Black Services Section with Cursor-Following Image Crossfade */}
+      <ServicesSection />
 
-      {/* 04: Selected Work Centerpiece */}
-      <SelectedWorkEditorial />
+      {/* 06: Sectors & Built Environment Montage */}
+      <SectorMontage />
 
-      {/* 05: Special / Institutional Projects */}
-      <SpecialProjectsStrip />
+      {/* 07: Proof & Verifiable Metrics */}
+      <StatsProof />
 
-      {/* 06: Tourin Spotlight */}
+      {/* 08: Indian Army Special Operations Feature */}
+      <IndianArmySpotlight />
+
+      {/* 09: Tourin Experiential Travel Feature */}
       <TourinSpotlight />
 
-      {/* 07: Creative Process & Methodology */}
-      <CreativeProcessSection />
-    </div>
+      {/* 10: Signature Mouse-Trail Interactive CTA */}
+      <InteractiveCTA />
+    </>
   );
 }

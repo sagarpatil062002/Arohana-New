@@ -1,214 +1,329 @@
 import React from 'react';
+import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import FroxenButton from '@/components/ui/FroxenButton';
-import { CASE_STUDIES } from '@/data/case-studies';
+import { ArrowLeft, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { CASE_STUDIES, getCaseStudyBySlug } from '@/data/case-studies';
 
-export function generateStaticParams() {
-  return CASE_STUDIES.map((c) => ({
-    slug: c.slug,
+export async function generateStaticParams() {
+  return CASE_STUDIES.map((cs) => ({
+    slug: cs.slug,
   }));
 }
 
-interface CaseStudyPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default function CaseStudyPage({ params }: CaseStudyPageProps) {
-  const caseStudy = CASE_STUDIES.find((c) => c.slug === params.slug);
+export default function CaseStudyDetailPage({ params }: { params: { slug: string } }) {
+  const caseStudy = getCaseStudyBySlug(params.slug);
 
   if (!caseStudy) {
-    return notFound();
+    notFound();
   }
 
-  const currentIndex = CASE_STUDIES.findIndex((c) => c.slug === params.slug);
-  const nextCaseStudy =
-    currentIndex >= 0 && currentIndex < CASE_STUDIES.length - 1
-      ? CASE_STUDIES[currentIndex + 1]
-      : CASE_STUDIES[0];
+  // Find next case study for smooth navigation
+  const currentIndex = CASE_STUDIES.findIndex((c) => c.slug === caseStudy.slug);
+  const nextCase = CASE_STUDIES[(currentIndex + 1) % CASE_STUDIES.length];
 
   return (
-    <div className="bg-[#060607] min-h-screen text-[#ECECEF] pt-32 pb-28 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto">
-        {/* Back Link & Breadcrumb */}
-        <div className="flex items-center justify-between gap-4 mb-8">
+    <article className="section-light" style={{ paddingTop: '3rem', paddingBottom: '8rem' }}>
+      <div className="padding-global container-large">
+        {/* Back Link */}
+        <div style={{ marginBottom: '2.5rem' }}>
           <Link
             href="/work"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-neutral-400 hover:text-froxen-lime transition-colors"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontSize: '0.85rem',
+              fontFamily: 'var(--font-mono)',
+              color: '#666',
+              textDecoration: 'none',
+            }}
           >
-            <span>←</span>
-            <span>Back to All Work</span>
+            <ArrowLeft size={16} /> BACK TO SELECTED WORK
           </Link>
-          <div className="text-xs font-mono uppercase tracking-widest text-neutral-500">
-            CASE STUDY 0{currentIndex + 1} / 0{CASE_STUDIES.length}
-          </div>
         </div>
 
-        {/* HERO */}
-        <div className="mb-14">
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-froxen-lime block mb-3">
+        {/* Hero Header */}
+        <div style={{ maxWidth: '1080px', marginBottom: '3.5rem' }}>
+          <div
+            className="tag-mono"
+            style={{
+              color: '#ff3b30',
+              marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+            }}
+          >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: '#ff3b30',
+              }}
+            />
             {caseStudy.sector}
-          </span>
-          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase text-white leading-[0.88] tracking-tight mb-6">
+          </div>
+
+          <h1
+            style={{
+              fontSize: 'clamp(2.8rem, 6.5vw, 5.6rem)',
+              lineHeight: 1.05,
+              fontWeight: 400,
+              letterSpacing: '-0.04em',
+              color: '#111111',
+              marginBottom: '1.25rem',
+            }}
+          >
             {caseStudy.title}
           </h1>
-          <p className="text-xl sm:text-2xl md:text-3xl text-neutral-300 font-medium max-w-4xl leading-snug">
+
+          <p
+            style={{
+              fontSize: 'clamp(1.2rem, 2.2vw, 1.6rem)',
+              color: '#444444',
+              lineHeight: 1.4,
+              fontWeight: 400,
+            }}
+          >
             {caseStudy.subtitle}
           </p>
         </div>
 
-        {/* HERO VISUAL */}
-        <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#0e0e11] mb-16 shadow-2xl">
-          <div className="relative aspect-[16/9] md:aspect-[21/9] w-full">
+        {/* Snapshot Metadata Bar */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1.5rem',
+            padding: '2rem',
+            backgroundColor: '#ffffff',
+            borderRadius: '20px',
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
+            marginBottom: '4rem',
+          }}
+        >
+          <div>
+            <div className="tag-mono" style={{ color: '#888', fontSize: '0.7rem', marginBottom: '0.35rem' }}>
+              LOCATION
+            </div>
+            <div style={{ fontWeight: 500, color: '#111' }}>{caseStudy.snapshot.location}</div>
+          </div>
+          <div>
+            <div className="tag-mono" style={{ color: '#888', fontSize: '0.7rem', marginBottom: '0.35rem' }}>
+              ENGAGEMENT TYPE
+            </div>
+            <div style={{ fontWeight: 500, color: '#111' }}>{caseStudy.snapshot.engagementType}</div>
+          </div>
+          <div>
+            <div className="tag-mono" style={{ color: '#888', fontSize: '0.7rem', marginBottom: '0.35rem' }}>
+              DURATION
+            </div>
+            <div style={{ fontWeight: 500, color: '#111' }}>{caseStudy.snapshot.duration}</div>
+          </div>
+          <div>
+            <div className="tag-mono" style={{ color: '#888', fontSize: '0.7rem', marginBottom: '0.35rem' }}>
+              CORE SCOPE
+            </div>
+            <div style={{ fontWeight: 500, color: '#111', fontSize: '0.9rem' }}>
+              {caseStudy.snapshot.coreCapabilities.slice(0, 2).join(' • ')}
+            </div>
+          </div>
+        </div>
+
+        {/* Main Hero Image with Caption */}
+        <div style={{ marginBottom: '5rem' }}>
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              aspectRatio: '16/9',
+              borderRadius: 'clamp(20px, 3vw, 36px)',
+              overflow: 'hidden',
+              backgroundColor: '#eaeaea',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
+            }}
+          >
             <Image
               src={caseStudy.heroImage}
               alt={caseStudy.title}
               fill
-              className="object-cover object-center brightness-95"
-              sizes="100vw"
               priority
+              style={{ objectFit: 'cover' }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#060607] via-transparent to-transparent opacity-60" />
-            {caseStudy.heroImageCaption && (
-              <div className="absolute bottom-4 left-6 md:bottom-6 md:left-8 text-xs font-mono text-neutral-300 max-w-xl bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10">
-                {caseStudy.heroImageCaption}
-              </div>
-            )}
           </div>
-        </div>
-
-        {/* SNAPSHOT BAR */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-2xl bg-[#0e0e11] border border-white/10 mb-24 text-xs font-mono">
-          <div>
-            <span className="text-neutral-500 block uppercase tracking-wider mb-1">Sector</span>
-            <span className="text-neutral-200 font-semibold">{caseStudy.snapshot.sector}</span>
-          </div>
-          <div>
-            <span className="text-neutral-500 block uppercase tracking-wider mb-1">Location</span>
-            <span className="text-neutral-200">{caseStudy.snapshot.location}</span>
-          </div>
-          <div>
-            <span className="text-neutral-500 block uppercase tracking-wider mb-1">Engagement</span>
-            <span className="text-neutral-200">{caseStudy.snapshot.engagementType}</span>
-          </div>
-          <div>
-            <span className="text-neutral-500 block uppercase tracking-wider mb-1">Duration</span>
-            <span className="text-froxen-lime font-bold">{caseStudy.snapshot.duration}</span>
-          </div>
-        </div>
-
-        {/* THE SITUATION & THE REAL CHALLENGE */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pb-24 border-b border-white/10 mb-24">
-          <div className="lg:col-span-6 space-y-6">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-2 h-2 rounded-full bg-froxen-lime" />
-              <span className="font-mono text-xs uppercase tracking-widest text-neutral-400">
-                The Situation
-              </span>
-            </div>
-            <h2 className="font-display font-black text-3xl sm:text-4xl uppercase text-white tracking-tight">
-              WHAT THE BUSINESS WAS DEALING WITH
-            </h2>
-            <div className="space-y-4 text-neutral-300 text-base leading-relaxed font-normal">
-              {caseStudy.situation.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-6 space-y-6">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-2 h-2 rounded-full bg-froxen-lime" />
-              <span className="font-mono text-xs uppercase tracking-widest text-neutral-400">
-                The Real Challenge
-              </span>
-            </div>
-            <h2 className="font-display font-black text-3xl sm:text-4xl uppercase text-white tracking-tight">
-              WHAT NEEDED TO CHANGE AND WHY
-            </h2>
-            <div className="space-y-4 text-neutral-300 text-base leading-relaxed font-normal">
-              {caseStudy.realChallenge.map((para, i) => (
-                <p key={i}>{para}</p>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* THE THINKING (INTELLECTUAL VALUE) */}
-        <div className="pb-24 border-b border-white/10 mb-24">
-          <div className="max-w-3xl mb-12">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-              Strategic Blueprint
-            </span>
-            <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl uppercase text-white tracking-tight leading-[0.9]">
-              THE THINKING
-            </h2>
-            <p className="text-sm text-neutral-400 mt-2 font-mono">
-              KEY DECISIONS AND STRATEGIC CHOICES MADE BY ĀROHANA
+          {caseStudy.heroImageCaption && (
+            <p
+              style={{
+                marginTop: '1rem',
+                fontSize: '0.85rem',
+                color: '#666',
+                fontFamily: 'var(--font-mono)',
+              }}
+            >
+              {caseStudy.heroImageCaption}
             </p>
+          )}
+        </div>
+
+        {/* Editorial Narrative: Situation & The Real Challenge */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 'clamp(2.5rem, 5vw, 5rem)',
+            marginBottom: '5rem',
+          }}
+        >
+          {/* Situation */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '24px',
+              padding: 'clamp(2rem, 3.5vw, 3rem)',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+            }}
+          >
+            <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+              01 • CONTEXT & SITUATION
+            </div>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 500, marginBottom: '1.5rem', color: '#111' }}>
+              The Operational Context
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {caseStudy.situation.map((para, i) => (
+                <p key={i} style={{ fontSize: '1rem', color: '#444', lineHeight: 1.6 }}>
+                  {para}
+                </p>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {caseStudy.thinking.map((decision, idx) => (
-              <div
-                key={idx}
-                className="p-8 rounded-3xl bg-[#0e0e11] border border-white/8 hover:border-white/20 transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <span className="font-mono text-xs text-froxen-lime block mb-4">
-                    DECISION 0{idx + 1}
-                  </span>
-                  <p className="text-neutral-200 text-base leading-relaxed font-normal">
-                    {decision}
-                  </p>
-                </div>
+          {/* Real Challenge */}
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '24px',
+              padding: 'clamp(2rem, 3.5vw, 3rem)',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+            }}
+          >
+            <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
+              02 • THE CORE PROBLEM
+            </div>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 500, marginBottom: '1.5rem', color: '#111' }}>
+              The Real Challenge
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {caseStudy.realChallenge.map((para, i) => (
+                <p key={i} style={{ fontSize: '1rem', color: '#444', lineHeight: 1.6 }}>
+                  {para}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Strategic Thinking / Approach */}
+        <div
+          style={{
+            borderRadius: '28px',
+            backgroundColor: '#0c0c0e',
+            color: '#ffffff',
+            padding: 'clamp(2.5rem, 5vw, 4.5rem)',
+            marginBottom: '6rem',
+          }}
+        >
+          <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
+            03 • STRATEGIC APPROACH
+          </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              marginBottom: '2rem',
+              lineHeight: 1.1,
+            }}
+          >
+            How Ārohana structured the thinking
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '2.5rem',
+            }}
+          >
+            {caseStudy.thinking.map((item, idx) => (
+              <div key={idx} style={{ borderLeft: '2px solid #ff3b30', paddingLeft: '1.5rem' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#888' }}>
+                  PILLAR 0{idx + 1}
+                </span>
+                <p style={{ fontSize: '1.05rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.6, marginTop: '0.5rem' }}>
+                  {item}
+                </p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* THE WORK (GROUPED WORKSTREAMS) */}
-        <div className="pb-24 border-b border-white/10 mb-24">
-          <div className="max-w-3xl mb-12">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-              Execution Architecture
-            </span>
-            <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl uppercase text-white tracking-tight leading-[0.9]">
-              THE WORK
-            </h2>
+        {/* The Execution Work Modules */}
+        <div style={{ marginBottom: '6rem' }}>
+          <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+            04 • THE DELIVERED WORK
           </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.2rem, 4.5vw, 3.6rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              marginBottom: '3rem',
+              color: '#111',
+            }}
+          >
+            What was built, executed and produced
+          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {caseStudy.work.map((workstream, idx) => (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '2.5rem',
+            }}
+          >
+            {caseStudy.work.map((w, idx) => (
               <div
                 key={idx}
-                className="p-8 rounded-3xl bg-[#0d0d10] border border-white/10 flex flex-col justify-between"
+                style={{
+                  padding: '2.5rem',
+                  borderRadius: '24px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
               >
                 <div>
-                  <span className="font-mono text-xs text-neutral-500 block mb-2">
-                    WORKSTREAM 0{idx + 1}
-                  </span>
-                  <h3 className="font-display font-bold text-2xl uppercase text-white tracking-tight mb-3">
-                    {workstream.title}
+                  <h3 style={{ fontSize: '1.45rem', fontWeight: 500, marginBottom: '1rem', color: '#111' }}>
+                    {w.title}
                   </h3>
-                  <p className="text-xs text-neutral-400 leading-relaxed mb-6 font-normal">
-                    {workstream.description}
+                  <p style={{ fontSize: '0.95rem', color: '#555', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                    {w.description}
                   </p>
                 </div>
 
-                {workstream.bullets && workstream.bullets.length > 0 && (
-                  <div className="pt-4 border-t border-white/5">
-                    <ul className="space-y-2">
-                      {workstream.bullets.map((b, bIdx) => (
-                        <li key={bIdx} className="flex items-start gap-2 text-xs text-neutral-300">
-                          <span className="text-froxen-lime mt-0.5 font-bold">✦</span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
+                {w.bullets && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                    {w.bullets.map((b, bIdx) => (
+                      <div key={bIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem' }}>
+                        <CheckCircle2 size={16} color="#28cd41" style={{ marginTop: '3px', flexShrink: 0 }} />
+                        <span style={{ fontSize: '0.875rem', color: '#444' }}>{b}</span>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
@@ -216,97 +331,174 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
           </div>
         </div>
 
-        {/* PROOF & VERIFIED OUTCOMES */}
-        <div className="p-8 sm:p-14 rounded-3xl bg-[#0e0e11] border border-white/10 mb-28">
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="w-2 h-2 rounded-full bg-froxen-lime" />
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime">
-                Verified Proof &amp; Outcome
-              </span>
-            </div>
-            <h3 className="font-display font-black text-3xl sm:text-4xl md:text-5xl uppercase text-white tracking-tight mb-6">
-              MEASURABLE BUSINESS SHIFT
-            </h3>
-            <p className="text-lg sm:text-xl text-neutral-200 leading-relaxed font-normal mb-6">
-              {caseStudy.proof.verifiedText}
-            </p>
-            {caseStudy.proof.metricsNote && (
-              <p className="text-xs font-mono text-neutral-500 uppercase tracking-widest">
-                VERIFICATION NOTE: {caseStudy.proof.metricsNote}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* VISUAL GALLERY */}
+        {/* Visual Evidence Gallery */}
         {caseStudy.gallery && caseStudy.gallery.length > 0 && (
-          <div className="pb-28 border-b border-white/10 mb-28">
-            <div className="max-w-3xl mb-12">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-                Work In Context
-              </span>
-              <h2 className="font-display font-black text-4xl sm:text-5xl uppercase text-white tracking-tight leading-[0.9]">
-                VISUAL GALLERY
-              </h2>
+          <div style={{ marginBottom: '6rem' }}>
+            <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+              05 • VISUAL EVIDENCE
             </div>
+            <h2
+              style={{
+                fontSize: 'clamp(2.2rem, 4.5vw, 3.6rem)',
+                fontWeight: 400,
+                letterSpacing: '-0.03em',
+                marginBottom: '3rem',
+                color: '#111',
+              }}
+            >
+              On-ground assets and production stills
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {caseStudy.gallery.map((g, gIdx) => (
-                <div
-                  key={gIdx}
-                  className="rounded-3xl overflow-hidden border border-white/10 bg-[#0e0e11] group"
-                >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden">
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                gap: '2.5rem',
+              }}
+            >
+              {caseStudy.gallery.map((item, gIdx) => (
+                <div key={gIdx} style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      aspectRatio: '16/11',
+                      borderRadius: '20px',
+                      overflow: 'hidden',
+                      backgroundColor: '#e6e6e4',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.05)',
+                    }}
+                  >
                     <Image
-                      src={g.image}
-                      alt={g.alt || `${caseStudy.title} image ${gIdx + 1}`}
+                      src={item.image}
+                      alt={item.alt || caseStudy.title}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700 brightness-95"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
-                  <div className="p-5 border-t border-white/5 text-xs font-mono text-neutral-400 leading-relaxed">
-                    {g.caption}
-                  </div>
+                  <p
+                    style={{
+                      fontSize: '0.85rem',
+                      color: '#666',
+                      lineHeight: 1.5,
+                      fontFamily: 'var(--font-mono)',
+                    }}
+                  >
+                    {item.caption}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* CLOSING & NEXT CASE STUDY */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center justify-between p-8 sm:p-14 rounded-3xl bg-[#09090c] border border-white/10">
-          <div className="lg:col-span-7 space-y-4">
-            <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block">
-              NEXT CASE STUDY
-            </span>
-            <h3 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight">
-              {nextCaseStudy.title}
+        {/* Verified Outcomes & Proof */}
+        {caseStudy.proof && (
+          <div
+            style={{
+              padding: '3rem',
+              borderRadius: '24px',
+              backgroundColor: '#ffffff',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              marginBottom: '5rem',
+            }}
+          >
+            <div className="tag-mono" style={{ color: '#28cd41', marginBottom: '0.75rem' }}>
+              VERIFIED IMPACT
+            </div>
+            <h3 style={{ fontSize: '1.6rem', fontWeight: 500, marginBottom: '1rem', color: '#111' }}>
+              Outcomes & Commercial Change
             </h3>
-            <p className="text-sm text-neutral-400 max-w-lg">
-              {nextCaseStudy.subtitle}
+            <p style={{ fontSize: '1.05rem', color: '#444', lineHeight: 1.6, maxWidth: '840px' }}>
+              {caseStudy.proof.verifiedText}
             </p>
-            <div className="pt-2">
-              <FroxenButton href={`/work/${nextCaseStudy.slug}`} variant="primary">
-                View Next Project
-              </FroxenButton>
+            {caseStudy.proof.metricsNote && (
+              <div
+                style={{
+                  marginTop: '1.25rem',
+                  fontSize: '0.8rem',
+                  fontFamily: 'var(--font-mono)',
+                  color: '#888',
+                }}
+              >
+                {caseStudy.proof.metricsNote}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Authentic Closing Quote */}
+        {caseStudy.closingQuote && (
+          <div
+            style={{
+              borderLeft: '3px solid #111',
+              paddingLeft: '2rem',
+              marginBottom: '6rem',
+              maxWidth: '860px',
+            }}
+          >
+            <p
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
+                lineHeight: 1.3,
+                color: '#111',
+                marginBottom: '1rem',
+              }}
+            >
+              "{caseStudy.closingQuote}"
+            </p>
+            <div className="tag-mono" style={{ color: '#888' }}>
+              {caseStudy.title} • CONSULTANCY OBSERVATION
+            </div>
+          </div>
+        )}
+
+        {/* Next Case Study Navigation Card */}
+        <div
+          style={{
+            padding: '4rem clamp(1.5rem, 4vw, 4rem)',
+            borderRadius: '28px',
+            backgroundColor: '#0c0c0e',
+            color: '#ffffff',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '2rem',
+          }}
+        >
+          <div>
+            <div className="tag-mono" style={{ color: 'rgba(255, 255, 255, 0.6)', marginBottom: '0.5rem' }}>
+              NEXT CASE STUDY
+            </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+                fontWeight: 500,
+              }}
+            >
+              {nextCase.title}
+            </div>
+            <div style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.95rem' }}>
+              {nextCase.subtitle}
             </div>
           </div>
 
-          <div className="lg:col-span-5 p-6 rounded-2xl bg-[#0e0e11] border border-white/10 space-y-4">
-            <h4 className="font-display text-xl uppercase text-white font-bold">
-              Have a similar challenge?
-            </h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">
-              Let's start with the context and what you are trying to build — not a generic agency template.
-            </p>
-            <FroxenButton href="/contact" variant="lime">
-              Start a Conversation
-            </FroxenButton>
-          </div>
+          <Link
+            href={`/work/${nextCase.slug}`}
+            className="button-editorial button-editorial-white"
+            style={{ height: '48px', padding: '0 1.75rem' }}
+          >
+            <div className="button-texts-slider">
+              <span className="button-text-item">View Next Case</span>
+              <span className="button-text-item">View Next Case</span>
+            </div>
+            <ArrowUpRight size={16} />
+          </Link>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

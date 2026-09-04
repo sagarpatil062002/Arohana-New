@@ -1,249 +1,310 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import FroxenButton from '@/components/ui/FroxenButton';
+import Image from 'next/image';
+import { ArrowUpRight } from 'lucide-react';
 
 export default function AboutPage() {
+  const milestones = [
+    {
+      year: 'THE ORIGINS',
+      title: 'It started with hospitality.',
+      desc: 'Ārohana was born inside live hospitality environments. Understanding restaurants, menus, service flows, guest repeat behaviour and operational margins from the ground up gave us an unshakeable commercial foundation.',
+    },
+    {
+      year: 'EXPANSION',
+      title: 'Unexpected detours and industrial depth.',
+      desc: 'Trust with early founders led to engagements across industrial manufacturing, foundries, casting facilities, and real estate development. We learned how to communicate technical capabilities to sophisticated commercial buyers.',
+    },
+    {
+      year: 'THE HIGH HIMALAYAS',
+      title: 'Ladakh, field operations & Tourin.',
+      desc: 'Field execution across high-altitude Ladakh: directing documentaries for the SHE Project, designing experiential travel journeys through Tourin, and navigating remote logistical challenges where standard marketing playbooks fail.',
+    },
+    {
+      year: 'DEFENCE COLLABORATION',
+      title: 'Indian Army ceremonial productions.',
+      desc: 'Invited to handle critical shoot direction, production and post-production for the Indian Army Western Command Investiture Ceremony and 14 Corps Headquarters, demanding strict protocol and cinematic dignity.',
+    },
+  ];
+
   return (
-    <div className="bg-[#060607] min-h-screen text-[#ECECEF] pt-32 pb-24 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        {/* Header Eyebrow */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="pulse-dot" />
-          <span className="text-xs font-mono uppercase tracking-[0.25em] text-neutral-400">
-            About Ārohana · Founder Story
-          </span>
-        </div>
-
-        {/* Hero Section */}
-        <div className="mb-20">
-          <h1 className="font-display font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase text-white leading-[0.88] tracking-tight mb-8">
-            The road to Ārohana <br />
-            <span className="text-froxen-lime">was anything but straight.</span>
+    <div className="section-light" style={{ paddingTop: '4rem', paddingBottom: '8rem' }}>
+      <div className="padding-global container-large">
+        {/* Giant Split Studio Headline */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            marginBottom: '4rem',
+            overflow: 'hidden',
+          }}
+        >
+          <h1
+            style={{
+              fontSize: 'clamp(3.5rem, 11vw, 11rem)',
+              lineHeight: 0.9,
+              letterSpacing: '-0.04em',
+              fontWeight: 500,
+              color: '#111111',
+            }}
+          >
+            Our
           </h1>
+          <div
+            style={{
+              fontSize: 'clamp(3.5rem, 11vw, 11rem)',
+              lineHeight: 0.9,
+              letterSpacing: '-0.04em',
+              fontWeight: 500,
+              color: '#111111',
+            }}
+          >
+            Studio.
+          </div>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pt-6 border-t border-white/10">
-            <div className="lg:col-span-8 text-lg sm:text-xl text-neutral-200 leading-relaxed font-normal space-y-6">
-              <p>
-                I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people see only after they become responsible for the whole thing.
-              </p>
-              <p className="text-neutral-400 text-base">
-                Today, Ārohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building.
-              </p>
+        {/* Hero Narrative with Founder Portrait */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 'clamp(3rem, 6vw, 6rem)',
+            alignItems: 'center',
+            marginBottom: '7rem',
+          }}
+        >
+          <div>
+            <div
+              className="tag-mono"
+              style={{
+                color: '#ff3b30',
+                marginBottom: '1.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+              }}
+            >
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ff3b30',
+                }}
+              />
+              THE THINKING BEHIND THE WORK
             </div>
 
-            <div className="lg:col-span-4 p-6 rounded-2xl bg-[#0e0e11] border border-white/10 text-xs font-mono space-y-3">
-              <span className="text-froxen-lime block uppercase tracking-widest font-bold">
-                CORE PHILOSOPHY
-              </span>
-              <p className="text-neutral-300 leading-relaxed">
-                Commercial context, hospitality operations, and strategic brand execution unified under one roof.
-              </p>
-              <div className="pt-2 border-t border-white/8 text-neutral-500">
-                MADHURA HAWAL · FOUNDER
+            <h2
+              style={{
+                fontSize: 'clamp(2.2rem, 4.2vw, 3.8rem)',
+                lineHeight: 1.1,
+                fontWeight: 400,
+                letterSpacing: '-0.03em',
+                marginBottom: '2rem',
+                color: '#111111',
+              }}
+            >
+              We bring commercial context, sector depth and creative execution together.
+            </h2>
+
+            <p
+              style={{
+                fontSize: 'clamp(1.05rem, 1.6vw, 1.25rem)',
+                lineHeight: 1.6,
+                color: '#444444',
+                marginBottom: '1.5rem',
+              }}
+            >
+              Ārohana is a strategic creative consultancy founded by Madhura. We work directly with
+              founders, leadership teams, and institutions who need more than superficial marketing
+              noise.
+            </p>
+
+            <p
+              style={{
+                fontSize: '1rem',
+                lineHeight: 1.6,
+                color: '#666666',
+                marginBottom: '2.5rem',
+              }}
+            >
+              We believe great branding is grounded in operational truth. Whether crafting a digital
+              acquisition pipeline for an industrial group, engineering restaurant profitability, or
+              directing high-altitude documentaries in the Himalayas, our work is shaped by context,
+              evidence, and craft.
+            </p>
+
+            <Link href="/contact" className="button-editorial button-editorial-dark" style={{ height: '48px', padding: '0 1.75rem' }}>
+              <div className="button-texts-slider">
+                <span className="button-text-item">Start a conversation</span>
+                <span className="button-text-item">Start a conversation</span>
+              </div>
+              <ArrowUpRight size={16} />
+            </Link>
+          </div>
+
+          <div>
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                aspectRatio: '4/5',
+                borderRadius: '28px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.12)',
+              }}
+            >
+              <Image
+                src="/images/home/madhura-editorial.jpg"
+                alt="Madhura - Founder Ārohana"
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '2rem',
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%)',
+                  color: '#ffffff',
+                }}
+              >
+                <div style={{ fontSize: '1.25rem', fontWeight: 500 }}>Madhura</div>
+                <div className="tag-mono" style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.7)' }}>
+                  FOUNDER & PRINCIPAL CONSULTANT
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Large Editorial Portrait */}
-        <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#0e0e11] mb-28 shadow-2xl">
-          <div className="relative aspect-[16/9] md:aspect-[21/9] w-full">
-            <Image
-              src="/images/home/madhura-editorial.jpg"
-              alt="Madhura Hawal - Founder of Ārohana"
-              fill
-              className="object-cover object-center grayscale contrast-110 brightness-95"
-              sizes="100vw"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#060607] via-transparent to-transparent opacity-70" />
-            <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 text-xs font-mono uppercase tracking-widest text-neutral-400">
-              FIELD DIRECTION &amp; LEADERSHIP · LADAKH
-            </div>
+        {/* Studio Trajectory Timeline */}
+        <div style={{ marginBottom: '7rem' }}>
+          <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
+            HOW WE GOT HERE
+          </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2.2rem, 4vw, 3.6rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              marginBottom: '3.5rem',
+              color: '#111',
+            }}
+          >
+            The Journey & Evolution
+          </h2>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '2.5rem',
+            }}
+          >
+            {milestones.map((m, idx) => (
+              <div
+                key={m.year}
+                style={{
+                  padding: '2.5rem',
+                  borderRadius: '24px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <div>
+                  <div
+                    className="tag-mono"
+                    style={{ color: '#ff3b30', fontSize: '0.75rem', marginBottom: '1rem' }}
+                  >
+                    0{idx + 1} • {m.year}
+                  </div>
+                  <h3
+                    style={{
+                      fontSize: '1.45rem',
+                      fontWeight: 500,
+                      marginBottom: '1rem',
+                      color: '#111',
+                    }}
+                  >
+                    {m.title}
+                  </h3>
+                  <p style={{ fontSize: '0.95rem', color: '#555', lineHeight: 1.6 }}>{m.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* STORY CHAPTERS */}
-        <div className="space-y-32">
-          {/* Chapter 1: It Started With Hospitality */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-t border-white/10 pt-16">
-            <div className="lg:col-span-5">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-                CHAPTER 01
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight leading-[0.95] mb-6">
-                IT STARTED WITH <br />
-                <span className="text-neutral-400">HOSPITALITY.</span>
-              </h2>
+        {/* Philosophy Card */}
+        <div
+          style={{
+            padding: 'clamp(2.5rem, 5vw, 5rem)',
+            borderRadius: '32px',
+            backgroundColor: '#0c0c0e',
+            color: '#ffffff',
+            marginBottom: '5rem',
+          }}
+        >
+          <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
+            OUR CORE CODE
+          </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 4vw, 3.4rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.15,
+              maxWidth: '920px',
+              marginBottom: '2.5rem',
+            }}
+          >
+            "Never sell a client a solution before you understand their unit economics, their
+            audience truth, and their real operational challenge."
+          </h2>
 
-              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 mt-6">
-                <Image
-                  src="/images/services/hospitality-consulting.jpg"
-                  alt="Hospitality and restaurant operations"
-                  fill
-                  className="object-cover brightness-90"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
-              </div>
-            </div>
-
-            <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-neutral-300 leading-relaxed font-normal">
-              <p>My first world was hospitality.</p>
-              <p>
-                I studied Hospitality Management in Muscat before completing my degree in Goa. While I was studying in Goa, I was selected among the Top 13 finalists from the West Zone for Femina Miss India — an unexpected opportunity that took me into a completely different world and taught me a great deal about confidence, communication and being comfortable outside my comfort zone. Not long after, I was selected as one of just 16 students from across India for the Taj Management Training Programme.
-              </p>
-              <p>
-                Over the years, I worked in Muscat, returned to Kolhapur and eventually decided to build something of my own — Mother India Cafe.
-              </p>
-              <p>
-                Running a café teaches you things no business textbook can quite prepare you for. You learn about people, margins, suppliers, staff, customers, bad days, good days and the uncomfortable reality that every decision eventually shows up in the numbers.
-              </p>
-              <p>
-                While the café was still running, another opportunity took me to Goa. I joined Passcode Hospitality as Operations Head and worked on two upcoming restaurants, Pings Bia Hoi and Jamun. That experience took me deeper into the machinery behind a hospitality business — not just how a brand looks, but how an experience is actually built.
-              </p>
-              <p>
-                Later, I moved into institutional business and sales with Latambarcem Brewers Private Limited, working across Goa and Delhi. It gave me another perspective on business: relationships, commercial thinking, negotiation and growth.
-              </p>
-              <div className="p-6 rounded-2xl bg-[#0e0e11] border-l-2 border-froxen-lime border border-white/8 text-sm text-neutral-200">
-                "A business can have a great-looking brand and still have a problem underneath it. And sometimes what looks like a marketing problem isn't a marketing problem at all."
-              </div>
-            </div>
-          </section>
-
-          {/* Chapter 2: There Were A Few Unexpected Detours */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-t border-white/10 pt-16">
-            <div className="lg:col-span-5">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-                CHAPTER 02
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight leading-[0.95]">
-                THERE WERE A FEW <br />
-                <span className="text-neutral-400">UNEXPECTED DETOURS.</span>
-              </h2>
-            </div>
-
-            <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-neutral-300 leading-relaxed font-normal">
-              <p>
-                And then, like it did for so many people, COVID changed the direction of things.
-              </p>
-              <p>
-                The café had to close. My work in hospitality was disrupted. What came next wasn't a carefully planned five-year strategy. It was the beginning of a different kind of work.
-              </p>
-              <p className="font-medium text-white text-xl">
-                That work gradually became Ārohana.
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+              gap: '2rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+              paddingTop: '2.5rem',
+            }}
+          >
+            <div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.5rem' }}>
+                Operational Grounding
+              </h4>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.5 }}>
+                We spend time inside your physical kitchens, production floors, and client meetings.
               </p>
             </div>
-          </section>
-
-          {/* Chapter 3: And Then, The Work Got Interesting */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-t border-white/10 pt-16">
-            <div className="lg:col-span-5">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-                CHAPTER 03
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight leading-[0.95] mb-6">
-                AND THEN, THE WORK <br />
-                <span className="text-neutral-400">GOT INTERESTING.</span>
-              </h2>
-
-              <div className="grid grid-cols-2 gap-3 mt-6">
-                <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10">
-                  <Image
-                    src="/images/home/strip-army.jpg"
-                    alt="Indian Army production"
-                    fill
-                    className="object-cover"
-                    sizes="20vw"
-                  />
-                </div>
-                <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10">
-                  <Image
-                    src="/images/home/strip-she.jpg"
-                    alt="SHE initiative field work"
-                    fill
-                    className="object-cover"
-                    sizes="20vw"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-neutral-300 leading-relaxed font-normal">
-              <p>What began with digital marketing projects slowly expanded.</p>
-              <p>
-                We found ourselves working with restaurants and resorts, real-estate businesses, healthcare brands, consumer businesses and entertainment companies. Sometimes the requirement was a brand strategy. Sometimes it was a complete digital presence. Sometimes it was a campaign, a film, a new menu or an operational problem inside a restaurant.
-              </p>
-              <p>And sometimes the brief took us somewhere completely unexpected.</p>
-              <p className="font-medium text-white">
-                My work in Ladakh became one of those chapters.
-              </p>
-              <p>
-                There, I worked on projects associated with the Indian Army, including work connected with 14 Corps, Fire &amp; Fury Corps, Operation Sadbhavana and Operation Sampark. That work eventually extended to other Army environments as well, including Western Command and 12 Rashtriya Rifles under Delta Force.
-              </p>
-              <p>
-                The environments were different. The audiences were different. The responsibility was different.
-              </p>
-              <p className="text-froxen-lime font-medium">
-                And that experience reinforced something I had already learnt from hospitality: you cannot create meaningful communication without understanding the people, the environment and the reality behind it.
+            <div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.5rem' }}>
+                Editorial Restraint
+              </h4>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.5 }}>
+                No hyperbolic claims, no fake awards, no buzzwords. Clarity and conviction win.
               </p>
             </div>
-          </section>
-
-          {/* Chapter 4: Where Ārohana Stands Today */}
-          <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-t border-white/10 pt-16">
-            <div className="lg:col-span-5">
-              <span className="font-mono text-xs uppercase tracking-widest text-froxen-lime block mb-2">
-                CHAPTER 04
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-5xl uppercase text-white tracking-tight leading-[0.95]">
-                WHERE ĀROHANA <br />
-                <span className="text-neutral-400">STANDS TODAY.</span>
-              </h2>
-            </div>
-
-            <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-neutral-300 leading-relaxed font-normal">
-              <p>
-                What remains constant is the standard: clear thinking, sector-aware strategy, strong creative work and disciplined execution — brought together to make the business more visible, more relevant and more valuable to the people it is trying to reach.
+            <div>
+              <h4 style={{ fontSize: '1.1rem', fontWeight: 500, marginBottom: '0.5rem' }}>
+                Direct Accountability
+              </h4>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.5 }}>
+                Engagements are personally led by senior practitioners with specialists built around the brief.
               </p>
-              <p>
-                That is also why our work can move from a real-estate brand to a healthcare practice, from a restaurant to a consumer brand, or from a commercial campaign to a project in an entirely different environment. The category changes. The thinking has to change with it.
-              </p>
-              <p>
-                The work may begin with a brand question, a business challenge or simply the sense that something is not working as it should. From there, strategy, communication, creative and execution come together around what the business actually needs — rather than around a fixed list of deliverables.
-              </p>
-              <p>
-                We work with businesses at points where a standard agency approach is not enough — when a brand needs sharper positioning, a stronger market presence, a more deliberate digital strategy, or a hospitality business needs to rethink the experience it is creating.
-              </p>
-              <p className="font-medium text-white text-xl">
-                Today, Ārohana sits at the intersection of brand thinking, business understanding and execution.
-              </p>
-            </div>
-          </section>
-        </div>
-
-        {/* Closing Block */}
-        <div className="mt-32 pt-16 border-t border-white/10 bg-[#0e0e11] p-8 md:p-14 rounded-3xl">
-          <div className="max-w-3xl">
-            <h3 className="font-display font-black text-3xl sm:text-5xl md:text-6xl uppercase text-white leading-[0.9] tracking-tight mb-6">
-              A BRAND IS ONLY AS STRONG AS THE <span className="text-froxen-lime">THINKING BEHIND IT.</span>
-            </h3>
-            <p className="text-neutral-300 text-base sm:text-lg leading-relaxed mb-8">
-              That thinking comes from years of being inside businesses — building, running, selling, solving and starting again. Today, it is what we bring to the businesses we work with.
-            </p>
-            <p className="font-mono text-sm uppercase tracking-widest text-neutral-400 mb-8">
-              IF YOU'RE BUILDING SOMETHING WORTH BUILDING, LET'S TALK.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <FroxenButton href="/contact" variant="lime">
-                Start a Conversation
-              </FroxenButton>
-              <FroxenButton href="/work" variant="outline">
-                See the Work
-              </FroxenButton>
             </div>
           </div>
         </div>

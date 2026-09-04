@@ -1,4 +1,4 @@
-// File: C:\Users\sagar\Desktop\arohana latest\src\app\work\page.tsx
+// File: C:\Users\sagar\Desktop\alture arohana\src\app\work\page.tsx
 import * as entry from '../../../../src/app/work/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
