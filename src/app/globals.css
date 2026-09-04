@@ -1,0 +1,216 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts: Big Shoulders Display, Instrument Sans, Space Grotesk */
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --bg-primary: #060607;
+    --bg-surface: #0e0e11;
+    --bg-surface-hover: #16161a;
+    --bg-panel: #131317;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.18);
+    --accent-lime: #C6FF00;
+    --accent-lime-hover: #B5EB00;
+    --accent-glow: rgba(198, 255, 0, 0.25);
+    --text-primary: #FFFFFF;
+    --text-body: #ECECEF;
+    --text-muted: #9898A4;
+    --text-dim: #5F5F6B;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+    background-color: #060607;
+    color: #ECECEF;
+    font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  body {
+    background-color: #060607;
+    color: #ECECEF;
+    overflow-x: hidden;
+    position: relative;
+    selection-background-color: #C6FF00;
+    selection-color: #000000;
+  }
+
+  ::selection {
+    background-color: #C6FF00;
+    color: #000000;
+  }
+
+  /* Custom dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #060607;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #232328;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #393942;
+  }
+}
+
+/* Subtle Film Grain Noise Texture */
+.froxen-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Froxen Big Typography Display Styles */
+.font-display-hero {
+  font-family: 'Big Shoulders Display', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.86;
+}
+
+.font-display-section {
+  font-family: 'Big Shoulders Display', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+  line-height: 0.9;
+}
+
+/* Froxen Rolling Text Button Animation */
+.froxen-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.75rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  font-family: 'Instrument Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.froxen-button-primary {
+  background-color: #ECECEF;
+  color: #060607;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.froxen-button-primary:hover {
+  background-color: #C6FF00;
+  color: #060607;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -5px rgba(198, 255, 0, 0.3);
+}
+
+.froxen-button-outline {
+  background-color: transparent;
+  color: #ECECEF;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.froxen-button-outline:hover {
+  border-color: #C6FF00;
+  color: #FFFFFF;
+  background-color: rgba(198, 255, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+.froxen-button-lime {
+  background-color: #C6FF00;
+  color: #060607;
+}
+
+.froxen-button-lime:hover {
+  background-color: #B5EB00;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -5px rgba(198, 255, 0, 0.4);
+}
+
+/* Text Roll Inner container */
+.button-text-roll {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  height: 1.25em;
+  line-height: 1.25em;
+}
+
+.button-text-top,
+.button-text-bottom {
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.button-text-bottom {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+}
+
+.froxen-button:hover .button-text-top {
+  transform: translateY(-100%);
+}
+
+.froxen-button:hover .button-text-bottom {
+  transform: translateY(-100%);
+}
+
+/* Arrow Icon Hover Transition */
+.froxen-arrow {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.froxen-button:hover .froxen-arrow {
+  transform: translate(3px, -3px);
+}
+
+/* Glassmorphism Dark Panels */
+.froxen-card {
+  background: #0e0e11;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.froxen-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: #141418;
+}
+
+/* Glow pill */
+.froxen-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9898A4;
+}
+
+/* Pulse indicator dot */
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #C6FF00;
+  box-shadow: 0 0 10px #C6FF00;
+  animation: pulseGlow 2s infinite ease-in-out;
+}
