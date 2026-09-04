@@ -6,9 +6,12 @@ import { ArrowLeft, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { CASE_STUDIES, getCaseStudyBySlug } from '@/data/case-studies';
 
 export async function generateStaticParams() {
-  return CASE_STUDIES.map((cs) => ({
+  const params = CASE_STUDIES.map((cs) => ({
     slug: cs.slug,
   }));
+  params.push({ slug: 'raysons' });
+  params.push({ slug: 'the-she-project' });
+  return params;
 }
 
 export default function CaseStudyDetailPage({ params }: { params: { slug: string } }) {

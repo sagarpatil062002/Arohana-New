@@ -692,8 +692,18 @@ export const CASE_STUDIES: CaseStudy[] = [
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   const normalized = slug.toLowerCase();
-  if (normalized === 'raysons') return CASE_STUDIES.find((cs) => cs.slug === 'raysons-group');
-  if (normalized === 'she') return CASE_STUDIES.find((cs) => cs.slug === 'the-she-project');
-  return CASE_STUDIES.find((cs) => cs.slug === normalized || cs.slug === `${normalized}-group` || cs.slug === `the-${normalized}-project`);
+  if (normalized === 'raysons' || normalized === 'raysons-group') {
+    return CASE_STUDIES.find((cs) => cs.slug === 'raysons-group' || cs.slug === 'raysons');
+  }
+  if (normalized === 'she' || normalized === 'the-she-project') {
+    return CASE_STUDIES.find((cs) => cs.slug === 'she' || cs.slug === 'the-she-project');
+  }
+  return CASE_STUDIES.find(
+    (cs) =>
+      cs.slug === normalized ||
+      cs.slug === `${normalized}-group` ||
+      cs.slug === `the-${normalized}-project`
+  );
 }
+
 
