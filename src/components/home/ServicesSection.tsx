@@ -61,88 +61,29 @@ const SERVICES_DATA: ServiceItemData[] = [
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardContainerRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const section = sectionRef.current;
-    const card = cardContainerRef.current;
-    const track = trackRef.current;
-    const cta = ctaRef.current;
-
-    if (!section || !card || !track) return;
-
     const ctx = gsap.context(() => {
-      const isDesktop = window.matchMedia('(min-width: 992px)').matches;
-
-      if (isDesktop) {
-        // Compute the translation distance accurately:
-        // Distance from item 0 top to item 3 top so that item 3 aligns exactly in the viewport
-        const items = track.querySelectorAll<HTMLElement>('.home-services_item');
-        if (items.length >= 4) {
-          const firstItem = items[0];
-          const lastItem = items[items.length - 1];
-          const totalDistance = lastItem.offsetTop - firstItem.offsetTop;
-
-          // Main timeline for the pinned scroll-driven sequence
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: section,
-              pin: card,
-              start: 'top top+=24',
-              end: '+=300%',
-              scrub: 0.8,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-            },
-          });
-
-          // 1. Continuous vertical translation of the services track
-          tl.to(track, {
-            y: -totalDistance,
+      // Subtle image scale matching Webflow Action a-45 (1.0 -> 1.1) as each item scrolls into view
+      const imgElements = gsap.utils.toArray<HTMLElement>('.service-card-img');
+      imgElements.forEach((img) => {
+        gsap.fromTo(
+          img,
+          { scale: 1 },
+          {
+            scale: 1.08,
             ease: 'none',
-            duration: 1,
-          }, 0);
-
-          // 2. Subtle image scale effect matching Webflow Action a-45 (1.0 -> 1.1)
-          const imgs = track.querySelectorAll<HTMLElement>('.home-services_img');
-          imgs.forEach((img, idx) => {
-            const startFrac = Math.max(0, (idx - 0.5) / items.length);
-            const endFrac = Math.min(1, (idx + 0.8) / items.length);
-
-            tl.fromTo(
-              img,
-              { scale: 1 },
-              {
-                scale: 1.08,
-                ease: 'power1.out',
-                duration: endFrac - startFrac,
-              },
-              startFrac
-            );
-          });
-
-          // 3. CTA "Get in touch" button appears gracefully when Service 04 enters
-          if (cta) {
-            tl.fromTo(
-              cta,
-              { opacity: 0, y: 28, scale: 0.95 },
-              {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                ease: 'power2.out',
-                duration: 0.2,
-              },
-              0.72 // Enters during the transition to Service 04
-            );
+            scrollTrigger: {
+              trigger: img.parentElement,
+              start: 'top 85%',
+              end: 'bottom 15%',
+              scrub: 0.6,
+            },
           }
-        }
-      }
+        );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -151,228 +92,334 @@ export default function ServicesSection() {
   return (
     <section
       ref={sectionRef}
-      className="section_home-services relative w-full overflow-visible"
       style={{
+        position: 'relative',
+        width: '100%',
         backgroundColor: '#f5f5f3',
-        paddingTop: '2.5rem',
+        paddingTop: '2rem',
         paddingBottom: '3.5rem',
+        overflow: 'visible',
       }}
     >
-      {/* Outer page margin container (Webflow .padding-global.is-tiny) */}
-      <div className="w-full max-w-[1720px] mx-auto px-3 sm:px-5 md:px-7">
-        {/* Large Black Rounded Container (Webflow .home-services_component) */}
+      {/* Outer page margin container */}
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '1520px',
+          margin: '0 auto',
+          paddingLeft: 'clamp(1rem, 3vw, 2.5rem)',
+          paddingRight: 'clamp(1rem, 3vw, 2.5rem)',
+          boxSizing: 'border-box',
+          overflow: 'visible',
+        }}
+      >
+        {/* Large Black Rounded Container (Matching Image 2 Reference) */}
         <div
-          ref={cardContainerRef}
-          className="home-services_component relative w-full bg-[#0b0b0c] text-white flex flex-col justify-between"
           style={{
+            position: 'relative',
+            width: '100%',
+            backgroundColor: '#000000',
+            color: '#ffffff',
             borderRadius: '2.5rem',
-            padding: 'clamp(2rem, 3.5vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.5rem) clamp(2.5rem, 4vw, 4rem)',
-            minHeight: '84vh',
-            height: 'clamp(620px, 86vh, 840px)',
+            padding: 'clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.75rem, 4vw, 4rem) clamp(3.5rem, 5vw, 5.5rem)',
             boxSizing: 'border-box',
-            overflow: 'hidden',
+            overflow: 'visible',
           }}
         >
-          {/* Stable Header (.head-grid): Services  × × × ×  (04) */}
-          <div className="head-grid flex items-center justify-between w-full pb-5 md:pb-7 border-b border-white/[0.08] flex-shrink-0">
+          {/* Header Row: Services  × × × ×  (04) — Perfectly Horizontal Row */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+              paddingBottom: '2rem',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              marginBottom: '3.5rem',
+              boxSizing: 'border-box',
+            }}
+          >
             {/* Left: Services */}
-            <div className="text-white">
-              <h2
-                className="font-medium tracking-tight text-white m-0"
-                style={{
-                  fontSize: 'clamp(2rem, 3.2vw, 3.25rem)',
-                  fontFamily: 'var(--font-display, "Plus Jakarta Sans", sans-serif)',
-                  lineHeight: 1,
-                  letterSpacing: '-0.025em',
-                }}
-              >
-                Services
-              </h2>
-            </div>
+            <h2
+              style={{
+                color: '#ffffff',
+                fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)',
+                fontWeight: 500,
+                fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                lineHeight: 1,
+                letterSpacing: '-0.03em',
+                margin: 0,
+                padding: 0,
+              }}
+            >
+              Services
+            </h2>
 
-            {/* Center: 4 delicate crosses */}
-            <div className="hidden md:flex items-center justify-between w-1/3 max-w-sm text-white/30 text-xs sm:text-sm select-none">
-              <span>✕</span>
-              <span>✕</span>
-              <span>✕</span>
-              <span>✕</span>
+            {/* Center: 4 delicate crosses spaced evenly */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: 'clamp(180px, 35vw, 450px)',
+                color: 'rgba(255, 255, 255, 0.45)',
+                fontSize: 'clamp(0.9rem, 1.3vw, 1.25rem)',
+                userSelect: 'none',
+              }}
+            >
+              <span>×</span>
+              <span>×</span>
+              <span>×</span>
+              <span>×</span>
             </div>
 
             {/* Right: (04) */}
-            <div className="text-white">
-              <div
-                className="font-medium tracking-tight text-white"
-                style={{
-                  fontSize: 'clamp(2rem, 3.2vw, 3.25rem)',
-                  fontFamily: 'var(--font-display, "Plus Jakarta Sans", sans-serif)',
-                  lineHeight: 1,
-                  letterSpacing: '-0.025em',
-                }}
-              >
-                (04)
-              </div>
+            <div
+              style={{
+                color: '#ffffff',
+                fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)',
+                fontWeight: 500,
+                fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                lineHeight: 1,
+                letterSpacing: '-0.03em',
+                margin: 0,
+                padding: 0,
+              }}
+            >
+              (04)
             </div>
           </div>
 
-          {/* Masked Services Viewport (.home-services_content) */}
+          {/* Sticky Services Stack */}
           <div
-            ref={viewportRef}
-            className="home-services_viewport relative w-full flex-1 overflow-hidden mt-6 md:mt-8"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              position: 'relative',
+              overflow: 'visible',
+            }}
           >
-            {/* Vertically Moving Track (.home-services_items) */}
-            <div
-              ref={trackRef}
-              className="home-services_items flex flex-col w-full relative"
-              style={{
-                willChange: 'transform',
-              }}
-            >
-              {SERVICES_DATA.map((service, index) => {
-                const isLast = index === SERVICES_DATA.length - 1;
+            {SERVICES_DATA.map((service, index) => {
+              const isLast = index === SERVICES_DATA.length - 1;
 
-                return (
+              return (
+                <div
+                  key={service.num}
+                  style={{
+                    position: 'sticky',
+                    top: '18vh',
+                    backgroundColor: '#000000',
+                    zIndex: index + 1,
+                    paddingTop: '1.5rem',
+                    paddingBottom: isLast ? '3rem' : '7rem',
+                    boxSizing: 'border-box',
+                    width: '100%',
+                  }}
+                >
+                  {/* Subtle top divider line */}
                   <div
-                    key={service.num}
-                    className={`home-services_item flex flex-col w-full ${
-                      isLast ? 'pb-8' : 'pb-16 lg:pb-24'
-                    }`}
                     style={{
-                      minHeight: '440px',
+                      width: '100%',
+                      height: '1px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      marginBottom: '2.5rem',
+                    }}
+                  />
+
+                  {/* Two-Column Grid: Left Content & Right Visual */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+                      gap: 'clamp(2rem, 5vw, 5rem)',
+                      alignItems: 'start',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      backgroundColor: '#000000',
                     }}
                   >
-                    {/* Top divider line if not the very first item */}
-                    {index > 0 && (
+                    {/* Left Column: Number Badge, Title, Tags, CTA */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        justifyContent: 'flex-start',
+                      }}
+                    >
+                      {/* Header: Red Badge + Title */}
                       <div
-                        className="line is-darker w-full mb-8 lg:mb-12"
                         style={{
-                          height: '1px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.85rem',
                         }}
-                      />
-                    )}
-
-                    {/* Two-column item layout (.home-services_item-in) */}
-                    <div className="home-services_item-in grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                      {/* Left Column (.home-services_examples): Title, Number, Tags, CTA */}
-                      <div className="lg:col-span-6 flex flex-col items-start justify-start">
-                        {/* Header: Red/Orange Badge + Title */}
-                        <div className="home-services_item-head flex items-center gap-3.5">
-                          {/* Circular Red Badge (.home-services_number) */}
-                          <div
-                            className="home-services_number flex items-center justify-center rounded-full text-white flex-shrink-0"
-                            style={{
-                              width: '1.4rem',
-                              height: '1.4rem',
-                              backgroundColor: '#f3350c',
-                              fontSize: '0.75rem',
-                              fontWeight: 600,
-                              lineHeight: 1,
-                            }}
-                          >
-                            <span>{service.num}</span>
-                          </div>
-
-                          {/* Service Title (.home-services_title) */}
-                          <h3
-                            className="home-services_title text-[#e5e3dc] font-semibold tracking-tight m-0"
-                            style={{
-                              fontSize: 'clamp(1.75rem, 2.5vw, 2.25rem)',
-                              fontFamily: 'var(--font-display, "Plus Jakarta Sans", sans-serif)',
-                              letterSpacing: '-0.02em',
-                              lineHeight: 1.15,
-                            }}
-                          >
-                            {service.title}
-                          </h3>
-                        </div>
-
-                        {/* Tag Pills (.home-services_services) */}
+                      >
+                        {/* Red circular badge */}
                         <div
-                          className="home-services_services flex flex-wrap gap-2 mt-5 lg:mt-6"
-                          style={{ maxWidth: '380px' }}
-                        >
-                          {service.tags.map((tag) => (
-                            <div
-                              key={tag}
-                              className="home-services_service px-3.5 py-1.5 rounded-full text-[#a1a1aa] text-xs md:text-[0.825rem] font-medium"
-                              style={{
-                                backgroundColor: '#1f1f22',
-                                border: '1px solid rgba(255, 255, 255, 0.05)',
-                                letterSpacing: '0.01em',
-                              }}
-                            >
-                              {tag}
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* White "Get in touch" Pill Button on Service 04 (.button-secondary) */}
-                        {isLast && (
-                          <div
-                            ref={ctaRef}
-                            className="home-services_cta-wrap mt-8 lg:mt-12"
-                            style={{ opacity: 0 }}
-                          >
-                            <Link
-                              href="/contact"
-                              className="button-secondary inline-flex items-center gap-3.5 px-7 py-3.5 rounded-full bg-white text-[#0b0b0c] font-semibold text-sm tracking-tight transition-all duration-300 hover:bg-[#eae8e3] hover:scale-[1.03] shadow-lg group"
-                              style={{
-                                borderRadius: '9999px',
-                              }}
-                            >
-                              <span className="font-medium text-[0.925rem]">Get in touch</span>
-                              <span
-                                className="button_dot w-2 h-2 rounded-full bg-[#f3350c] flex-shrink-0 transition-transform duration-300 group-hover:scale-125"
-                                style={{ backgroundColor: '#f3350c' }}
-                              />
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Right Column (.home-services_desc): Image + Description */}
-                      <div className="lg:col-span-6 flex flex-col items-start w-full">
-                        {/* Image wrapper (.home-services_img-wrap) */}
-                        <div
-                          className="home-services_img-wrap relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-[#161618]"
                           style={{
-                            borderRadius: '1.25rem',
-                            maxWidth: '540px',
+                            width: '22px',
+                            height: '22px',
+                            borderRadius: '50%',
+                            backgroundColor: '#f3350c',
+                            color: '#ffffff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            lineHeight: 1,
+                            flexShrink: 0,
                           }}
                         >
-                          <Image
-                            src={service.image}
-                            alt={service.alt}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 540px"
-                            className="home-services_img object-cover w-full h-full"
-                            style={{
-                              transition: 'transform 0.5s ease-out',
-                            }}
-                          />
+                          {service.num}
                         </div>
 
-                        {/* Text wrapper (.home-services_text-wrap) */}
-                        <div
-                          className="home-services_text-wrap mt-4 lg:mt-5"
-                          style={{ maxWidth: '36rem' }}
+                        {/* Service Title */}
+                        <h3
+                          style={{
+                            color: '#f0eee6',
+                            fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
+                            fontWeight: 600,
+                            fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                            letterSpacing: '-0.02em',
+                            lineHeight: 1.15,
+                            margin: 0,
+                            padding: 0,
+                          }}
                         >
-                          <p
-                            className="text-[#a1a1aa] text-sm md:text-base leading-relaxed m-0"
+                          {service.title}
+                        </h3>
+                      </div>
+
+                      {/* Tag Pills */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '0.5rem',
+                          maxWidth: '380px',
+                          marginTop: '1.75rem',
+                        }}
+                      >
+                        {service.tags.map((tag) => (
+                          <div
+                            key={tag}
                             style={{
-                              lineHeight: 1.6,
-                              fontFamily: 'var(--font-sans, "Plus Jakarta Sans", sans-serif)',
+                              padding: '0.45rem 0.95rem',
+                              borderRadius: '9999px',
+                              backgroundColor: '#19191c',
+                              color: '#8c8c93',
+                              fontSize: '0.825rem',
+                              fontWeight: 500,
+                              border: '1px solid rgba(255, 255, 255, 0.05)',
+                              letterSpacing: '0.01em',
+                              whiteSpace: 'nowrap',
                             }}
                           >
-                            {service.description}
-                          </p>
+                            {tag}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* White "Get in touch" Pill Button on Service 04 */}
+                      {isLast && (
+                        <div style={{ marginTop: '2.5rem' }}>
+                          <Link
+                            href="/contact"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.85rem',
+                              padding: '0.85rem 1.75rem',
+                              borderRadius: '9999px',
+                              backgroundColor: '#ffffff',
+                              color: '#000000',
+                              fontWeight: 600,
+                              fontSize: '0.925rem',
+                              letterSpacing: '-0.01em',
+                              textDecoration: 'none',
+                              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                              transition: 'transform 0.25s ease, background-color 0.25s ease',
+                            }}
+                          >
+                            <span>Get in touch</span>
+                            <span
+                              style={{
+                                width: '7px',
+                                height: '7px',
+                                borderRadius: '50%',
+                                backgroundColor: '#f3350c',
+                                display: 'inline-block',
+                              }}
+                            />
+                          </Link>
                         </div>
+                      )}
+                    </div>
+
+                    {/* Right Column: Compact 16:9 Image & Description */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        width: '100%',
+                      }}
+                    >
+                      {/* Image card (compact, elegant, matching Image 2) */}
+                      <div
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          maxWidth: '440px',
+                          aspectRatio: '16 / 9',
+                          borderRadius: '18px',
+                          overflow: 'hidden',
+                          backgroundColor: '#161618',
+                          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.6)',
+                        }}
+                      >
+                        <Image
+                          src={service.image}
+                          alt={service.alt}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 440px"
+                          className="service-card-img"
+                          style={{
+                            objectFit: 'cover',
+                            width: '100%',
+                            height: '100%',
+                            transition: 'transform 0.5s ease-out',
+                          }}
+                        />
+                      </div>
+
+                      {/* Description Paragraph */}
+                      <div
+                        style={{
+                          maxWidth: '440px',
+                          marginTop: '1.25rem',
+                        }}
+                      >
+                        <p
+                          style={{
+                            color: '#8c8c93',
+                            fontSize: '0.925rem',
+                            lineHeight: 1.6,
+                            margin: 0,
+                            fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif)',
+                          }}
+                        >
+                          {service.description}
+                        </p>
                       </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
