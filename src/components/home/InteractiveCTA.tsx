@@ -146,7 +146,7 @@ export default function InteractiveCTA() {
         <h2
           style={{
             fontSize: 'clamp(2.4rem, 5.5vw, 5.5rem)',
-            fontWeight: 400,
+            fontWeight: 500,
             letterSpacing: '-0.035em',
             lineHeight: 1.06,
             color: '#ffffff',

@@ -61,7 +61,7 @@ export default function StatsProof() {
           <h2
             style={{
               fontSize: 'clamp(2.2rem, 4.5vw, 4.4rem)',
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.03em',
               lineHeight: 1.05,
               color: '#111111',

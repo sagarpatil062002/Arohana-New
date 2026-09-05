@@ -947,7 +947,7 @@ export default function AboutPage() {
             <h2
               style={{
                 fontSize: 'clamp(2rem, 4.5vw, 3.8rem)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.03em',
                 lineHeight: 1.15,
                 marginBottom: '1.5rem',

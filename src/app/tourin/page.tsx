@@ -283,7 +283,7 @@ export default function TourinPage() {
               style={{
                 fontSize: 'clamp(3rem, 7vw, 6.2rem)',
                 lineHeight: 1.05,
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.04em',
                 color: '#111111',
               }}
@@ -562,7 +562,7 @@ export default function TourinPage() {
               }}
             >
               <div style={{ maxWidth: '650px' }}>
-                <h3 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 400, lineHeight: 1.15, marginBottom: '1rem' }}>
+                <h3 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 500, lineHeight: 1.15, marginBottom: '1rem' }}>
                   Proof that the idea works.
                 </h3>
                 <p style={{ fontSize: '1.05rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.7, marginBottom: '1rem' }}>
@@ -597,7 +597,7 @@ export default function TourinPage() {
           <h2
             style={{
               fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.03em',
               marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)',
               color: '#111',
@@ -697,7 +697,7 @@ export default function TourinPage() {
           <h2
             style={{
               fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.03em',
               marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)',
               color: '#111',

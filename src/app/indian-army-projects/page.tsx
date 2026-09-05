@@ -111,31 +111,51 @@ export default function IndianArmyProjectsPage() {
         { y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power2.out', delay: 0.2 }
       );
 
-      // 3D Perspective Card Tilt (matching home page)
-      const projectCards = gsap.utils.toArray<HTMLElement>('.army-timeline-card');
-      projectCards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          {
-            y: '18vh',
-            rotateX: 25,
-            scale: 1.03,
-            transformOrigin: '50% 100%',
-          },
-          {
-            y: '0vh',
-            rotateX: 0,
-            scale: 1.0,
-            ease: 'power1.out',
+      // Exact 3D Perspective Scroll Animation (identical to SelectedWork)
+      const items = gsap.utils.toArray<HTMLElement>('.army-timeline-item');
+      if (items && items.length > 0) {
+        items.forEach((item) => {
+          const card = item.querySelector('.army-timeline-card');
+          if (!card) return;
+
+          // Continuous scroll-driven animation timeline
+          const tl = gsap.timeline({
             scrollTrigger: {
-              trigger: card,
-              start: 'top 95%',
-              end: 'top 60%',
+              trigger: item,
+              start: 'top 100%',
+              end: 'bottom 0%',
               scrub: 0.8,
             },
-          }
-        );
-      });
+          });
+
+          // Keyframe 0% -> 50%: Enters from bottom tilted with full 3D perspective
+          tl.fromTo(
+            card,
+            {
+              y: '35vh',
+              rotateX: 65,
+              scale: 1.1,
+              transformOrigin: '50% 100%',
+            },
+            {
+              y: '0vh',
+              rotateX: 0,
+              scale: 1.0,
+              ease: 'power1.out',
+              duration: 1,
+            }
+          );
+
+          // Keyframe 50% -> 100%: Leaves toward top of screen
+          tl.to(card, {
+            y: '-15vh',
+            rotateX: -15,
+            scale: 0.9,
+            ease: 'power1.in',
+            duration: 1,
+          });
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
@@ -170,7 +190,7 @@ export default function IndianArmyProjectsPage() {
           borderRadius: '9999px',
           backgroundColor: '#DE322D',
           color: '#ffffff',
-          fontFamily: 'var(--font-mono)',
+          fontFamily: 'var(--font-display)',
           fontSize: '0.78rem',
           fontWeight: 700,
           letterSpacing: '0.08em',
@@ -208,7 +228,7 @@ export default function IndianArmyProjectsPage() {
               alignItems: 'center',
               gap: '0.5rem',
               fontSize: '0.85rem',
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'var(--font-display)',
               color: '#666',
               textDecoration: 'none',
             }}
@@ -304,47 +324,52 @@ export default function IndianArmyProjectsPage() {
 
             {/* Tactical Stats Metrics */}
             <div
-              className="army-hero-anim"
+              className="army-hero-anim army-stats"
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
-                gap: '1.25rem',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                alignItems: 'start',
+                gap: '0',
                 borderTop: '1px solid rgba(255, 255, 255, 0.12)',
                 paddingTop: '2rem',
               }}
             >
-              <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 700, color: '#DE322D' }}>
+              {/* Stat 1 */}
+              <div className="army-stat-col" style={{ paddingRight: '1.5rem', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 1.9vw, 1.75rem)', fontWeight: 600, color: '#DE322D', lineHeight: 1.15, marginBottom: '0.35rem', whiteSpace: 'nowrap' }}>
                   14,000+ FT
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
                   Ladakh High-Altitude Operations
                 </div>
               </div>
 
-              <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 700, color: '#ffffff' }}>
+              {/* Stat 2 */}
+              <div className="army-stat-col" style={{ padding: '0 1.5rem', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 1.9vw, 1.75rem)', fontWeight: 600, color: '#ffffff', lineHeight: 1.15, marginBottom: '0.35rem', whiteSpace: 'nowrap' }}>
                   FEB 2026
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
                   Western Command Investiture
                 </div>
               </div>
 
-              <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 700, color: '#ffffff' }}>
+              {/* Stat 3 — single line, same baseline and alignment as all stats */}
+              <div className="army-stat-col" style={{ padding: '0 1.5rem', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 1.9vw, 1.75rem)', fontWeight: 600, color: '#ffffff', lineHeight: 1.15, marginBottom: '0.35rem', whiteSpace: 'nowrap' }}>
                   06 ASSIGNMENTS
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
                   Verified Institutional Briefs
                 </div>
               </div>
 
-              <div>
-                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.75rem', fontWeight: 700, color: '#DE322D' }}>
+              {/* Stat 4 */}
+              <div className="army-stat-col" style={{ paddingLeft: '1.5rem' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.25rem, 1.9vw, 1.75rem)', fontWeight: 600, color: '#DE322D', lineHeight: 1.15, marginBottom: '0.35rem', whiteSpace: 'nowrap' }}>
                   100%
                 </div>
-                <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.65)', lineHeight: 1.4 }}>
                   Protocol Clearance & Security
                 </div>
               </div>
@@ -420,8 +445,9 @@ export default function IndianArmyProjectsPage() {
                 <span>{cat.label}</span>
                 <span
                   style={{
-                    fontFamily: 'var(--font-mono)',
+                    fontFamily: 'var(--font-display)',
                     fontSize: '0.75rem',
+                    fontWeight: 600,
                     color: isSelected ? '#DE322D' : '#888888',
                   }}
                 >
@@ -432,33 +458,59 @@ export default function IndianArmyProjectsPage() {
           })}
         </div>
 
-        {/* Timeline Projects Showcase */}
+        {/* Timeline Projects Showcase — 3D Perspective Scroll (matching SelectedWork) */}
         <div
+          className="army-timeline-list"
           style={{
-            perspective: '1200px',
+            perspective: '100vw',
+            transformStyle: 'preserve-3d',
             display: 'flex',
             flexDirection: 'column',
-            gap: 'clamp(3.5rem, 6vw, 6rem)',
-            marginBottom: 'clamp(4rem, 7vw, 6rem)',
+            alignItems: 'center',
+            gap: 'clamp(5rem, 8vw, 8rem)',
+            marginBottom: 'clamp(5rem, 8vw, 8rem)',
+            width: '100%',
           }}
         >
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              id={project.id}
-              className="army-timeline-card"
-              onMouseEnter={() => handlePillEnter(`VIEW ${project.indexNumber} DOSSIER`)}
-              onMouseLeave={handlePillLeave}
+              className="army-timeline-item"
               style={{
-                borderRadius: 'clamp(20px, 4vw, 32px)',
-                backgroundColor: '#ffffff',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-                overflow: 'hidden',
-                padding: 'clamp(1.5rem, 3.5vw, 4rem)',
-                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.03)',
-                transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
               }}
             >
+              <div
+                className="army-timeline-block"
+                style={{
+                  perspective: '100vw',
+                  transformStyle: 'preserve-3d',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  width: '100%',
+                }}
+              >
+                <div
+                  id={project.id}
+                  className="army-timeline-card"
+                  onMouseEnter={() => handlePillEnter(`VIEW ${project.indexNumber} DOSSIER`)}
+                  onMouseLeave={handlePillLeave}
+                  style={{
+                    width: '100%',
+                    borderRadius: 'clamp(20px, 4vw, 32px)',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    overflow: 'hidden',
+                    padding: 'clamp(1.5rem, 3.5vw, 4rem)',
+                    boxShadow: '0 24px 70px rgba(0, 0, 0, 0.08)',
+                    willChange: 'transform',
+                    transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+                  }}
+                >
               {/* Project Top Meta */}
               <div
                 style={{
@@ -475,7 +527,7 @@ export default function IndianArmyProjectsPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <span
                     style={{
-                      fontFamily: 'var(--font-mono)',
+                      fontFamily: 'var(--font-display)',
                       fontSize: '1.35rem',
                       fontWeight: 700,
                       color: '#DE322D',
@@ -504,7 +556,8 @@ export default function IndianArmyProjectsPage() {
                     gap: '1.25rem',
                     fontSize: '0.85rem',
                     color: '#666',
-                    fontFamily: 'var(--font-mono)',
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: 500,
                   }}
                 >
                   <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -651,7 +704,7 @@ export default function IndianArmyProjectsPage() {
                         style={{
                           fontSize: '0.8rem',
                           color: '#666',
-                          fontFamily: 'var(--font-mono)',
+                          fontFamily: 'var(--font-display)',
                           lineHeight: 1.4,
                         }}
                       >
@@ -661,6 +714,8 @@ export default function IndianArmyProjectsPage() {
                   ))}
                 </div>
               )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -720,3 +775,4 @@ export default function IndianArmyProjectsPage() {
     </div>
   );
 }
+

@@ -79,7 +79,7 @@ export default function TourinSpotlight() {
                 as="h2"
                 style={{
                   fontSize: 'clamp(2.2rem, 4.5vw, 4.8rem)',
-                  fontWeight: 400,
+                  fontWeight: 500,
                   letterSpacing: '-0.03em',
                   lineHeight: 1.05,
                   marginBottom: '1.5rem',

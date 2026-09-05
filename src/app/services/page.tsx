@@ -297,7 +297,7 @@ export default function ServicesPage() {
               className="services-title-masked"
               style={{
                 fontSize: 'clamp(2.8rem, 6.5vw, 5.8rem)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.04em',
                 lineHeight: 1.05,
                 color: '#111111',

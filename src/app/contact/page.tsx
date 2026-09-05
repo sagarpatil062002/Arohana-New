@@ -112,7 +112,7 @@ export default function ContactPage() {
             style={{
               fontSize: 'clamp(3rem, 7vw, 6.2rem)',
               lineHeight: 1.05,
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.04em',
               color: '#111111',
               marginBottom: '1.5rem',

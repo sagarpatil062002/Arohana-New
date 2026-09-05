@@ -223,9 +223,9 @@ export default function SelectedWork() {
             borderRadius: '4rem',
             padding: '0.75rem 1.25rem',
             fontSize: '0.75rem',
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 500,
-            letterSpacing: '0.06em',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
             textTransform: 'uppercase',
             display: 'flex',
             alignItems: 'center',
@@ -261,7 +261,7 @@ export default function SelectedWork() {
               style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(2.8rem, 6.5vw, 6rem)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.04em',
                 lineHeight: 0.98,
                 color: '#111111',
@@ -282,7 +282,7 @@ export default function SelectedWork() {
                 width: '22px',
                 height: '22px',
                 fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--font-display)',
                 fontWeight: 600,
                 position: 'absolute',
                 top: '0.2rem',
@@ -306,10 +306,10 @@ export default function SelectedWork() {
             <h3
               className="text-style-label"
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.8rem',
+                fontFamily: 'var(--font-display)',
+                fontSize: '0.78rem',
                 fontWeight: 600,
-                letterSpacing: '0.1em',
+                letterSpacing: '0.08em',
                 color: '#DE322D',
                 textTransform: 'uppercase',
                 margin: 0,
@@ -336,7 +336,7 @@ export default function SelectedWork() {
               style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.04em',
                 lineHeight: 0.95,
                 color: '#111111',
@@ -463,7 +463,7 @@ export default function SelectedWork() {
                       <span
                         style={{
                           fontSize: '0.72rem',
-                          fontFamily: 'var(--font-mono)',
+                          fontFamily: 'var(--font-display)',
                           color: '#DE322D',
                           fontWeight: 600,
                           marginLeft: 'auto',

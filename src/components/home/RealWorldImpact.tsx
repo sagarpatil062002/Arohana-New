@@ -10,7 +10,7 @@ interface CounterItem {
   id: string;
   tag: string;
   target: number;
-  plus?: boolean;
+  suffix?: string;
   twoDigits?: boolean;
   title: string;
   desc: string;
@@ -21,7 +21,7 @@ const IMPACT_ITEMS: CounterItem[] = [
     id: 'commercial',
     tag: '01',
     target: 25,
-    plus: true,
+    suffix: '+',
     title: 'Commercial Engagements',
     desc: 'Direct partnerships across hospitality, enterprise & consumer brands.',
   },
@@ -45,88 +45,75 @@ const IMPACT_ITEMS: CounterItem[] = [
     id: 'expeditions',
     tag: '04',
     target: 15,
-    plus: true,
+    suffix: '+',
     title: 'Himalayan Expeditions',
     desc: 'Curated high-altitude journeys and community homestay initiatives.',
   },
 ];
 
-// Single mechanical split-flap digit card
-function FlipDigit({ digit }: { digit: string }) {
-  return (
-    <div
-      style={{
-        position: 'relative',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: 'clamp(32px, 4vw, 44px)',
-        height: 'clamp(52px, 6.5vw, 68px)',
-        backgroundColor: '#0c0c0e',
-        color: '#ffffff',
-        fontFamily: 'var(--font-mono)',
-        fontWeight: 700,
-        fontSize: 'clamp(1.75rem, 3.2vw, 2.5rem)',
-        borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
-        overflow: 'hidden',
-        userSelect: 'none',
-      }}
-    >
-      {/* Mechanical horizontal split line */}
-      <div
-        style={{
-          position: 'absolute',
-          insetInline: 0,
-          top: '50%',
-          height: '1px',
-          backgroundColor: 'rgba(0, 0, 0, 0.95)',
-          boxShadow: '0 1px 1px rgba(255, 255, 255, 0.1)',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
-      />
-      <span style={{ position: 'relative', zIndex: 2, fontVariantNumeric: 'tabular-nums' }}>
-        {digit}
-      </span>
-    </div>
-  );
-}
-
 export default function RealWorldImpact() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
   const [counts, setCounts] = useState<number[]>([0, 0, 0, 0]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
     const el = sectionRef.current;
-    if (!el) return;
+    const header = headerRef.current;
+    const grid = gridRef.current;
+    if (!el || !header || !grid) return;
 
     const ctx = gsap.context(() => {
-      const obj = { val0: 0, val1: 0, val2: 0, val3: 0 };
+      // Header items stagger in
+      gsap.fromTo(
+        Array.from(header.children),
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.85,
+          stagger: 0.1,
+          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          scrollTrigger: { trigger: header, start: 'top 88%', once: true },
+        }
+      );
 
+      // Cards stagger reveal
+      const cards = Array.from(grid.querySelectorAll('.rwi-card'));
+      gsap.fromTo(
+        cards,
+        { y: 36, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.09,
+          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          scrollTrigger: { trigger: grid, start: 'top 85%', once: true },
+        }
+      );
+
+      // Number counters
+      const obj = { v0: 0, v1: 0, v2: 0, v3: 0 };
       ScrollTrigger.create({
-        trigger: el,
-        start: 'top 80%',
+        trigger: grid,
+        start: 'top 85%',
         once: true,
         onEnter: () => {
           gsap.to(obj, {
-            val0: IMPACT_ITEMS[0].target,
-            val1: IMPACT_ITEMS[1].target,
-            val2: IMPACT_ITEMS[2].target,
-            val3: IMPACT_ITEMS[3].target,
-            duration: 2,
-            ease: 'power2.out',
-            onUpdate: () => {
-              setCounts([
-                Math.round(obj.val0),
-                Math.round(obj.val1),
-                Math.round(obj.val2),
-                Math.round(obj.val3),
-              ]);
-            },
+            v0: IMPACT_ITEMS[0].target,
+            v1: IMPACT_ITEMS[1].target,
+            v2: IMPACT_ITEMS[2].target,
+            v3: IMPACT_ITEMS[3].target,
+            duration: 2.2,
+            ease: 'power3.out',
+            onUpdate: () => setCounts([
+              Math.round(obj.v0),
+              Math.round(obj.v1),
+              Math.round(obj.v2),
+              Math.round(obj.v3),
+            ]),
           });
         },
       });
@@ -138,19 +125,20 @@ export default function RealWorldImpact() {
   return (
     <section
       ref={sectionRef}
-      className="section-light"
+      className="section-light rwi-section"
       style={{
         paddingTop: 'clamp(4rem, 6vw, 6rem)',
         paddingBottom: 'clamp(4.5rem, 7vw, 6.5rem)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
         backgroundColor: '#ffffff',
         position: 'relative',
-        overflow: 'hidden',
       }}
     >
       <div className="padding-global container-large">
-        {/* Header with Title & See our work CTA */}
+
+        {/* ── Header row ── */}
         <div
+          ref={headerRef}
           style={{
             display: 'flex',
             flexWrap: 'wrap',
@@ -166,27 +154,37 @@ export default function RealWorldImpact() {
             <div
               className="tag-mono"
               style={{
-                color: '#ff3b30',
-                marginBottom: '0.85rem',
+                color: '#DE322D',
+                marginBottom: '0.9rem',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
-                fontSize: '0.75rem',
+                gap: '0.5rem',
+                fontSize: '0.72rem',
                 letterSpacing: '0.15em',
               }}
             >
-              <span>[ PROOF OF WORK ]</span>
-              <span style={{ color: '#aaa' }}>•</span>
-              <span style={{ color: '#777' }}>Commercial & Sector Impact</span>
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: '#DE322D',
+                  flexShrink: 0,
+                }}
+              />
+              PROOF OF WORK&nbsp;&nbsp;·&nbsp;&nbsp;COMMERCIAL & SECTOR IMPACT
             </div>
 
             <h2
               style={{
+                fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(2rem, 4vw, 3.2rem)',
                 fontWeight: 500,
                 letterSpacing: '-0.03em',
-                lineHeight: 1.12,
+                lineHeight: 1.1,
                 color: '#111111',
+                margin: 0,
               }}
             >
               Real-world execution across sectors.
@@ -196,10 +194,7 @@ export default function RealWorldImpact() {
           <Link
             href="/work"
             className="button-editorial button-editorial-dark"
-            style={{
-              height: '46px',
-              padding: '0 1.6rem',
-            }}
+            style={{ height: '46px', padding: '0 1.6rem', flexShrink: 0 }}
           >
             <div className="button-texts-slider">
               <span className="button-text-item">See our work</span>
@@ -209,132 +204,40 @@ export default function RealWorldImpact() {
           </Link>
         </div>
 
-        {/* 4 Flipping Mechanical Impact Cards */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
-            gap: 'clamp(1rem, 2vw, 1.5rem)',
-          }}
-        >
+        {/* ── 4-col grid — all columns top-aligned, equal width ── */}
+        <div ref={gridRef} className="rwi-grid">
           {IMPACT_ITEMS.map((item, idx) => {
-            const currentVal = counts[idx];
-            const strVal =
-              item.twoDigits || currentVal < 10
-                ? currentVal < 10
-                  ? `0${currentVal}`
-                  : `${currentVal}`
-                : `${currentVal}`;
-
-            const digits = strVal.split('');
+            const v = counts[idx];
+            const numStr = item.twoDigits && v < 10 ? `0${v}` : `${v}`;
 
             return (
-              <div
-                key={item.id}
-                style={{
-                  padding: 'clamp(1.5rem, 2.5vw, 2rem)',
-                  borderRadius: '24px',
-                  backgroundColor: '#f8f8f6',
-                  border: '1px solid rgba(0, 0, 0, 0.08)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: '1.75rem',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)',
-                  transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.borderColor = 'rgba(222, 50, 45, 0.35)';
-                  e.currentTarget.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.06)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)';
-                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.02)';
-                }}
-              >
-                {/* Top Badge Tag */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.8rem',
-                      fontWeight: 700,
-                      color: '#DE322D',
-                    }}
-                  >
-                    [ {item.tag} ]
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.7rem',
-                      color: '#888888',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                    }}
-                  >
-                    Verified Impact
-                  </span>
+              <div key={item.id} className="rwi-card">
+
+                {/* top border */}
+                <div className="rwi-border" />
+
+                {/* tag */}
+                <p className="rwi-tag">
+                  {item.tag}&nbsp;·&nbsp;VERIFIED IMPACT
+                </p>
+
+                {/* big number */}
+                <div className="rwi-number" aria-label={numStr + (item.suffix ?? '')}>
+                  {numStr}
+                  {item.suffix && <span className="rwi-suffix">{item.suffix}</span>}
                 </div>
 
-                {/* Mechanical Flipping Digits */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  {digits.map((d, dIdx) => (
-                    <FlipDigit key={dIdx} digit={d} />
-                  ))}
-
-                  {item.plus && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)',
-                        fontWeight: 700,
-                        color: '#DE322D',
-                        marginLeft: '0.25rem',
-                      }}
-                    >
-                      +
-                    </span>
-                  )}
-                </div>
-
-                {/* Info Text */}
-                <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)', paddingTop: '1rem' }}>
-                  <h3
-                    style={{
-                      fontSize: '1.15rem',
-                      fontWeight: 600,
-                      color: '#111111',
-                      marginBottom: '0.4rem',
-                      letterSpacing: '-0.02em',
-                    }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: '0.88rem',
-                      color: '#666666',
-                      lineHeight: 1.5,
-                      margin: 0,
-                    }}
-                  >
-                    {item.desc}
-                  </p>
+                {/* label + desc */}
+                <div className="rwi-text">
+                  <h3 className="rwi-label">{item.title}</h3>
+                  <p className="rwi-desc">{item.desc}</p>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+
     </section>
   );
 }

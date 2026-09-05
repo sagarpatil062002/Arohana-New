@@ -40,8 +40,9 @@
   --pill-text: #111111;
 
   --font-display: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter VF', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Roboto Mono VF', monospace;
+  --font-body: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
   --radius-hero: 32px;
@@ -55,12 +56,20 @@
 }
 
 html,
+body,
+*,
+*::before,
+*::after {
+  font-family: var(--font-display);
+}
+
+html,
 body {
   max-width: 100vw;
   overflow-x: clip;
   background-color: var(--bg-light);
   color: var(--text-light);
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -88,27 +97,36 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Typography styles */
+/* Typography styles — unified to BDO Grotesk VF (Selected Indian Army Projects font) */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 400;
+  font-family: var(--font-display) !important;
+  font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.05;
 }
 
-.font-display {
+p, li, label, td, th, span, div, a {
   font-family: var(--font-display);
 }
 
+p {
+  line-height: 1.6;
+}
+
+.font-display {
+  font-family: var(--font-display) !important;
+}
+
 .font-mono {
-  font-family: var(--font-mono);
+  font-family: var(--font-display) !important;
 }
 
 .tag-mono {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  font-family: var(--font-display) !important;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 a {
@@ -116,11 +134,11 @@ a {
   text-decoration: none;
 }
 
-button {
+button, input, select, textarea {
   border: none;
   background: none;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--font-display) !important;
 }
 
 /* Responsive Containers & Layout */
@@ -394,3 +412,188 @@ input, select, textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* Ensure form controls inherit global typography */
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INDIAN ARMY PROJECTS: Stats Grid & Alignment
+   ═══════════════════════════════════════════════════════════════════════════ */
+.army-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .army-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem 1.25rem !important;
+  }
+  .army-stats .army-stat-col {
+    padding: 0 0 1.25rem 0 !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .army-stats .army-stat-col:nth-child(3),
+  .army-stats .army-stat-col:nth-child(4) {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REAL WORLD IMPACT (Proof of Work): 4-Column Aligned Grid
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rwi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+  column-gap: 0;
+  row-gap: 0;
+}
+
+.rwi-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 1.5rem;
+  padding-right: clamp(1.25rem, 2.5vw, 2.5rem);
+}
+
+.rwi-card:not(:first-child) {
+  padding-left: clamp(1.25rem, 2.5vw, 2.5rem);
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rwi-card:last-child {
+  padding-right: 0;
+}
+
+.rwi-card::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: #111111;
+}
+
+.rwi-tag {
+  font-family: var(--font-display) !important;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #DE322D;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 0.85rem 0;
+  line-height: 1.2;
+}
+
+.rwi-number {
+  font-family: var(--font-display) !important;
+  font-size: clamp(3.2rem, 5.5vw, 5.8rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #111111;
+  display: flex;
+  align-items: baseline;
+  gap: 0.05em;
+  min-height: clamp(3.2rem, 5.5vw, 5.8rem);
+  margin-bottom: 0.85rem;
+}
+
+.rwi-suffix {
+  font-family: var(--font-display) !important;
+  font-size: 0.5em;
+  font-weight: 600;
+  color: #DE322D;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.rwi-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rwi-label {
+  font-family: var(--font-display) !important;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  font-weight: 500;
+  color: #111111;
+  letter-spacing: -0.015em;
+  margin: 0;
+  line-height: 1.3;
+  min-height: 2.6rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.rwi-desc {
+  font-family: var(--font-body) !important;
+  font-size: 0.85rem;
+  color: #666666;
+  line-height: 1.55;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .rwi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 2rem;
+  }
+  .rwi-card:nth-child(odd) {
+    padding-left: 0;
+    padding-right: clamp(1rem, 2.5vw, 2rem);
+    border-left: none;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .rwi-card:nth-child(even) {
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+    padding-right: 0;
+    border-left: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .rwi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+  }
+  .rwi-number {
+    font-size: clamp(2.5rem, 11vw, 3.8rem);
+    min-height: auto;
+  }
+  .rwi-label {
+    min-height: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   POINT OF VIEW: Split View Grid
+   ═══════════════════════════════════════════════════════════════════════════ */
+.pov-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3.5rem, 6vw, 7rem);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .pov-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .pov-right {
+    max-width: 500px;
+    width: 100%;
+  }
+}
+

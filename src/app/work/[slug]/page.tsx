@@ -73,7 +73,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             style={{
               fontSize: 'clamp(2.8rem, 6.5vw, 5.6rem)',
               lineHeight: 1.05,
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.04em',
               color: '#111111',
               marginBottom: '1.25rem',
@@ -245,7 +245,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <h2
             style={{
               fontSize: 'clamp(2rem, 4.5vw, 3.8rem)',
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.03em',
               marginBottom: '2rem',
               lineHeight: 1.1,
@@ -281,7 +281,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <h2
             style={{
               fontSize: 'clamp(2rem, 4.5vw, 3.6rem)',
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: '-0.03em',
               marginBottom: 'clamp(1.75rem, 4vw, 3rem)',
               color: '#111',
@@ -343,7 +343,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             <h2
               style={{
                 fontSize: 'clamp(2rem, 4.5vw, 3.6rem)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.03em',
                 marginBottom: 'clamp(1.75rem, 4vw, 3rem)',
                 color: '#111',

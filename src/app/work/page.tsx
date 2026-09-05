@@ -324,7 +324,7 @@ export default function WorkPage() {
                 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
-                  fontWeight: 400,
+                  fontWeight: 500,
                   letterSpacing: '-0.04em',
                   lineHeight: 0.95,
                   color: '#111111',
@@ -399,7 +399,7 @@ export default function WorkPage() {
               style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
-                fontWeight: 400,
+                fontWeight: 500,
                 letterSpacing: '-0.04em',
                 lineHeight: 0.95,
                 color: '#111111',

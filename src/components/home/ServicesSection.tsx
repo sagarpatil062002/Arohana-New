@@ -150,14 +150,14 @@ export default function ServicesSection() {
                     backgroundColor: '#DE322D',
                   }}
                 />
-                [ 05 ] Services & Practice Areas
+                05 · Services & Practice Areas
               </div>
               <h2
                 style={{
                   color: '#ffffff',
                   fontSize: 'clamp(2rem, 4.5vw, 3.8rem)',
                   fontWeight: 500,
-                  fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                  fontFamily: 'var(--font-display)',
                   lineHeight: 1.1,
                   letterSpacing: '-0.03em',
                   margin: '0 0 1rem 0',
@@ -195,7 +195,7 @@ export default function ServicesSection() {
                   color: '#ffffff',
                   fontSize: 'clamp(2rem, 4.5vw, 4.25rem)',
                   fontWeight: 500,
-                  fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                  fontFamily: 'var(--font-display)',
                   lineHeight: 1,
                   letterSpacing: '-0.03em',
                   margin: 0,
@@ -299,9 +299,9 @@ export default function ServicesSection() {
                           style={{
                             color: '#f0eee6',
                             fontSize: 'clamp(1.75rem, 2.5vw, 2.35rem)',
-                            fontWeight: 600,
-                            fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
-                            letterSpacing: '-0.02em',
+                            fontWeight: 500,
+                            fontFamily: 'var(--font-display)',
+                            letterSpacing: '-0.025em',
                             lineHeight: 1.15,
                             margin: 0,
                             padding: 0,
@@ -427,7 +427,7 @@ export default function ServicesSection() {
                             fontSize: '0.925rem',
                             lineHeight: 1.6,
                             margin: 0,
-                            fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif)',
+                            fontFamily: 'var(--font-body)',
                           }}
                         >
                           {service.description}

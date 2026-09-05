@@ -126,7 +126,7 @@ export default function ShowreelSection({
               <h2
                 style={{
                   fontSize: 'clamp(1.8rem, 3.5vw, 3rem)',
-                  fontWeight: 400,
+                  fontWeight: 500,
                   letterSpacing: '-0.03em',
                   lineHeight: 1.1,
                   maxWidth: '820px',
@@ -242,7 +242,8 @@ export default function ShowreelSection({
                         backdropFilter: 'blur(8px)',
                         color: '#ffffff',
                         fontSize: '0.75rem',
-                        fontFamily: 'var(--font-mono)',
+                        fontFamily: 'var(--font-display)',
+                        fontWeight: 600,
                       }}
                     >
                       {item.badge}
@@ -275,7 +276,7 @@ export default function ShowreelSection({
                   >
                     <span
                       style={{
-                        fontFamily: 'var(--font-mono)',
+                        fontFamily: 'var(--font-display)',
                         fontSize: '1.1rem',
                         fontWeight: 600,
                         color: '#ff3b30',
