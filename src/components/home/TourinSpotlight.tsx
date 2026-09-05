@@ -59,20 +59,10 @@ export default function TourinSpotlight() {
                 style={{
                   color: '#ff3b30',
                   marginBottom: '1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
+                  display: 'block',
                 }}
               >
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ff3b30',
-                  }}
-                />
-                [ 07 ] Experiential Travel
+                Experiential Travel
               </div>
 
               <MaskedHeading

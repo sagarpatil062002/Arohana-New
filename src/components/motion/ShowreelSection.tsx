@@ -108,19 +108,8 @@ export default function ShowreelSection({
                 style={{
                   color: isDark ? '#ff3b30' : '#ff3b30',
                   marginBottom: '0.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
                 }}
               >
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ff3b30',
-                  }}
-                />
                 {eyebrow}
               </div>
               <h2
@@ -359,7 +348,7 @@ export default function ShowreelSection({
               </div>
               <div>
                 <span className="tag-mono" style={{ color: '#ff3b30', fontSize: '0.75rem' }}>
-                  0{i + 1} • {item.badge}
+                  {item.badge}
                 </span>
                 <h3 style={{ fontSize: '1.6rem', fontWeight: 500, margin: '0.25rem 0 0.5rem 0' }}>
                   {item.title}

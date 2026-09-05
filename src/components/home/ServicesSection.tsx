@@ -143,15 +143,7 @@ export default function ServicesSection() {
                   fontSize: '0.8rem',
                 }}
               >
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: '#DE322D',
-                  }}
-                />
-                05 · Services & Practice Areas
+                Services & Practice Areas
               </div>
               <h2
                 style={{

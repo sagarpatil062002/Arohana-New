@@ -2,14 +2,18 @@
 
 import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function Footer() {
+  const pathname = usePathname();
   const brandRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (pathname === '/tourin') return;
     gsap.registerPlugin(ScrollTrigger);
 
     const el = brandRef.current;
@@ -30,7 +34,12 @@ export default function Footer() {
         },
       }
     );
-  }, []);
+  }, [pathname]);
+
+  if (pathname === '/tourin') {
+    return null;
+  }
+
   return (
     <footer
       style={{
@@ -254,36 +263,27 @@ export default function Footer() {
             overflow: 'hidden',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'baseline',
+            alignItems: 'center',
             borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-            paddingTop: '1.5rem',
+            paddingTop: '2.5rem',
+            paddingBottom: '1rem',
             userSelect: 'none',
           }}
         >
           <div
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2.5rem, 13vw, 16rem)',
-              fontWeight: 500,
-              letterSpacing: '-0.04em',
-              lineHeight: 0.85,
-              color: '#111111',
-              whiteSpace: 'nowrap',
-              display: 'flex',
-              alignItems: 'baseline',
+              position: 'relative',
+              width: '100%',
+              maxWidth: '960px',
+              height: 'clamp(50px, 12vw, 150px)',
             }}
           >
-            Ārohana
-            <span
-              style={{
-                fontSize: 'clamp(0.9rem, 3.2vw, 3.5rem)',
-                marginLeft: '0.35rem',
-                color: '#ff3b30',
-                fontWeight: 600,
-              }}
-            >
-              ®
-            </span>
+            <Image
+              src="/images/arohana-logo.png"
+              alt="ĀROHANA"
+              fill
+              style={{ objectFit: 'contain' }}
+            />
           </div>
         </div>
       </div>

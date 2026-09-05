@@ -297,20 +297,9 @@ export default function AboutPage() {
             style={{
               color: '#DE322D',
               marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
+              display: 'block',
             }}
           >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: '#DE322D',
-                boxShadow: '0 0 10px #DE322D',
-              }}
-            />
             THE FOUNDER'S STORY
           </div>
 
@@ -445,7 +434,7 @@ export default function AboutPage() {
           }}
         >
           <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '1rem', fontWeight: 600 }}>
-            01 • THE ROOTS
+            THE ROOTS
           </div>
           <h2
             style={{
@@ -503,7 +492,7 @@ export default function AboutPage() {
           }}
         >
           <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem', fontWeight: 600 }}>
-            02 • THE TURNING POINT
+            THE TURNING POINT
           </div>
           <h2
             style={{
@@ -544,7 +533,7 @@ export default function AboutPage() {
           }}
         >
           <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '1rem', fontWeight: 600 }}>
-            03 • EXPANSION & LADAKH
+            EXPANSION & LADAKH
           </div>
           <h2
             style={{
@@ -602,7 +591,7 @@ export default function AboutPage() {
           }}
         >
           <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem', fontWeight: 600 }}>
-            04 • OUR PRACTICE
+            OUR PRACTICE
           </div>
           <h2
             style={{
@@ -650,7 +639,7 @@ export default function AboutPage() {
           }}
         >
           <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '1rem', fontWeight: 600 }}>
-            [ 02 ] THE STANDARD
+            THE STANDARD
           </div>
           <h2
             style={{
@@ -753,30 +742,19 @@ export default function AboutPage() {
           }}
         >
           <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '1rem', fontWeight: 600 }}>
-            [ 03 ] LEADERSHIP COLLECTIVE
+            LEADERSHIP COLLECTIVE
           </div>
           <h2
             style={{
               fontSize: 'clamp(2rem, 3.8vw, 3.4rem)',
               fontWeight: 500,
               letterSpacing: '-0.03em',
-              marginBottom: '1rem',
+              marginBottom: '3rem',
               color: '#111',
             }}
           >
             Brand is only as strong as the thinking behind it.
           </h2>
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
-              color: '#555',
-              lineHeight: 1.6,
-              maxWidth: '820px',
-              marginBottom: '3.5rem',
-            }}
-          >
-            Behind Ārohana is an interdisciplinary collective of operators, commercial strategists, filmmakers, and creative architects who have built, run, and scaled systems on the ground.
-          </p>
 
           <div
             style={{
@@ -850,7 +828,7 @@ export default function AboutPage() {
                   </div>
                 </div>
 
-                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1, backgroundColor: '#ffffff' }}>
+                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1, backgroundColor: '#ffffff' }}>
                   <div>
                     <span
                       style={{
@@ -861,14 +839,10 @@ export default function AboutPage() {
                         color: '#888',
                         textTransform: 'uppercase',
                         letterSpacing: '0.08em',
-                        marginBottom: '0.6rem',
                       }}
                     >
                       {member.division}
                     </span>
-                    <p style={{ color: '#555', fontSize: '0.875rem', lineHeight: 1.6, margin: 0 }}>
-                      {member.bio}
-                    </p>
                   </div>
 
                   <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(0, 0, 0, 0.06)' }}>
@@ -940,8 +914,7 @@ export default function AboutPage() {
           />
 
           <div style={{ position: 'relative', zIndex: 2, maxWidth: '840px' }}>
-            <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#DE322D', boxShadow: '0 0 8px #DE322D' }} />
+            <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '1rem', display: 'block' }}>
               GET IN TOUCH
             </div>
             <h2

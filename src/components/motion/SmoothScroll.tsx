@@ -19,12 +19,13 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       return;
     }
 
+    const isServices = pathname === '/services';
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: isServices ? 0.7 : 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.5,
+      wheelMultiplier: isServices ? 1.5 : 1.25,
+      touchMultiplier: 1.8,
     });
 
     lenisRef.current = lenis;
@@ -46,9 +47,14 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
   }, []);
 
-  // Reset scroll on route change
+  // Update speed & reset scroll on route change
   useEffect(() => {
     if (lenisRef.current) {
+      const isServices = pathname === '/services';
+      // @ts-ignore
+      lenisRef.current.options.duration = isServices ? 0.7 : 0.85;
+      // @ts-ignore
+      lenisRef.current.options.wheelMultiplier = isServices ? 1.5 : 1.25;
       lenisRef.current.scrollTo(0, { immediate: true });
     } else {
       window.scrollTo(0, 0);

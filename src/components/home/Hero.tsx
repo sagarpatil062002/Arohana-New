@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import gsap from 'gsap';
 
 export default function Hero() {
@@ -172,20 +171,9 @@ export default function Hero() {
                 style={{
                   color: 'rgba(255, 255, 255, 0.7)',
                   marginBottom: '0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
+                  display: 'block',
                 }}
               >
-                <span
-                  style={{
-                    display: 'inline-block',
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ff3b30',
-                  }}
-                />
                 WE ARE ĀROHANA
               </div>
               <h1
@@ -222,74 +210,6 @@ export default function Hero() {
                 </div>
               </Link>
             </div>
-
-            {/* Founder Contact Pill directly inside hero */}
-            <Link
-              href="/contact"
-              className="hero-founder-pill"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.9rem',
-                padding: '0.65rem 1.25rem 0.65rem 0.65rem',
-                borderRadius: '9999px',
-                backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                backdropFilter: 'blur(14px)',
-                WebkitBackdropFilter: 'blur(14px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#ffffff',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              <div
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                }}
-              >
-                <Image
-                  src="/images/home/madhura-editorial.jpg"
-                  alt="Madhura - Founder Ārohana"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: '0.9rem',
-                    fontWeight: 500,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                  }}
-                >
-                  Contact Madhura
-                  <span
-                    style={{
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      backgroundColor: '#28cd41',
-                    }}
-                  />
-                </div>
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    color: 'rgba(255, 255, 255, 0.65)',
-                    fontFamily: 'var(--font-mono)',
-                  }}
-                >
-                  Founder & Principal Director
-                </div>
-              </div>
-            </Link>
           </div>
         </div>
       </div>
@@ -305,10 +225,6 @@ export default function Hero() {
           .hero-bottom-wrap {
             padding: 1.5rem 1.25rem 1.75rem !important;
             gap: 1.25rem !important;
-          }
-          .hero-founder-pill {
-            width: 100% !important;
-            justify-content: flex-start !important;
           }
           .hero-tabs-wrap {
             padding-right: 2rem;

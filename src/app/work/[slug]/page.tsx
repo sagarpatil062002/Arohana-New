@@ -53,19 +53,9 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             style={{
               color: '#ff3b30',
               marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
+              display: 'block',
             }}
           >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: '#ff3b30',
-              }}
-            />
             {caseStudy.sector}
           </div>
 
@@ -190,7 +180,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             }}
           >
             <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
-              01 • CONTEXT & SITUATION
+              CONTEXT & SITUATION
             </div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 500, marginBottom: '1.25rem', color: '#111' }}>
               The Operational Context
@@ -214,7 +204,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             }}
           >
             <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
-              02 • THE CORE PROBLEM
+              THE CORE PROBLEM
             </div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 500, marginBottom: '1.25rem', color: '#111' }}>
               The Real Challenge
@@ -240,7 +230,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           }}
         >
           <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
-            03 • STRATEGIC APPROACH
+            STRATEGIC APPROACH
           </div>
           <h2
             style={{
@@ -276,7 +266,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         {/* The Execution Work Modules */}
         <div style={{ marginBottom: 'clamp(3.5rem, 6vw, 6rem)' }}>
           <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
-            04 • THE DELIVERED WORK
+            THE DELIVERED WORK
           </div>
           <h2
             style={{
@@ -338,7 +328,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         {caseStudy.gallery && caseStudy.gallery.length > 0 && (
           <div style={{ marginBottom: 'clamp(3.5rem, 6vw, 6rem)' }}>
             <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
-              05 • VISUAL EVIDENCE
+              VISUAL EVIDENCE
             </div>
             <h2
               style={{

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
 
@@ -32,6 +33,8 @@ export default function Navbar() {
     { label: 'Contact', href: '/contact' },
   ];
 
+  const isTourinDarkHero = pathname === '/tourin' && !isScrolled;
+
   return (
     <header
       style={{
@@ -56,6 +59,7 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          position: 'relative',
         }}
       >
         {/* Brand / Logo */}
@@ -64,66 +68,38 @@ export default function Navbar() {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.85rem',
             textDecoration: 'none',
+            zIndex: 2,
           }}
         >
-          <span
+          <Image
+            src="/images/arohana-logo.png"
+            alt="ĀROHANA"
+            width={124}
+            height={22}
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.45rem',
-              fontWeight: 500,
-              letterSpacing: '-0.03em',
-              color: '#111111',
-              display: 'flex',
-              alignItems: 'baseline',
+              height: '22px',
+              width: 'auto',
+              objectFit: 'contain',
+              filter: isTourinDarkHero ? 'brightness(0) invert(1)' : 'none',
+              transition: 'filter 0.3s ease',
             }}
-          >
-            Ārohana
-            <span style={{ fontSize: '0.75rem', marginLeft: '2px', fontWeight: 400 }}>®</span>
-          </span>
-
-          {/* Barcode / Studio Glyph */}
-          <div
-            style={{
-              display: 'none',
-              alignItems: 'center',
-              gap: '0.5rem',
-              borderLeft: '1px solid rgba(0, 0, 0, 0.15)',
-              paddingLeft: '0.85rem',
-              marginLeft: '0.25rem',
-            }}
-            className="navbar-brand-badge"
-          >
-            <div style={{ display: 'flex', gap: '2px', alignItems: 'center', height: '14px' }}>
-              <span style={{ width: '2px', height: '14px', backgroundColor: '#111' }} />
-              <span style={{ width: '1px', height: '14px', backgroundColor: '#111' }} />
-              <span style={{ width: '3px', height: '14px', backgroundColor: '#111' }} />
-              <span style={{ width: '1px', height: '14px', backgroundColor: '#111' }} />
-              <span style={{ width: '2px', height: '14px', backgroundColor: '#111' }} />
-              <span style={{ width: '4px', height: '14px', backgroundColor: '#111' }} />
-              <span style={{ width: '1px', height: '14px', backgroundColor: '#111' }} />
-            </div>
-            <span
-              className="tag-mono"
-              style={{ fontSize: '0.65rem', color: '#666', letterSpacing: '0.12em' }}
-            >
-              CONSULTANCY
-            </span>
-          </div>
+            priority
+          />
         </Link>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links - Centered */}
         <nav
           style={{
             display: 'none',
             alignItems: 'center',
-            gap: '2rem',
+            gap: '2.25rem',
           }}
           className="desktop-nav"
         >
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
+            const isTourin = link.href === '/tourin';
             return (
               <Link
                 key={link.href}
@@ -131,7 +107,15 @@ export default function Navbar() {
                 style={{
                   fontSize: '0.9rem',
                   fontWeight: isActive ? 600 : 400,
-                  color: isActive ? '#000000' : '#444444',
+                  color: isTourinDarkHero
+                    ? isTourin
+                      ? '#DE322D'
+                      : 'rgba(255, 255, 255, 0.88)'
+                    : isActive
+                    ? isTourin
+                      ? '#DE322D'
+                      : '#000000'
+                    : '#444444',
                   position: 'relative',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -164,26 +148,8 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Action Button & Mobile Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-          <Link
-            href="/contact"
-            className="button-editorial navbar-cta"
-            style={{ height: '40px', padding: '0 1.15rem' }}
-          >
-            <div className="button-texts-slider">
-              <span className="button-text-item desktop-text">Start a conversation</span>
-              <span className="button-text-item desktop-text">Start a conversation</span>
-            </div>
-            <span className="mobile-text" style={{ display: 'none', fontSize: '0.85rem', fontWeight: 500 }}>
-              Contact
-            </span>
-            <div className="button-dot-wrap">
-              <div className="button-dot" />
-              <div className="button-dot-pulse" />
-            </div>
-          </Link>
-
+        {/* Mobile Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           {/* Mobile hamburger button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -195,10 +161,13 @@ export default function Navbar() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              backgroundColor: '#ffffff',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              color: '#111',
+              backgroundColor: isTourinDarkHero ? 'rgba(255, 255, 255, 0.12)' : '#ffffff',
+              border: isTourinDarkHero
+                ? '1px solid rgba(255, 255, 255, 0.25)'
+                : '1px solid rgba(0, 0, 0, 0.08)',
+              color: isTourinDarkHero ? '#ffffff' : '#111',
               flexShrink: 0,
+              transition: 'all 0.3s ease',
             }}
             className="mobile-toggle"
           >
@@ -312,29 +281,12 @@ export default function Navbar() {
       )}
 
       <style jsx>{`
-        @media (max-width: 639px) {
-          .navbar-cta .desktop-text {
-            display: none !important;
-          }
-          .navbar-cta .mobile-text {
-            display: inline-block !important;
-          }
-          .navbar-cta {
-            padding: 0 0.85rem !important;
-            gap: 0.5rem !important;
-          }
-        }
-        @media (max-width: 360px) {
-          .navbar-cta {
-            display: none !important;
-          }
-        }
         @media (min-width: 992px) {
           .desktop-nav {
             display: flex !important;
-          }
-          .navbar-brand-badge {
-            display: flex !important;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
           }
           .mobile-toggle {
             display: none !important;

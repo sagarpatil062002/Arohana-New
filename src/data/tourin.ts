@@ -37,6 +37,165 @@ export interface TravelerReflection {
   year: string;
 }
 
+export interface Destination {
+  id: string;
+  name: string;
+  tagline: string;
+  state: string;
+  status: 'active' | 'coming-soon';
+  season: string;
+  badge: string;
+  description: string;
+  highlights: string[];
+  image: string;
+  alt: string;
+}
+
+export interface ExperienceCategory {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  tag: string;
+}
+
+export const DESTINATIONS_DATA: Destination[] = [
+  {
+    id: 'ladakh',
+    name: 'Ladakh',
+    tagline: 'The First Journey',
+    state: 'UT of Ladakh',
+    status: 'active',
+    season: 'May — October',
+    badge: 'AVAILABLE NOW',
+    description:
+      'Ancient cliffside monasteries, high-altitude passes, starlit dark sky reserves, and secluded village cultures nestled between the Karakoram and Great Himalaya.',
+    highlights: [
+      'Hanle Dark Sky Reserve at 14,764 ft',
+      'Ancient Hemis & Alchi 11th-century fresco libraries',
+      'Changthang high plateaus & nomadic grasslands',
+      'Living Silk Route heritage in Turtuk & Nubra',
+    ],
+    image: '/images/tourin/tourin-hero.jpg',
+    alt: 'Dramatic mountains and high altitude landscapes of Ladakh',
+  },
+  {
+    id: 'kashmir',
+    name: 'Kashmir',
+    tagline: 'Valleys & Living Craft',
+    state: 'Jammu & Kashmir',
+    status: 'coming-soon',
+    season: 'April — November',
+    badge: 'COMING SOON',
+    description:
+      'Meadows of wild flora, centuries of walnut woodcarving and Pashmina weaving, slow cedar houseboat living, and silent alpine glacial trails.',
+    highlights: [
+      'Dachigam sanctuary & Himalayan black bear trails',
+      'Old Srinagar artisan guilds & papier-mâché ateliers',
+      'Gurez border valley & pristine Kishanganga river',
+      'Aru alpine meadows & secluded shepherd paths',
+    ],
+    image: '/images/tourin/tourin-gallery-3.jpg',
+    alt: 'Scenic valley road and pines in Kashmir',
+  },
+  {
+    id: 'himachal-pradesh',
+    name: 'Himachal Pradesh',
+    tagline: 'High Passes & Cedar Forests',
+    state: 'Himachal Pradesh',
+    status: 'coming-soon',
+    season: 'Year Round (Regional)',
+    badge: 'COMING SOON',
+    description:
+      'Ancient deodar forests, traditional Kath-Kuni timber architecture, Spiti high desert monastic traditions, and trans-Himalayan shepherd routes.',
+    highlights: [
+      'Spiti Valley cliffside 1000-year-old gompas',
+      'Kinnaur heritage apple valleys & wooden temples',
+      'Kath-Kuni stone & timber architectural stays',
+      'Pin Valley snow leopard habitat trails',
+    ],
+    image: '/images/tourin/tourin-1.jpg',
+    alt: 'Himalayan architectural heritage and mountain valleys',
+  },
+  {
+    id: 'uttarakhand',
+    name: 'Uttarakhand',
+    tagline: 'Sacred Confluences & Ridge Trails',
+    state: 'Uttarakhand',
+    status: 'coming-soon',
+    season: 'March — June, Sept — Nov',
+    badge: 'COMING SOON',
+    description:
+      'High oak forests, sacred glacial headwaters, Kumaoni stone hamlets, and silent ridge trails looking out over Nanda Devi and Trishul.',
+    highlights: [
+      'Nanda Devi biosphere buffer trails',
+      'Kumaoni heritage stone village homestays',
+      'Alaknanda & Mandakini dramatic river canyons',
+      'Chopta & Tungnath high alpine meadows',
+    ],
+    image: '/images/tourin/tourin-2.jpg',
+    alt: 'Vast alpine mountain vistas and ridges in Uttarakhand',
+  },
+];
+
+export const TOURIN_EXPERIENCES: ExperienceCategory[] = [
+  {
+    id: 'expeditions',
+    title: 'High-Pass Expeditions',
+    subtitle: 'Khardung La, Chang La & Remote Passes',
+    description:
+      'Traverse some of the world’s most dramatic high-altitude motorable passes with engineered logistical support, medical acclimatisation, and seasoned local pilots.',
+    image: '/images/tourin/tourin-3.jpg',
+    tag: 'Mountain Roads',
+  },
+  {
+    id: 'culture',
+    title: 'Living Monastic & Artisan Culture',
+    subtitle: 'Ancient Frescoes & Living Faith',
+    description:
+      'Step into centuries-old prayer halls with resident custodians, witness sacred morning rituals, and spend unhurried hours with traditional wool and woodcraft masters.',
+    image: '/images/tourin/tourin-gallery-4.jpg',
+    tag: 'Heritage',
+  },
+  {
+    id: 'homestays',
+    title: 'Heritage Village Stays',
+    subtitle: 'Rammed Earth & Poplar Manors',
+    description:
+      'Slow down in authentic family-run manor houses in secluded valleys. Wake to woodsmoke, orchard vistas, and stories shared over the hearth.',
+    image: '/images/tourin/tourin-1.jpg',
+    tag: 'Immersion',
+  },
+  {
+    id: 'culinary',
+    title: 'Native High-Altitude Cuisine',
+    subtitle: 'Buckwheat, Apricots & Mountain Tea',
+    description:
+      'Savour organic, indigenous farm gastronomy — sun-dried apricot sauces, freshly kneaded buckwheat noodles, Tsampa porridges, and herbal wild thyme teas.',
+    image: '/images/tourin/tourin-gallery-2.jpg',
+    tag: 'Gastronomy',
+  },
+  {
+    id: 'darksky',
+    title: 'Dark Sky & Astronomical Reserves',
+    subtitle: 'Hanle Sanctuary at 14,764 FT',
+    description:
+      'Experience India’s premier designated Dark Sky Reserve under crystal-clear high-altitude atmosphere, observing the Milky Way core and distant nebulae.',
+    image: '/images/tourin/tourin-2.jpg',
+    tag: 'Night Sky',
+  },
+  {
+    id: 'people',
+    title: 'Pastoral & Community Encounters',
+    subtitle: 'Changpa Pastoralists & Balti Hamlets',
+    description:
+      'Meaningful, respectful time spent with nomadic pastoral communities on high grasslands and Silk Route villages, listening to everyday lived experiences.',
+    image: '/images/tourin/tourin-hero.jpg',
+    tag: 'People',
+  },
+];
+
 export const TOURIN_CONTENT = {
   hero: {
     badge: 'Bespoke Experiential Travel',

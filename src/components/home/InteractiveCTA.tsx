@@ -124,25 +124,15 @@ export default function InteractiveCTA() {
         }}
       >
         <div
-          className="tag-mono"
-          style={{
-            color: '#ff3b30',
-            marginBottom: '1.5rem',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-          }}
-        >
-          <span
+            className="tag-mono"
             style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#ff3b30',
+              color: '#888888',
+              marginBottom: '1.5rem',
+              display: 'block',
             }}
-          />
-          START A CONVERSATION
-        </div>
+          >
+            START A CONVERSATION
+          </div>
 
         <h2
           style={{

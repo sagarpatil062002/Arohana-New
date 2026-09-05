@@ -183,7 +183,7 @@ export default function ServicesPage() {
               trigger: card,
               start: 'top 95%',
               end: 'top 55%',
-              scrub: 0.8,
+              scrub: 0.2,
             },
           }
         );
@@ -275,21 +275,10 @@ export default function ServicesPage() {
             style={{
               color: '#DE322D',
               marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
+              display: 'block',
             }}
           >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: '#DE322D',
-                boxShadow: '0 0 8px #DE322D',
-              }}
-            />
-            [ 01 ] Capabilities & How We Work
+            Capabilities & How We Work
           </div>
 
           <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
@@ -359,23 +348,10 @@ export default function ServicesPage() {
                 <div>
                   <div
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
                       marginBottom: '1rem',
                     }}
                   >
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '1.5rem',
-                        fontWeight: 700,
-                        color: '#ff3b30',
-                      }}
-                    >
-                      {pillar.num}
-                    </span>
-                    <span className="tag-mono" style={{ color: '#888', fontWeight: 600 }}>
+                    <span className="tag-mono" style={{ color: '#ff3b30', fontWeight: 600 }}>
                       PRACTICE PILLAR
                     </span>
                   </div>

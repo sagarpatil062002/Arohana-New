@@ -163,16 +163,6 @@ export default function RealWorldImpact() {
                 letterSpacing: '0.15em',
               }}
             >
-              <span
-                style={{
-                  display: 'inline-block',
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#DE322D',
-                  flexShrink: 0,
-                }}
-              />
               PROOF OF WORK&nbsp;&nbsp;·&nbsp;&nbsp;COMMERCIAL & SECTOR IMPACT
             </div>
 

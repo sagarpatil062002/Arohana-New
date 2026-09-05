@@ -43,19 +43,9 @@ export default function StatsProof() {
             style={{
               color: '#777777',
               marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
+              display: 'block',
             }}
           >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: '#ff3b30',
-              }}
-            />
             PROOF & VERIFIABLE STANDARDS
           </div>
           <h2

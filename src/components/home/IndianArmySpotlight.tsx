@@ -190,7 +190,7 @@ export default function IndianArmySpotlight() {
               <ShieldCheck size={16} />
               <span>PROOF OF WORK</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>•</span>
-              <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>03 / DEFENCE & SPECIAL BRIEFS</span>
+              <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>DEFENCE & SPECIAL BRIEFS</span>
             </div>
 
             <h2

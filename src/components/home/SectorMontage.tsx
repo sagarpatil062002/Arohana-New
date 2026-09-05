@@ -65,7 +65,7 @@ export default function SectorMontage() {
     <div>
       <ShowreelSection
         items={sectors}
-        eyebrow="05 · Sector Depth"
+        eyebrow="Sector Depth"
         heading="Where our experience sits."
         subheading="Cross-disciplinary capability deployed across 6 core commercial and institutional sectors without generic agency templates."
         theme="light"

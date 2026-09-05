@@ -90,20 +90,9 @@ export default function ContactPage() {
             style={{
               color: '#ff3b30',
               marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
+              display: 'block',
             }}
           >
-            <span
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: '#ff3b30',
-                boxShadow: '0 0 8px #ff3b30',
-              }}
-            />
             DIRECT ENGAGEMENT
           </div>
 
@@ -592,13 +581,10 @@ export default function ContactPage() {
               style={{
                 color: '#DE322D',
                 marginBottom: '0.75rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
+                display: 'block',
                 fontSize: '0.8rem',
               }}
             >
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#DE322D' }} />
               FREQUENTLY ASKED QUESTIONS
             </div>
             <h2

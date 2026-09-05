@@ -177,17 +177,7 @@ export default function PointOfView() {
                 opacity: 0, // starts hidden
               }}
             >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#DE322D',
-                  flexShrink: 0,
-                  display: 'inline-block',
-                }}
-              />
-              04 · POSITIONING &amp; PHILOSOPHY
+              POSITIONING &amp; PHILOSOPHY
             </div>
 
             {/* Heading — uses overflow:hidden + yPercent for mask effect */}
