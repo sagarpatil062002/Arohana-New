@@ -47,9 +47,9 @@ export default function Footer() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '3.5rem',
-            paddingBottom: '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 3.5rem)',
+            paddingBottom: '3.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
           }}
         >
@@ -57,11 +57,11 @@ export default function Footer() {
           <div>
             <div
               className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.5rem' }}
+              style={{ color: '#888888', marginBottom: '1.25rem' }}
             >
               EXPLORE
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <Link href="/" style={{ color: '#111', fontSize: '0.95rem' }}>
                 Home
               </Link>
@@ -90,12 +90,12 @@ export default function Footer() {
           <div>
             <div
               className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.5rem' }}
+              style={{ color: '#888888', marginBottom: '1.25rem' }}
             >
               SELECTED WORK
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              <Link href="/work/raysons" style={{ color: '#555', fontSize: '0.9rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <Link href="/work/raysons-group" style={{ color: '#555', fontSize: '0.9rem' }}>
                 Raysons Group — Multi-business Growth
               </Link>
               <Link href="/work/loom-crafts" style={{ color: '#555', fontSize: '0.9rem' }}>
@@ -120,7 +120,7 @@ export default function Footer() {
           <div>
             <div
               className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.5rem' }}
+              style={{ color: '#888888', marginBottom: '1.25rem' }}
             >
               DIRECT CONTACT
             </div>
@@ -130,10 +130,11 @@ export default function Footer() {
                 <a
                   href="mailto:founder@byarohana.com"
                   style={{
-                    fontSize: '1.05rem',
+                    fontSize: '1rem',
                     color: '#111',
                     fontWeight: 500,
                     textDecoration: 'none',
+                    wordBreak: 'break-all',
                   }}
                 >
                   founder@byarohana.com
@@ -144,19 +145,19 @@ export default function Footer() {
                 <a
                   href="tel:+918380092241"
                   style={{
-                    fontSize: '1.05rem',
+                    fontSize: '1rem',
                     color: '#111',
                     fontWeight: 500,
                     textDecoration: 'none',
                   }}
                 >
-                  +91 8380092241
+                  +91 83800 92241
                 </a>
               </div>
-              <div style={{ marginTop: '0.5rem' }}>
+              <div style={{ marginTop: '0.25rem' }}>
                 <div style={{ fontSize: '0.8rem', color: '#888' }}>Presence</div>
-                <div style={{ fontSize: '0.95rem', color: '#333' }}>
-                  Pune • Ladakh • Pan-India Engagements
+                <div style={{ fontSize: '0.9rem', color: '#333' }}>
+                  Goa · Kolhapur · Delhi · Ladakh
                 </div>
               </div>
             </div>
@@ -166,11 +167,11 @@ export default function Footer() {
           <div>
             <div
               className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.5rem' }}
+              style={{ color: '#888888', marginBottom: '1.25rem' }}
             >
               COMMUNICATION
             </div>
-            <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1.25rem', lineHeight: 1.5 }}>
               Don't start with a service. Start with the business problem. We respond within 24 hours.
             </p>
             <form
@@ -178,21 +179,22 @@ export default function Footer() {
                 e.preventDefault();
                 alert('Thank you for connecting with Ārohana.');
               }}
-              style={{ display: 'flex', gap: '0.5rem' }}
+              style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
             >
               <input
                 type="email"
                 required
                 placeholder="Enter your email"
                 style={{
-                  flex: 1,
+                  flex: '1 1 180px',
                   height: '46px',
                   padding: '0 1rem',
                   borderRadius: '9999px',
                   border: '1px solid rgba(0, 0, 0, 0.12)',
-                  fontSize: '0.875rem',
+                  fontSize: '16px',
                   backgroundColor: '#fafafa',
                   outline: 'none',
+                  minWidth: '0',
                 }}
               />
               <button
@@ -209,6 +211,8 @@ export default function Footer() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.35rem',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
                 }}
               >
                 Connect <ArrowUpRight size={14} />
@@ -224,15 +228,15 @@ export default function Footer() {
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingTop: '2rem',
-            paddingBottom: '2.5rem',
+            paddingTop: '1.75rem',
+            paddingBottom: '2rem',
             fontSize: '0.8rem',
             color: '#777',
             gap: '1rem',
           }}
         >
           <div>© {new Date().getFullYear()} Ārohana Consultancy. All rights reserved.</div>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <span>Business Thinking</span>
             <span>•</span>
             <span>Creative Communication</span>
@@ -259,7 +263,7 @@ export default function Footer() {
           <div
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3.5rem, 14.5vw, 16rem)',
+              fontSize: 'clamp(2.5rem, 13vw, 16rem)',
               fontWeight: 500,
               letterSpacing: '-0.04em',
               lineHeight: 0.85,
@@ -272,8 +276,8 @@ export default function Footer() {
             Ārohana
             <span
               style={{
-                fontSize: 'clamp(1rem, 3.5vw, 3.5rem)',
-                marginLeft: '0.5rem',
+                fontSize: 'clamp(0.9rem, 3.2vw, 3.5rem)',
+                marginLeft: '0.35rem',
                 color: '#ff3b30',
                 fontWeight: 600,
               }}

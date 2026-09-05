@@ -20,10 +20,10 @@ export default function TourinSpotlight() {
       <div className="padding-global container-large">
         <div
           style={{
-            borderRadius: 'clamp(24px, 4vw, 40px)',
+            borderRadius: 'clamp(20px, 3.5vw, 40px)',
             backgroundColor: '#0c0c0e',
             color: '#ffffff',
-            padding: 'clamp(2.5rem, 5vw, 5rem)',
+            padding: 'clamp(1.75rem, 4.5vw, 5rem)',
             position: 'relative',
             overflow: 'hidden',
           }}
@@ -45,8 +45,8 @@ export default function TourinSpotlight() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '3.5rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+              gap: 'clamp(2rem, 4vw, 3.5rem)',
               alignItems: 'center',
               position: 'relative',
               zIndex: 2,
@@ -72,13 +72,13 @@ export default function TourinSpotlight() {
                     backgroundColor: '#ff3b30',
                   }}
                 />
-                OWNED EXPERIENTIAL TRAVEL BRAND
+                [ 07 ] Experiential Travel
               </div>
 
               <MaskedHeading
                 as="h2"
                 style={{
-                  fontSize: 'clamp(2.5rem, 5vw, 4.8rem)',
+                  fontSize: 'clamp(2.2rem, 4.5vw, 4.8rem)',
                   fontWeight: 400,
                   letterSpacing: '-0.03em',
                   lineHeight: 1.05,
@@ -91,15 +91,13 @@ export default function TourinSpotlight() {
 
               <p
                 style={{
-                  fontSize: 'clamp(1.05rem, 1.4vw, 1.25rem)',
+                  fontSize: 'clamp(1rem, 1.4vw, 1.25rem)',
                   color: 'rgba(255, 255, 255, 0.8)',
                   lineHeight: 1.6,
                   marginBottom: '2rem',
                 }}
               >
-                An experiential travel brand beginning with Ladakh — built from lived experience
-                rather than a generic destination catalogue. We design journeys for curious
-                travellers who want more than a checklist of sights.
+                Curated Himalayan routes, community homestays, and high-altitude logistics planned directly by people who know the mountain terrain intimately.
               </p>
 
               {/* Verified Proof Box */}
@@ -108,11 +106,12 @@ export default function TourinSpotlight() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '1.25rem',
-                  padding: '1rem 1.5rem',
+                  padding: '1rem 1.25rem',
                   borderRadius: '16px',
                   backgroundColor: 'rgba(255, 255, 255, 0.06)',
                   border: '1px solid rgba(255, 255, 255, 0.12)',
                   marginBottom: '2.5rem',
+                  flexWrap: 'wrap',
                 }}
               >
                 <div
@@ -125,20 +124,31 @@ export default function TourinSpotlight() {
                 >
                   15+
                 </div>
-                <div style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.8)' }}>
-                  Separate curated journeys completed — from solo explorers to a 20-biker expedition.
+                <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.8)', maxWidth: '340px' }}>
+                  15+ separate bookings/trips so far — from solo high-altitude explorers to corporate and 20-biker expeditions.
                 </div>
               </div>
 
-              <div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <Link
                   href="/tourin"
                   className="button-editorial button-editorial-white"
                   style={{ height: '48px', padding: '0 1.75rem' }}
                 >
                   <div className="button-texts-slider">
-                    <span className="button-text-item">Explore Tourin Ladakh</span>
-                    <span className="button-text-item">Explore Tourin Ladakh</span>
+                    <span className="button-text-item">Explore Tourin Journeys</span>
+                    <span className="button-text-item">Explore Tourin Journeys</span>
+                  </div>
+                  <ArrowUpRight size={16} />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="button-editorial button-editorial-primary"
+                  style={{ height: '48px', padding: '0 1.75rem' }}
+                >
+                  <div className="button-texts-slider">
+                    <span className="button-text-item">Plan a Journey</span>
+                    <span className="button-text-item">Plan a Journey</span>
                   </div>
                   <ArrowUpRight size={16} />
                 </Link>
@@ -147,19 +157,19 @@ export default function TourinSpotlight() {
 
             {/* Right: Immersive Photography Montage */}
             <div
+              className="tourin-montage-grid"
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
-                gap: '1.25rem',
+                gap: '1rem',
               }}
             >
               <div
                 style={{
                   position: 'relative',
                   aspectRatio: '4/5',
-                  borderRadius: '20px',
+                  borderRadius: '18px',
                   overflow: 'hidden',
-                  marginTop: '2rem',
                   boxShadow: '0 16px 40px rgba(0,0,0,0.4)',
                 }}
               >
@@ -167,6 +177,7 @@ export default function TourinSpotlight() {
                   src="/images/tourin/tourin-hero.jpg"
                   alt="Tourin Ladakh Landscape"
                   fill
+                  sizes="(max-width: 768px) 50vw, 300px"
                   style={{ objectFit: 'cover' }}
                 />
               </div>
@@ -175,9 +186,8 @@ export default function TourinSpotlight() {
                 style={{
                   position: 'relative',
                   aspectRatio: '4/5',
-                  borderRadius: '20px',
+                  borderRadius: '18px',
                   overflow: 'hidden',
-                  marginBottom: '2rem',
                   boxShadow: '0 16px 40px rgba(0,0,0,0.4)',
                 }}
               >
@@ -185,6 +195,7 @@ export default function TourinSpotlight() {
                   src="/images/tourin/tourin-1.jpg"
                   alt="Tourin Ladakh Journey"
                   fill
+                  sizes="(max-width: 768px) 50vw, 300px"
                   style={{ objectFit: 'cover' }}
                 />
               </div>

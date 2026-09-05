@@ -18,68 +18,111 @@ export default function WorkPage() {
   const pillPos = useRef({ x: -100, y: -100 });
   const isHovering = useRef(false);
 
+  const featuredCaseStudies = [
+    {
+      slug: 'raysons-group',
+      title: 'Raysons Group',
+      desc: 'Shows long-term digital partnership across real estate and hospitality, plus project production.',
+      tags: ['Real Estate', 'Hospitality', 'Digital Growth'],
+      heroImage: '/images/case-studies/raysons/neora-1.jpg',
+      sector: 'Real Estate · Hospitality',
+    },
+    {
+      slug: 'loom-crafts',
+      title: 'Loom Crafts',
+      desc: 'Shows how one brand can require different communication systems across furniture and prefab.',
+      tags: ['Real Estate', 'Built Environment', 'Brand Strategy'],
+      heroImage: '/images/case-studies/loom/loom-hero.jpg',
+      sector: 'Real Estate · Built Environment',
+    },
+    {
+      slug: 'picturetime',
+      title: 'PictureTime',
+      desc: 'Shows digital brand work plus cultural/event/on-ground content.',
+      tags: ['Entertainment', 'Events', 'Content Production'],
+      heroImage: '/images/case-studies/picturetime/picturetime-hero.jpg',
+      sector: 'Entertainment · Events',
+    },
+    {
+      slug: 'she',
+      title: 'SHE',
+      desc: 'Shows complex institutional/community communication and on-ground execution.',
+      tags: ['Institutional', 'Community', 'Documentary'],
+      heroImage: '/images/case-studies/she/she-hero.jpg',
+      sector: 'Institutional · Community',
+    },
+    {
+      slug: 'misu',
+      title: 'Misu',
+      desc: 'Shows the depth of hospitality consulting and digital execution.',
+      tags: ['Hospitality', 'Consulting', 'Digital'],
+      heroImage: '/images/case-studies/misu/misu-hero.jpg',
+      sector: 'Hospitality · Consulting',
+    },
+    {
+      slug: 'rr-skins',
+      title: 'RR Skins',
+      desc: 'Shows healthcare communication built around trust and education.',
+      tags: ['Healthcare', 'Brand Strategy', 'Content'],
+      heroImage: '/images/case-studies/rrskins/rrskins-hero.jpg',
+      sector: 'Healthcare',
+    },
+  ];
+
   const filters = [
     'All',
-    'Industrial & Multi-Entity',
-    'Luxury & Architecture',
-    'Media & Culture',
-    'Social Development',
+    'Real Estate & Built Environment',
     'Hospitality & F&B',
     'Healthcare',
+    'Entertainment & Media',
+    'Institutional & Community',
   ];
 
   const filteredCases =
     selectedFilter === 'All'
-      ? CASE_STUDIES
-      : CASE_STUDIES.filter((cs) => {
-          if (selectedFilter === 'Industrial & Multi-Entity')
-            return cs.sector.includes('Industrial') || cs.sector.includes('Real Estate');
-          if (selectedFilter === 'Luxury & Architecture')
-            return cs.sector.includes('Luxury') || cs.sector.includes('Modular');
-          if (selectedFilter === 'Media & Culture')
-            return cs.sector.includes('Media') || cs.sector.includes('Entertainment');
-          if (selectedFilter === 'Social Development') return cs.sector.includes('Social');
-          if (selectedFilter === 'Hospitality & F&B') return cs.sector.includes('Hospitality');
-          if (selectedFilter === 'Healthcare') return cs.sector.includes('Healthcare');
+      ? featuredCaseStudies
+      : featuredCaseStudies.filter((cs) => {
+          if (selectedFilter === 'Real Estate & Built Environment')
+            return cs.tags.includes('Real Estate') || cs.tags.includes('Built Environment');
+          if (selectedFilter === 'Hospitality & F&B')
+            return cs.tags.includes('Hospitality');
+          if (selectedFilter === 'Healthcare')
+            return cs.tags.includes('Healthcare');
+          if (selectedFilter === 'Entertainment & Media')
+            return cs.tags.includes('Entertainment') || cs.tags.includes('Events');
+          if (selectedFilter === 'Institutional & Community')
+            return cs.tags.includes('Institutional') || cs.tags.includes('Community');
           return true;
         });
 
-  const directoryProjects = [
+  const directoryCategories = [
     {
-      title: 'Western Command — Indian Army',
-      sector: 'Ceremonial Documentary & Production',
-      year: '2023 — 2024',
-      link: '/indian-army-projects',
+      title: 'Hospitality & F&B',
+      items: ['Neora Deck', 'Blu Resorts', 'Qubice', 'Kanopy', 'Sorriso', 'Spice Goa', 'Khana Khazana', 'Khau Gali'],
     },
     {
-      title: 'Neora Deck',
-      sector: 'Rooftop Experiential Hospitality',
-      year: '2023 — Present',
-      link: '/work/raysons-group',
+      title: 'Real Estate & Built Environment',
+      items: ['Raysons Group', 'Citron', 'Loom Crafts'],
     },
     {
-      title: 'Tourin Ladakh',
-      sector: 'Experiential High-Altitude Travel',
-      year: '2023 — Present',
-      link: '/tourin',
+      title: 'Healthcare',
+      items: ['RR Skins and other approved healthcare work'],
     },
     {
-      title: 'Blu Resorts Goa',
-      sector: 'Boutique Coastal Resort Hospitality',
-      year: '2022',
-      link: '/services#hospitality',
+      title: 'Lifestyle & Consumer',
+      items: ['DTK Karekar Jewellery', 'Fraganta and other approved consumer work'],
     },
     {
-      title: 'Qubice Systems',
-      sector: 'Architectural Modular Solutions',
-      year: '2023',
-      link: '/work/loom-crafts',
+      title: 'Entertainment & Media',
+      items: ['PictureTime'],
     },
     {
-      title: 'DTK Karekar Jewellery',
-      sector: 'Heritage Fine Jewelry & Retail',
-      year: '2022 — 2023',
-      link: '/services#digital',
+      title: 'Travel & Tourism',
+      items: ['Tourin', 'Holiday Village'],
+    },
+    {
+      title: 'Institutional / Community',
+      items: ['SHE', 'Operation Sampark', 'Indian Army-related projects'],
     },
   ];
 
@@ -125,6 +168,8 @@ export default function WorkPage() {
     if (!items || items.length === 0) return;
 
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
+
       items.forEach((item) => {
         const link = item.querySelector('.work-page-link');
         if (!link) return;
@@ -163,6 +208,12 @@ export default function WorkPage() {
           duration: 1,
         });
       });
+
+      gsap.fromTo(
+        '.work-title-masked',
+        { y: '110%', opacity: 0 },
+        { y: '0%', opacity: 1, duration: 1.1, stagger: 0.12, ease: 'power3.out' }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -249,7 +300,7 @@ export default function WorkPage() {
         </div>
       </div>
 
-      <div className="padding-global container-medium" style={{ width: '100%', maxWidth: '80rem', margin: '0 auto', paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>
+      <div className="padding-global container-medium" style={{ width: '100%', maxWidth: '80rem', margin: '0 auto' }}>
         {/* Alture Reference Header */}
         <div
           className="work-list_head"
@@ -267,20 +318,22 @@ export default function WorkPage() {
         >
           {/* Left: Heading wrap with absolute counter circle */}
           <div className="work-list_heading-wrap" style={{ position: 'relative' }}>
-            <h1
-              className="heading-style-display"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
-                fontWeight: 400,
-                letterSpacing: '-0.04em',
-                lineHeight: 0.95,
-                color: '#111111',
-                margin: 0,
-              }}
-            >
-              Selected<br />Work.
-            </h1>
+            <div style={{ overflow: 'hidden' }}>
+              <h1
+                className="heading-style-display work-title-masked"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.04em',
+                  lineHeight: 0.95,
+                  color: '#111111',
+                  margin: 0,
+                }}
+              >
+                The work is<br />the proof.
+              </h1>
+            </div>
             <div
               className="work-list_number"
               style={{
@@ -311,7 +364,7 @@ export default function WorkPage() {
               display: 'flex',
               flexDirection: 'column',
               gap: '1rem',
-              maxWidth: '22rem',
+              maxWidth: '24rem',
             }}
           >
             <div
@@ -321,21 +374,21 @@ export default function WorkPage() {
                 fontSize: '0.8rem',
                 fontWeight: 600,
                 letterSpacing: '0.1em',
-                color: '#111111',
+                color: '#DE322D',
                 textTransform: 'uppercase',
               }}
             >
-              PROJECTS
+              FEATURED CASE STUDIES
             </div>
             <p
               style={{
                 color: '#666666',
-                fontSize: '0.875rem',
+                fontSize: '0.95rem',
                 lineHeight: 1.6,
                 margin: 0,
               }}
             >
-              A curated selection of businesses and projects showing how Ārohana thinks, creates and executes across commercial and physical operating environments.
+              A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.
             </p>
           </div>
 
@@ -502,6 +555,63 @@ export default function WorkPage() {
                     </h3>
                   </div>
                 </Link>
+
+                {/* Case Study Info Block */}
+                <div
+                  style={{
+                    width: '100%',
+                    maxWidth: '850px',
+                    marginTop: '1.5rem',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    padding: '0 0.5rem',
+                  }}
+                >
+                  <div style={{ flex: '1 1 300px' }}>
+                    <p style={{ color: '#444', fontSize: '1rem', lineHeight: 1.5, margin: '0 0 0.5rem 0' }}>
+                      {cs.desc}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                      {cs.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          style={{
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: '0.72rem',
+                            color: '#777',
+                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                            padding: '3px 8px',
+                            borderRadius: '4px',
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/work/${cs.slug}`}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      color: '#DE322D',
+                      textDecoration: 'none',
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    <span>View case study</span>
+                    <ArrowUpRight size={14} />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
@@ -518,25 +628,27 @@ export default function WorkPage() {
           }}
         >
           <div style={{ marginBottom: '2.5rem' }}>
-            <div className="tag-mono" style={{ color: '#888', marginBottom: '0.5rem' }}>
-              PROJECT & CLIENT DIRECTORY
+            <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '0.5rem', fontWeight: 600 }}>
+              CLIENT / PROJECT DIRECTORY
             </div>
-            <h3 style={{ fontSize: '1.8rem', fontWeight: 500 }}>
-              Additional engagements & brand briefs
+            <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 500, color: '#111', marginBottom: '0.5rem' }}>
+              Additional work.
             </h3>
+            <p style={{ color: '#666', fontSize: '1rem' }}>
+              A selection of other businesses and projects we've worked with.
+            </p>
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
               gap: '1.5rem',
             }}
           >
-            {directoryProjects.map((p) => (
-              <Link
-                key={p.title}
-                href={p.link}
+            {directoryCategories.map((cat) => (
+              <div
+                key={cat.title}
                 style={{
                   padding: '1.5rem',
                   borderRadius: '16px',
@@ -544,30 +656,63 @@ export default function WorkPage() {
                   backgroundColor: '#fafafa',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  minHeight: '130px',
-                  textDecoration: 'none',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f0f0ee';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#fafafa';
-                  e.currentTarget.style.transform = 'translateY(0)';
+                  gap: '0.75rem',
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div style={{ fontWeight: 500, fontSize: '1.05rem', color: '#111' }}>{p.title}</div>
-                  <ArrowUpRight size={16} color="#777" />
+                <div style={{ fontWeight: 600, fontSize: '1.05rem', color: '#111', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
+                  {cat.title}
                 </div>
-                <div style={{ fontSize: '0.8rem', color: '#666', fontFamily: 'var(--font-mono)' }}>
-                  {p.sector} • {p.year}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                  {cat.items.map((item) => (
+                    <span
+                      key={item}
+                      style={{
+                        fontSize: '0.88rem',
+                        color: '#444',
+                        backgroundColor: '#ffffff',
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(0,0,0,0.04)',
+                      }}
+                    >
+                      {item}
+                    </span>
+                  ))}
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
+        </div>
+
+        {/* Final CTA Section */}
+        <div
+          style={{
+            marginTop: 'clamp(4rem, 7vw, 6rem)',
+            padding: 'clamp(2rem, 4vw, 3.5rem)',
+            borderRadius: 'clamp(20px, 4vw, 28px)',
+            backgroundColor: '#0c0c0e',
+            color: '#ffffff',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '2rem',
+            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.2)',
+          }}
+        >
+          <div>
+            <h3 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 500, color: '#ffffff' }}>
+              Want to see what this could look like for your business?
+            </h3>
+          </div>
+
+          <Link href="/contact" className="button-editorial" style={{ height: '48px', padding: '0 1.75rem', backgroundColor: '#ffffff', color: '#111' }}>
+            <div className="button-texts-slider">
+              <span className="button-text-item">Start a conversation</span>
+              <span className="button-text-item">Start a conversation</span>
+            </div>
+            <ArrowUpRight size={16} />
+          </Link>
         </div>
       </div>
 
@@ -578,17 +723,20 @@ export default function WorkPage() {
             flex-direction: column !important;
             align-items: flex-start !important;
             gap: 1.5rem !important;
+            margin-bottom: 3.5rem !important;
           }
           .work-list_head > div:last-child {
             text-align: left !important;
           }
           .work-list_list {
-            gap: 5rem !important;
+            gap: 4rem !important;
+            margin-bottom: 6rem !important;
           }
           .work-page-link {
             height: auto !important;
             width: 100% !important;
             max-width: 600px !important;
+            border-radius: 1.25rem !important;
           }
           .hover_wrap {
             display: none !important;
@@ -596,11 +744,13 @@ export default function WorkPage() {
         }
         @media screen and (max-width: 767px) {
           .work-list_list {
-            gap: 3.5rem !important;
+            gap: 2.5rem !important;
+            margin-bottom: 4.5rem !important;
           }
           .work-list_name {
-            bottom: 1rem !important;
-            left: 1rem !important;
+            bottom: 0.85rem !important;
+            left: 0.85rem !important;
+            padding: 0.25rem 0.65rem !important;
           }
         }
       `}</style>

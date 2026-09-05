@@ -19,43 +19,33 @@ interface ServiceItemData {
 const SERVICES_DATA: ServiceItemData[] = [
   {
     num: '1',
-    title: 'Digital Brand Growth',
-    tags: ['Brand Systems', 'Positioning', 'Website Architecture', 'Performance Marketing', 'Conversion Strategy'],
+    title: 'Brand & Digital Growth',
+    tags: ['Brand Strategy', 'Social Ecosystems', 'Creative Direction', 'Performance Marketing', 'Platform Execution'],
     image: '/images/services/digital-growth.jpg',
-    alt: 'Digital brand systems and architecture showcase',
+    alt: 'Digital brand strategy and growth systems',
     description:
-      'Architecting end-to-end digital infrastructure — brand positioning, visual identity, customer acquisition, content velocity, and revenue pipelines designed for market authority.',
-    href: '/services#digital',
+      'Brand strategy, content, social media, creative direction, video production, advertising and websites for businesses that need a stronger market presence.',
+    href: '/services#digital-growth',
   },
   {
     num: '2',
-    title: 'Hospitality Consulting',
-    tags: ['Concept & Narrative', 'Menu Architecture', 'Service Journey', 'Repeat Strategy', 'Unit Economics'],
-    image: '/images/services/hospitality-consulting.jpg',
-    alt: 'Hospitality dining and experiential space design',
+    title: 'Content & Communication',
+    tags: ['Documentaries', 'Films', 'Extreme Terrains', 'Scripting', 'Post-Production'],
+    image: '/images/services/content-production.jpg',
+    alt: 'Content and brand production from scripting through post-production',
     description:
-      'Transformative advisory for luxury hospitality, boutique resorts, and experiential dining — aligning operational rhythm, menu engineering, and staff culture with emotional narrative.',
-    href: '/services#hospitality',
+      'Corporate films, documentaries, campaigns and institutional content — from scripting through post-production.',
+    href: '/services#brand-production',
   },
   {
     num: '3',
-    title: 'Content & Brand Production',
-    tags: ['Film Direction', 'Architectural Stills', 'Documentary Narratives', 'Post-Production', 'Asset Libraries'],
-    image: '/images/services/content-production.jpg',
-    alt: 'Cinematic brand production and editorial cinematography',
+    title: 'Hospitality & Experience',
+    tags: ['Concept & Menu', 'Kitchen Pass', 'Unit Economics', 'Staff Systems', 'Guest Journeys'],
+    image: '/images/services/hospitality-consulting.jpg',
+    alt: 'Hospitality consulting and operational systems',
     description:
-      'Cinematic brand storytelling, high-precision visual assets, and documentary films designed to alter perception, command cultural credibility, and endure over decades.',
-    href: '/services#content',
-  },
-  {
-    num: '4',
-    title: 'Special & Field Projects',
-    tags: ['High-Altitude Fieldwork', 'Military Documentation', 'Civic Initiatives', 'Ladakh Briefs', 'On-ground Execution'],
-    image: '/images/home/strip-army.jpg',
-    alt: 'Special field operations with Indian Army and remote communities',
-    description:
-      'Deploying communication, documentary filmmaking, and operational initiatives across complex and austere environments — including landmark collaborations with the Indian Army.',
-    href: '/indian-army-projects',
+      'Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.',
+    href: '/services#hospitality-consulting',
   },
 ];
 
@@ -113,84 +103,111 @@ export default function ServicesSection() {
           overflow: 'visible',
         }}
       >
-        {/* Large Black Rounded Container (Matching Image 2 Reference) */}
+        {/* Large Black Rounded Container */}
         <div
           style={{
             position: 'relative',
             width: '100%',
             backgroundColor: '#000000',
             color: '#ffffff',
-            borderRadius: '2.5rem',
-            padding: 'clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.75rem, 4vw, 4rem) clamp(3.5rem, 5vw, 5.5rem)',
+            borderRadius: 'clamp(1.5rem, 3vw, 2.5rem)',
+            padding: 'clamp(2rem, 4vw, 4.5rem) clamp(1.25rem, 3.5vw, 4rem) clamp(2.5rem, 5vw, 5.5rem)',
             boxSizing: 'border-box',
             overflow: 'visible',
           }}
         >
-          {/* Header Row: Services  × × × ×  (04) — Perfectly Horizontal Row */}
+          {/* Header Row: Services  × × × ×  (04) */}
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              paddingBottom: '2rem',
+              paddingBottom: '1.75rem',
               borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-              marginBottom: '3.5rem',
+              marginBottom: 'clamp(2rem, 4vw, 3.5rem)',
               boxSizing: 'border-box',
             }}
           >
-            {/* Left: Services */}
-            <h2
-              style={{
-                color: '#ffffff',
-                fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)',
-                fontWeight: 500,
-                fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
-                lineHeight: 1,
-                letterSpacing: '-0.03em',
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              Services
-            </h2>
-
-            {/* Center: 4 delicate crosses spaced evenly */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: 'clamp(180px, 35vw, 450px)',
-                color: 'rgba(255, 255, 255, 0.45)',
-                fontSize: 'clamp(0.9rem, 1.3vw, 1.25rem)',
-                userSelect: 'none',
-              }}
-            >
-              <span>×</span>
-              <span>×</span>
-              <span>×</span>
-              <span>×</span>
+            {/* Header Row */}
+            <div style={{ maxWidth: '820px' }}>
+              <div
+                className="tag-mono"
+                style={{
+                  color: '#DE322D',
+                  marginBottom: '0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  fontSize: '0.8rem',
+                }}
+              >
+                <span
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: '#DE322D',
+                  }}
+                />
+                [ 05 ] Services & Practice Areas
+              </div>
+              <h2
+                style={{
+                  color: '#ffffff',
+                  fontSize: 'clamp(2rem, 4.5vw, 3.8rem)',
+                  fontWeight: 500,
+                  fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                  lineHeight: 1.1,
+                  letterSpacing: '-0.03em',
+                  margin: '0 0 1rem 0',
+                }}
+              >
+                Everything we do.
+              </h2>
+              <p
+                style={{
+                  color: 'rgba(255, 255, 255, 0.75)',
+                  fontSize: 'clamp(0.95rem, 1.3vw, 1.15rem)',
+                  lineHeight: 1.6,
+                  margin: 0,
+                  maxWidth: '740px',
+                }}
+              >
+                Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.
+              </p>
             </div>
 
-            {/* Right: (04) */}
-            <div
-              style={{
-                color: '#ffffff',
-                fontSize: 'clamp(2.25rem, 4.5vw, 4.25rem)',
-                fontWeight: 500,
-                fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
-                lineHeight: 1,
-                letterSpacing: '-0.03em',
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              (04)
+            {/* Right: CTA to Services & (03) */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexShrink: 0 }}>
+              <Link
+                href="/services"
+                className="button-editorial button-editorial-primary"
+                style={{ height: '44px', padding: '0 1.5rem', whiteSpace: 'nowrap' }}
+              >
+                <div className="button-texts-slider">
+                  <span className="button-text-item">Explore Detailed Services</span>
+                  <span className="button-text-item">Explore Detailed Services</span>
+                </div>
+              </Link>
+              <div
+                style={{
+                  color: '#ffffff',
+                  fontSize: 'clamp(2rem, 4.5vw, 4.25rem)',
+                  fontWeight: 500,
+                  fontFamily: 'var(--font-display, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif)',
+                  lineHeight: 1,
+                  letterSpacing: '-0.03em',
+                  margin: 0,
+                  padding: 0,
+                }}
+              >
+                (03)
+              </div>
             </div>
           </div>
 
-          {/* Sticky Services Stack */}
+          {/* Services Stack */}
           <div
             style={{
               display: 'flex',
@@ -206,13 +223,14 @@ export default function ServicesSection() {
               return (
                 <div
                   key={service.num}
+                  className="service-card-wrapper"
                   style={{
                     position: 'sticky',
-                    top: '18vh',
+                    top: '16vh',
                     backgroundColor: '#000000',
                     zIndex: index + 1,
                     paddingTop: '1.5rem',
-                    paddingBottom: isLast ? '3rem' : '7rem',
+                    paddingBottom: isLast ? '2.5rem' : '6rem',
                     boxSizing: 'border-box',
                     width: '100%',
                   }}
@@ -223,7 +241,7 @@ export default function ServicesSection() {
                       width: '100%',
                       height: '1px',
                       backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                      marginBottom: '2.5rem',
+                      marginBottom: '2rem',
                     }}
                   />
 
@@ -231,8 +249,8 @@ export default function ServicesSection() {
                   <div
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                      gap: 'clamp(2rem, 5vw, 5rem)',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+                      gap: 'clamp(1.75rem, 4vw, 5rem)',
                       alignItems: 'start',
                       width: '100%',
                       boxSizing: 'border-box',
@@ -421,8 +439,43 @@ export default function ServicesSection() {
               );
             })}
           </div>
+
+          {/* Bottom Explore CTA */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              paddingTop: '2.5rem',
+              borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            }}
+          >
+            <Link
+              href="/services"
+              className="button-editorial button-editorial-white"
+              style={{ height: '48px', padding: '0 2rem' }}
+            >
+              <div className="button-texts-slider">
+                <span className="button-text-item">Explore our services</span>
+                <span className="button-text-item">Explore our services</span>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
+      <style jsx>{`
+        @media screen and (max-width: 639px) {
+          .services-header-crosses {
+            display: none !important;
+          }
+        }
+        @media screen and (max-width: 767px) {
+          :global(.service-card-wrapper) {
+            position: relative !important;
+            top: auto !important;
+            padding-bottom: 2.5rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

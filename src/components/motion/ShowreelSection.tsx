@@ -18,6 +18,7 @@ interface ShowreelSectionProps {
   items: ShowreelItem[];
   eyebrow?: string;
   heading?: string;
+  subheading?: string;
   theme?: 'light' | 'dark';
 }
 
@@ -25,6 +26,7 @@ export default function ShowreelSection({
   items,
   eyebrow = 'WHERE OUR EXPERIENCE SITS',
   heading = 'Sector understanding that shapes practical, commercially grounded execution.',
+  subheading,
   theme = 'light',
 }: ShowreelSectionProps) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -128,10 +130,24 @@ export default function ShowreelSection({
                   letterSpacing: '-0.03em',
                   lineHeight: 1.1,
                   maxWidth: '820px',
+                  marginBottom: subheading ? '0.75rem' : 0,
                 }}
               >
                 {heading}
               </h2>
+              {subheading && (
+                <p
+                  style={{
+                    fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)',
+                    color: isDark ? 'rgba(255,255,255,0.7)' : '#555555',
+                    lineHeight: 1.55,
+                    maxWidth: '680px',
+                    margin: 0,
+                  }}
+                >
+                  {subheading}
+                </p>
+              )}
             </div>
 
             {/* Indicator Pills */}
@@ -318,7 +334,12 @@ export default function ShowreelSection({
           <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '0.5rem' }}>
             {eyebrow}
           </div>
-          <h2 style={{ fontSize: '2rem', fontWeight: 500 }}>{heading}</h2>
+          <h2 style={{ fontSize: '2rem', fontWeight: 500, marginBottom: subheading ? '0.5rem' : 0 }}>{heading}</h2>
+          {subheading && (
+            <p style={{ fontSize: '0.9rem', color: isDark ? 'rgba(255,255,255,0.7)' : '#555555', lineHeight: 1.5, margin: 0 }}>
+              {subheading}
+            </p>
+          )}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>

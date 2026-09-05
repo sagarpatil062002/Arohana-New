@@ -1,41 +1,41 @@
 import React from 'react';
 import Hero from '@/components/home/Hero';
 import BrandsMarquee from '@/components/home/BrandsMarquee';
+import RealWorldImpact from '@/components/home/RealWorldImpact';
+import IndianArmySpotlight from '@/components/home/IndianArmySpotlight';
 import PointOfView from '@/components/home/PointOfView';
 import SelectedWork from '@/components/home/SelectedWork';
 import ServicesSection from '@/components/home/ServicesSection';
 import SectorMontage from '@/components/home/SectorMontage';
-import StatsProof from '@/components/home/StatsProof';
-import IndianArmySpotlight from '@/components/home/IndianArmySpotlight';
 import TourinSpotlight from '@/components/home/TourinSpotlight';
 import InteractiveCTA from '@/components/home/InteractiveCTA';
 
 export default function HomePage() {
   return (
     <>
-      {/* 01: Alture-Style Hero with Split Display Typography & Video Container */}
+      {/* 01: Hero Video / Media Container */}
       <Hero />
 
       {/* 02: Selected Brands & Organisations Marquee */}
       <BrandsMarquee />
 
-      {/* 03: Editorial Introduction / A Point of View */}
+      {/* 03: Real-World Execution Mechanical Flip Counter */}
+      <RealWorldImpact />
+
+      {/* 04: Selected Indian Army Projects 3D Perspective Showcase */}
+      <IndianArmySpotlight />
+
+      {/* 05: Editorial Introduction / A Point of View */}
       <PointOfView />
 
-      {/* 04: Selected Work Sticky Scroll Showcase */}
+      {/* 06: Selected Work Sticky Scroll Showcase */}
       <SelectedWork />
 
-      {/* 05: Deep Black Services Section with Cursor-Following Image Crossfade */}
+      {/* 07: Deep Black Services Section */}
       <ServicesSection />
 
-      {/* 06: Sectors & Built Environment Montage */}
+      {/* 08: Sectors & Built Environment Montage */}
       <SectorMontage />
-
-      {/* 07: Proof & Verifiable Metrics */}
-      <StatsProof />
-
-      {/* 08: Indian Army Special Operations Feature */}
-      <IndianArmySpotlight />
 
       {/* 09: Tourin Experiential Travel Feature */}
       <TourinSpotlight />

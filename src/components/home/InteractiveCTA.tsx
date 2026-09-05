@@ -93,8 +93,8 @@ export default function InteractiveCTA() {
       ref={sectionRef}
       className="section-dark"
       style={{
-        paddingTop: '9rem',
-        paddingBottom: '9rem',
+        paddingTop: 'clamp(4.5rem, 8vw, 9rem)',
+        paddingBottom: 'clamp(4.5rem, 8vw, 9rem)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -145,36 +145,35 @@ export default function InteractiveCTA() {
 
         <h2
           style={{
-            fontSize: 'clamp(2.8rem, 6.5vw, 6rem)',
+            fontSize: 'clamp(2.4rem, 5.5vw, 5.5rem)',
             fontWeight: 400,
-            letterSpacing: '-0.04em',
-            lineHeight: 1.05,
+            letterSpacing: '-0.035em',
+            lineHeight: 1.06,
             color: '#ffffff',
             maxWidth: '1080px',
-            marginBottom: '2rem',
+            marginBottom: '1.25rem',
           }}
         >
-          If you're building something serious, let's talk about what it actually needs.
+          If you’re building something serious, let’s talk about what it actually needs.
         </h2>
 
         <p
           style={{
-            fontSize: 'clamp(1.1rem, 1.8vw, 1.35rem)',
-            color: 'rgba(255, 255, 255, 0.75)',
+            fontSize: 'clamp(1.05rem, 1.8vw, 1.4rem)',
+            color: 'rgba(255, 255, 255, 0.8)',
             maxWidth: '680px',
-            lineHeight: 1.6,
-            marginBottom: '3.5rem',
+            lineHeight: 1.5,
+            marginBottom: 'clamp(2rem, 4vw, 3.5rem)',
           }}
         >
-          Don't start with a service. Start with the problem. Tell us what you are trying to build, fix
-          or change.
+          Let’s start with what you’re trying to solve or build, not a cookie-cutter agency proposal.
         </p>
 
-        <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
           <Link
             href="/contact"
             className="button-editorial button-editorial-white"
-            style={{ height: '54px', padding: '0 2.25rem', fontSize: '1rem' }}
+            style={{ height: '52px', padding: '0 2rem', fontSize: '0.95rem' }}
           >
             <div className="button-texts-slider">
               <span className="button-text-item">Start a conversation</span>
@@ -191,12 +190,13 @@ export default function InteractiveCTA() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              height: '54px',
-              padding: '0 1.75rem',
+              justifyContent: 'center',
+              height: '52px',
+              padding: '0 1.5rem',
               borderRadius: '9999px',
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
               color: '#ffffff',
-              fontSize: '0.95rem',
+              fontSize: '0.925rem',
               border: '1px solid rgba(255, 255, 255, 0.15)',
               textDecoration: 'none',
               transition: 'all 0.3s ease',
@@ -206,18 +206,27 @@ export default function InteractiveCTA() {
           </a>
         </div>
 
-        {/* Micro Marquee prompt at bottom */}
+        {/* Trust Badges */}
         <div
           style={{
-            marginTop: '5rem',
-            opacity: 0.4,
-            fontSize: '0.75rem',
+            marginTop: '2.5rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '1rem',
             fontFamily: 'var(--font-mono)',
-            letterSpacing: '0.15em',
-            color: '#fff',
+            fontSize: '0.75rem',
+            color: 'rgba(255, 255, 255, 0.5)',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
           }}
         >
-          MOVE YOUR MOUSE TO REVEAL WORK • HOVER FOR INTERACTION
+          <span>Direct Founder Access</span>
+          <span>·</span>
+          <span>No Generic Jargon</span>
+          <span>·</span>
+          <span>Proof Over Claims</span>
         </div>
       </div>
     </section>

@@ -165,12 +165,19 @@ export default function Navbar() {
         </nav>
 
         {/* Action Button & Mobile Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link href="/contact" className="button-editorial" style={{ height: '42px', padding: '0 1.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <Link
+            href="/contact"
+            className="button-editorial navbar-cta"
+            style={{ height: '40px', padding: '0 1.15rem' }}
+          >
             <div className="button-texts-slider">
-              <span className="button-text-item">Start a conversation</span>
-              <span className="button-text-item">Start a conversation</span>
+              <span className="button-text-item desktop-text">Start a conversation</span>
+              <span className="button-text-item desktop-text">Start a conversation</span>
             </div>
+            <span className="mobile-text" style={{ display: 'none', fontSize: '0.85rem', fontWeight: 500 }}>
+              Contact
+            </span>
             <div className="button-dot-wrap">
               <div className="button-dot" />
               <div className="button-dot-pulse" />
@@ -185,12 +192,13 @@ export default function Navbar() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '42px',
-              height: '42px',
+              width: '40px',
+              height: '40px',
               borderRadius: '50%',
               backgroundColor: '#ffffff',
               border: '1px solid rgba(0, 0, 0, 0.08)',
               color: '#111',
+              flexShrink: 0,
             }}
             className="mobile-toggle"
           >
@@ -205,34 +213,122 @@ export default function Navbar() {
           style={{
             backgroundColor: '#f5f5f3',
             borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-            padding: '2rem 1.5rem',
+            padding: '1.75rem 1.25rem 2.25rem 1.25rem',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1.25rem',
+            gap: '1rem',
+            maxHeight: 'calc(100vh - 76px)',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.08)',
           }}
         >
-          {navLinks.map((link) => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  style={{
+                    fontSize: '1.25rem',
+                    fontFamily: 'var(--font-display)',
+                    fontWeight: isActive ? 600 : 400,
+                    color: isActive ? '#000000' : '#333333',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.65rem 0',
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+                  }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {link.label}
+                    {link.badge && (
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          backgroundColor: '#ff3b30',
+                          color: '#ffffff',
+                          fontSize: '0.65rem',
+                          fontFamily: 'var(--font-mono)',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {link.badge}
+                      </span>
+                    )}
+                  </span>
+                  <ArrowUpRight size={18} color="#888" />
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Mobile Drawer Direct Contact Section */}
+          <div
+            style={{
+              marginTop: '1rem',
+              paddingTop: '1.25rem',
+              borderTop: '1px solid rgba(0, 0, 0, 0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+            }}
+          >
             <Link
-              key={link.href}
-              href={link.href}
-              style={{
-                fontSize: '1.25rem',
-                fontFamily: 'var(--font-display)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingBottom: '0.75rem',
-                borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
-              }}
+              href="/contact"
+              className="button-editorial button-editorial-dark"
+              style={{ height: '48px', width: '100%', justifyContent: 'center' }}
             >
-              <span>{link.label}</span>
-              <ArrowUpRight size={18} color="#888" />
+              <span>Start a conversation</span>
+              <ArrowUpRight size={16} />
             </Link>
-          ))}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.8rem', color: '#666' }}>
+              <div>
+                Email:{' '}
+                <a href="mailto:founder@byarohana.com" style={{ color: '#111', fontWeight: 500 }}>
+                  founder@byarohana.com
+                </a>
+              </div>
+              <div>
+                Phone:{' '}
+                <a href="tel:+918380092241" style={{ color: '#111', fontWeight: 500 }}>
+                  +91 8380092241
+                </a>
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                Pune • Ladakh • Pan-India Engagements
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
       <style jsx>{`
+        @media (max-width: 639px) {
+          .navbar-cta .desktop-text {
+            display: none !important;
+          }
+          .navbar-cta .mobile-text {
+            display: inline-block !important;
+          }
+          .navbar-cta {
+            padding: 0 0.85rem !important;
+            gap: 0.5rem !important;
+          }
+        }
+        @media (max-width: 360px) {
+          .navbar-cta {
+            display: none !important;
+          }
+        }
         @media (min-width: 992px) {
           .desktop-nav {
             display: flex !important;

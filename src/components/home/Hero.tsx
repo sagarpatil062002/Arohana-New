@@ -7,8 +7,6 @@ import gsap from 'gsap';
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const headlineLeftRef = useRef<HTMLHeadingElement>(null);
-  const headlineRightRef = useRef<HTMLHeadingElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -21,21 +19,11 @@ export default function Hero() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      // Masked reveal for split headline
-      tl.fromTo(
-        [headlineLeftRef.current, headlineRightRef.current],
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.1, stagger: 0.15 }
-      );
-
       // Card scale & reveal
-      tl.fromTo(
+      gsap.fromTo(
         cardRef.current,
-        { scale: 0.96, opacity: 0, y: 30 },
-        { scale: 1, opacity: 1, y: 0, duration: 1.2 },
-        '-=0.7'
+        { scale: 0.96, opacity: 0, y: 25 },
+        { scale: 1, opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }
       );
     }, containerRef);
 
@@ -47,75 +35,24 @@ export default function Hero() {
       ref={containerRef}
       className="section-light"
       style={{
-        paddingTop: '2.5rem',
-        paddingBottom: '4rem',
+        paddingTop: 'clamp(1rem, 2vw, 2rem)',
+        paddingBottom: 'clamp(3rem, 5vw, 4rem)',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
       <div className="padding-global container-large">
-        {/* Giant Split Editorial Headline */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            marginBottom: '1.75rem',
-            overflow: 'hidden',
-          }}
-        >
-          <h1
-            ref={headlineLeftRef}
-            style={{
-              fontSize: 'clamp(3.8rem, 13.5vw, 13rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              fontWeight: 500,
-              color: '#111111',
-              display: 'flex',
-              alignItems: 'baseline',
-            }}
-          >
-            Ārohana
-            <span
-              style={{
-                fontSize: 'clamp(1.2rem, 3.5vw, 3.2rem)',
-                marginLeft: '0.35rem',
-                fontWeight: 400,
-                color: '#555',
-              }}
-            >
-              ®
-            </span>
-          </h1>
-
-          <div
-            ref={headlineRightRef}
-            style={{
-              fontSize: 'clamp(3.8rem, 13.5vw, 13rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              fontWeight: 500,
-              color: '#111111',
-              textAlign: 'right',
-            }}
-          >
-            Consultancy
-          </div>
-        </div>
-
         {/* Large Rounded Media Card with Category Tabs & Video Embed */}
         <div
           ref={cardRef}
           style={{
             position: 'relative',
-            borderRadius: 'clamp(24px, 3.5vw, 40px)',
+            borderRadius: 'clamp(20px, 3.5vw, 40px)',
             overflow: 'hidden',
             backgroundColor: '#0c0c0e',
             color: '#ffffff',
             boxShadow: '0 24px 60px rgba(0, 0, 0, 0.16)',
-            minHeight: 'clamp(480px, 68vh, 760px)',
+            minHeight: 'clamp(440px, 68vh, 760px)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -160,19 +97,19 @@ export default function Hero() {
 
           {/* Top Category Tabs Bar */}
           <div
+            className="touch-scroll-row"
             style={{
               position: 'relative',
               zIndex: 10,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: 'clamp(1rem, 2.5vw, 1.75rem)',
+              padding: 'clamp(0.85rem, 2vw, 1.75rem)',
               borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
-              overflowX: 'auto',
-              gap: '1rem',
+              gap: '0.75rem',
             }}
           >
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'nowrap' }}>
+            <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'nowrap' }}>
               {tabs.map((tab, idx) => (
                 <Link
                   key={tab.label}
@@ -180,7 +117,7 @@ export default function Hero() {
                   onClick={() => setActiveTab(idx)}
                   style={{
                     fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
-                    padding: '0.55rem 1.15rem',
+                    padding: '0.5rem 1rem',
                     borderRadius: '9999px',
                     whiteSpace: 'nowrap',
                     backgroundColor:
@@ -219,12 +156,12 @@ export default function Hero() {
             style={{
               position: 'relative',
               zIndex: 10,
-              padding: 'clamp(1.5rem, 4vw, 3rem)',
+              padding: 'clamp(1.25rem, 3.5vw, 3rem)',
               display: 'flex',
               flexWrap: 'wrap',
               alignItems: 'flex-end',
               justifyContent: 'space-between',
-              gap: '2rem',
+              gap: '1.5rem',
             }}
           >
             {/* Statement */}
@@ -250,28 +187,39 @@ export default function Hero() {
                 />
                 WE ARE ĀROHANA
               </div>
-              <h2
+              <h1
                 style={{
-                  fontSize: 'clamp(1.8rem, 3.8vw, 3.2rem)',
-                  lineHeight: 1.1,
+                  fontSize: 'clamp(2rem, 4.2vw, 3.6rem)',
+                  lineHeight: 1.08,
                   fontWeight: 400,
                   marginBottom: '1rem',
-                  letterSpacing: '-0.02em',
+                  letterSpacing: '-0.03em',
                 }}
               >
                 We build brands, businesses & experiences.
-              </h2>
+              </h1>
               <p
                 style={{
-                  fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)',
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  lineHeight: 1.5,
-                  maxWidth: '540px',
+                  fontSize: 'clamp(0.95rem, 1.35vw, 1.15rem)',
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  lineHeight: 1.55,
+                  maxWidth: '580px',
+                  marginBottom: '1.5rem',
                 }}
               >
-                Bringing together commercial context, sector depth and creative execution —
-                from digital brand growth to hospitality consulting and complex on-ground briefs.
+                Ārohana brings together business thinking, creative communication and execution — from digital brand growth and content to hospitality consulting and complex on-ground projects.
               </p>
+
+              <Link
+                href="/contact"
+                className="button-editorial button-editorial-white"
+                style={{ height: '44px', padding: '0 1.5rem' }}
+              >
+                <div className="button-texts-slider">
+                  <span className="button-text-item">Start a conversation</span>
+                  <span className="button-text-item">Start a conversation</span>
+                </div>
+              </Link>
             </div>
 
             {/* Founder Contact Pill directly inside hero */}

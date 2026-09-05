@@ -30,14 +30,14 @@ export default function StatsProof() {
     <section
       className="section-light"
       style={{
-        paddingTop: '6rem',
-        paddingBottom: '6rem',
+        paddingTop: 'clamp(3.5rem, 6vw, 6rem)',
+        paddingBottom: 'clamp(3.5rem, 6vw, 6rem)',
         borderTop: '1px solid rgba(0, 0, 0, 0.08)',
         position: 'relative',
       }}
     >
       <div className="padding-global container-large">
-        <div style={{ marginBottom: '4rem' }}>
+        <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}>
           <div
             className="tag-mono"
             style={{
@@ -60,7 +60,7 @@ export default function StatsProof() {
           </div>
           <h2
             style={{
-              fontSize: 'clamp(2.4rem, 5vw, 4.4rem)',
+              fontSize: 'clamp(2.2rem, 4.5vw, 4.4rem)',
               fontWeight: 400,
               letterSpacing: '-0.03em',
               lineHeight: 1.05,
@@ -76,8 +76,8 @@ export default function StatsProof() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '2.5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
+            gap: 'clamp(1.75rem, 3vw, 2.5rem)',
           }}
         >
           {stats.map((stat, idx) => (
@@ -85,7 +85,7 @@ export default function StatsProof() {
               key={stat.label}
               style={{
                 borderTop: '2px solid #111111',
-                paddingTop: '1.75rem',
+                paddingTop: '1.5rem',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -94,12 +94,12 @@ export default function StatsProof() {
               <div
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(3.5rem, 6.5vw, 6.5rem)',
+                  fontSize: 'clamp(2.8rem, 6.5vw, 6.5rem)',
                   fontWeight: 500,
                   lineHeight: 0.9,
                   letterSpacing: '-0.04em',
                   color: '#111111',
-                  marginBottom: '1.25rem',
+                  marginBottom: '1rem',
                 }}
               >
                 {stat.num}

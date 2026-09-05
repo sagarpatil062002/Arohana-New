@@ -46,10 +46,10 @@ export default function BrandsMarquee() {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: '#ff3b30',
+              backgroundColor: '#DE322D',
             }}
           />
-          SELECTED BRANDS & ORGANISATIONS
+          PARTNERSHIPS
         </div>
 
         <h2
@@ -62,7 +62,7 @@ export default function BrandsMarquee() {
             color: '#111111',
           }}
         >
-          We collaborate with forward-thinking organisations to build lasting commercial and creative impact.
+          Brands and organisations we've worked with.
         </h2>
       </div>
 
@@ -77,10 +77,10 @@ export default function BrandsMarquee() {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                width: '320px',
-                minWidth: '320px',
-                height: '180px',
-                padding: '1.75rem',
+                width: 'clamp(260px, 75vw, 320px)',
+                minWidth: 'clamp(260px, 75vw, 320px)',
+                height: 'clamp(160px, 22vh, 180px)',
+                padding: 'clamp(1.25rem, 3vw, 1.75rem)',
                 backgroundColor: '#ffffff',
                 borderRadius: '20px',
                 border: '1px solid rgba(0, 0, 0, 0.06)',

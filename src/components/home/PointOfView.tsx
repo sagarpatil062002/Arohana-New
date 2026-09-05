@@ -11,8 +11,8 @@ export default function PointOfView() {
     <section
       className="section-light"
       style={{
-        paddingTop: '7rem',
-        paddingBottom: '7rem',
+        paddingTop: 'clamp(3.5rem, 6vw, 7rem)',
+        paddingBottom: 'clamp(3.5rem, 6vw, 7rem)',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -21,8 +21,8 @@ export default function PointOfView() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: 'clamp(3rem, 6vw, 6rem)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+            gap: 'clamp(2.5rem, 5vw, 6rem)',
             alignItems: 'center',
           }}
         >
@@ -31,11 +31,12 @@ export default function PointOfView() {
             <div
               className="tag-mono"
               style={{
-                color: '#777777',
-                marginBottom: '1.5rem',
+                color: '#DE322D',
+                marginBottom: '1.25rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.4rem',
+                fontSize: '0.8rem',
               }}
             >
               <span
@@ -43,59 +44,64 @@ export default function PointOfView() {
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
-                  backgroundColor: '#ff3b30',
+                  backgroundColor: '#DE322D',
                 }}
               />
-              A POINT OF VIEW
+              [ 04 ] Positioning & Philosophy
             </div>
 
             <MaskedHeading
               as="h2"
               style={{
-                fontSize: 'clamp(2.4rem, 4.5vw, 4.2rem)',
-                lineHeight: 1.05,
+                fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)',
+                lineHeight: 1.1,
                 fontWeight: 400,
-                letterSpacing: '-0.03em',
-                marginBottom: '2rem',
+                letterSpacing: '-0.035em',
+                marginBottom: '1.75rem',
                 color: '#111111',
               }}
             >
               Some businesses need better marketing. Others need a better way of thinking about the business itself.
             </MaskedHeading>
 
-            <p
+            <div
               style={{
-                fontSize: 'clamp(1.05rem, 1.6vw, 1.25rem)',
-                lineHeight: 1.6,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1.25rem',
+                marginBottom: '2.5rem',
+                fontSize: 'clamp(0.95rem, 1.2vw, 1.05rem)',
                 color: '#444444',
-                marginBottom: '2rem',
-                maxWidth: '620px',
+                lineHeight: 1.65,
               }}
             >
-              Ārohana works where those two things meet. We bring the commercial context, sector
-              depth and creative execution needed to move from an idea to something people can
-              actually see, understand and act on.
-            </p>
+              <p style={{ color: '#111111', fontWeight: 500 }}>
+                Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.
+              </p>
+              <p>
+                Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant&apos;s menu and operating systems, or taking a project from an idea to on-ground execution.
+              </p>
+            </div>
 
-            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-              <Link href="/about" className="button-editorial">
+            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Link href="/about" className="button-editorial button-editorial-dark" style={{ height: '46px', padding: '0 1.5rem' }}>
                 <div className="button-texts-slider">
-                  <span className="button-text-item">Studio & Philosophy</span>
-                  <span className="button-text-item">Studio & Philosophy</span>
+                  <span className="button-text-item">Read Founder Story & Philosophy</span>
+                  <span className="button-text-item">Read Founder Story & Philosophy</span>
                 </div>
                 <ArrowUpRight size={16} />
               </Link>
 
               <Link
                 href="/services"
-                style={{
-                  fontSize: '0.9rem',
-                  color: '#666',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '4px',
-                }}
+                className="button-editorial"
+                style={{ height: '46px', padding: '0 1.5rem', backgroundColor: '#f0f0ee', color: '#111' }}
               >
-                How engagements work →
+                <div className="button-texts-slider">
+                  <span className="button-text-item">Explore Three Practice Areas</span>
+                  <span className="button-text-item">Explore Three Practice Areas</span>
+                </div>
+                <ArrowUpRight size={16} />
               </Link>
             </div>
           </div>
@@ -113,7 +119,7 @@ export default function PointOfView() {
             >
               <Image
                 src="/images/home/madhura-editorial.jpg"
-                alt="Madhura directing on ground in Ladakh"
+                alt="Madhura Hawal on-ground directing a project in Ladakh"
                 fill
                 style={{ objectFit: 'cover' }}
               />
@@ -123,17 +129,17 @@ export default function PointOfView() {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  padding: '1.5rem',
+                  padding: '1.75rem',
                   background:
-                    'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.8) 100%)',
+                    'linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.85) 100%)',
                   color: '#ffffff',
                 }}
               >
-                <div className="tag-mono" style={{ fontSize: '0.7rem', color: '#ff3b30' }}>
-                  FIELD LEADERSHIP • LADAKH
+                <div className="tag-mono" style={{ fontSize: '0.75rem', color: '#ff4d4f', fontWeight: 600, marginBottom: '0.25rem' }}>
+                  Madhura Hawal · Founder
                 </div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 500 }}>
-                  Active leadership across high-altitude and complex operating environments
+                <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.45 }}>
+                  Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs.
                 </div>
               </div>
             </div>

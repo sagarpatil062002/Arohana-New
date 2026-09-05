@@ -98,14 +98,14 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '1.5rem',
-            padding: '2rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))',
+            gap: '1.25rem',
+            padding: 'clamp(1.25rem, 3vw, 2rem)',
             backgroundColor: '#ffffff',
             borderRadius: '20px',
             border: '1px solid rgba(0, 0, 0, 0.08)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
-            marginBottom: '4rem',
+            marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
           }}
         >
           <div>
@@ -137,13 +137,13 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         </div>
 
         {/* Main Hero Image with Caption */}
-        <div style={{ marginBottom: '5rem' }}>
+        <div style={{ marginBottom: 'clamp(2.5rem, 5vw, 5rem)' }}>
           <div
             style={{
               position: 'relative',
               width: '100%',
               aspectRatio: '16/9',
-              borderRadius: 'clamp(20px, 3vw, 36px)',
+              borderRadius: 'clamp(18px, 3vw, 36px)',
               overflow: 'hidden',
               backgroundColor: '#eaeaea',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
@@ -175,9 +175,9 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 'clamp(2.5rem, 5vw, 5rem)',
-            marginBottom: '5rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+            gap: 'clamp(2rem, 4vw, 5rem)',
+            marginBottom: 'clamp(3rem, 5vw, 5rem)',
           }}
         >
           {/* Situation */}
@@ -185,14 +185,14 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             style={{
               backgroundColor: '#ffffff',
               borderRadius: '24px',
-              padding: 'clamp(2rem, 3.5vw, 3rem)',
+              padding: 'clamp(1.5rem, 3.5vw, 3rem)',
               border: '1px solid rgba(0, 0, 0, 0.08)',
             }}
           >
             <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
               01 • CONTEXT & SITUATION
             </div>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 500, marginBottom: '1.5rem', color: '#111' }}>
+            <h2 style={{ fontSize: '1.6rem', fontWeight: 500, marginBottom: '1.25rem', color: '#111' }}>
               The Operational Context
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -209,14 +209,14 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             style={{
               backgroundColor: '#ffffff',
               borderRadius: '24px',
-              padding: 'clamp(2rem, 3.5vw, 3rem)',
+              padding: 'clamp(1.5rem, 3.5vw, 3rem)',
               border: '1px solid rgba(0, 0, 0, 0.08)',
             }}
           >
             <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
               02 • THE CORE PROBLEM
             </div>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 500, marginBottom: '1.5rem', color: '#111' }}>
+            <h2 style={{ fontSize: '1.6rem', fontWeight: 500, marginBottom: '1.25rem', color: '#111' }}>
               The Real Challenge
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -232,11 +232,11 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         {/* Strategic Thinking / Approach */}
         <div
           style={{
-            borderRadius: '28px',
+            borderRadius: 'clamp(20px, 3.5vw, 28px)',
             backgroundColor: '#0c0c0e',
             color: '#ffffff',
-            padding: 'clamp(2.5rem, 5vw, 4.5rem)',
-            marginBottom: '6rem',
+            padding: 'clamp(1.75rem, 4.5vw, 4.5rem)',
+            marginBottom: 'clamp(3.5rem, 6vw, 6rem)',
           }}
         >
           <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem' }}>
@@ -244,7 +244,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           </div>
           <h2
             style={{
-              fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)',
+              fontSize: 'clamp(2rem, 4.5vw, 3.8rem)',
               fontWeight: 400,
               letterSpacing: '-0.03em',
               marginBottom: '2rem',
@@ -256,16 +256,16 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '2.5rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
+              gap: 'clamp(1.5rem, 3vw, 2.5rem)',
             }}
           >
             {caseStudy.thinking.map((item, idx) => (
-              <div key={idx} style={{ borderLeft: '2px solid #ff3b30', paddingLeft: '1.5rem' }}>
+              <div key={idx} style={{ borderLeft: '2px solid #ff3b30', paddingLeft: '1.25rem' }}>
                 <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#888' }}>
                   PILLAR 0{idx + 1}
                 </span>
-                <p style={{ fontSize: '1.05rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.6, marginTop: '0.5rem' }}>
+                <p style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.85)', lineHeight: 1.6, marginTop: '0.5rem' }}>
                   {item}
                 </p>
               </div>
@@ -274,16 +274,16 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         </div>
 
         {/* The Execution Work Modules */}
-        <div style={{ marginBottom: '6rem' }}>
+        <div style={{ marginBottom: 'clamp(3.5rem, 6vw, 6rem)' }}>
           <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
             04 • THE DELIVERED WORK
           </div>
           <h2
             style={{
-              fontSize: 'clamp(2.2rem, 4.5vw, 3.6rem)',
+              fontSize: 'clamp(2rem, 4.5vw, 3.6rem)',
               fontWeight: 400,
               letterSpacing: '-0.03em',
-              marginBottom: '3rem',
+              marginBottom: 'clamp(1.75rem, 4vw, 3rem)',
               color: '#111',
             }}
           >
@@ -293,15 +293,15 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '2.5rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+              gap: 'clamp(1.5rem, 3vw, 2.5rem)',
             }}
           >
             {caseStudy.work.map((w, idx) => (
               <div
                 key={idx}
                 style={{
-                  padding: '2.5rem',
+                  padding: 'clamp(1.5rem, 3.5vw, 2.5rem)',
                   borderRadius: '24px',
                   backgroundColor: '#ffffff',
                   border: '1px solid rgba(0, 0, 0, 0.08)',
@@ -311,7 +311,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
                 }}
               >
                 <div>
-                  <h3 style={{ fontSize: '1.45rem', fontWeight: 500, marginBottom: '1rem', color: '#111' }}>
+                  <h3 style={{ fontSize: '1.35rem', fontWeight: 500, marginBottom: '0.75rem', color: '#111' }}>
                     {w.title}
                   </h3>
                   <p style={{ fontSize: '0.95rem', color: '#555', lineHeight: 1.6, marginBottom: '1.5rem' }}>
@@ -336,16 +336,16 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
 
         {/* Visual Evidence Gallery */}
         {caseStudy.gallery && caseStudy.gallery.length > 0 && (
-          <div style={{ marginBottom: '6rem' }}>
+          <div style={{ marginBottom: 'clamp(3.5rem, 6vw, 6rem)' }}>
             <div className="tag-mono" style={{ color: '#888', marginBottom: '1rem' }}>
               05 • VISUAL EVIDENCE
             </div>
             <h2
               style={{
-                fontSize: 'clamp(2.2rem, 4.5vw, 3.6rem)',
+                fontSize: 'clamp(2rem, 4.5vw, 3.6rem)',
                 fontWeight: 400,
                 letterSpacing: '-0.03em',
-                marginBottom: '3rem',
+                marginBottom: 'clamp(1.75rem, 4vw, 3rem)',
                 color: '#111',
               }}
             >
@@ -355,8 +355,8 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                gap: '2.5rem',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+                gap: 'clamp(1.5rem, 3vw, 2.5rem)',
               }}
             >
               {caseStudy.gallery.map((item, gIdx) => (
@@ -399,20 +399,20 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         {caseStudy.proof && (
           <div
             style={{
-              padding: '3rem',
+              padding: 'clamp(1.75rem, 4vw, 3rem)',
               borderRadius: '24px',
               backgroundColor: '#ffffff',
               border: '1px solid rgba(0, 0, 0, 0.08)',
-              marginBottom: '5rem',
+              marginBottom: 'clamp(3rem, 5vw, 5rem)',
             }}
           >
             <div className="tag-mono" style={{ color: '#28cd41', marginBottom: '0.75rem' }}>
               VERIFIED IMPACT
             </div>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: 500, marginBottom: '1rem', color: '#111' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 500, marginBottom: '1rem', color: '#111' }}>
               Outcomes & Commercial Change
             </h3>
-            <p style={{ fontSize: '1.05rem', color: '#444', lineHeight: 1.6, maxWidth: '840px' }}>
+            <p style={{ fontSize: '1rem', color: '#444', lineHeight: 1.6, maxWidth: '840px' }}>
               {caseStudy.proof.verifiedText}
             </p>
             {caseStudy.proof.metricsNote && (
@@ -435,15 +435,15 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <div
             style={{
               borderLeft: '3px solid #111',
-              paddingLeft: '2rem',
-              marginBottom: '6rem',
+              paddingLeft: 'clamp(1rem, 3vw, 2rem)',
+              marginBottom: 'clamp(3.5rem, 6vw, 6rem)',
               maxWidth: '860px',
             }}
           >
             <p
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)',
+                fontSize: 'clamp(1.25rem, 2.5vw, 2.2rem)',
                 lineHeight: 1.3,
                 color: '#111',
                 marginBottom: '1rem',
@@ -460,7 +460,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         {/* Next Case Study Navigation Card */}
         <div
           style={{
-            padding: '4rem clamp(1.5rem, 4vw, 4rem)',
+            padding: 'clamp(2rem, 4.5vw, 4rem) clamp(1.25rem, 3.5vw, 4rem)',
             borderRadius: '28px',
             backgroundColor: '#0c0c0e',
             color: '#ffffff',
@@ -468,7 +468,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '2rem',
+            gap: '1.5rem',
           }}
         >
           <div>
@@ -478,7 +478,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             <div
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+                fontSize: 'clamp(1.8rem, 4vw, 3.2rem)',
                 fontWeight: 500,
               }}
             >
