@@ -114,8 +114,10 @@ export default function IndianArmyProjectsPage() {
       // Exact 3D Perspective Scroll Animation (identical to SelectedWork)
       const items = gsap.utils.toArray<HTMLElement>('.army-timeline-item');
       if (items && items.length > 0) {
+        const isMobile = window.innerWidth < 768;
+
         items.forEach((item) => {
-          const card = item.querySelector('.army-timeline-card');
+          const card = item.querySelector('.army-case-card');
           if (!card) return;
 
           // Continuous scroll-driven animation timeline
@@ -128,13 +130,13 @@ export default function IndianArmyProjectsPage() {
             },
           });
 
-          // Keyframe 0% -> 50%: Enters from bottom tilted with full 3D perspective
+          // Keyframe 0% -> 50%: Enters from bottom tilted with 3D perspective
           tl.fromTo(
             card,
             {
-              y: '35vh',
-              rotateX: 65,
-              scale: 1.1,
+              y: isMobile ? '12vh' : '35vh',
+              rotateX: isMobile ? 22 : 65,
+              scale: isMobile ? 1.02 : 1.1,
               transformOrigin: '50% 100%',
             },
             {
@@ -148,9 +150,9 @@ export default function IndianArmyProjectsPage() {
 
           // Keyframe 50% -> 100%: Leaves toward top of screen
           tl.to(card, {
-            y: '-15vh',
-            rotateX: -15,
-            scale: 0.9,
+            y: isMobile ? '-8vh' : '-15vh',
+            rotateX: isMobile ? -8 : -15,
+            scale: isMobile ? 0.96 : 0.9,
             ease: 'power1.in',
             duration: 1,
           });
@@ -722,6 +724,7 @@ export default function IndianArmyProjectsPage() {
 
         {/* Closing Consultation CTA */}
         <div
+          className="army-cta-banner"
           style={{
             padding: 'clamp(2rem, 4vw, 4rem) clamp(1.25rem, 4vw, 4rem)',
             borderRadius: 'clamp(20px, 4vw, 28px)',
@@ -772,6 +775,20 @@ export default function IndianArmyProjectsPage() {
           </Link>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 640px) {
+          :global(.army-cta-banner) {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1.5rem !important;
+          }
+          :global(.army-cta-banner > a) {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

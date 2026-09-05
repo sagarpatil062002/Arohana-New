@@ -109,7 +109,7 @@ export default function Hero() {
               gap: '0.75rem',
             }}
           >
-            <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'nowrap' }}>
+            <div className="hero-tabs-wrap">
               {tabs.map((tab, idx) => (
                 <Link
                   key={tab.label}
@@ -153,6 +153,7 @@ export default function Hero() {
 
           {/* Bottom Hero Statement & Founder Action Pill */}
           <div
+            className="hero-bottom-wrap"
             style={{
               position: 'relative',
               zIndex: 10,
@@ -225,6 +226,7 @@ export default function Hero() {
             {/* Founder Contact Pill directly inside hero */}
             <Link
               href="/contact"
+              className="hero-founder-pill"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -291,6 +293,28 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .hero-tabs-wrap {
+          display: flex;
+          gap: 0.65rem;
+          flex-wrap: nowrap;
+          width: max-content;
+        }
+        @media (max-width: 640px) {
+          .hero-bottom-wrap {
+            padding: 1.5rem 1.25rem 1.75rem !important;
+            gap: 1.25rem !important;
+          }
+          .hero-founder-pill {
+            width: 100% !important;
+            justify-content: flex-start !important;
+          }
+          .hero-tabs-wrap {
+            padding-right: 2rem;
+          }
+        }
+      `}</style>
     </section>
   );
 }

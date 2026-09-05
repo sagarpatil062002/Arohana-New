@@ -235,6 +235,23 @@ input, select, textarea {
   }
 }
 
+/* Hide floating mouse-follower cursor pills on touch screens / mobile */
+@media (hover: none), (max-width: 991px) {
+  .hover-pill-cursor,
+  .hover_wrap,
+  .hover_pill {
+    display: none !important;
+  }
+}
+
+/* Compact mobile padding for small phones */
+@media (max-width: 480px) {
+  .padding-global {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
 .container-large {
   width: 100%;
   max-width: 1560px;

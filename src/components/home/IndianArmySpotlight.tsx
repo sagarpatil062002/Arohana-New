@@ -70,9 +70,17 @@ const ARMY_CAROUSEL_ITEMS: ArmyCard[] = [
 export default function IndianArmySpotlight() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
   const total = ARMY_CAROUSEL_ITEMS.length;
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const nextSlide = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % total);
@@ -154,6 +162,7 @@ export default function IndianArmySpotlight() {
       <div className="padding-global container-large" style={{ position: 'relative', zIndex: 10 }}>
         {/* Header Block */}
         <div
+          className="army-spotlight-header"
           style={{
             display: 'flex',
             flexWrap: 'wrap',
@@ -297,32 +306,32 @@ export default function IndianArmySpotlight() {
                   opacity = 1;
                   zIndex = 100;
                 } else if (offset === -1) {
-                  translateX = -180;
-                  translateZ = -70;
-                  rotateY = 18;
-                  scale = 0.88;
-                  opacity = 0.75;
+                  translateX = isMobile ? -68 : -180;
+                  translateZ = isMobile ? -50 : -70;
+                  rotateY = isMobile ? 16 : 18;
+                  scale = isMobile ? 0.84 : 0.88;
+                  opacity = isMobile ? 0.45 : 0.75;
                   zIndex = 90;
                 } else if (offset === 1) {
-                  translateX = 180;
-                  translateZ = -70;
-                  rotateY = -18;
-                  scale = 0.88;
-                  opacity = 0.75;
+                  translateX = isMobile ? 68 : 180;
+                  translateZ = isMobile ? -50 : -70;
+                  rotateY = isMobile ? -16 : -18;
+                  scale = isMobile ? 0.84 : 0.88;
+                  opacity = isMobile ? 0.45 : 0.75;
                   zIndex = 90;
                 } else if (offset === -2) {
-                  translateX = -320;
+                  translateX = isMobile ? 0 : -320;
                   translateZ = -140;
-                  rotateY = 32;
+                  rotateY = isMobile ? 0 : 32;
                   scale = 0.76;
-                  opacity = 0.35;
+                  opacity = isMobile ? 0 : 0.35;
                   zIndex = 80;
                 } else if (offset === 2) {
-                  translateX = 320;
+                  translateX = isMobile ? 0 : 320;
                   translateZ = -140;
-                  rotateY = -32;
+                  rotateY = isMobile ? 0 : -32;
                   scale = 0.76;
-                  opacity = 0.35;
+                  opacity = isMobile ? 0 : 0.35;
                   zIndex = 80;
                 }
 
@@ -332,9 +341,10 @@ export default function IndianArmySpotlight() {
                     onClick={() => setActiveIndex(index)}
                     style={{
                       position: 'absolute',
-                      width: 'clamp(220px, 30vw, 290px)',
-                      height: 'clamp(290px, 38vw, 380px)',
+                      width: isMobile ? 'clamp(230px, 72vw, 280px)' : 'clamp(220px, 30vw, 290px)',
+                      height: isMobile ? 'clamp(310px, 46vh, 370px)' : 'clamp(290px, 38vw, 380px)',
                       cursor: 'pointer',
+                      pointerEvents: isMobile && Math.abs(offset) > 1 ? 'none' : 'auto',
                       willChange: 'transform, opacity',
                       transform: `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                       opacity,
@@ -735,6 +745,16 @@ export default function IndianArmySpotlight() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .army-spotlight-header {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1.25rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -186,9 +186,9 @@ export default function WorkPage() {
         tl.fromTo(
           link,
           {
-            y: '35vh',
-            rotateX: 65,
-            scale: 1.1,
+            y: isMobile ? '12vh' : '35vh',
+            rotateX: isMobile ? 22 : 65,
+            scale: isMobile ? 1.02 : 1.1,
             transformOrigin: '50% 100%',
           },
           {
@@ -201,9 +201,9 @@ export default function WorkPage() {
         );
 
         tl.to(link, {
-          y: '-15vh',
-          rotateX: -15,
-          scale: 0.9,
+          y: isMobile ? '-8vh' : '-15vh',
+          rotateX: isMobile ? -8 : -15,
+          scale: isMobile ? 0.96 : 0.9,
           ease: 'power1.in',
           duration: 1,
         });
@@ -413,6 +413,7 @@ export default function WorkPage() {
 
         {/* Filter Bar */}
         <div
+          className="touch-scroll-row work-filter-bar"
           style={{
             display: 'flex',
             gap: '0.65rem',
@@ -743,14 +744,34 @@ export default function WorkPage() {
           }
         }
         @media screen and (max-width: 767px) {
+          .work-filter-bar {
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            padding-bottom: 1rem !important;
+            margin-bottom: 3.5rem !important;
+            scrollbar-width: none;
+          }
+          .work-filter-bar::-webkit-scrollbar {
+            display: none;
+          }
+          .work-filter-bar > button {
+            white-space: nowrap !important;
+            flex-shrink: 0 !important;
+          }
           .work-list_list {
             gap: 2.5rem !important;
             margin-bottom: 4.5rem !important;
           }
           .work-list_name {
-            bottom: 0.85rem !important;
-            left: 0.85rem !important;
-            padding: 0.25rem 0.65rem !important;
+            bottom: 0.75rem !important;
+            left: 0.75rem !important;
+            right: 0.75rem !important;
+            max-width: calc(100% - 1.5rem) !important;
+            padding: 0.55rem 0.85rem !important;
+          }
+          .work-list_name > div:first-child {
+            flex-wrap: wrap !important;
+            gap: 0.25rem 0.5rem !important;
           }
         }
       `}</style>

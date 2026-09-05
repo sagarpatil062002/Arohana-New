@@ -627,6 +627,7 @@ export default function ServicesPage() {
 
         {/* CTA Banner */}
         <div
+          className="services-cta-banner"
           style={{
             padding: 'clamp(2rem, 4vw, 4rem) clamp(1.25rem, 4vw, 4rem)',
             borderRadius: 'clamp(20px, 4vw, 28px)',
@@ -658,6 +659,20 @@ export default function ServicesPage() {
           </Link>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 640px) {
+          :global(.services-cta-banner) {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1.5rem !important;
+          }
+          :global(.services-cta-banner > a) {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

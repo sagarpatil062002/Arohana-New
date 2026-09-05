@@ -118,6 +118,7 @@ export default function ServicesSection() {
         >
           {/* Header Row: Services  × × × ×  (04) */}
           <div
+            className="services-header-top"
             style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -179,7 +180,7 @@ export default function ServicesSection() {
             </div>
 
             {/* Right: CTA to Services & (03) */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexShrink: 0 }}>
+            <div className="services-header-cta-wrap" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexShrink: 0 }}>
               <Link
                 href="/services"
                 className="button-editorial button-editorial-primary"
@@ -469,6 +470,15 @@ export default function ServicesSection() {
           }
         }
         @media screen and (max-width: 767px) {
+          :global(.services-header-top) {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1.5rem !important;
+          }
+          :global(.services-header-cta-wrap) {
+            width: 100% !important;
+            justify-content: space-between !important;
+          }
           :global(.service-card-wrapper) {
             position: relative !important;
             top: auto !important;

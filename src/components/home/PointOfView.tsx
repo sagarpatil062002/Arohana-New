@@ -254,6 +254,7 @@ export default function PointOfView() {
             {/* CTA Buttons */}
             <div
               ref={buttonsRef}
+              className="pov-buttons-wrap"
               style={{
                 display: 'flex',
                 gap: '1rem',
@@ -351,6 +352,15 @@ export default function PointOfView() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 480px) {
+          :global(.pov-buttons-wrap > a) {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -110,6 +110,8 @@ export default function SelectedWork() {
     if (!items || items.length === 0) return;
 
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768;
+
       items.forEach((item) => {
         const link = item.querySelector('.work-list_link');
         if (!link) return;
@@ -124,13 +126,13 @@ export default function SelectedWork() {
           },
         });
 
-        // Keyframe 0% -> 50%: Enters from bottom tilted with full 3D perspective
+        // Keyframe 0% -> 50%: Enters from bottom tilted with 3D perspective
         tl.fromTo(
           link,
           {
-            y: '35vh',
-            rotateX: 65,
-            scale: 1.1,
+            y: isMobile ? '12vh' : '35vh',
+            rotateX: isMobile ? 22 : 65,
+            scale: isMobile ? 1.02 : 1.1,
             transformOrigin: '50% 100%',
           },
           {
@@ -144,9 +146,9 @@ export default function SelectedWork() {
 
         // Keyframe 50% -> 100%: Leaves toward top of screen
         tl.to(link, {
-          y: '-15vh',
-          rotateX: -15,
-          scale: 0.9,
+          y: isMobile ? '-8vh' : '-15vh',
+          rotateX: isMobile ? -8 : -15,
+          scale: isMobile ? 0.96 : 0.9,
           ease: 'power1.in',
           duration: 1,
         });
@@ -541,9 +543,15 @@ export default function SelectedWork() {
             gap: 2.5rem !important;
           }
           .work-list_name {
-            bottom: 0.85rem !important;
-            left: 0.85rem !important;
-            padding: 0.25rem 0.65rem !important;
+            bottom: 0.75rem !important;
+            left: 0.75rem !important;
+            right: 0.75rem !important;
+            max-width: calc(100% - 1.5rem) !important;
+            padding: 0.55rem 0.85rem !important;
+          }
+          .work-list_name > div:first-child {
+            flex-wrap: wrap !important;
+            gap: 0.25rem 0.5rem !important;
           }
         }
       `}</style>

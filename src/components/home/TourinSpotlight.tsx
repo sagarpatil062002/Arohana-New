@@ -129,7 +129,7 @@ export default function TourinSpotlight() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+              <div className="tourin-cta-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <Link
                   href="/tourin"
                   className="button-editorial button-editorial-white"
@@ -203,6 +203,15 @@ export default function TourinSpotlight() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 480px) {
+          :global(.tourin-cta-group > a) {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

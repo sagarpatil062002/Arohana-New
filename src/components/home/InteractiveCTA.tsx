@@ -22,6 +22,7 @@ export default function InteractiveCTA() {
     const section = sectionRef.current;
     const visualWrap = visualWrapRef.current;
     if (!section || !visualWrap) return;
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) return;
 
     let imageIndex = 0;
     let lastX = 0;
@@ -169,7 +170,7 @@ export default function InteractiveCTA() {
           Let’s start with what you’re trying to solve or build, not a cookie-cutter agency proposal.
         </p>
 
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
+        <div className="interactive-cta-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
           <Link
             href="/contact"
             className="button-editorial button-editorial-white"
@@ -229,6 +230,15 @@ export default function InteractiveCTA() {
           <span>Proof Over Claims</span>
         </div>
       </div>
+
+      <style jsx>{`
+        @media (max-width: 480px) {
+          :global(.interactive-cta-btns > *) {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
