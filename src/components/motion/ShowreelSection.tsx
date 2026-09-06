@@ -40,8 +40,37 @@ export default function ShowreelSection({
     const pinnedBox = pinnedBoxRef.current;
     if (!container || !pinnedBox) return;
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealWords = container.querySelectorAll<HTMLElement>('.showreel-word-reveal');
+
+    let textTrigger: ScrollTrigger | null = null;
+    if (prefersReducedMotion) {
+      gsap.set(revealWords, { y: '0%', opacity: 1, rotateZ: 0 });
+    } else if (revealWords.length > 0) {
+      gsap.set(revealWords, { y: '120%', rotateZ: 3, opacity: 0 });
+      textTrigger = ScrollTrigger.create({
+        trigger: container,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          gsap.to(revealWords, {
+            y: '0%',
+            rotateZ: 0,
+            opacity: 1,
+            duration: 0.95,
+            stagger: 0.08,
+            ease: 'power3.out',
+          });
+        },
+      });
+    }
+
     const isMobile = window.innerWidth < 992;
-    if (isMobile) return;
+    if (isMobile) {
+      return () => {
+        if (textTrigger) textTrigger.kill();
+      };
+    }
 
     const numItems = items.length;
 
@@ -59,7 +88,10 @@ export default function ShowreelSection({
       },
     });
 
-    return () => trigger.kill();
+    return () => {
+      trigger.kill();
+      if (textTrigger) textTrigger.kill();
+    };
   }, [items.length]);
 
   const isDark = theme === 'dark';
@@ -120,9 +152,30 @@ export default function ShowreelSection({
                   lineHeight: 1.1,
                   maxWidth: '820px',
                   marginBottom: subheading ? '0.75rem' : 0,
+                  overflow: 'hidden',
                 }}
               >
-                {heading}
+                {heading.split(' ').map((word, wIdx) => (
+                  <span
+                    key={wIdx}
+                    style={{
+                      display: 'inline-block',
+                      overflow: 'hidden',
+                      verticalAlign: 'top',
+                      marginRight: '0.28em',
+                    }}
+                  >
+                    <span
+                      className="showreel-word-reveal"
+                      style={{
+                        display: 'inline-block',
+                        willChange: 'transform, opacity',
+                      }}
+                    >
+                      {word}
+                    </span>
+                  </span>
+                ))}
               </h2>
               {subheading && (
                 <p
@@ -324,7 +377,29 @@ export default function ShowreelSection({
           <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '0.5rem' }}>
             {eyebrow}
           </div>
-          <h2 style={{ fontSize: '2rem', fontWeight: 500, marginBottom: subheading ? '0.5rem' : 0 }}>{heading}</h2>
+          <h2 style={{ fontSize: '2rem', fontWeight: 500, marginBottom: subheading ? '0.5rem' : 0, overflow: 'hidden' }}>
+            {heading.split(' ').map((word, wIdx) => (
+              <span
+                key={wIdx}
+                style={{
+                  display: 'inline-block',
+                  overflow: 'hidden',
+                  verticalAlign: 'top',
+                  marginRight: '0.28em',
+                }}
+              >
+                <span
+                  className="showreel-word-reveal"
+                  style={{
+                    display: 'inline-block',
+                    willChange: 'transform, opacity',
+                  }}
+                >
+                  {word}
+                </span>
+              </span>
+            ))}
+          </h2>
           {subheading && (
             <p style={{ fontSize: '0.9rem', color: isDark ? 'rgba(255,255,255,0.7)' : '#555555', lineHeight: 1.5, margin: 0 }}>
               {subheading}

@@ -110,6 +110,33 @@ export default function SelectedWork() {
     if (!items || items.length === 0) return;
 
     const ctx = gsap.context(() => {
+      // Word reveal animation for "The work is the proof."
+      const workRevealWords = sectionRef.current?.querySelectorAll<HTMLElement>('.work-word-reveal');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (workRevealWords && workRevealWords.length > 0) {
+        if (prefersReducedMotion) {
+          gsap.set(workRevealWords, { y: '0%', rotateZ: 0, opacity: 1 });
+        } else {
+          gsap.set(workRevealWords, { y: '120%', rotateZ: 3, opacity: 0 });
+          ScrollTrigger.create({
+            trigger: '.work-list_head',
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+              gsap.to(workRevealWords, {
+                y: '0%',
+                rotateZ: 0,
+                opacity: 1,
+                duration: 0.95,
+                stagger: 0.08,
+                ease: 'power3.out',
+              });
+            },
+          });
+        }
+      }
+
       const isMobile = window.innerWidth < 768;
 
       items.forEach((item) => {
@@ -245,32 +272,61 @@ export default function SelectedWork() {
         <div
           className="work-list_head"
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 0.5fr',
-            placeItems: 'end start',
-            columnGap: '1.5rem',
-            rowGap: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2.5rem',
             width: '100%',
             marginBottom: '6rem',
             paddingBottom: '2.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
           }}
         >
-          {/* Left: Heading wrap with absolute counter circle */}
-          <div className="work-list_heading-wrap" style={{ position: 'relative' }}>
+          {/* Top: One-line heading on desktop */}
+          <div
+            className="work-list_heading-wrap"
+            style={{
+              position: 'relative',
+              display: 'inline-flex',
+              alignItems: 'flex-start',
+              width: '100%',
+              maxWidth: '100%',
+            }}
+          >
             <h2
-              className="heading-style-display"
+              className="heading-style-display work-heading-single-line"
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.8rem, 6.5vw, 6rem)',
+                fontSize: 'clamp(2.4rem, 5.2vw, 5.2rem)',
                 fontWeight: 500,
                 letterSpacing: '-0.04em',
-                lineHeight: 0.98,
+                lineHeight: 1.05,
                 color: '#111111',
                 margin: 0,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
               }}
             >
-              The work<br />is the proof.
+              {['The', 'work', 'is', 'the', 'proof.'].map((word, idx) => (
+                <span
+                  key={idx}
+                  style={{
+                    display: 'inline-block',
+                    overflow: 'hidden',
+                    verticalAlign: 'top',
+                    marginRight: '0.28em',
+                  }}
+                >
+                  <span
+                    className="work-word-reveal"
+                    style={{
+                      display: 'inline-block',
+                      willChange: 'transform, opacity',
+                    }}
+                  >
+                    {word}
+                  </span>
+                </span>
+              ))}
             </h2>
             <div
               className="work-list_number"
@@ -278,75 +334,85 @@ export default function SelectedWork() {
                 color: '#ffffff',
                 backgroundColor: '#DE322D',
                 borderRadius: '50%',
-                display: 'flex',
+                display: 'inline-flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '22px',
-                height: '22px',
+                width: '24px',
+                height: '24px',
                 fontSize: '0.75rem',
                 fontFamily: 'var(--font-display)',
                 fontWeight: 600,
-                position: 'absolute',
-                top: '0.2rem',
-                left: 'calc(100% + 0.5rem)',
+                marginLeft: '0.75rem',
+                marginTop: '0.35rem',
+                flexShrink: 0,
               }}
             >
               6
             </div>
           </div>
 
-          {/* Center: Projects description */}
+          {/* Bottom row: Description & copyright */}
           <div
-            className="work-list_head-texts"
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              maxWidth: '24rem',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              width: '100%',
+              flexWrap: 'wrap',
+              gap: '1.5rem',
             }}
           >
-            <h3
-              className="text-style-label"
+            <div
+              className="work-list_head-texts"
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                color: '#DE322D',
-                textTransform: 'uppercase',
-                margin: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.75rem',
+                maxWidth: '32rem',
               }}
             >
-              SELECTED WORK
-            </h3>
-            <p
-              style={{
-                color: '#555555',
-                fontSize: '0.925rem',
-                lineHeight: 1.6,
-                margin: 0,
-              }}
-            >
-              A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.
-            </p>
-          </div>
+              <h3
+                className="text-style-label"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  color: '#DE322D',
+                  textTransform: 'uppercase',
+                  margin: 0,
+                }}
+              >
+                SELECTED WORK
+              </h3>
+              <p
+                style={{
+                  color: '#555555',
+                  fontSize: '0.95rem',
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.
+              </p>
+            </div>
 
-          {/* Right: Editorial Copyright */}
-          <div style={{ textAlign: 'right', width: '100%' }}>
-            <h2
-              className="heading-style-display"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
-                fontWeight: 500,
-                letterSpacing: '-0.04em',
-                lineHeight: 0.95,
-                color: '#111111',
-                margin: 0,
-              }}
-            >
-              ©26
-            </h2>
+            <div style={{ textAlign: 'right' }}>
+              <h2
+                className="heading-style-display"
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                  fontWeight: 500,
+                  letterSpacing: '-0.04em',
+                  lineHeight: 0.95,
+                  color: '#111111',
+                  margin: 0,
+                }}
+              >
+                ©26
+              </h2>
+            </div>
           </div>
         </div>
 
@@ -514,7 +580,15 @@ export default function SelectedWork() {
       </div>
 
       <style jsx>{`
+        @media screen and (min-width: 992px) {
+          .work-heading-single-line {
+            white-space: nowrap !important;
+          }
+        }
         @media screen and (max-width: 991px) {
+          .work-heading-single-line {
+            white-space: normal !important;
+          }
           .work-list_head {
             display: flex !important;
             flex-direction: column !important;

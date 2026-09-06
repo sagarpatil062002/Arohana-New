@@ -163,27 +163,39 @@ export default function ServicesPage() {
         { y: 0, opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power2.out', delay: 0.2 }
       );
 
-      // Pillars 3D perspective card reveal & scroll scrub (matching home page)
+      // Sticky card stack scrub & image scale (matching home page ServicesSection.tsx)
       const cards = gsap.utils.toArray<HTMLElement>('.service-pillar-card');
-      cards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          {
-            y: '20vh',
-            rotateX: 28,
-            scale: 1.04,
-            transformOrigin: '50% 100%',
-          },
-          {
-            y: '0vh',
-            rotateX: 0,
-            scale: 1.0,
-            ease: 'power1.out',
+      cards.forEach((card, i) => {
+        if (i < cards.length - 1) {
+          const nextCard = cards[i + 1];
+          gsap.to(card, {
+            scale: 0.96,
+            opacity: 0.88,
+            ease: 'none',
             scrollTrigger: {
-              trigger: card,
-              start: 'top 95%',
-              end: 'top 55%',
-              scrub: 0.2,
+              trigger: nextCard,
+              start: 'top 80%',
+              end: 'top 25%',
+              scrub: true,
+            },
+          });
+        }
+      });
+
+      // Image scrub parallax zoom
+      const imgElements = gsap.utils.toArray<HTMLElement>('.service-pillar-img');
+      imgElements.forEach((img) => {
+        gsap.fromTo(
+          img,
+          { scale: 1 },
+          {
+            scale: 1.08,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: img.parentElement,
+              start: 'top 85%',
+              end: 'bottom 15%',
+              scrub: 0.6,
             },
           }
         );
@@ -218,7 +230,7 @@ export default function ServicesPage() {
         position: 'relative',
         paddingTop: 'clamp(2.5rem, 5vw, 4rem)',
         paddingBottom: 'clamp(4rem, 8vw, 8rem)',
-        overflow: 'hidden',
+        overflow: 'visible',
       }}
     >
       {/* Interactive Cursor Follower Pill (Matching Home Page) */}
@@ -309,33 +321,41 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        {/* The 3 Core Pillars with 3D Perspective */}
+        {/* The 3 Core Pillars with Sticky Stacking Cards Animation */}
         <div
           style={{
-            perspective: '1200px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 'clamp(3rem, 6vw, 6rem)',
+            position: 'relative',
+            overflow: 'visible',
             marginBottom: 'clamp(4rem, 8vw, 7rem)',
           }}
         >
-          {pillars.map((pillar) => (
-            <div
-              key={pillar.id}
-              id={pillar.id}
-              className="service-pillar-card"
-              onMouseEnter={() => handlePillEnter(`EXPLORE ${pillar.title.toUpperCase()}`)}
-              onMouseLeave={handlePillLeave}
-              style={{
-                borderRadius: 'clamp(20px, 4vw, 32px)',
-                backgroundColor: '#ffffff',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-                overflow: 'hidden',
-                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.04)',
-                padding: 'clamp(1.5rem, 3.5vw, 4rem)',
-                transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
-              }}
-            >
+          {pillars.map((pillar, index) => {
+            const isLast = index === pillars.length - 1;
+            return (
+              <div
+                key={pillar.id}
+                id={pillar.id}
+                className="service-pillar-card"
+                onMouseEnter={() => handlePillEnter(`EXPLORE ${pillar.title.toUpperCase()}`)}
+                onMouseLeave={handlePillLeave}
+                style={{
+                  position: 'sticky',
+                  top: `clamp(4.5rem, ${7 + index * 2.5}vh, 7.5rem)`,
+                  zIndex: index + 1,
+                  borderRadius: 'clamp(20px, 4vw, 32px)',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  overflow: 'hidden',
+                  boxShadow: '0 16px 48px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03)',
+                  padding: 'clamp(1.5rem, 3.5vw, 4rem)',
+                  marginBottom: isLast ? '0' : 'clamp(2.5rem, 4vw, 4.5rem)',
+                  boxSizing: 'border-box',
+                  transformOrigin: '50% 0%',
+                  transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+                }}
+              >
               <div
                 style={{
                   display: 'grid',
@@ -486,6 +506,7 @@ export default function ServicesPage() {
                     src={pillar.image}
                     alt={pillar.title}
                     fill
+                    className="service-pillar-img"
                     style={{
                       objectFit: 'cover',
                       transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -493,8 +514,9 @@ export default function ServicesPage() {
                   />
                 </div>
               </div>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
 
         {/* Team Model & How Engagements Work Section */}
@@ -646,6 +668,13 @@ export default function ServicesPage() {
           :global(.services-cta-banner > a) {
             width: 100% !important;
             justify-content: center !important;
+          }
+        }
+        @media screen and (max-width: 767px) {
+          :global(.service-pillar-card) {
+            position: relative !important;
+            top: auto !important;
+            margin-bottom: 2rem !important;
           }
         }
       `}</style>
