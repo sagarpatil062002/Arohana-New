@@ -1,601 +1,845 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 
-interface TourinCardData {
+interface JourneyCategory {
   id: string;
-  tag: string;
+  name: string;
   image: string;
-  title: string;
-  description: string;
-  stat: string;
-  statLabel: string;
-  link: string;
-  linkText: string;
+  heroImage?: string;
+  tagline: string;
 }
 
-const TOURIN_CARDS: TourinCardData[] = [
+const JOURNEY_CATEGORIES: JourneyCategory[] = [
   {
-    id: 'tour-1',
-    tag: 'HIMALAYAN EXPEDITIONS',
-    image: '/images/tourin/tourin-hero.jpg',
-    title: 'And then there is Tourin.',
-    description:
-      'Curated itineraries, curated hospitality experiences, and high-end luxury travel destinations directly by people who know the mountain terrain intimately.',
-    stat: '15+',
-    statLabel: 'High-Altitude Expeditions',
-    link: '/tourin',
-    linkText: 'More details about this tour',
+    id: 'trekking',
+    name: 'Trekking',
+    image: '/images/tourin/thumb-trekking.jpg',
+    heroImage: '/images/tourin/tourin-hiker-hero.jpg',
+    tagline: 'High-Altitude Himalayan Trails',
   },
   {
-    id: 'tour-2',
-    tag: 'COMMUNITY HOMESTAYS',
-    image: '/images/tourin/tourin-1.jpg',
-    title: 'And then there is Tourin.',
-    description:
-      'Curated itineraries, curated hospitality experiences, and high-end luxury travel destinations directly by people who know the mountain terrain intimately.',
-    stat: '15+',
-    statLabel: 'Heritage Village Stays',
-    link: '/tourin',
-    linkText: 'More details about this tour',
+    id: 'homestays',
+    name: 'Homestays',
+    image: '/images/tourin/thumb-homestay.jpg',
+    heroImage: '/images/tourin/thumb-homestay.jpg',
+    tagline: 'Heritage Community Living',
   },
   {
-    id: 'tour-3',
-    tag: 'HIGH-ALTITUDE LOGISTICS',
-    image: '/images/tourin/tourin-2.jpg',
-    title: 'And then there is Tourin.',
-    description:
-      'Curated itineraries, curated hospitality experiences, and high-end luxury travel destinations directly by people who know the mountain terrain intimately.',
-    stat: '15+',
-    statLabel: 'Remote Pass Crossings',
-    link: '/tourin',
-    linkText: 'More details about this tour',
-  },
-  {
-    id: 'tour-4',
-    tag: 'MOTORCYCLE CONVOYS',
-    image: '/images/tourin/tourin-3.jpg',
-    title: 'And then there is Tourin.',
-    description:
-      'Curated itineraries, curated hospitality experiences, and high-end luxury travel destinations directly by people who know the mountain terrain intimately.',
-    stat: '15+',
-    statLabel: '20-Biker Expeditions',
-    link: '/tourin',
-    linkText: 'More details about this tour',
-  },
-  {
-    id: 'tour-5',
-    tag: 'LUXURY RETREATS',
-    image: '/images/tourin/tourin-gallery-1.jpg',
-    title: 'And then there is Tourin.',
-    description:
-      'Curated itineraries, curated hospitality experiences, and high-end luxury travel destinations directly by people who know the mountain terrain intimately.',
-    stat: '15+',
-    statLabel: 'Bespoke Private Journeys',
-    link: '/tourin',
-    linkText: 'More details about this tour',
+    id: 'experiences',
+    name: 'Experiences',
+    image: '/images/tourin/thumb-experience.jpg',
+    heroImage: '/images/tourin/thumb-experience.jpg',
+    tagline: 'Glacial Passes & Bespoke Expeditions',
   },
 ];
 
 export default function TourinSpotlight() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(0);
 
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const startX = useRef<number>(0);
-  const scrollLeftStart = useRef<number>(0);
-
-  const totalCards = TOURIN_CARDS.length;
-
-  // Scroll to specific card index
-  const scrollToIndex = useCallback((index: number) => {
-    if (!carouselRef.current) return;
-    const container = carouselRef.current;
-    const cards = container.children;
-    if (cards[index]) {
-      const targetCard = cards[index] as HTMLElement;
-      container.scrollTo({
-        left: targetCard.offsetLeft - container.offsetLeft,
-        behavior: 'smooth',
-      });
-      setCurrentIndex(index);
-    }
-  }, []);
-
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => {
-      const next = (prev + 1) % totalCards;
-      scrollToIndex(next);
-      return next;
-    });
-  }, [totalCards, scrollToIndex]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => {
-      const prevIdx = (prev - 1 + totalCards) % totalCards;
-      scrollToIndex(prevIdx);
-      return prevIdx;
-    });
-  }, [totalCards, scrollToIndex]);
-
-  // Default auto-scroll every 1.5 seconds
-  const resetAutoplay = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (!isHovered && !isDragging) {
-      timerRef.current = setInterval(() => {
-        nextSlide();
-      }, 1500);
-    }
-  }, [isHovered, isDragging, nextSlide]);
-
-  useEffect(() => {
-    resetAutoplay();
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [resetAutoplay]);
-
-  // Update active index on manual scroll
-  const handleScroll = () => {
-    if (!carouselRef.current) return;
-    const container = carouselRef.current;
-    const cardWidth = 340 + 22; // width + gap
-    const idx = Math.round(container.scrollLeft / cardWidth);
-    if (idx >= 0 && idx < totalCards && idx !== currentIndex) {
-      setCurrentIndex(idx);
-    }
-  };
-
-  // Mouse Drag Handlers for Desktop
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!carouselRef.current) return;
-    setIsDragging(true);
-    startX.current = e.pageX - carouselRef.current.offsetLeft;
-    scrollLeftStart.current = carouselRef.current.scrollLeft;
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !carouselRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.4;
-    carouselRef.current.scrollLeft = scrollLeftStart.current - walk;
-  };
-
-  const handleMouseUpOrLeave = () => {
-    if (isDragging) {
-      setIsDragging(false);
-      resetAutoplay();
-    }
-  };
-
-  // Touch Swipe Handlers for Mobile
-  const touchStartX = useRef<number>(0);
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    setIsHovered(true);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0) nextSlide();
-      else prevSlide();
-    }
-    setIsHovered(false);
-    resetAutoplay();
-  };
+  const currentCategory = JOURNEY_CATEGORIES[activeCategory];
 
   return (
-    <section
-      id="experience-sits"
-      className="tourin-experience-section"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        handleMouseUpOrLeave();
-      }}
-    >
-      <div className="padding-global container-large">
+    <section id="tourin" className="tourin-section-wrapper" aria-label="Tourin Experiential Travel">
+      <div className="tourin-outer-container">
         {/* ============================================================
-            1 & 2: SECTION HEADER & DESCRIPTION
+            MAIN HERO CARD WITH ORGANIC SPLIT
             ============================================================ */}
-        <div className="section-head-wrap">
-          <div className="section-head-left">
-            <h2 className="section-main-heading">
-              Where our experience sits<span className="dot-accent">.</span>
-            </h2>
-            <p className="section-main-description">
-              Our design strategy is equally designed across a four commercial and institutional sectors
-              without specific agency templates.
-            </p>
+        <div className="tourin-hero-card">
+          {/* Background / Right Mountain Landscape Visual */}
+          <div className="mountain-visual-layer">
+            <Image
+              src="/images/tourin/tourin-hiker-hero.jpg"
+              alt="Hiker overlooking high-altitude Himalayan mountain peaks"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 65vw"
+              className="mountain-hero-img"
+            />
+            {/* Subtle atmospheric vignette */}
+            <div className="mountain-vignette-overlay" />
+
+            {/* Floating Top Pill Badge: [ ĀROHANA ] → [ TOURIN ] */}
+            <div className="floating-brand-bridge">
+              <div className="bridge-pills-row">
+                <div className="bridge-pill arohana-pill">
+                  <span>ĀROHANA</span>
+                </div>
+                <div className="bridge-arrow-icon" aria-hidden="true">
+                  <ArrowRight size={14} strokeWidth={2.5} />
+                </div>
+                <div className="bridge-pill tourin-pill">
+                  <span className="tourin-pill-bg" />
+                  <span className="tourin-pill-text">TOURIN</span>
+                </div>
+              </div>
+              <span className="bridge-tagline">NEW HORIZONS SAME PURPOSE</span>
+            </div>
+
+            {/* Handwritten Script Overlay ("More than a destination") */}
+            <div className="handwritten-script-box">
+              <span className="script-word">More</span>
+              <span className="script-word">than a</span>
+              <span className="script-word">destination</span>
+              <svg
+                className="script-red-underline"
+                width="84"
+                height="9"
+                viewBox="0 0 84 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2 6.5C26 2 58 2 82 6.5"
+                  stroke="#e03131"
+                  strokeWidth="2.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+
+            {/* Right Edge Vertical Slider Rail */}
+            <div className="vertical-rail-indicator" aria-hidden="true">
+              <span className="rail-num">01</span>
+              <div className="rail-track">
+                <span className="rail-active-thumb" />
+              </div>
+              <span className="rail-num">03</span>
+            </div>
           </div>
 
-          {/* Navigation Controls on Header Right */}
-          <div className="section-nav-controls">
-            <button
-              type="button"
-              className="carousel-nav-arrow"
-              onClick={prevSlide}
-              aria-label="Previous card"
+          {/* Organic Wave Divider SVG (Smoothly connects dark left & mountain right) */}
+          <div className="organic-divider-wrapper" aria-hidden="true">
+            <svg
+              viewBox="0 0 160 800"
+              preserveAspectRatio="none"
+              className="organic-divider-svg"
             >
-              <ArrowLeft size={17} />
-            </button>
-            <div className="carousel-nav-dots" aria-label="Carousel pagination">
-              {TOURIN_CARDS.map((_, idx) => (
+              <path
+                d="M0,0 L65,0 C125,180 165,340 70,520 C20,620 15,710 40,800 L0,800 Z"
+                fill="#121316"
+              />
+            </svg>
+          </div>
+
+          {/* Left Column Content (Dark Container) */}
+          <div className="tourin-content-panel">
+            <div className="panel-inner">
+              {/* Eyebrow with Red Dash */}
+              <div className="eyebrow-row">
+                <span className="eyebrow-text">EXPERIENTIAL TRAVEL</span>
+                <span className="eyebrow-dash" />
+              </div>
+
+              {/* Main Headline */}
+              <h2 className="headline-text">
+                And then
+                <br />
+                there is
+                <br />
+                Tourin<span className="headline-dot">.</span>
+              </h2>
+
+              {/* Body Description */}
+              <p className="description-text">
+                Curated Himalayan routes, community homestays, and high-altitude logistics
+                planned directly by people who know the mountain terrain intimately.
+              </p>
+
+              {/* Stat Card */}
+              <div className="stat-callout-card">
+                <div className="stat-num-col">
+                  <span className="stat-num">15+</span>
+                </div>
+                <div className="stat-desc-col">
+                  <p className="stat-desc-text">
+                    15+ separate bookings/trips so far — from solo high-altitude explorers to
+                    corporate and 20-biker expeditions.
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA Action Buttons */}
+              <div className="cta-buttons-row">
+                <Link href="/tourin" className="btn-primary-pill">
+                  <span>Explore Tourin Journeys</span>
+                  <ArrowUpRight size={15} strokeWidth={2.4} />
+                </Link>
+
+                <Link href="/contact" className="btn-secondary-pill">
+                  <span>Plan a Journey</span>
+                  <ArrowUpRight size={15} strokeWidth={2.2} />
+                </Link>
+              </div>
+
+              {/* Bottom Left Scroll Indicator */}
+              <div className="bottom-scroll-hint">
+                <span className="scroll-hint-dash" />
+                <span className="scroll-hint-text">SCROLL TO EXPLORE MORE</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Bottom Thumbnails Strip (Trekking, Homestays, Experiences) */}
+          <div className="floating-bottom-strip">
+            <div className="thumbnails-group">
+              {JOURNEY_CATEGORIES.map((cat, idx) => (
                 <button
-                  key={idx}
+                  key={cat.id}
                   type="button"
-                  className={`carousel-nav-dot ${currentIndex === idx ? 'dot-active' : ''}`}
-                  onClick={() => {
-                    scrollToIndex(idx);
-                    resetAutoplay();
-                  }}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
+                  onClick={() => setActiveCategory(idx)}
+                  className={`category-pill-thumb ${activeCategory === idx ? 'active-thumb' : ''}`}
+                  aria-label={`Explore ${cat.name}`}
+                >
+                  <Image
+                    src={cat.image}
+                    alt={cat.name}
+                    fill
+                    sizes="110px"
+                    className="thumb-image-fill"
+                  />
+                  <div className="thumb-gradient-dim" />
+                  <span className="thumb-label">{cat.name}</span>
+                </button>
               ))}
             </div>
-            <button
-              type="button"
-              className="carousel-nav-arrow carousel-nav-arrow-primary"
-              onClick={nextSlide}
-              aria-label="Next card"
+
+            <Link
+              href="/tourin"
+              className="action-circle-red"
+              aria-label="View all Tourin expeditions"
             >
-              <ArrowRight size={17} />
-            </button>
+              <ArrowRight size={18} strokeWidth={2.5} />
+            </Link>
           </div>
         </div>
 
         {/* ============================================================
-            3 & 4: HORIZONTAL SCROLLING CAROUSEL (CARDS)
+            BOTTOM BRAND FOOTER (Below the Card)
             ============================================================ */}
-        <div
-          ref={carouselRef}
-          className={`tourin-carousel-track ${isDragging ? 'is-dragging' : ''}`}
-          onScroll={handleScroll}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUpOrLeave}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-        >
-          {TOURIN_CARDS.map((card, idx) => (
-            <div
-              key={card.id}
-              className={`tourin-card-item ${currentIndex === idx ? 'card-focused' : ''}`}
-            >
-              {/* Card Image Header */}
-              <div className="tourin-card-media">
-                <Image
-                  src={card.image}
-                  alt={card.tag}
-                  fill
-                  sizes="(max-width: 768px) 320px, 360px"
-                  style={{ objectFit: 'cover' }}
-                />
-                <span className="tourin-card-badge">{card.tag}</span>
-              </div>
-
-              {/* Card Body Content */}
-              <div className="tourin-card-body">
-                <h3 className="tourin-card-title">{card.title}</h3>
-                <p className="tourin-card-desc">{card.description}</p>
-
-                {/* Stat & Link Footer */}
-                <div className="tourin-card-footer">
-                  <div className="tourin-stat-block">
-                    <span className="tourin-stat-num">{card.stat}</span>
-                    <span className="tourin-stat-label">{card.statLabel}</span>
-                  </div>
-
-                  <Link href={card.link} className="tourin-card-link">
-                    <span>{card.linkText}</span>
-                    <span className="tourin-link-arrow">→</span>
-                  </Link>
-                </div>
-              </div>
+        <div className="tourin-bottom-footer">
+          <div className="footer-right-statement">
+            <span className="footer-line" />
+            <div className="footer-text-block">
+              <span>NORTH INDIA</span>
+              <span>AND BEYOND</span>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
+      {/* ============================================================
+          SCOPED CSS STYLES
+          ============================================================ */}
       <style jsx>{`
-        .tourin-experience-section {
-          background-color: #f8fafc;
-          padding-top: clamp(3.5rem, 5.5vw, 5.5rem);
-          padding-bottom: clamp(4rem, 6vw, 6.5rem);
+        .tourin-section-wrapper {
+          width: 100%;
+          background-color: #ffffff;
+          padding: 60px 32px 64px 32px;
           position: relative;
-          border-top: 1px solid #eef1f6;
-          border-bottom: 1px solid #eef1f6;
+          box-sizing: border-box;
           overflow: hidden;
         }
 
-        /* ── Header ── */
-        .section-head-wrap {
+        .tourin-outer-container {
+          max-width: 1360px;
+          margin: 0 auto;
           display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 2rem;
-          margin-bottom: 2.25rem;
+          flex-direction: column;
         }
 
-        .section-head-left {
-          max-width: 75%;
+        /* ── Main Hero Card ── */
+        .tourin-hero-card {
+          position: relative;
+          width: 100%;
+          min-height: 620px;
+          border-radius: 36px;
+          background-color: #121316;
+          overflow: hidden;
+          box-shadow: 0 28px 60px -15px rgba(0, 0, 0, 0.35);
+          display: flex;
         }
 
-        .section-main-heading {
-          font-family: var(--font-display, sans-serif);
-          font-size: clamp(2rem, 3.4vw, 2.6rem);
-          font-weight: 700;
-          color: #0b1a33;
-          letter-spacing: -0.03em;
-          line-height: 1.15;
-          margin: 0 0 0.5rem 0;
+        /* ── Right Mountain Visual Layer ── */
+        .mountain-visual-layer {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 66%;
+          height: 100%;
+          overflow: hidden;
+          z-index: 1;
         }
 
-        .dot-accent {
-          color: #ff3b30;
+        :global(.mountain-hero-img) {
+          object-fit: cover !important;
+          object-position: center 30% !important;
+          transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         }
 
-        .section-main-description {
-          font-family: var(--font-body, sans-serif);
-          font-size: clamp(0.98rem, 1.25vw, 1.12rem);
-          font-weight: 400;
-          color: #4a5a70;
-          line-height: 1.6;
-          margin: 0;
-          max-width: 680px;
+        .tourin-hero-card:hover :global(.mountain-hero-img) {
+          transform: scale(1.025) !important;
         }
 
-        /* ── Header Nav Controls ── */
-        .section-nav-controls {
+        .mountain-vignette-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.35) 0%,
+            transparent 30%,
+            transparent 60%,
+            rgba(0, 0, 0, 0.5) 100%
+          );
+          pointer-events: none;
+        }
+
+        /* ── Floating Pill Bridge: [ ĀROHANA ] → [ TOURIN ] ── */
+        .floating-brand-bridge {
+          position: absolute;
+          top: 36px;
+          left: 18%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 7px;
+          z-index: 5;
+        }
+
+        .bridge-pills-row {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 10px;
         }
 
-        .carousel-nav-arrow {
-          width: 40px;
-          height: 40px;
+        .bridge-pill {
+          padding: 8px 18px;
+          border-radius: 999px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          position: relative;
+          overflow: hidden;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+        }
+
+        .arohana-pill {
+          background-color: rgba(18, 19, 22, 0.72);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+        }
+
+        .bridge-arrow-icon {
+          width: 26px;
+          height: 26px;
           border-radius: 50%;
-          border: 1px solid #e2e8f0;
           background-color: #ffffff;
-          color: #0b1a33;
+          color: #e03131;
           display: flex;
           align-items: center;
           justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        .carousel-nav-arrow:hover {
-          background-color: #0b1a33;
-          border-color: #0b1a33;
+        .tourin-pill {
+          background-color: rgba(45, 35, 30, 0.75);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           color: #ffffff;
         }
 
-        .carousel-nav-arrow-primary {
-          border-color: #1a5cff;
-          color: #1a5cff;
-        }
-
-        .carousel-nav-arrow-primary:hover {
-          background-color: #1a5cff;
-          border-color: #1a5cff;
-          color: #ffffff;
-        }
-
-        .carousel-nav-dots {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          padding: 0 0.25rem;
-        }
-
-        .carousel-nav-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          border: none;
-          background-color: #cbd5e1;
-          cursor: pointer;
-          transition: all 0.25s ease;
-          padding: 0;
-        }
-
-        .carousel-nav-dot.dot-active {
-          width: 22px;
-          border-radius: 6px;
-          background-color: #1a5cff;
-        }
-
-        /* ── Horizontal Scrolling Carousel ── */
-        .tourin-carousel-track {
-          display: flex;
-          gap: 22px;
-          overflow-x: auto;
-          scroll-snap-type: x mandatory;
-          scroll-behavior: smooth;
-          -webkit-overflow-scrolling: touch;
-          padding: 0.5rem 0.25rem 1.5rem 0.25rem;
-          scrollbar-width: none;
-          user-select: none;
-          cursor: grab;
-        }
-
-        .tourin-carousel-track::-webkit-scrollbar {
-          display: none;
-        }
-
-        .tourin-carousel-track.is-dragging {
-          cursor: grabbing;
-          scroll-snap-type: none;
-        }
-
-        /* ── Card Specification (Matches Prompt Exactly) ── */
-        .tourin-card-item {
-          flex: 0 0 340px;
-          width: 340px;
-          background-color: #ffffff;
-          border: 1px solid #eef1f6;
-          border-radius: 18px;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-          scroll-snap-align: start;
-          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .tourin-card-item:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 28px rgba(11, 26, 51, 0.08);
-          border-color: #dbeafe;
-        }
-
-        .card-focused {
-          border-color: rgba(26, 92, 255, 0.3);
-        }
-
-        /* ── Card Media ── */
-        .tourin-card-media {
+        .tourin-pill-text {
           position: relative;
-          width: 100%;
-          height: 190px;
-          overflow: hidden;
-          background-color: #0b1a33;
-        }
-
-        .tourin-card-badge {
-          position: absolute;
-          top: 14px;
-          left: 14px;
-          background: rgba(11, 26, 51, 0.75);
-          backdrop-filter: blur(8px);
-          color: #ffffff;
-          font-family: var(--font-mono, monospace);
-          font-size: 0.65rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          padding: 0.3rem 0.65rem;
-          border-radius: 6px;
           z-index: 2;
         }
 
-        /* ── Card Body ── */
-        .tourin-card-body {
-          padding: 20px;
-          display: flex;
-          flex-direction: column;
-          flex: 1;
+        .bridge-tagline {
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.85);
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
         }
 
-        .tourin-card-title {
-          font-family: var(--font-display, sans-serif);
-          font-size: 1.32rem;
+        /* ── Handwritten Script Badge ("More than a destination") ── */
+        .handwritten-script-box {
+          position: absolute;
+          bottom: 120px;
+          left: 20%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          line-height: 0.88;
+          transform: rotate(-3.5deg);
+          z-index: 5;
+          pointer-events: none;
+        }
+
+        .script-word {
+          font-family: 'Caveat', cursive, sans-serif;
+          font-size: 2.15rem;
           font-weight: 700;
-          color: #0b1a33;
-          line-height: 1.2;
-          margin: 0 0 0.65rem 0;
+          color: #ffffff;
+          text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
           letter-spacing: -0.01em;
         }
 
-        .tourin-card-desc {
-          font-family: var(--font-body, sans-serif);
-          font-size: 0.92rem;
-          font-weight: 400;
-          color: #4a5a70;
-          line-height: 1.55;
-          margin: 0 0 1.25rem 0;
-          flex: 1;
+        .script-red-underline {
+          margin-top: 4px;
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
         }
 
-        /* ── Card Footer: Stat & Link ── */
-        .tourin-card-footer {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          padding-top: 1rem;
-          border-top: 1px solid #f1f5f9;
-          gap: 0.75rem;
-        }
-
-        .tourin-stat-block {
+        /* ── Vertical Rail Indicator ── */
+        .vertical-rail-indicator {
+          position: absolute;
+          top: 50%;
+          right: 28px;
+          transform: translateY(-50%);
           display: flex;
           flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          z-index: 5;
         }
 
-        .tourin-stat-num {
-          font-family: var(--font-display, sans-serif);
-          font-size: 1.95rem;
+        .rail-num {
+          font-size: 11px;
           font-weight: 700;
-          color: #1a5cff;
-          line-height: 1;
-          letter-spacing: -0.02em;
-        }
-
-        .tourin-stat-label {
           font-family: var(--font-mono, monospace);
-          font-size: 0.64rem;
-          font-weight: 600;
-          letter-spacing: 0.05em;
-          color: #64748b;
-          text-transform: uppercase;
-          margin-top: 0.2rem;
+          color: rgba(255, 255, 255, 0.55);
         }
 
-        .tourin-card-link {
+        .rail-track {
+          width: 2px;
+          height: 90px;
+          background-color: rgba(255, 255, 255, 0.2);
+          position: relative;
+          border-radius: 999px;
+        }
+
+        .rail-active-thumb {
+          position: absolute;
+          top: 15px;
+          left: -1px;
+          width: 4px;
+          height: 32px;
+          background-color: #e03131;
+          border-radius: 999px;
+          box-shadow: 0 0 10px rgba(224, 49, 49, 0.8);
+        }
+
+        /* ── Organic Divider Wave ── */
+        .organic-divider-wrapper {
+          position: absolute;
+          top: 0;
+          left: 36%;
+          bottom: 0;
+          width: 130px;
+          height: 100%;
+          z-index: 3;
+          pointer-events: none;
+        }
+
+        .organic-divider-svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+
+        /* ── Left Content Panel ── */
+        .tourin-content-panel {
+          position: relative;
+          z-index: 4;
+          width: 44%;
+          background-color: #121316;
+          padding: 60px 48px 48px 56px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .panel-inner {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+
+        /* Eyebrow */
+        .eyebrow-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 24px;
+        }
+
+        .eyebrow-text {
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #8c8d94;
+        }
+
+        .eyebrow-dash {
+          width: 32px;
+          height: 1.5px;
+          background-color: #e03131;
+        }
+
+        /* Headline */
+        .headline-text {
+          font-size: clamp(2.6rem, 3.8vw, 3.65rem);
+          font-weight: 800;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
+          color: #ffffff;
+          margin-bottom: 20px;
+        }
+
+        .headline-dot {
+          color: #e03131;
+        }
+
+        /* Description */
+        .description-text {
+          font-size: 14.5px;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.72);
+          max-width: 420px;
+          margin-bottom: 28px;
+        }
+
+        /* Stat Callout */
+        .stat-callout-card {
+          background-color: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 18px;
+          padding: 18px 24px;
+          display: flex;
+          align-items: center;
+          gap: 22px;
+          margin-bottom: 32px;
+          max-width: 440px;
+        }
+
+        .stat-num {
+          font-size: 2.3rem;
+          font-weight: 800;
+          color: #e03131;
+          letter-spacing: -0.03em;
+          line-height: 1;
+          font-family: var(--font-display, sans-serif);
+        }
+
+        .stat-desc-text {
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Action Buttons */
+        .cta-buttons-row {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-bottom: 38px;
+        }
+
+        .btn-primary-pill {
           display: inline-flex;
           align-items: center;
-          gap: 0.35rem;
-          color: #1a5cff;
-          font-family: var(--font-body, sans-serif);
-          font-size: 0.88rem;
-          font-weight: 600;
+          gap: 8px;
+          background-color: #ffffff;
+          color: #111114;
+          font-size: 13px;
+          font-weight: 700;
+          padding: 12px 22px;
+          border-radius: 999px;
           text-decoration: none;
-          transition: gap 0.2s ease, color 0.2s ease;
-          padding-bottom: 2px;
+          transition: all 0.25s ease;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
         }
 
-        .tourin-card-link:hover {
-          color: #0040df;
-          gap: 0.55rem;
+        .btn-primary-pill:hover {
+          background-color: #eaeaea;
+          transform: translateY(-2px);
         }
 
-        .tourin-link-arrow {
-          display: inline-block;
-          font-size: 1.05rem;
-          line-height: 1;
-          transition: transform 0.2s ease;
+        .btn-secondary-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background-color: transparent;
+          color: #ffffff;
+          font-size: 13px;
+          font-weight: 600;
+          padding: 12px 22px;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.22);
+          text-decoration: none;
+          transition: all 0.25s ease;
         }
 
-        .tourin-card-link:hover .tourin-link-arrow {
-          transform: translateX(3px);
+        .btn-secondary-pill:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.4);
+          transform: translateY(-2px);
         }
 
-        /* ── Responsive Rules ── */
-        @media (max-width: 991px) {
-          .section-head-wrap {
+        /* Bottom Scroll Hint */
+        .bottom-scroll-hint {
+          margin-top: auto;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .scroll-hint-dash {
+          width: 22px;
+          height: 1.5px;
+          background-color: #e03131;
+        }
+
+        .scroll-hint-text {
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #6a6b74;
+        }
+
+        /* ── Floating Bottom Strip (Thumbnails + Circle Button) ── */
+        .floating-bottom-strip {
+          position: absolute;
+          bottom: 24px;
+          left: 42%;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          z-index: 6;
+        }
+
+        .thumbnails-group {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .category-pill-thumb {
+          position: relative;
+          width: 96px;
+          height: 64px;
+          border-radius: 14px;
+          overflow: hidden;
+          border: 2px solid transparent;
+          background: none;
+          padding: 0;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          padding-bottom: 8px;
+        }
+
+        .category-pill-thumb:hover {
+          transform: translateY(-3px);
+        }
+
+        .category-pill-thumb.active-thumb {
+          border-color: #e03131;
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        :global(.thumb-image-fill) {
+          object-fit: cover !important;
+          object-position: center !important;
+        }
+
+        .thumb-gradient-dim {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.15) 0%,
+            rgba(0, 0, 0, 0.72) 100%
+          );
+        }
+
+        .thumb-label {
+          position: relative;
+          z-index: 2;
+          font-size: 10.5px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: 0.04em;
+        }
+
+        .action-circle-red {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background-color: #e03131;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          transition: all 0.25s ease;
+          box-shadow: 0 6px 18px rgba(224, 49, 49, 0.45);
+        }
+
+        .action-circle-red:hover {
+          background-color: #c92a2a;
+          transform: scale(1.08) translateX(2px);
+        }
+
+        /* ── Bottom Footer Row ── */
+        .tourin-bottom-footer {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding-top: 18px;
+          width: 100%;
+        }
+
+        .footer-right-statement {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .footer-line {
+          width: 2px;
+          height: 24px;
+          background-color: #d1d5db;
+        }
+
+        .footer-text-block {
+          display: flex;
+          flex-direction: column;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #374151;
+          line-height: 1.35;
+        }
+
+        /* ── Responsive Queries ── */
+        @media (max-width: 1120px) {
+          .tourin-hero-card {
+            min-height: 560px;
+          }
+
+          .tourin-content-panel {
+            width: 48%;
+            padding: 48px 36px;
+          }
+
+          .mountain-visual-layer {
+            width: 60%;
+          }
+
+          .organic-divider-wrapper {
+            left: 42%;
+          }
+
+          .floating-bottom-strip {
+            left: 46%;
+          }
+        }
+
+        @media (max-width: 900px) {
+          .tourin-section-wrapper {
+            padding: 40px 20px;
+          }
+
+          .tourin-hero-card {
             flex-direction: column;
-            align-items: flex-start;
-            gap: 1.5rem;
+            border-radius: 28px;
+            min-height: auto;
           }
-          .section-head-left {
-            max-width: 100%;
+
+          .organic-divider-wrapper {
+            display: none;
+          }
+
+          .tourin-content-panel {
+            width: 100%;
+            padding: 40px 28px 32px 28px;
+          }
+
+          .mountain-visual-layer {
+            position: relative;
+            width: 100%;
+            height: 360px;
+          }
+
+          .floating-brand-bridge {
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+          }
+
+          .handwritten-script-box {
+            left: 28px;
+            bottom: 32px;
+          }
+
+          .floating-bottom-strip {
+            position: relative;
+            bottom: auto;
+            left: auto;
+            margin: 24px 28px;
+            justify-content: space-between;
+          }
+
+          .vertical-rail-indicator {
+            display: none;
+          }
+
+          .tourin-bottom-footer {
+            justify-content: flex-start;
+            padding-left: 12px;
+          }
+
+          .footer-line {
+            width: 28px;
+            height: 2px;
+          }
+
+          .footer-right-statement {
+            flex-direction: row;
+          }
+
+          .footer-text-block {
+            flex-direction: row;
+            gap: 6px;
           }
         }
 
-        @media (max-width: 640px) {
-          .tourin-card-item {
-            flex: 0 0 calc(100vw - 3rem);
-            width: calc(100vw - 3rem);
-            max-width: 340px;
+        @media (max-width: 600px) {
+          .cta-buttons-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .btn-primary-pill,
+          .btn-secondary-pill {
+            justify-content: center;
+          }
+
+          .category-pill-thumb {
+            width: 80px;
+            height: 56px;
           }
         }
       `}</style>
