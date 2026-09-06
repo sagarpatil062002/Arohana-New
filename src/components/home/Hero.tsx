@@ -36,8 +36,8 @@ const HERO_SLIDES: HeroSlideData[] = [
     slideNumber: '02',
     image: '/images/home/hero-slide-2-symbolic.jpg',
     theme: 'dark',
-    tag: '',
-    title: 'We build brands,\nbusinesses & experiences',
+    tag: 'STRATEGY · COMMUNICATION · EXECUTION',
+    title: 'We build brands,\nbusinesses & experiences.',
     subtitle:
       'Ārohana brings together business thinking, creative communication and execution — from digital brand growth and content to hospitality consulting and complex on-ground projects.',
     primaryCtaText: 'Explore Our Work',
@@ -67,13 +67,13 @@ export default function Hero() {
     setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
-  // Autoplay every 1.5 seconds from Left to Right
+  // Autoplay every 3.5 seconds
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (!isInteracting) {
       timerRef.current = setInterval(() => {
         nextSlide();
-      }, 1500);
+      }, 3500);
     }
   }, [isInteracting, nextSlide]);
 
@@ -122,6 +122,7 @@ export default function Hero() {
           paddingTop: '0.75rem',
           paddingBottom: 'clamp(2rem, 3.5vw, 3.5rem)',
           backgroundColor: '#f5f5f3',
+          overflow: 'hidden',
         }}
         onMouseEnter={() => setIsInteracting(true)}
         onMouseLeave={() => {
@@ -145,7 +146,9 @@ export default function Hero() {
             style={{
               position: 'relative',
               width: '100%',
-              minHeight: 'clamp(600px, 80vh, 880px)',
+              height: 'clamp(640px, 82vh, 840px)',
+              minHeight: '640px',
+              maxHeight: '840px',
               backgroundColor: '#0a0d14',
               display: 'flex',
               flexDirection: 'column',
@@ -156,7 +159,7 @@ export default function Hero() {
             }}
           >
             {/* Animated Slide Backgrounds */}
-            <AnimatePresence initial={false} mode="sync">
+            <AnimatePresence initial={false}>
               <motion.div
                 key={currentSlide.id + '-bg'}
                 initial={{ opacity: 0 }}
@@ -240,172 +243,184 @@ export default function Hero() {
               whileTap={{ cursor: 'grabbing' }}
             >
               {/* Left-Aligned Typography Area with Smooth Slide Transition */}
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={currentSlide.id + '-content'}
-                  custom={direction}
-                  initial={{ opacity: 0, x: direction > 0 ? 30 : -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction > 0 ? -30 : 30 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {/* Pre-title Tracker */}
-                  {currentSlide.tag && (
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.65rem',
-                        marginBottom: '1.25rem',
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: '28px',
-                          height: '2px',
-                          backgroundColor: '#DE322D',
-                        }}
-                      />
-                      <span
-                        className="tag-mono"
-                        style={{
-                          color: tagColor,
-                          fontSize: '0.82rem',
-                          letterSpacing: '0.14em',
-                          fontWeight: 700,
-                        }}
-                      >
-                        {currentSlide.tag}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Main Headline */}
-                  <h1
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(3.2rem, 6.4vw, 6.6rem)',
-                      lineHeight: 1.02,
-                      fontWeight: 600,
-                      letterSpacing: '-0.035em',
-                      color: textColor,
-                      margin: 0,
-                      marginBottom: '1.5rem',
-                      textShadow: isDark
-                        ? '0 2px 24px rgba(0, 0, 0, 0.65)'
-                        : '0 1px 12px rgba(255, 255, 255, 0.5)',
-                      transition: 'color 0.4s ease',
-                    }}
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  minHeight: 'clamp(320px, 42vh, 420px)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <AnimatePresence mode="popLayout" custom={direction}>
+                  <motion.div
+                    key={currentSlide.id + '-content'}
+                    custom={direction}
+                    initial={{ opacity: 0, x: direction > 0 ? 30 : -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: direction > 0 ? -30 : 30 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ width: '100%' }}
                   >
-                    {currentSlide.title.split('\n').map((line, idx) => {
-                      const hasPeriod = line.endsWith('.');
-                      const cleanLine = hasPeriod ? line.slice(0, -1) : line;
-                      return (
-                        <span key={idx} style={{ display: 'block' }}>
-                          {cleanLine}
-                          {hasPeriod && <span style={{ color: '#DE322D' }}>.</span>}
-                        </span>
-                      );
-                    })}
-                  </h1>
-
-                  {/* Subtitle Statement */}
-                  <p
-                    style={{
-                      fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
-                      color: subtextColor,
-                      lineHeight: 1.55,
-                      maxWidth: '580px',
-                      margin: 0,
-                      marginBottom: '2.5rem',
-                      fontWeight: 400,
-                      textShadow: isDark ? '0 1px 8px rgba(0, 0, 0, 0.5)' : 'none',
-                      transition: 'color 0.4s ease',
-                    }}
-                  >
-                    {currentSlide.subtitle}
-                  </p>
-
-                  {/* CTA Buttons */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
-                    <Link
-                      href={currentSlide.primaryCtaLink}
-                      className="button-editorial"
-                      style={{
-                        height: '50px',
-                        padding: '0 1.85rem',
-                        backgroundColor: isDark ? '#DE322D' : '#0f172a',
-                        color: '#ffffff',
-                        borderRadius: '9999px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.65rem',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
-                        textDecoration: 'none',
-                        boxShadow: isDark
-                          ? '0 8px 24px rgba(222, 50, 45, 0.4)'
-                          : '0 8px 24px rgba(15, 23, 42, 0.2)',
-                        transition: 'all 0.25s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }}
-                    >
-                      <span>{currentSlide.primaryCtaText}</span>
-                      <ArrowUpRight size={17} />
-                    </Link>
-
-                    <button
-                      type="button"
-                      onClick={() => setShowShowreel(true)}
-                      style={{
-                        height: '50px',
-                        padding: '0 1.65rem',
-                        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.85)',
-                        backdropFilter: 'blur(10px)',
-                        WebkitBackdropFilter: 'blur(10px)',
-                        color: textColor,
-                        border: isDark ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid rgba(15, 23, 42, 0.15)',
-                        borderRadius: '9999px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.65rem',
-                        cursor: 'pointer',
-                        fontSize: '0.9rem',
-                        fontWeight: 600,
-                        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.05)',
-                        transition: 'all 0.25s ease',
-                      }}
-                      className="button-editorial"
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }}
-                    >
+                    {/* Pre-title Tracker */}
+                    {currentSlide.tag && (
                       <div
                         style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '50%',
-                          border: `1.5px solid ${textColor}`,
-                          display: 'flex',
+                          display: 'inline-flex',
                           alignItems: 'center',
-                          justifyContent: 'center',
+                          gap: '0.65rem',
+                          marginBottom: '1.25rem',
                         }}
                       >
-                        <Play size={10} fill={textColor} stroke="currentColor" style={{ marginLeft: '1.5px' }} />
+                        <span
+                          style={{
+                            width: '28px',
+                            height: '2px',
+                            backgroundColor: '#DE322D',
+                          }}
+                        />
+                        <span
+                          className="tag-mono"
+                          style={{
+                            color: tagColor,
+                            fontSize: '0.82rem',
+                            letterSpacing: '0.14em',
+                            fontWeight: 700,
+                          }}
+                        >
+                          {currentSlide.tag}
+                        </span>
                       </div>
-                      <span>Watch Showreel</span>
-                    </button>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                    )}
+
+                    {/* Main Headline */}
+                    <h1
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(2.7rem, 5.2vw, 5.6rem)',
+                        lineHeight: 1.04,
+                        fontWeight: 600,
+                        letterSpacing: '-0.035em',
+                        color: textColor,
+                        margin: 0,
+                        marginBottom: '1.25rem',
+                        textShadow: isDark
+                          ? '0 2px 24px rgba(0, 0, 0, 0.65)'
+                          : '0 1px 12px rgba(255, 255, 255, 0.5)',
+                        transition: 'color 0.4s ease',
+                      }}
+                    >
+                      {currentSlide.title.split('\n').map((line, idx) => {
+                        const hasPeriod = line.endsWith('.');
+                        const cleanLine = hasPeriod ? line.slice(0, -1) : line;
+                        return (
+                          <span key={idx} style={{ display: 'block' }}>
+                            {cleanLine}
+                            {hasPeriod && <span style={{ color: '#DE322D' }}>.</span>}
+                          </span>
+                        );
+                      })}
+                    </h1>
+
+                    {/* Subtitle Statement */}
+                    <p
+                      style={{
+                        fontSize: 'clamp(0.95rem, 1.25vw, 1.15rem)',
+                        color: subtextColor,
+                        lineHeight: 1.5,
+                        maxWidth: '580px',
+                        margin: 0,
+                        marginBottom: '2rem',
+                        fontWeight: 400,
+                        textShadow: isDark ? '0 1px 8px rgba(0, 0, 0, 0.5)' : 'none',
+                        transition: 'color 0.4s ease',
+                      }}
+                    >
+                      {currentSlide.subtitle}
+                    </p>
+
+                    {/* CTA Buttons */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
+                      <Link
+                        href={currentSlide.primaryCtaLink}
+                        className="button-editorial"
+                        style={{
+                          height: '50px',
+                          padding: '0 1.85rem',
+                          backgroundColor: isDark ? '#DE322D' : '#0f172a',
+                          color: '#ffffff',
+                          borderRadius: '9999px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.65rem',
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                          boxShadow: isDark
+                            ? '0 8px 24px rgba(222, 50, 45, 0.4)'
+                            : '0 8px 24px rgba(15, 23, 42, 0.2)',
+                          transition: 'all 0.25s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                      >
+                        <span>{currentSlide.primaryCtaText}</span>
+                        <ArrowUpRight size={17} />
+                      </Link>
+
+                      <button
+                        type="button"
+                        onClick={() => setShowShowreel(true)}
+                        style={{
+                          height: '50px',
+                          padding: '0 1.65rem',
+                          backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.85)',
+                          backdropFilter: 'blur(10px)',
+                          WebkitBackdropFilter: 'blur(10px)',
+                          color: textColor,
+                          border: isDark ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid rgba(15, 23, 42, 0.15)',
+                          borderRadius: '9999px',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.65rem',
+                          cursor: 'pointer',
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.05)',
+                          transition: 'all 0.25s ease',
+                        }}
+                        className="button-editorial"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            border: `1.5px solid ${textColor}`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Play size={10} fill={textColor} stroke="currentColor" style={{ marginLeft: '1.5px' }} />
+                        </div>
+                        <span>Watch Showreel</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </motion.div>
 
             {/* Bottom Info Bar & Slide Navigation Controls */}
@@ -692,11 +707,21 @@ export default function Hero() {
         )}
 
         <style jsx>{`
+          .hero-container {
+            height: clamp(640px, 82vh, 840px);
+            min-height: 640px;
+            max-height: 840px;
+          }
           .organic-box {
             clip-path: url(#heroOrganicClip);
             -webkit-clip-path: url(#heroOrganicClip);
           }
           @media (max-width: 991px) {
+            .hero-container {
+              height: clamp(600px, 82vh, 760px);
+              min-height: 580px;
+              max-height: 760px;
+            }
             .organic-box {
               clip-path: none;
               -webkit-clip-path: none;
@@ -714,6 +739,13 @@ export default function Hero() {
             }
             .hero-bar-divider {
               display: none !important;
+            }
+          }
+          @media (max-width: 640px) {
+            .hero-container {
+              height: clamp(560px, 85vh, 680px);
+              min-height: 540px;
+              max-height: 680px;
             }
           }
         `}</style>

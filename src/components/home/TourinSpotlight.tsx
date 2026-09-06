@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
@@ -39,11 +39,49 @@ const JOURNEY_CATEGORIES: JourneyCategory[] = [
 
 export default function TourinSpotlight() {
   const [activeCategory, setActiveCategory] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const totalCategories = JOURNEY_CATEGORIES.length;
+
+  const nextCategory = useCallback(() => {
+    setActiveCategory((prev) => (prev + 1) % totalCategories);
+  }, [totalCategories]);
+
+  const resetAutoplay = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (!isHovered) {
+      timerRef.current = setInterval(() => {
+        nextCategory();
+      }, 3500);
+    }
+  }, [isHovered, nextCategory]);
+
+  useEffect(() => {
+    resetAutoplay();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetAutoplay]);
+
+  const onSelectCategory = (idx: number) => {
+    setActiveCategory(idx);
+    resetAutoplay();
+  };
 
   const currentCategory = JOURNEY_CATEGORIES[activeCategory];
 
   return (
-    <section id="tourin" className="tourin-section-wrapper" aria-label="Tourin Experiential Travel">
+    <section
+      id="tourin"
+      className="tourin-section-wrapper"
+      aria-label="Tourin Experiential Travel"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        resetAutoplay();
+      }}
+    >
       <div className="tourin-outer-container">
         {/* ============================================================
             MAIN HERO CARD WITH ORGANIC SPLIT
@@ -51,14 +89,26 @@ export default function TourinSpotlight() {
         <div className="tourin-hero-card">
           {/* Background / Right Mountain Landscape Visual */}
           <div className="mountain-visual-layer">
-            <Image
-              src="/images/tourin/tourin-hiker-hero.jpg"
-              alt="Hiker overlooking high-altitude Himalayan mountain peaks"
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 65vw"
-              className="mountain-hero-img"
-            />
+            {JOURNEY_CATEGORIES.map((cat, idx) => (
+              <div
+                key={cat.id}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: activeCategory === idx ? 1 : 0,
+                  transition: 'opacity 0.75s ease-in-out',
+                }}
+              >
+                <Image
+                  src={cat.heroImage || cat.image}
+                  alt={cat.name}
+                  fill
+                  priority={idx === 0}
+                  sizes="(max-width: 1024px) 100vw, 65vw"
+                  className="mountain-hero-img"
+                />
+              </div>
+            ))}
             {/* Subtle atmospheric vignette */}
             <div className="mountain-vignette-overlay" />
 
@@ -104,9 +154,15 @@ export default function TourinSpotlight() {
 
             {/* Right Edge Vertical Slider Rail */}
             <div className="vertical-rail-indicator" aria-hidden="true">
-              <span className="rail-num">01</span>
+              <span className="rail-num">0{activeCategory + 1}</span>
               <div className="rail-track">
-                <span className="rail-active-thumb" />
+                <span
+                  className="rail-active-thumb"
+                  style={{
+                    transform: `translateY(${activeCategory * 18}px)`,
+                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
               </div>
               <span className="rail-num">03</span>
             </div>
@@ -191,7 +247,7 @@ export default function TourinSpotlight() {
                 <button
                   key={cat.id}
                   type="button"
-                  onClick={() => setActiveCategory(idx)}
+                  onClick={() => onSelectCategory(idx)}
                   className={`category-pill-thumb ${activeCategory === idx ? 'active-thumb' : ''}`}
                   aria-label={`Explore ${cat.name}`}
                 >

@@ -1,5 +1,1 @@
-import { redirect } from 'next/navigation';
-
-export default function ArmyProjectsRedirect() {
-  redirect('/indian-army-projects');
-}
+export { default } from '../indian-army-projects/page';

@@ -281,273 +281,211 @@ export default function TourinPage() {
       </div>
 
       {/* ================================================================
-          01 — HERO (85–100vh Desktop Full Bleed)
+          01 — HERO (3-Column Editorial Grid matching Reference Image 1)
       ================================================================ */}
       <section
+        className="tourin-hero-editorial-section"
         style={{
           position: 'relative',
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          paddingTop: '100px',
-          paddingBottom: 'clamp(2.5rem, 5vh, 4.5rem)',
+          width: '100%',
+          backgroundColor: '#f8f8f9',
+          color: '#111111',
+          paddingTop: 'clamp(100px, 13vh, 128px)',
+          paddingBottom: 'clamp(48px, 7vh, 72px)',
           overflow: 'hidden',
-          backgroundColor: '#0c0c0e',
-          color: '#ffffff',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
         }}
       >
-        {/* Full-bleed Background Hero Photo */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
-          }}
-        >
-          <Image
-            src="/images/tourin/tourin-hero.jpg"
-            alt="Young traveller conversing with Ladakhi woman elder in Himalayan stone courtyard"
-            fill
-            priority
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'center 30%',
-            }}
-          />
-          {/* Editorial Vignette & Legibility Gradient */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background:
-                'linear-gradient(to bottom, rgba(12,12,14,0.55) 0%, rgba(12,12,14,0.15) 35%, rgba(12,12,14,0.7) 75%, rgba(12,12,14,0.95) 100%)',
-            }}
-          />
-        </div>
-
-        {/* Hero Content */}
         <div
           className="padding-global"
           style={{
-            position: 'relative',
-            zIndex: 2,
             maxWidth: '1440px',
             margin: '0 auto',
             width: '100%',
           }}
         >
-          <div style={{ maxWidth: '820px' }}>
-            {/* Eyebrow */}
-            <div
-              className="tourin-hero-fade tag-mono"
-              style={{
-                fontSize: '0.725rem',
-                color: 'rgba(255, 255, 255, 0.85)',
-                letterSpacing: '0.14em',
-                marginBottom: '1.25rem',
-                display: 'block',
-                textTransform: 'uppercase',
-              }}
-            >
-              OWNED EXPERIENTIAL TRAVEL BRAND
-            </div>
+          <div className="tourin-editorial-grid">
+            {/* ── LEFT COLUMN: Storytelling, Headline, Copy & CTAs ── */}
+            <div className="tourin-col-left">
+              {/* Eyebrow */}
+              <div className="tourin-tag-eyebrow">
+                OWNED EXPERIENTIAL TRAVEL BRAND
+              </div>
 
-            {/* Main Headline */}
-            <div style={{ overflow: 'hidden', marginBottom: '1.75rem' }}>
-              <h1
-                className="tourin-title-masked"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(3rem, 7.2vw, 6.2rem)',
-                  lineHeight: 1.05,
-                  fontWeight: 500,
-                  letterSpacing: '-0.035em',
-                  color: '#ffffff',
-                }}
-              >
-                Travel beyond the
+              {/* Main Headline */}
+              <h1 className="tourin-editorial-headline">
+                Travel
                 <br />
-                itinerary.
+                beyond
+                <br />
+                the itinerary<span className="tourin-red-dot">.</span>
               </h1>
-            </div>
 
-            {/* Description */}
-            <div
-              className="tourin-hero-fade"
-              style={{
-                color: 'rgba(255, 255, 255, 0.85)',
-                fontSize: 'clamp(0.975rem, 1.6vw, 1.2rem)',
-                lineHeight: 1.65,
-                maxWidth: '620px',
-                marginBottom: '2.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.85rem',
-              }}
-            >
-              <p style={{ margin: 0 }}>
+              {/* Sub-quote */}
+              <p className="tourin-quote-text">
                 Some places are better experienced when you stop trying to see everything.
               </p>
-              <p style={{ margin: 0 }}>
-                Tourin creates experiential journeys for travellers who want more than a checklist
-                of sights — beginning with Ladakh.
+
+              {/* Description Body */}
+              <p className="tourin-desc-text">
+                Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh, and beyond.
               </p>
+
+              {/* Action Buttons Row */}
+              <div className="tourin-action-buttons">
+                <a href="#curated-journeys" className="tourin-primary-pill">
+                  <span>Explore Journeys</span>
+                  <ArrowUpRight size={14} strokeWidth={2.4} />
+                </a>
+
+                <Link href="/contact" className="tourin-secondary-pill">
+                  <span>Talk to us about a journey</span>
+                </Link>
+              </div>
+
+              {/* Bottom Left Scroll Indicator */}
+              <div className="tourin-bottom-scroll">
+                <a href="#the-genesis" className="tourin-scroll-circle-btn" aria-label="Scroll to explore">
+                  <ArrowDown size={14} strokeWidth={2.2} />
+                </a>
+                <span className="tourin-scroll-label">SCROLL TO EXPLORE</span>
+              </div>
             </div>
 
-            {/* CTAs */}
-            <div
-              className="tourin-hero-fade"
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '1rem',
-                alignItems: 'center',
-                marginBottom: 'clamp(2rem, 4vh, 3.5rem)',
-              }}
-            >
-              <a
-                href="#curated-journeys"
-                className="button-editorial"
-                style={{
-                  height: '48px',
-                  padding: '0 1.75rem',
-                  backgroundColor: '#DE322D',
-                  color: '#ffffff',
-                  borderRadius: '9999px',
-                  fontSize: '0.78rem',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                <span>VIEW LADAKH EXPERIENCES</span>
-                <ArrowRight size={14} />
-              </a>
+            {/* ── CENTER COLUMN: Main Feature Card (Santorini Sunset with Cursive Overlay) ── */}
+            <div className="tourin-col-center">
+              <div className="santorini-feature-card">
+                <Image
+                  src="/images/tourin/santorini-sunset.jpg"
+                  alt="Scenic Santorini cliffside white village with blue domes overlooking caldera sea at sunset"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  className="santorini-card-img"
+                />
+                <div className="santorini-vignette-overlay" />
 
-              <Link
-                href="/contact"
-                className="button-editorial"
-                style={{
-                  height: '48px',
-                  padding: '0 1.75rem',
-                  backgroundColor: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.65)',
-                  color: '#ffffff',
-                  borderRadius: '9999px',
-                  fontSize: '0.78rem',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                  e.currentTarget.style.borderColor = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.65)';
-                }}
-              >
-                <span>TALK TO US ABOUT A JOURNEY</span>
-              </Link>
+                {/* Handwritten Script in the Sky */}
+                <div className="santorini-script-overlay">
+                  <span>Different</span>
+                  <span>Places</span>
+                  <span>Richer</span>
+                  <span>You</span>
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* Scroll Indicator */}
-          <div
-            style={{
-              textAlign: 'center',
-              paddingTop: '1rem',
-            }}
-          >
-            <a
-              href="#the-genesis"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.7rem',
-                color: 'rgba(255, 255, 255, 0.7)',
-                letterSpacing: '0.12em',
-                textDecoration: 'none',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                textTransform: 'uppercase',
-                transition: 'color 0.2s ease',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)')}
-            >
-              <span>SCROLL TO EXPLORE</span>
-              <ArrowDown size={13} />
-            </a>
+            {/* ── RIGHT COLUMN: Editorial Timeline & Lower Turquoise Lake Card ── */}
+            <div className="tourin-col-right">
+              {/* Upper Timeline & Statement */}
+              <div className="tourin-right-upper">
+                {/* Hairline timeline with 4 dots */}
+                <div className="timeline-track-wrap">
+                  <div className="timeline-hairline" />
+                  <div className="timeline-items-list">
+                    <div className="timeline-item">
+                      <span className="timeline-dot dot-red" />
+                      <span className="timeline-label">PEOPLE</span>
+                    </div>
+                    <div className="timeline-item">
+                      <span className="timeline-dot" />
+                      <span className="timeline-label">PLACES</span>
+                    </div>
+                    <div className="timeline-item">
+                      <span className="timeline-dot" />
+                      <span className="timeline-label">STORIES</span>
+                    </div>
+                    <div className="timeline-item">
+                      <span className="timeline-dot" />
+                      <span className="timeline-label">ALWAYS</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Statement with left border */}
+                <div className="destination-statement-block">
+                  <span className="statement-line" />
+                  <div className="statement-words">
+                    <span>MORE</span>
+                    <span>THAN JUST</span>
+                    <span>A DESTINATION.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Lower Thumbnail Card: Pristine Turquoise Lake */}
+              <div className="tourin-right-lower">
+                <div className="lake-thumbnail-card">
+                  <Image
+                    src="/images/tourin/turquoise-lake.jpg"
+                    alt="Pristine turquoise glacial alpine lake"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 22vw"
+                    className="lake-card-img"
+                  />
+                  <div className="lake-gradient-dim" />
+                  <a href="#curated-journeys" className="lake-action-circle" aria-label="Explore alpine journeys">
+                    <ArrowRight size={14} strokeWidth={2.4} />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
       </section>
 
       {/* ================================================================
-          02 — SECTION: 01 • THE GENESIS — Why Tourin.
+           02 — SECTION: 01 • THE GENESIS — Why Tourin.
       ================================================================ */}
       <section
         id="the-genesis"
         style={{
-          paddingTop: 'clamp(4rem, 8vw, 7rem)',
-          paddingBottom: 'clamp(4rem, 8vw, 7rem)',
-          backgroundColor: '#ffffff',
+          paddingTop: 'clamp(5rem, 10vw, 8.5rem)',
+          paddingBottom: 'clamp(5rem, 10vw, 8.5rem)',
+          backgroundColor: '#0d0d10',
+          color: '#ffffff',
         }}
       >
         <div
           className="padding-global"
-          style={{ maxWidth: '1440px', margin: '0 auto' }}
+          style={{
+            maxWidth: '1440px',
+            margin: '0 auto',
+          }}
         >
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
+              maxWidth: '820px',
+              margin: '0 auto',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'clamp(3rem, 6vw, 5rem)',
             }}
           >
-            {/* Left Text */}
+            {/* ── THE GENESIS ── */}
             <div>
               <div
-                className="tag-mono"
                 style={{
-                  color: '#DE322D',
-                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  fontSize: '0.8rem',
                   fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  marginBottom: '1rem',
+                  letterSpacing: '0.14em',
+                  marginBottom: '1.25rem',
                   textTransform: 'uppercase',
                 }}
               >
-                01 • THE GENESIS
+                # 01 - THE GENESIS
               </div>
 
               <h2
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)',
+                  fontSize: 'clamp(2.6rem, 5vw, 4.2rem)',
                   fontWeight: 500,
                   letterSpacing: '-0.03em',
-                  color: '#111111',
-                  lineHeight: 1.1,
+                  color: '#ffffff',
+                  lineHeight: 1.08,
                   marginBottom: '2rem',
                 }}
               >
@@ -559,122 +497,67 @@ export default function TourinPage() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '1.25rem',
-                  color: '#444444',
-                  fontSize: 'clamp(0.95rem, 1.2vw, 1.075rem)',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  fontSize: 'clamp(1rem, 1.25vw, 1.125rem)',
                   lineHeight: 1.7,
-                  maxWidth: '560px',
                 }}
               >
                 <p style={{ margin: 0 }}>
-                  Tourin came from a simple realisation: the Ladakh people experience and the
-                  Ladakh most itineraries sell are not always the same.
+                  Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.
                 </p>
                 <p style={{ margin: 0 }}>
-                  There is the Ladakh of famous passes, lakes and photographs. And then there is the
-                  place behind them — its people, food, stories, homes, landscapes, silences and
-                  everyday life.
+                  There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.
                 </p>
                 <p style={{ margin: 0 }}>
                   Tourin was created to make space for the second one.
                 </p>
-                <p style={{ margin: 0 }}>
-                  Not by avoiding the places people want to see, but by changing the way the journey
-                  is experienced.
-                </p>
               </div>
+
+              <a
+                href="#the-genesis"
+                style={{
+                  display: 'inline-block',
+                  marginTop: '2rem',
+                  color: '#ffffff',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
+                  paddingBottom: '0.35rem',
+                  transition: 'all 0.25s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderBottomColor = '#ffffff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderBottomColor = 'rgba(255, 255, 255, 0.3)';
+                }}
+              >
+                OUR STORY
+              </a>
             </div>
 
-            {/* Right Photograph */}
-            <div
-              onMouseEnter={() => handlePillEnter('LADAKH HERITAGE')}
-              onMouseLeave={handlePillLeave}
-              style={{
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '16/11',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                boxShadow: '0 16px 48px rgba(0, 0, 0, 0.08)',
-                backgroundColor: '#eee',
-              }}
-            >
-              <Image
-                src="/images/tourin/tourin-gallery-4.jpg"
-                alt="Ancient whitewashed monastery on rugged Ladakh hillside"
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ================================================================
-          03 — SECTION: 02 • OUR PHILOSOPHY (Dark Section + Quote)
-      ================================================================ */}
-      <section
-        style={{
-          paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
-          paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
-          backgroundColor: '#0d0d10',
-          color: '#ffffff',
-          position: 'relative',
-        }}
-      >
-        <div
-          className="padding-global"
-          style={{ maxWidth: '1440px', margin: '0 auto' }}
-        >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-              gap: 'clamp(2rem, 4vw, 4rem)',
-              alignItems: 'center',
-            }}
-          >
-            {/* Left: Vertical Image of breakfast/tea in front of mountain window */}
-            <div
-              onMouseEnter={() => handlePillEnter('NATIVE MORNINGS')}
-              onMouseLeave={handlePillLeave}
-              style={{
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '3/4',
-                maxHeight: '520px',
-                borderRadius: '18px',
-                overflow: 'hidden',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
-              }}
-            >
-              <Image
-                src="/images/tourin/tourin-gallery-2.jpg"
-                alt="Traditional tea and breakfast table in front of panoramic Himalayan window"
-                fill
-                style={{ objectFit: 'cover' }}
-              />
-            </div>
-
-            {/* Middle: What we believe text */}
+            {/* ── OUR PHILOSOPHY ── */}
             <div>
               <div
-                className="tag-mono"
                 style={{
-                  color: '#DE322D',
-                  fontSize: '0.75rem',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  fontSize: '0.8rem',
                   fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  marginBottom: '1rem',
+                  letterSpacing: '0.14em',
+                  marginBottom: '1.25rem',
                   textTransform: 'uppercase',
                 }}
               >
-                02 • OUR PHILOSOPHY
+                OUR PHILOSOPHY
               </div>
 
               <h2
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
+                  fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)',
                   fontWeight: 500,
                   letterSpacing: '-0.03em',
                   color: '#ffffff',
@@ -690,48 +573,40 @@ export default function TourinPage() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '1.15rem',
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  fontSize: 'clamp(0.925rem, 1.1vw, 1rem)',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  fontSize: 'clamp(1rem, 1.25vw, 1.125rem)',
                   lineHeight: 1.7,
                 }}
               >
                 <p style={{ margin: 0 }}>
-                  A good trip should leave you with more than photographs.
+                  A good trip should leave you with more than photographs. It should give you a sense of where you were.
                 </p>
                 <p style={{ margin: 0 }}>
-                  It should give you a sense of where you were.
+                  That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.
                 </p>
                 <p style={{ margin: 0 }}>
-                  That can mean eating something you have never tried, spending time with a local
-                  family, understanding a tradition, staying somewhere connected to its
-                  surroundings, taking a slower route, or simply having enough time to notice the
-                  place instead of rushing through it.
-                </p>
-                <p style={{ margin: 0 }}>
-                  We are interested in travel that feels personal, considered and rooted — not travel
-                  that is simply packed with more stops.
+                  We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.
                 </p>
               </div>
             </div>
 
-            {/* Right: Signature Statement with Large Quote */}
+            {/* ── QUOTE BLOCK ── */}
             <div
               style={{
-                borderLeft: '1px solid rgba(255, 255, 255, 0.14)',
-                paddingLeft: 'clamp(1.5rem, 3vw, 3rem)',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                paddingTop: 'clamp(2rem, 4vw, 3rem)',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                gap: '1.25rem',
               }}
             >
-              {/* Red Quote Symbol */}
               <div
                 style={{
                   color: '#DE322D',
                   fontFamily: 'var(--font-display)',
                   fontSize: '3.5rem',
                   lineHeight: 0.8,
-                  marginBottom: '1rem',
+                  marginBottom: '0.5rem',
                 }}
               >
                 “
@@ -740,40 +615,25 @@ export default function TourinPage() {
               <div
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)',
+                  fontSize: 'clamp(1.3rem, 2vw, 1.7rem)',
                   lineHeight: 1.25,
                   fontWeight: 500,
                   color: '#ffffff',
                   letterSpacing: '0.04em',
                   textTransform: 'uppercase',
-                  marginBottom: '1.5rem',
+                  marginBottom: '1rem',
                 }}
               >
-                A GOOD JOURNEY
-                <br />
-                IS NOT ABOUT
-                <br />
-                HOW MUCH YOU
-                <br />
-                CAN FIT INTO IT.
+                A GOOD JOURNEY IS NOT ABOUT HOW MUCH YOU CAN FIT INTO IT.
               </div>
-
-              {/* Red Accent Divider */}
-              <div
-                style={{
-                  width: '36px',
-                  height: '2px',
-                  backgroundColor: '#DE322D',
-                  marginBottom: '1.25rem',
-                }}
-              />
 
               <p
                 style={{
-                  color: 'rgba(255, 255, 255, 0.65)',
-                  fontSize: '0.95rem',
+                  color: 'rgba(255, 255, 255, 0.55)',
+                  fontSize: 'clamp(0.95rem, 1.1vw, 1.05rem)',
                   lineHeight: 1.6,
                   margin: 0,
+                  fontStyle: 'italic',
                 }}
               >
                 It is about what you have time to notice.
@@ -784,7 +644,7 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-          04 — SECTION: 03 • THE DESTINATION — Why Ladakh.
+           03 — SECTION: 03 • THE DESTINATION — Why Ladakh.
       ================================================================ */}
       <section
         style={{
@@ -954,7 +814,7 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-          05 — SECTION: 04 • THE TRAVELLER — Who is Tourin for? (Interactive)
+           04 — SECTION: 04 • THE TRAVELLER — Who is Tourin for? (Interactive)
       ================================================================ */}
       <section
         style={{
@@ -1160,7 +1020,7 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-          06 — SECTION: 05 • JOURNEY PHILOSOPHY — The experience.
+           05 — SECTION: 05 • JOURNEY PHILOSOPHY — The experience.
       ================================================================ */}
       <section
         style={{
@@ -1314,7 +1174,7 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-          07 — EXPERIENCE MARQUEE (Continuous Horizontal Ticker)
+           06 — EXPERIENCE MARQUEE (Continuous Horizontal Ticker)
       ================================================================ */}
       <div
         style={{
@@ -1408,7 +1268,7 @@ export default function TourinPage() {
       </div>
 
       {/* ================================================================
-          08 — SECTION: VALIDATED EXECUTION — Proof that the idea works.
+           07 — SECTION: VALIDATED EXECUTION — Proof that the idea works.
       ================================================================ */}
       <section
         style={{
@@ -1543,7 +1403,7 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-          09 — SECTION: CURATED LADAKH JOURNEYS
+           08 — SECTION: CURATED LADAKH JOURNEYS
       ================================================================ */}
       <section
         id="curated-journeys"
@@ -1852,7 +1712,7 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-          10 — SECTION: FINAL CTA ("Come travel differently.")
+           09 — SECTION: FINAL CTA ("Come travel differently.")
       ================================================================ */}
       <section
         style={{

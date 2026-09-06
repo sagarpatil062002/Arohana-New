@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -94,13 +94,46 @@ const SECTORS: SectorItem[] = [
 
 export default function SectorMontage() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setActiveIndex((prev) => (prev === 0 ? SECTORS.length - 1 : prev - 1));
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setActiveIndex((prev) => (prev === SECTORS.length - 1 ? 0 : prev + 1));
+  }, []);
+
+  const resetAutoplay = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (!isHovered) {
+      timerRef.current = setInterval(() => {
+        handleNext();
+      }, 3500);
+    }
+  }, [isHovered, handleNext]);
+
+  useEffect(() => {
+    resetAutoplay();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetAutoplay]);
+
+  const onPrevClick = () => {
+    handlePrev();
+    resetAutoplay();
   };
 
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev === SECTORS.length - 1 ? 0 : prev + 1));
+  const onNextClick = () => {
+    handleNext();
+    resetAutoplay();
+  };
+
+  const onSelectIndex = (idx: number) => {
+    setActiveIndex(idx);
+    resetAutoplay();
   };
 
   const activeSector = SECTORS[activeIndex];
@@ -110,6 +143,11 @@ export default function SectorMontage() {
       id="sector-depth"
       className="experience-sits-section"
       aria-label="Where our experience sits"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        resetAutoplay();
+      }}
     >
       <div className="experience-container">
         {/* ============================================================
@@ -136,7 +174,7 @@ export default function SectorMontage() {
                   <button
                     key={idx}
                     type="button"
-                    onClick={() => setActiveIndex(idx)}
+                    onClick={() => onSelectIndex(idx)}
                     className={`dash-indicator ${idx === activeIndex ? 'active' : ''}`}
                     aria-label={`Go to sector 0${idx + 1}`}
                   />
@@ -153,7 +191,7 @@ export default function SectorMontage() {
             <div className="nav-arrows-group">
               <button
                 type="button"
-                onClick={handlePrev}
+                onClick={onPrevClick}
                 className="nav-arrow-btn prev-btn"
                 aria-label="Previous sector"
               >
@@ -161,7 +199,7 @@ export default function SectorMontage() {
               </button>
               <button
                 type="button"
-                onClick={handleNext}
+                onClick={onNextClick}
                 className="nav-arrow-btn next-btn"
                 aria-label="Next sector"
               >
@@ -238,14 +276,14 @@ export default function SectorMontage() {
             return (
               <div
                 key={sector.id}
-                onClick={() => setActiveIndex(idx)}
+                onClick={() => onSelectIndex(idx)}
                 className="accordion-card collapsed-card"
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    setActiveIndex(idx);
+                    onSelectIndex(idx);
                   }
                 }}
                 aria-label={`Select ${sector.number} ${sector.title}`}
@@ -322,7 +360,7 @@ export default function SectorMontage() {
               <button
                 key={sec.id}
                 type="button"
-                onClick={() => setActiveIndex(idx)}
+                onClick={() => onSelectIndex(idx)}
                 className={`mobile-thumb-btn ${idx === activeIndex ? 'thumb-active' : ''}`}
                 aria-label={`Select ${sec.title}`}
               >
@@ -351,7 +389,7 @@ export default function SectorMontage() {
                 <button
                   key={idx}
                   type="button"
-                  onClick={() => setActiveIndex(idx)}
+                  onClick={() => onSelectIndex(idx)}
                   className={`dash-indicator ${idx === activeIndex ? 'active' : ''}`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -361,7 +399,7 @@ export default function SectorMontage() {
             <div className="nav-arrows-group">
               <button
                 type="button"
-                onClick={handlePrev}
+                onClick={onPrevClick}
                 className="nav-arrow-btn prev-btn"
                 aria-label="Previous sector"
               >
@@ -369,7 +407,7 @@ export default function SectorMontage() {
               </button>
               <button
                 type="button"
-                onClick={handleNext}
+                onClick={onNextClick}
                 className="nav-arrow-btn next-btn"
                 aria-label="Next sector"
               >

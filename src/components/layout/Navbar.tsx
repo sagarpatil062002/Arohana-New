@@ -33,7 +33,9 @@ export default function Navbar() {
     { label: 'Contact', href: '/contact' },
   ];
 
-  const isTourinDarkHero = pathname === '/tourin' && !isScrolled;
+  const isTourin = pathname === '/tourin';
+  const isArmyProjects = pathname === '/indian-army-projects' || pathname === '/army-projects';
+  const isDarkHero = false;
 
   return (
     <header
@@ -44,10 +46,18 @@ export default function Navbar() {
         right: 0,
         zIndex: 100,
         transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        backgroundColor: isScrolled ? 'rgba(245, 245, 243, 0.88)' : 'transparent',
+        backgroundColor: isScrolled
+          ? isDarkHero
+            ? 'rgba(10, 10, 10, 0.88)'
+            : 'rgba(247, 247, 248, 0.92)'
+          : 'transparent',
         backdropFilter: isScrolled ? 'blur(16px)' : 'none',
         WebkitBackdropFilter: isScrolled ? 'blur(16px)' : 'none',
-        borderBottom: isScrolled ? '1px solid rgba(0, 0, 0, 0.06)' : '1px solid transparent',
+        borderBottom: isScrolled
+          ? isDarkHero
+            ? '1px solid rgba(255, 255, 255, 0.08)'
+            : '1px solid rgba(0, 0, 0, 0.06)'
+          : '1px solid transparent',
       }}
     >
       <div
@@ -63,30 +73,70 @@ export default function Navbar() {
         }}
       >
         {/* Brand / Logo */}
-        <Link
-          href="/"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            textDecoration: 'none',
-            zIndex: 2,
-          }}
-        >
-          <Image
-            src="/images/arohana-logo.png"
-            alt="ĀROHANA"
-            width={124}
-            height={22}
+        {isTourin ? (
+          <Link
+            href="/tourin"
             style={{
-              height: '22px',
-              width: 'auto',
-              objectFit: 'contain',
-              filter: isTourinDarkHero ? 'brightness(0) invert(1)' : 'none',
-              transition: 'filter 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              textDecoration: 'none',
+              zIndex: 2,
             }}
-            priority
-          />
-        </Link>
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.4rem',
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                color: '#111111',
+              }}
+            >
+              TOURIN
+            </span>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: '0.55rem',
+                fontWeight: 700,
+                letterSpacing: '0.18em',
+                color: '#8e8e94',
+                lineHeight: 1.25,
+                textTransform: 'uppercase',
+              }}
+            >
+              <span>TRAVEL BEYOND</span>
+              <span>THE ORDINARY</span>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            href="/"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              zIndex: 2,
+            }}
+          >
+            <Image
+              src="/images/arohana-logo.png"
+              alt="ĀROHANA"
+              width={124}
+              height={22}
+              style={{
+                height: '22px',
+                width: 'auto',
+                objectFit: 'contain',
+                filter: isDarkHero ? 'brightness(0) invert(1)' : 'none',
+                transition: 'filter 0.3s ease',
+              }}
+              priority
+            />
+          </Link>
+        )}
 
         {/* Desktop Navigation Links - Centered */}
         <nav
@@ -98,7 +148,9 @@ export default function Navbar() {
           className="desktop-nav"
         >
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive =
+              pathname === link.href ||
+              (link.href === '/indian-army-projects' && pathname === '/army-projects');
             const isTourin = link.href === '/tourin';
             return (
               <Link
@@ -107,14 +159,10 @@ export default function Navbar() {
                 style={{
                   fontSize: '0.9rem',
                   fontWeight: isActive ? 600 : 400,
-                  color: isTourinDarkHero
-                    ? isTourin
-                      ? '#DE322D'
-                      : 'rgba(255, 255, 255, 0.88)'
+                  color: isDarkHero
+                    ? 'rgba(255, 255, 255, 0.88)'
                     : isActive
-                    ? isTourin
-                      ? '#DE322D'
-                      : '#000000'
+                    ? '#000000'
                     : '#444444',
                   position: 'relative',
                   display: 'inline-flex',
@@ -152,7 +200,7 @@ export default function Navbar() {
                       transform: 'translateX(-50%)',
                       width: '16px',
                       height: '2px',
-                      backgroundColor: '#DE322D',
+                      backgroundColor: isDarkHero ? '#d4af37' : '#DE322D',
                       borderRadius: '1px',
                     }}
                   />
@@ -164,37 +212,70 @@ export default function Navbar() {
 
         {/* Right CTA Button (Desktop) & Mobile Toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Link
-            href="/contact"
-            className="desktop-header-cta"
-            style={{
-              height: '42px',
-              padding: '0 1.35rem',
-              backgroundColor: isTourinDarkHero ? 'rgba(255, 255, 255, 0.15)' : '#0c1626',
-              color: '#ffffff',
-              borderRadius: '9999px',
-              display: 'none',
-              alignItems: 'center',
-              gap: '0.55rem',
-              fontSize: '0.84rem',
-              fontWeight: 500,
-              textDecoration: 'none',
-              transition: 'all 0.25s ease',
-              border: isTourinDarkHero ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid rgba(0, 0, 0, 0.1)',
-              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.backgroundColor = isTourinDarkHero ? 'rgba(255, 255, 255, 0.25)' : '#16233b';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.backgroundColor = isTourinDarkHero ? 'rgba(255, 255, 255, 0.15)' : '#0c1626';
-            }}
-          >
-            <span>Let&apos;s Talk</span>
-            <ArrowUpRight size={14} />
-          </Link>
+          {isTourin ? (
+            <Link
+              href="/contact"
+              className="desktop-header-cta"
+              style={{
+                height: '42px',
+                padding: '0 1.5rem',
+                backgroundColor: '#111111',
+                color: '#ffffff',
+                borderRadius: '9999px',
+                display: 'none',
+                alignItems: 'center',
+                gap: '0.55rem',
+                fontSize: '0.84rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'all 0.25s ease',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.16)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.backgroundColor = '#222222';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.backgroundColor = '#111111';
+              }}
+            >
+              <span>Plan a Journey</span>
+              <ArrowUpRight size={14} />
+            </Link>
+          ) : (
+            <Link
+              href="/contact"
+              className="desktop-header-cta"
+              style={{
+                height: '42px',
+                padding: '0 1.35rem',
+                backgroundColor: isDarkHero ? 'rgba(212, 175, 55, 0.15)' : '#0c1626',
+                color: isDarkHero ? '#d4af37' : '#ffffff',
+                borderRadius: '9999px',
+                display: 'none',
+                alignItems: 'center',
+                gap: '0.55rem',
+                fontSize: '0.84rem',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.25s ease',
+                border: isDarkHero ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.backgroundColor = isDarkHero ? 'rgba(212, 175, 55, 0.25)' : '#16233b';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.backgroundColor = isDarkHero ? 'rgba(212, 175, 55, 0.15)' : '#0c1626';
+              }}
+            >
+              <span>Let&apos;s Talk</span>
+              <ArrowUpRight size={14} />
+            </Link>
+          )}
 
           {/* Mobile hamburger button */}
           <button
@@ -207,11 +288,11 @@ export default function Navbar() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              backgroundColor: isTourinDarkHero ? 'rgba(255, 255, 255, 0.12)' : '#ffffff',
-              border: isTourinDarkHero
-                ? '1px solid rgba(255, 255, 255, 0.25)'
+              backgroundColor: isDarkHero ? 'rgba(255, 255, 255, 0.1)' : '#ffffff',
+              border: isDarkHero
+                ? '1px solid rgba(255, 255, 255, 0.2)'
                 : '1px solid rgba(0, 0, 0, 0.08)',
-              color: isTourinDarkHero ? '#ffffff' : '#111',
+              color: isDarkHero ? '#ffffff' : '#111',
               flexShrink: 0,
               transition: 'all 0.3s ease',
             }}
@@ -224,20 +305,20 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div
-          style={{
-            backgroundColor: '#f5f5f3',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-            padding: '1.75rem 1.25rem 2.25rem 1.25rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            maxHeight: 'calc(100vh - 76px)',
-            overflowY: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.08)',
-          }}
-        >
+          <div
+            style={{
+              backgroundColor: isDarkHero ? '#0a0a0a' : '#f5f5f3',
+              borderBottom: isDarkHero ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
+              padding: '1.75rem 1.25rem 2.25rem 1.25rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              maxHeight: 'calc(100vh - 76px)',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              boxShadow: isDarkHero ? '0 20px 40px rgba(0, 0, 0, 0.5)' : '0 20px 40px rgba(0, 0, 0, 0.08)',
+            }}
+          >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -249,12 +330,18 @@ export default function Navbar() {
                     fontSize: '1.25rem',
                     fontFamily: 'var(--font-display)',
                     fontWeight: isActive ? 600 : 400,
-                    color: isActive ? '#000000' : '#333333',
+                    color: isDarkHero
+                      ? isActive
+                        ? '#d4af37'
+                        : 'rgba(255, 255, 255, 0.8)'
+                      : isActive
+                      ? '#000000'
+                      : '#333333',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '0.65rem 0',
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+                    borderBottom: isDarkHero ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.06)',
                   }}
                 >
                   <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -279,7 +366,7 @@ export default function Navbar() {
                       </span>
                     )}
                   </span>
-                  <ArrowUpRight size={18} color="#888" />
+                  <ArrowUpRight size={18} color={isDarkHero ? '#d4af37' : '#888'} />
                 </Link>
               );
             })}
@@ -299,26 +386,26 @@ export default function Navbar() {
             <Link
               href="/contact"
               className="button-editorial button-editorial-dark"
-              style={{ height: '48px', width: '100%', justifyContent: 'center' }}
+              style={{ height: '48px', width: '100%', justifyContent: 'center', backgroundColor: isDarkHero ? 'rgba(212, 175, 55, 0.15)' : undefined, borderColor: isDarkHero ? 'rgba(212, 175, 55, 0.3)' : undefined, color: isDarkHero ? '#d4af37' : undefined }}
             >
               <span>Start a conversation</span>
               <ArrowUpRight size={16} />
             </Link>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.8rem', color: '#666' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.8rem', color: isDarkHero ? 'rgba(255, 255, 255, 0.5)' : '#666' }}>
               <div>
                 Email:{' '}
-                <a href="mailto:founder@byarohana.com" style={{ color: '#111', fontWeight: 500 }}>
+                <a href="mailto:founder@byarohana.com" style={{ color: isDarkHero ? '#d4af37' : '#111', fontWeight: 500 }}>
                   founder@byarohana.com
                 </a>
               </div>
               <div>
                 Phone:{' '}
-                <a href="tel:+918380092241" style={{ color: '#111', fontWeight: 500 }}>
+                <a href="tel:+918380092241" style={{ color: isDarkHero ? '#d4af37' : '#111', fontWeight: 500 }}>
                   +91 8380092241
                 </a>
               </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', marginTop: '0.25rem', color: isDarkHero ? 'rgba(255, 255, 255, 0.4)' : 'inherit' }}>
                 Pune • Ladakh • Pan-India Engagements
               </div>
             </div>

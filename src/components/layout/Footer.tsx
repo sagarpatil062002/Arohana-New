@@ -1,40 +1,12 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 export default function Footer() {
   const pathname = usePathname();
-  const brandRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (pathname === '/tourin') return;
-    gsap.registerPlugin(ScrollTrigger);
-
-    const el = brandRef.current;
-    if (!el) return;
-
-    gsap.fromTo(
-      el,
-      { y: 80, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.1,
-        ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 92%',
-          once: true,
-        },
-      }
-    );
-  }, [pathname]);
 
   if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects') {
     return null;
@@ -253,38 +225,6 @@ export default function Footer() {
             <span>Execution</span>
           </div>
           <div>Authentic Strategy & Brand Practice</div>
-        </div>
-
-        {/* Giant Oversized Brand Typography with ScrollTrigger Reveal */}
-        <div
-          ref={brandRef}
-          style={{
-            width: '100%',
-            overflow: 'hidden',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-            paddingTop: '2.5rem',
-            paddingBottom: '1rem',
-            userSelect: 'none',
-          }}
-        >
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: '960px',
-              height: 'clamp(50px, 12vw, 150px)',
-            }}
-          >
-            <Image
-              src="/images/arohana-logo.png"
-              alt="ĀROHANA"
-              fill
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
         </div>
       </div>
     </footer>
