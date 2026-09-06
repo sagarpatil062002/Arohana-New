@@ -51,6 +51,44 @@ const IMPACT_ITEMS: CounterItem[] = [
   },
 ];
 
+// Clean flipping digit without any boxes or background containers
+function FlipDigit({ digit }: { digit: string }) {
+  const [animating, setAnimating] = useState(false);
+  const prevDigit = useRef(digit);
+
+  useEffect(() => {
+    if (prevDigit.current !== digit) {
+      prevDigit.current = digit;
+      setAnimating(true);
+      const t = setTimeout(() => setAnimating(false), 240);
+      return () => clearTimeout(t);
+    }
+  }, [digit]);
+
+  return (
+    <span
+      className="flip-digit-wrapper"
+      style={{
+        display: 'inline-block',
+        fontVariantNumeric: 'tabular-nums',
+        lineHeight: 1,
+        perspective: '500px',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      <span
+        style={{
+          display: 'inline-block',
+          animation: animating ? 'cleanDigitFlip 0.24s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+          transformOrigin: '50% 50%',
+        }}
+      >
+        {digit}
+      </span>
+    </span>
+  );
+}
+
 export default function RealWorldImpact() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -65,36 +103,35 @@ export default function RealWorldImpact() {
     if (!el || !header || !grid) return;
 
     const ctx = gsap.context(() => {
-      // Header items stagger in
+      // Header items fade & slide in
       gsap.fromTo(
-        Array.from(header.children),
+        header,
         { y: 24, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 0.85,
-          stagger: 0.1,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          ease: 'power3.out',
           scrollTrigger: { trigger: header, start: 'top 88%', once: true },
         }
       );
 
-      // Cards stagger reveal
-      const cards = Array.from(grid.querySelectorAll('.rwi-card'));
+      // Stat cards stagger reveal
+      const cards = Array.from(grid.querySelectorAll('.rwi-stat-col'));
       gsap.fromTo(
         cards,
-        { y: 36, opacity: 0 },
+        { y: 32, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 0.8,
-          stagger: 0.09,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          stagger: 0.1,
+          ease: 'power3.out',
           scrollTrigger: { trigger: grid, start: 'top 85%', once: true },
         }
       );
 
-      // Number counters
+      // Animated numerical counter triggering clean flipping digits
       const obj = { v0: 0, v1: 0, v2: 0, v3: 0 };
       ScrollTrigger.create({
         trigger: grid,
@@ -108,12 +145,13 @@ export default function RealWorldImpact() {
             v3: IMPACT_ITEMS[3].target,
             duration: 2.2,
             ease: 'power3.out',
-            onUpdate: () => setCounts([
-              Math.round(obj.v0),
-              Math.round(obj.v1),
-              Math.round(obj.v2),
-              Math.round(obj.v3),
-            ]),
+            onUpdate: () =>
+              setCounts([
+                Math.round(obj.v0),
+                Math.round(obj.v1),
+                Math.round(obj.v2),
+                Math.round(obj.v3),
+              ]),
           });
         },
       });
@@ -124,110 +162,446 @@ export default function RealWorldImpact() {
 
   return (
     <section
+      id="proof-of-work"
       ref={sectionRef}
       className="section-light rwi-section"
       style={{
-        paddingTop: 'clamp(4rem, 6vw, 6rem)',
-        paddingBottom: 'clamp(4.5rem, 7vw, 6.5rem)',
+        paddingTop: 'clamp(4.5rem, 6.5vw, 6.5rem)',
+        paddingBottom: 'clamp(4.5rem, 6.5vw, 6.5rem)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
         backgroundColor: '#ffffff',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
       <div className="padding-global container-large">
-
-        {/* ── Header row ── */}
-        <div
-          ref={headerRef}
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            gap: '1.5rem',
-            marginBottom: 'clamp(2.5rem, 4vw, 3.5rem)',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-            paddingBottom: 'clamp(1.25rem, 2.5vw, 2rem)',
-          }}
-        >
-          <div style={{ maxWidth: '780px' }}>
-            <div
-              className="tag-mono"
-              style={{
-                color: '#DE322D',
-                marginBottom: '0.9rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                fontSize: '0.72rem',
-                letterSpacing: '0.15em',
-              }}
-            >
-              PROOF OF WORK&nbsp;&nbsp;·&nbsp;&nbsp;COMMERCIAL & SECTOR IMPACT
+        {/* ============================================================
+            HEADER ROW: Eyebrow + Headline (Left), Triad (Center), CTA (Right)
+            ============================================================ */}
+        <div ref={headerRef} className="rwi-header-row">
+          {/* Left: Eyebrow Tag + Main Headline */}
+          <div className="rwi-header-left">
+            <div className="rwi-eyebrow">
+              PROOF OF WORK &nbsp;·&nbsp; COMMERCIAL &amp; SECTOR IMPACT
             </div>
 
-            <h2
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-                fontWeight: 500,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.1,
-                color: '#111111',
-                margin: 0,
-              }}
-            >
-              Real-world execution across sectors.
+            <h2 className="rwi-headline">
+              Real-world execution<br />
+              across sectors<span className="rwi-red-dot">.</span>
             </h2>
           </div>
 
-          <Link
-            href="/work"
-            className="button-editorial button-editorial-dark"
-            style={{ height: '46px', padding: '0 1.6rem', flexShrink: 0 }}
-          >
-            <div className="button-texts-slider">
-              <span className="button-text-item">See our work</span>
-              <span className="button-text-item">See our work</span>
+          {/* Middle-Right: IDEAS ──── EXECUTION IMPACT */}
+          <div className="rwi-triad-col">
+            <div className="rwi-triad">
+              <div className="rwi-triad-row">
+                <span className="rwi-triad-word">IDEAS</span>
+                <span className="rwi-triad-rule" />
+              </div>
+              <span className="rwi-triad-word">EXECUTION</span>
+              <span className="rwi-triad-word">IMPACT</span>
             </div>
-            <ArrowUpRight size={16} />
-          </Link>
+          </div>
+
+          {/* Right: CTA Button with Decorative Concentric Arcs */}
+          <div className="rwi-cta-container">
+            {/* Decorative Arcs from Reference Image */}
+            <svg
+              className="rwi-decorative-arcs"
+              width="150"
+              height="150"
+              viewBox="0 0 150 150"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M 150,0 A 105,105 0 0,0 45,105 A 105,105 0 0,0 150,210"
+                stroke="rgba(0, 0, 0, 0.08)"
+                strokeWidth="1.5"
+                fill="none"
+              />
+              <path
+                d="M 150,20 A 85,85 0 0,0 65,105 A 85,85 0 0,0 150,190"
+                stroke="#DE322D"
+                strokeWidth="1.5"
+                fill="none"
+                opacity="0.85"
+              />
+            </svg>
+
+            <Link href="/work" className="rwi-pill-button">
+              <span>See our work</span>
+              <ArrowUpRight size={16} className="rwi-pill-arrow" />
+            </Link>
+          </div>
         </div>
 
-        {/* ── 4-col grid — all columns top-aligned, equal width ── */}
-        <div ref={gridRef} className="rwi-grid">
+        {/* ============================================================
+            DIVIDER LINE
+            ============================================================ */}
+        <div className="rwi-divider" />
+
+        {/* ============================================================
+            4-COLUMN STATS GRID: Clean Flipping Numbers (NO BOXES)
+            ============================================================ */}
+        <div ref={gridRef} className="rwi-stats-grid">
           {IMPACT_ITEMS.map((item, idx) => {
             const v = counts[idx];
             const numStr = item.twoDigits && v < 10 ? `0${v}` : `${v}`;
+            const digits = numStr.split('');
 
             return (
-              <div key={item.id} className="rwi-card">
-
-                {/* top border */}
-                <div className="rwi-border" />
-
-                {/* tag */}
-                <p className="rwi-tag">
-                  {item.tag}&nbsp;·&nbsp;VERIFIED IMPACT
-                </p>
-
-                {/* big number */}
-                <div className="rwi-number" aria-label={numStr + (item.suffix ?? '')}>
-                  {numStr}
-                  {item.suffix && <span className="rwi-suffix">{item.suffix}</span>}
+              <div key={item.id} className="rwi-stat-col">
+                {/* 01 ──── VERIFIED IMPACT */}
+                <div className="rwi-tag-row">
+                  <span className="rwi-tag-num">{item.tag}</span>
+                  <span className="rwi-tag-dash" />
+                  <span className="rwi-tag-label">VERIFIED IMPACT</span>
                 </div>
 
-                {/* label + desc */}
-                <div className="rwi-text">
-                  <h3 className="rwi-label">{item.title}</h3>
-                  <p className="rwi-desc">{item.desc}</p>
+                {/* Big Clean Flipping Numbers (Direct on White Background, NO BOXES) */}
+                <div className="rwi-stat-number" aria-label={numStr + (item.suffix ?? '')}>
+                  <div className="rwi-flip-digits-row">
+                    {digits.map((d, dIdx) => (
+                      <FlipDigit key={dIdx} digit={d} />
+                    ))}
+                  </div>
+                  {item.suffix && <span className="rwi-num-plus">{item.suffix}</span>}
                 </div>
+
+                {/* Title */}
+                <h3 className="rwi-stat-title">{item.title}</h3>
+
+                {/* Bottom Accent Dash */}
+                <div className="rwi-stat-underline" />
+
+                {/* Description */}
+                <p className="rwi-stat-desc">{item.desc}</p>
               </div>
             );
           })}
         </div>
       </div>
 
+      <style jsx>{`
+        /* ── Header Row ── */
+        .rwi-header-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 2rem;
+          position: relative;
+        }
+
+        .rwi-header-left {
+          flex: 1;
+          max-width: 650px;
+        }
+
+        .rwi-eyebrow {
+          color: #DE322D;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          margin-bottom: 0.85rem;
+          display: inline-block;
+        }
+
+        .rwi-headline {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+          font-weight: 600;
+          letter-spacing: -0.035em;
+          line-height: 1.08;
+          color: #0b1a33;
+          margin: 0;
+        }
+
+        .rwi-red-dot {
+          color: #DE322D;
+        }
+
+        /* ── Triad: IDEAS ──── EXECUTION IMPACT ── */
+        .rwi-triad-col {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 1.5rem;
+        }
+
+        .rwi-triad {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+
+        .rwi-triad-row {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+        }
+
+        .rwi-triad-word {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          color: #8c9ba5;
+        }
+
+        .rwi-triad-rule {
+          width: 50px;
+          height: 1px;
+          background-color: #cbd5e1;
+          display: inline-block;
+        }
+
+        /* ── Right CTA Container & Arcs ── */
+        .rwi-cta-container {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding-right: 0.5rem;
+        }
+
+        .rwi-decorative-arcs {
+          position: absolute;
+          right: -2.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+          z-index: 0;
+          overflow: visible;
+        }
+
+        .rwi-pill-button {
+          position: relative;
+          z-index: 1;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          background-color: #0b121e;
+          color: #ffffff;
+          padding: 0.75rem 1.65rem;
+          border-radius: 9999px;
+          font-family: var(--font-display, sans-serif);
+          font-size: 0.88rem;
+          font-weight: 500;
+          text-decoration: none;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .rwi-pill-button:hover {
+          background-color: #DE322D;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(222, 50, 45, 0.28);
+        }
+
+        .rwi-pill-button:hover :global(.rwi-pill-arrow) {
+          transform: translate(2px, -2px);
+        }
+
+        :global(.rwi-pill-arrow) {
+          transition: transform 0.25s ease;
+        }
+
+        /* ── Divider ── */
+        .rwi-divider {
+          width: 100%;
+          height: 1px;
+          background-color: rgba(0, 0, 0, 0.08);
+          margin-top: clamp(2.5rem, 4vw, 3.5rem);
+          margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
+        }
+
+        /* ── 4-Column Stats Grid ── */
+        .rwi-stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          align-items: start;
+        }
+
+        .rwi-stat-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          padding: 0 clamp(0.75rem, 1.8vw, 2rem);
+          position: relative;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .rwi-stat-col:not(:last-child) {
+          border-right: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .rwi-stat-col:hover {
+          transform: translateY(-4px);
+        }
+
+        .rwi-stat-col:hover .rwi-stat-underline {
+          width: 52px;
+          background-color: #DE322D;
+        }
+
+        /* ── Tag Row: 01 ──── VERIFIED IMPACT ── */
+        .rwi-tag-row {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.55rem;
+          margin-bottom: 0.85rem;
+        }
+
+        .rwi-tag-num {
+          color: #DE322D;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.78rem;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+        }
+
+        .rwi-tag-dash {
+          width: 28px;
+          height: 1.5px;
+          background-color: #94a3b8;
+          display: inline-block;
+        }
+
+        .rwi-tag-label {
+          color: #64748b;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.68rem;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        /* ── Clean Flipping Numbers (NO BOXES) ── */
+        .rwi-stat-number {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(3.6rem, 5.8vw, 5.6rem);
+          font-weight: 700;
+          line-height: 1;
+          letter-spacing: -0.04em;
+          color: #0b1a33;
+          margin-bottom: 0.85rem;
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+        }
+
+        .rwi-flip-digits-row {
+          display: inline-flex;
+          align-items: baseline;
+        }
+
+        .rwi-num-plus {
+          color: #DE322D;
+          font-weight: 700;
+          margin-left: 2px;
+          line-height: 1;
+        }
+
+        /* ── Stat Title ── */
+        .rwi-stat-title {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(1.02rem, 1.2vw, 1.18rem);
+          font-weight: 500;
+          color: #0b1a33;
+          letter-spacing: -0.015em;
+          margin: 0;
+          line-height: 1.3;
+        }
+
+        /* ── Bottom Underline Dash ── */
+        .rwi-stat-underline {
+          width: 34px;
+          height: 1.5px;
+          background-color: #cbd5e1;
+          margin-top: 14px;
+          margin-bottom: 12px;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ── Description ── */
+        .rwi-stat-desc {
+          font-family: var(--font-body, sans-serif);
+          font-size: 0.82rem;
+          color: #64748b;
+          line-height: 1.5;
+          margin: 0;
+          max-width: 240px;
+        }
+
+        @keyframes cleanDigitFlip {
+          0% {
+            transform: rotateX(70deg) translateY(-8%);
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 0.7;
+          }
+          100% {
+            transform: rotateX(0deg) translateY(0);
+            opacity: 1;
+          }
+        }
+
+        /* ── Responsive Behavior ── */
+        @media (max-width: 1024px) {
+          .rwi-header-row {
+            flex-wrap: wrap;
+            gap: 1.75rem;
+          }
+          .rwi-triad-col {
+            padding: 0;
+          }
+          .rwi-stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+            row-gap: 2.5rem;
+          }
+          .rwi-stat-col:nth-child(odd) {
+            border-right: 1px solid rgba(0, 0, 0, 0.08);
+          }
+          .rwi-stat-col:nth-child(even) {
+            border-right: none;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .rwi-header-row {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .rwi-triad-col {
+            display: none;
+          }
+          .rwi-cta-container {
+            width: 100%;
+            justify-content: flex-start;
+          }
+          .rwi-decorative-arcs {
+            display: none;
+          }
+          .rwi-stats-grid {
+            grid-template-columns: 1fr;
+            row-gap: 2.25rem;
+          }
+          .rwi-stat-col {
+            border-right: none !important;
+            padding: 0;
+          }
+          .rwi-stat-number {
+            font-size: clamp(3rem, 12vw, 4.2rem);
+          }
+        }
+      `}</style>
     </section>
   );
 }

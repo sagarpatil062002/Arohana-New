@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -11,129 +11,50 @@ export default function PointOfView() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
-  const tagRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
-  const bodyRef = useRef<HTMLDivElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Tag line — slides up
-      if (tagRef.current) {
+      // Left Content Stagger Animation
+      if (leftRef.current) {
         gsap.fromTo(
-          tagRef.current,
-          { y: 16, opacity: 0 },
+          leftRef.current.children,
+          { y: 28, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.7,
+            duration: 0.85,
+            stagger: 0.12,
             ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
             scrollTrigger: {
-              trigger: tagRef.current,
-              start: 'top 88%',
+              trigger: leftRef.current,
+              start: 'top 85%',
               once: true,
             },
           }
         );
       }
 
-      // Heading — masked slide up with slight delay
-      if (headingRef.current) {
-        gsap.fromTo(
-          headingRef.current,
-          { yPercent: 105, opacity: 0 },
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 1.1,
-            delay: 0.08,
-            ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-            scrollTrigger: {
-              trigger: headingRef.current,
-              start: 'top 88%',
-              once: true,
-            },
-          }
-        );
-      }
-
-      // Body paragraphs — fade + slide up
-      if (bodyRef.current) {
-        const paras = bodyRef.current.querySelectorAll('p');
-        gsap.fromTo(
-          paras,
-          { y: 22, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.14,
-            delay: 0.15,
-            ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-            scrollTrigger: {
-              trigger: bodyRef.current,
-              start: 'top 88%',
-              once: true,
-            },
-          }
-        );
-      }
-
-      // Buttons — subtle fade in
-      if (buttonsRef.current) {
-        gsap.fromTo(
-          buttonsRef.current,
-          { y: 16, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            delay: 0.3,
-            ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-            scrollTrigger: {
-              trigger: buttonsRef.current,
-              start: 'top 90%',
-              once: true,
-            },
-          }
-        );
-      }
-
-      // Image — slight scale reveal + clip from bottom
+      // Right Visual Composition Reveal
       if (rightRef.current) {
         gsap.fromTo(
           rightRef.current,
-          { y: 50, opacity: 0, scale: 0.97 },
+          { y: 36, opacity: 0, scale: 0.98 },
           {
             y: 0,
             opacity: 1,
             scale: 1,
-            duration: 1.2,
+            duration: 1.1,
+            delay: 0.15,
             ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
             scrollTrigger: {
               trigger: rightRef.current,
-              start: 'top 88%',
+              start: 'top 85%',
               once: true,
             },
           }
         );
-
-        // Subtle parallax on image while scrolling
-        const imgEl = rightRef.current.querySelector('img');
-        if (imgEl) {
-          gsap.to(imgEl, {
-            yPercent: -8,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: rightRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1.2,
-            },
-          });
-        }
       }
     }, sectionRef);
 
@@ -142,212 +63,554 @@ export default function PointOfView() {
 
   return (
     <section
+      id="positioning-philosophy"
       ref={sectionRef}
-      className="section-light"
+      className="section-light pov-section"
       style={{
-        paddingTop: 'clamp(5rem, 8vw, 9rem)',
-        paddingBottom: 'clamp(5rem, 8vw, 9rem)',
+        paddingTop: 'clamp(5rem, 8vw, 8.5rem)',
+        paddingBottom: 'clamp(5rem, 8vw, 8.5rem)',
         position: 'relative',
         overflow: 'hidden',
-        backgroundColor: '#f5f5f3',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
       }}
     >
       <div className="padding-global container-large">
-
-        {/* Strict 50/50 split on desktop */}
-        <div className="pov-grid">
-
-          {/* LEFT — Text content */}
-          <div ref={leftRef} className="pov-left">
-
-            {/* Tag */}
-            <div
-              ref={tagRef}
-              className="tag-mono"
-              style={{
-                color: '#DE322D',
-                marginBottom: '1.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                fontSize: '0.76rem',
-                letterSpacing: '0.08em',
-                fontWeight: 600,
-                fontFamily: 'var(--font-display)',
-                opacity: 0, // starts hidden
-              }}
-            >
-              POSITIONING &amp; PHILOSOPHY
+        <div className="pov-split-grid">
+          {/* ============================================================
+              LEFT COLUMN: Header, Headline, Paragraphs, CTA Buttons
+              ============================================================ */}
+          <div ref={leftRef} className="pov-left-col">
+            {/* Tag / Eyebrow with Red Dash */}
+            <div className="pov-eyebrow-row">
+              <span className="pov-eyebrow-text">POSITIONING &amp; PHILOSOPHY</span>
+              <span className="pov-eyebrow-dash" />
             </div>
 
-            {/* Heading — uses overflow:hidden + yPercent for mask effect */}
-            <div
-              style={{
-                overflow: 'hidden',
-                marginBottom: '1.75rem',
-              }}
-            >
-              <h2
-                ref={headingRef}
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.2rem, 4vw, 3.6rem)',
-                  lineHeight: 1.08,
-                  fontWeight: 500,
-                  letterSpacing: '-0.035em',
-                  color: '#111111',
-                  margin: 0,
-                  opacity: 0, // starts hidden
-                }}
-              >
-                Some businesses need better marketing. Others need a better way of thinking about the business itself.
-              </h2>
-            </div>
+            {/* Main Headline with Red Accent Text & Underline Dash */}
+            <h2 className="pov-headline">
+              Some businesses need<br />
+              better marketing. Others<br />
+              need a better way of<br />
+              thinking about{' '}
+              <span className="pov-highlight-phrase">
+                the<br />
+                business itself<span className="pov-dot">.</span>
+                <span className="pov-headline-dash" />
+              </span>
+            </h2>
 
             {/* Body Copy */}
-            <div
-              ref={bodyRef}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1.2rem',
-                marginBottom: '2.5rem',
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: 'clamp(0.95rem, 1.1vw, 1.05rem)',
-                  color: '#111111',
-                  fontWeight: 500,
-                  lineHeight: 1.7,
-                  margin: 0,
-                  opacity: 0, // starts hidden
-                }}
-              >
-                Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.
+            <div className="pov-body-copy">
+              <p>
+                Ārohana works with businesses where communication cannot be separated from the
+                business itself. We combine commercial thinking, sector experience and creative
+                execution to help brands become clearer, more credible and more relevant to the people
+                they need to reach.
               </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: 'clamp(0.95rem, 1.1vw, 1.05rem)',
-                  color: '#555555',
-                  lineHeight: 1.7,
-                  margin: 0,
-                  opacity: 0, // starts hidden
-                }}
-              >
-                Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant&apos;s menu and operating systems, or taking a project from an idea to on-ground execution.
+              <p>
+                Depending on the brief, that can mean building a digital brand, running an ongoing
+                social ecosystem, creating a film, fixing a restaurant&apos;s menu and operating
+                systems, or taking a project from an idea to on-ground execution.
               </p>
             </div>
 
-            {/* CTA Buttons */}
-            <div
-              ref={buttonsRef}
-              className="pov-buttons-wrap"
-              style={{
-                display: 'flex',
-                gap: '1rem',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                opacity: 0, // starts hidden
-              }}
-            >
-              <Link
-                href="/about"
-                className="button-editorial button-editorial-dark"
-                style={{ height: '46px', padding: '0 1.5rem' }}
-              >
-                <div className="button-texts-slider">
-                  <span className="button-text-item">Read Founder Story &amp; Philosophy</span>
-                  <span className="button-text-item">Read Founder Story &amp; Philosophy</span>
-                </div>
-                <ArrowUpRight size={16} />
+            {/* CTA Buttons Row */}
+            <div className="pov-buttons-row">
+              <Link href="/about" className="pov-btn-primary">
+                <span>Read Founder Story &amp; Philosophy</span>
+                <ArrowRight size={15} />
               </Link>
 
-              <Link
-                href="/services"
-                className="button-editorial"
-                style={{ height: '46px', padding: '0 1.5rem', backgroundColor: '#e8e8e6', color: '#111' }}
-              >
-                <div className="button-texts-slider">
-                  <span className="button-text-item">Explore Three Practice Areas</span>
-                  <span className="button-text-item">Explore Three Practice Areas</span>
-                </div>
-                <ArrowUpRight size={16} />
+              <Link href="/services" className="pov-btn-secondary">
+                <span>Explore Three Practice Areas</span>
+                <ArrowRight size={15} />
               </Link>
             </div>
           </div>
 
-          {/* RIGHT — Portrait image */}
-          <div
-            ref={rightRef}
-            className="pov-right"
-            style={{ opacity: 0 }} // starts hidden
-          >
-            <div
-              style={{
-                position: 'relative',
-                borderRadius: '24px',
-                overflow: 'hidden',
-                aspectRatio: '4/5',
-                boxShadow: '0 32px 64px rgba(0, 0, 0, 0.14)',
-                width: '100%',
-              }}
-            >
-              <Image
-                src="/images/home/madhura-editorial.jpg"
-                alt="Madhura Hawal on-ground directing a project in Ladakh"
-                fill
-                style={{ objectFit: 'cover', transformOrigin: 'center center' }}
-                sizes="(max-width: 900px) 90vw, 45vw"
-                priority
-              />
-              {/* Caption overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '2rem 1.75rem 1.75rem',
-                  background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.82) 100%)',
-                  color: '#ffffff',
-                }}
-              >
-                <div
-                  className="tag-mono"
-                  style={{
-                    fontSize: '0.68rem',
-                    color: '#ff4d4f',
-                    fontWeight: 600,
-                    marginBottom: '0.3rem',
-                    letterSpacing: '0.14em',
-                  }}
-                >
-                  MADHURA HAWAL · FOUNDER
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.85rem',
-                    color: 'rgba(255, 255, 255, 0.88)',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs.
-                </div>
+          {/* ============================================================
+              RIGHT COLUMN: Layered Architectural Shapes, Portrait, Founder Badge
+              ============================================================ */}
+          <div ref={rightRef} className="pov-right-col">
+            {/* Center-Top Typographic Element (IDEAS ── BRANDS PEOPLE PROGRESS) */}
+            <div className="pov-triad-element">
+              <div className="pov-triad-row">
+                <span className="pov-triad-word">IDEAS</span>
+                <span className="pov-triad-rule" />
               </div>
+              <span className="pov-triad-word">BRANDS</span>
+              <span className="pov-triad-word">PEOPLE</span>
+              <span className="pov-triad-word">PROGRESS</span>
+            </div>
+
+            {/* Visual Composition Container */}
+            <div className="pov-composition-box">
+              {/* Layer 1: Deep Red Rounded Arch on Left */}
+              <div className="pov-shape-red-arch" />
+
+              {/* Layer 2: Thin Red Outline Arc SVG */}
+              <svg
+                className="pov-shape-red-outline"
+                width="140"
+                height="220"
+                viewBox="0 0 140 220"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M 135,15 A 80,80 0 0,0 20,95 L 20,210"
+                  stroke="#9e1f24"
+                  strokeWidth="1.5"
+                  fill="none"
+                  opacity="0.85"
+                />
+              </svg>
+
+              {/* Layer 3: Dark Navy Arched Monolith on Right */}
+              <div className="pov-shape-navy-pillar" />
+
+              {/* Layer 4: Vertical Text on Far Right (STRATEGY / STORY / EXECUTION) */}
+              <div className="pov-vertical-tags">
+                <span>STRATEGY &nbsp;/&nbsp; STORY &nbsp;/&nbsp; EXECUTION</span>
+              </div>
+
+              {/* Layer 5: Main Founder Portrait Card */}
+              <div className="pov-portrait-frame">
+                <Image
+                  src="/images/home/madhura-editorial.jpg"
+                  alt="Madhura Hawal - Founder of Ārohana Consultancy"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 300px, (max-width: 1200px) 360px, 400px"
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center 20%',
+                  }}
+                />
+              </div>
+
+              {/* Layer 6: Floating Founder Badge Card (Overlapping Bottom Right) */}
+              <div className="pov-founder-badge">
+                <div className="pov-founder-meta">
+                  <span className="pov-founder-name">MADHURA HAWAL</span>
+                  <span className="pov-founder-role">FOUNDER</span>
+                </div>
+                <p className="pov-founder-desc">
+                  Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs.
+                </p>
+
+                {/* Floating Red Circular Arrow Button */}
+                <Link
+                  href="/about"
+                  className="pov-founder-action-btn"
+                  aria-label="View Madhura Hawal founder story"
+                >
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Bottom-Right Page Numbers (01 ────── 03) */}
+            <div className="pov-page-indicator">
+              <span className="pov-page-current">01</span>
+              <span className="pov-page-dash" />
+              <span className="pov-page-total">03</span>
             </div>
           </div>
         </div>
       </div>
 
       <style jsx>{`
-        @media (max-width: 480px) {
-          :global(.pov-buttons-wrap > a) {
-            width: 100% !important;
-            justify-content: center !important;
+        /* ── Split Layout ── */
+        .pov-split-grid {
+          display: grid;
+          grid-template-columns: 52% 48%;
+          align-items: center;
+          gap: clamp(2.5rem, 5vw, 5.5rem);
+        }
+
+        /* ── Left Column ── */
+        .pov-left-col {
+          display: flex;
+          flex-direction: column;
+          max-width: 640px;
+        }
+
+        .pov-eyebrow-row {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-bottom: 1.4rem;
+        }
+
+        .pov-eyebrow-text {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.74rem;
+          font-weight: 700;
+          letter-spacing: 0.15em;
+          color: #9e1f24;
+          text-transform: uppercase;
+        }
+
+        .pov-eyebrow-dash {
+          width: 44px;
+          height: 1.5px;
+          background-color: #9e1f24;
+          display: inline-block;
+        }
+
+        .pov-headline {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.035em;
+          color: #0b1a33;
+          margin: 0 0 1.75rem 0;
+        }
+
+        .pov-highlight-phrase {
+          color: #9e1f24;
+          position: relative;
+          display: inline-block;
+        }
+
+        .pov-dot {
+          color: #9e1f24;
+        }
+
+        .pov-headline-dash {
+          display: block;
+          width: 38px;
+          height: 2px;
+          background-color: #9e1f24;
+          margin-top: 8px;
+        }
+
+        .pov-body-copy {
+          display: flex;
+          flex-direction: column;
+          gap: 1.15rem;
+          margin-bottom: 2.25rem;
+        }
+
+        .pov-body-copy p {
+          font-family: var(--font-body, sans-serif);
+          font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+          color: #4a5a70;
+          line-height: 1.68;
+          margin: 0;
+        }
+
+        /* ── Buttons ── */
+        .pov-buttons-row {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .pov-btn-primary {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          background-color: #9e1f24;
+          color: #ffffff;
+          padding: 0.8rem 1.65rem;
+          border-radius: 9999px;
+          font-family: var(--font-display, sans-serif);
+          font-size: 0.88rem;
+          font-weight: 600;
+          text-decoration: none;
+          box-shadow: 0 4px 14px rgba(158, 31, 36, 0.25);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pov-btn-primary:hover {
+          background-color: #ba252b;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(158, 31, 36, 0.35);
+        }
+
+        .pov-btn-secondary {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          background-color: #ffffff;
+          color: #0b1a33;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          padding: 0.8rem 1.65rem;
+          border-radius: 9999px;
+          font-family: var(--font-display, sans-serif);
+          font-size: 0.88rem;
+          font-weight: 600;
+          text-decoration: none;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pov-btn-secondary:hover {
+          border-color: #0b1a33;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ── Right Column ── */
+        .pov-right-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          width: 100%;
+        }
+
+        /* ── Typographic Triad Element ── */
+        .pov-triad-element {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+          align-self: flex-start;
+          margin-left: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        .pov-triad-row {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+        }
+
+        .pov-triad-word {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          color: #8c9ba5;
+        }
+
+        .pov-triad-rule {
+          width: 50px;
+          height: 1px;
+          background-color: #cbd5e1;
+          display: inline-block;
+        }
+
+        /* ── Composition Box ── */
+        .pov-composition-box {
+          position: relative;
+          width: 100%;
+          max-width: 440px;
+          margin-bottom: 2.5rem;
+        }
+
+        /* Red Arch Shape on Left */
+        .pov-shape-red-arch {
+          position: absolute;
+          left: -40px;
+          top: 30%;
+          width: 65px;
+          height: 190px;
+          background-color: #9e1f24;
+          border-radius: 9999px 0 0 9999px;
+          z-index: 1;
+        }
+
+        /* Red Outline Arc SVG */
+        .pov-shape-red-outline {
+          position: absolute;
+          left: -55px;
+          top: 15%;
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        /* Dark Navy Pillar on Right */
+        .pov-shape-navy-pillar {
+          position: absolute;
+          right: 8px;
+          top: 8%;
+          width: 75px;
+          height: 250px;
+          background-color: #0f1c2d;
+          border-radius: 40px 40px 0 0;
+          z-index: 1;
+        }
+
+        /* Vertical Strategy / Story / Execution */
+        .pov-vertical-tags {
+          position: absolute;
+          right: -50px;
+          top: 32%;
+          transform: rotate(90deg);
+          transform-origin: center center;
+          white-space: nowrap;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.64rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          color: #94a3b8;
+          z-index: 1;
+        }
+
+        /* Main Portrait Frame */
+        .pov-portrait-frame {
+          position: relative;
+          z-index: 2;
+          width: clamp(270px, 32vw, 350px);
+          height: clamp(340px, 40vw, 440px);
+          border-radius: 30px;
+          overflow: hidden;
+          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
+          background-color: #e5e5e5;
+          margin: 0 auto;
+        }
+
+        /* Floating Founder Badge */
+        .pov-founder-badge {
+          position: absolute;
+          bottom: -22px;
+          right: -18px;
+          z-index: 10;
+          background-color: #ffffff;
+          border-radius: 20px;
+          padding: 1.25rem 1.6rem;
+          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          max-width: 250px;
+        }
+
+        .pov-founder-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          margin-bottom: 6px;
+        }
+
+        .pov-founder-name {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          font-weight: 700;
+          color: #9e1f24;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .pov-founder-role {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.65rem;
+          font-weight: 600;
+          color: #64748b;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+        }
+
+        .pov-founder-desc {
+          font-family: var(--font-body, sans-serif);
+          font-size: 0.8rem;
+          color: #4a5a70;
+          line-height: 1.45;
+          margin: 0;
+        }
+
+        /* Red Circular Action Button */
+        .pov-founder-action-btn {
+          position: absolute;
+          right: -18px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background-color: #9e1f24;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 14px rgba(158, 31, 36, 0.35);
+          text-decoration: none;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .pov-founder-action-btn:hover {
+          background-color: #ba252b;
+          transform: translateY(-50%) scale(1.1);
+        }
+
+        /* ── Page Indicator (01 ────── 03) ── */
+        .pov-page-indicator {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.65rem;
+          align-self: flex-end;
+          margin-right: 2rem;
+        }
+
+        .pov-page-current {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #9e1f24;
+        }
+
+        .pov-page-dash {
+          width: 42px;
+          height: 1.5px;
+          background-color: #cbd5e1;
+        }
+
+        .pov-page-total {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #94a3b8;
+        }
+
+        /* ── Responsive Rules ── */
+        @media (max-width: 991px) {
+          .pov-split-grid {
+            grid-template-columns: 1fr;
+            gap: 3.5rem;
+          }
+          .pov-left-col {
+            max-width: 100%;
+          }
+          .pov-composition-box {
+            margin: 1rem auto 2.5rem auto;
+          }
+          .pov-triad-element {
+            align-self: center;
+            margin-left: 0;
+          }
+          .pov-page-indicator {
+            align-self: center;
+            margin-right: 0;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .pov-buttons-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .pov-btn-primary,
+          .pov-btn-secondary {
+            justify-content: center;
+          }
+          .pov-shape-red-arch,
+          .pov-shape-red-outline,
+          .pov-shape-navy-pillar,
+          .pov-vertical-tags {
+            display: none;
+          }
+          .pov-founder-badge {
+            right: 0;
+            bottom: -15px;
+            max-width: calc(100% - 20px);
+          }
+          .pov-founder-action-btn {
+            right: -10px;
           }
         }
       `}</style>

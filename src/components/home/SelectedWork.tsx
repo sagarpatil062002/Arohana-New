@@ -3,881 +3,528 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { ChevronLeft, ChevronRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+
+interface ProjectItem {
+  id: string;
+  index: string;
+  title: string;
+  category: string;
+  desc: string;
+  tags: string[];
+  image: string;
+  link: string;
+}
+
+const CATEGORIES = [
+  'All Projects',
+  'Hospitality & F&B',
+  'Lifestyle & Retail',
+  'Wellness & Healthcare',
+  'Construction & Infrastructure',
+  'Events & Experiences',
+];
+
+const PROJECTS: ProjectItem[] = [
+  {
+    id: 'vital-wellness',
+    index: '01',
+    title: 'Vital Wellness',
+    category: 'Wellness & Healthcare',
+    desc: 'Holistic health and wellness brand identity, packaging design and spatial experience.',
+    tags: ['Brand Identity', 'Experience Design', 'Packaged Goods'],
+    image: '/images/case-studies/selected-work/vital-wellness.jpg',
+    link: '/work',
+  },
+  {
+    id: 'residency-club',
+    index: '02',
+    title: 'Residency Club Kolhapur',
+    category: 'Hospitality & F&B',
+    desc: 'Heritage hospitality branding, content production and spatial identity systems.',
+    tags: ['Hospitality Branding', 'Content Production', 'Spatial Identity'],
+    image: '/images/case-studies/selected-work/residency-club.jpg',
+    link: '/work',
+  },
+  {
+    id: 'raysons-group',
+    index: '03',
+    title: 'Raysons Group',
+    category: 'Construction & Infrastructure',
+    desc: 'Corporate rebranding, architectural film series and unified multi-vertical visual language.',
+    tags: ['Corporate Branding', 'Brand Film Series', 'Spatial Experience'],
+    image: '/images/case-studies/selected-work/raysons-group.jpg',
+    link: '/work/raysons-group',
+  },
+  {
+    id: 'abhijeet-magdum',
+    index: '04',
+    title: 'Abhijeet Magdum\nGroup of Constructions',
+    category: 'Construction & Infrastructure',
+    desc: 'End-to-end brand identity, high-altitude project documentary, and multi-channel media production.',
+    tags: ['Brand Identity', 'Project Documentary', 'Media Production'],
+    image: '/images/case-studies/selected-work/abhijeet-magdum.jpg',
+    link: '/work',
+  },
+  {
+    id: 'misu',
+    index: '05',
+    title: 'Misu Restaurant',
+    category: 'Hospitality & F&B',
+    desc: 'Contemporary Asian dining identity, signage systems, and digital customer acquisition.',
+    tags: ['Brand Identity', 'Interior Signage', 'Digital Assets'],
+    image: '/images/case-studies/selected-work/misu.jpg',
+    link: '/work/misu',
+  },
+  {
+    id: 'khau-gully',
+    index: '06',
+    title: 'Khau Gully',
+    category: 'Hospitality & F&B',
+    desc: 'Urban food court concept, dynamic culinary branding, and experiential street-food aesthetics.',
+    tags: ['The Urban F&B', 'Experience Design', 'Social Media'],
+    image: '/images/case-studies/selected-work/khau-gully.jpg',
+    link: '/work',
+  },
+  {
+    id: 'pretty-plants',
+    index: '07',
+    title: 'The Pretty Plants',
+    category: 'Lifestyle & Retail',
+    desc: 'Botanical retail branding, flagship floral store experience, and digital campaigns.',
+    tags: ['Retail Identity', 'Campaign Shoot', 'Store Branding'],
+    image: '/images/case-studies/selected-work/pretty-plants.jpg',
+    link: '/work',
+  },
+];
 
 export default function SelectedWork() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const hoverWrapRef = useRef<HTMLDivElement>(null);
-  const hoverPillRef = useRef<HTMLDivElement>(null);
-
-  // Mouse position tracking with lerp for the floating cursor pill
-  const mousePos = useRef({ x: -100, y: -100 });
-  const pillPos = useRef({ x: -100, y: -100 });
-  const isHovering = useRef(false);
-
-  // Carousel State
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isInteracting, setIsInteracting] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStartX, setDragStartX] = useState<number | null>(null);
-  const [dragDelta, setDragDelta] = useState(0);
+  // Start with index 3 (Abhijeet Magdum) to match reference image active state
+  const [currentIndex, setCurrentIndex] = useState(3);
+  const [selectedCategory, setSelectedCategory] = useState('All Projects');
+  const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const touchStartX = useRef<number | null>(null);
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+
+  // Drag / Touch state
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const projects = [
-    {
-      id: 'raysons',
-      index: '01',
-      title: 'Raysons Group',
-      desc: 'Expanded organically from hospitality into group real estate and specialized industrial production.',
-      tags: 'Hospitality, Real Estate & Industrial Casting',
-      image: '/images/case-studies/raysons/casting-hero.jpg',
-      link: '/work/raysons-group',
-    },
-    {
-      id: 'loom',
-      index: '02',
-      title: 'Loom Crafts',
-      desc: 'Built consistent digital pipeline and architect-focused content architecture.',
-      tags: 'Luxury Outdoor Living & Built Environment',
-      image: '/images/case-studies/loom/loom-hero.jpg',
-      link: '/work/loom-crafts',
-    },
-    {
-      id: 'picturetime',
-      index: '03',
-      title: 'PictureTime',
-      desc: 'Documented remote cinema installations, special army screenings, and festival presence.',
-      tags: 'Cinema Technology & High-Altitude Media',
-      image: '/images/case-studies/picturetime/picturetime-hero.jpg',
-      link: '/work/picturetime',
-    },
-    {
-      id: 'she-ladakh',
-      index: '04',
-      title: 'SHE Ladakh',
-      desc: 'On-ground coordination and visual documentation across high-altitude border villages.',
-      tags: 'Public Health & Remote Community Impact',
-      image: '/images/case-studies/she/she-hero.jpg',
-      link: '/work/she-ladakh',
-    },
-    {
-      id: 'misu',
-      index: '05',
-      title: 'Misu Pan-Asian',
-      desc: 'Turnaround of guest acquisition flow and high-margin seasonal menu rollout.',
-      tags: 'Hospitality Operations & Digital Growth',
-      image: '/images/case-studies/misu/misu-hero.jpg',
-      link: '/work/misu',
-    },
-    {
-      id: 'rr-skins',
-      index: '06',
-      title: 'RR Skins',
-      desc: 'Demystified complex aesthetic treatments and scaled patient inquiries.',
-      tags: 'Clinical Healthcare & Patient Trust',
-      image: '/images/case-studies/rrskins/rrskins-hero.jpg',
-      link: '/work/rr-skins',
-    },
-  ];
+  const total = PROJECTS.length;
 
-  const totalProjects = projects.length;
-
-  // Responsive check
+  // Screen size listener
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Slide navigation
+  // Navigation handlers
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % totalProjects);
-  }, [totalProjects]);
+    setCurrentIndex((prev) => (prev + 1) % total);
+  }, [total]);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + totalProjects) % totalProjects);
-  }, [totalProjects]);
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
+  }, [total]);
 
-  // Autoplay every 1.5 seconds from Left to Right
-  const resetAutoplay = useCallback(() => {
+  // Autoplay every 1.5 seconds from left to right
+  useEffect(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isInteracting && !isDragging) {
+
+    if (!isHovered && !isDragging) {
       timerRef.current = setInterval(() => {
         nextSlide();
       }, 1500);
     }
-  }, [isInteracting, isDragging, nextSlide]);
 
-  useEffect(() => {
-    resetAutoplay();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [resetAutoplay]);
+  }, [isHovered, isDragging, nextSlide]);
 
-  const handlePrev = () => {
-    prevSlide();
-    resetAutoplay();
-  };
-
-  const handleNext = () => {
-    nextSlide();
-    resetAutoplay();
-  };
-
-  // Mouse drag handlers (Desktop)
-  const handleMouseDown = (e: React.MouseEvent) => {
+  // Drag / Swipe handlers for Desktop & Mobile
+  const handleDragStart = (clientX: number) => {
     setIsDragging(true);
-    setDragStartX(e.clientX);
-    setDragDelta(0);
+    setDragStartX(clientX);
+    setDragOffset(0);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || dragStartX === null) return;
-    setDragDelta(e.clientX - dragStartX);
-  };
-
-  const handleMouseUp = () => {
+  const handleDragMove = (clientX: number) => {
     if (!isDragging) return;
-    if (dragDelta < -40) {
+    setDragOffset(clientX - dragStartX);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    if (dragOffset < -40) {
       nextSlide();
-    } else if (dragDelta > 40) {
+    } else if (dragOffset > 40) {
       prevSlide();
     }
     setIsDragging(false);
-    setDragStartX(null);
-    setDragDelta(0);
-    resetAutoplay();
+    setDragOffset(0);
   };
 
-  const handleMouseLeaveWrapper = () => {
-    if (isDragging) {
-      if (dragDelta < -40) nextSlide();
-      else if (dragDelta > 40) prevSlide();
-      setIsDragging(false);
-      setDragStartX(null);
-      setDragDelta(0);
-      resetAutoplay();
-    }
-  };
-
-  // Touch swipe handlers (Mobile)
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    setIsInteracting(true);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current !== null) {
-      const diff = touchStartX.current - e.changedTouches[0].clientX;
-      if (diff > 35) {
-        nextSlide();
-      } else if (diff < -35) {
-        prevSlide();
-      }
-      touchStartX.current = null;
-    }
-    setIsInteracting(false);
-    resetAutoplay();
-  };
-
-  // Mouse cursor tracking for floating view work pill
-  useEffect(() => {
-    const pill = hoverPillRef.current;
-    if (!pill) return;
-
-    let rafId: number;
-
-    const onMouseMove = (e: MouseEvent) => {
-      mousePos.current.x = e.clientX;
-      mousePos.current.y = e.clientY;
-    };
-
-    const loop = () => {
-      pillPos.current.x += (mousePos.current.x - pillPos.current.x) * 0.18;
-      pillPos.current.y += (mousePos.current.y - pillPos.current.y) * 0.18;
-
-      if (pill) {
-        gsap.set(pill, {
-          x: pillPos.current.x,
-          y: pillPos.current.y,
-        });
-      }
-      rafId = requestAnimationFrame(loop);
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-    rafId = requestAnimationFrame(loop);
-
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  // Header word reveal animation
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const ctx = gsap.context(() => {
-      const workRevealWords = sectionRef.current?.querySelectorAll<HTMLElement>('.work-word-reveal');
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      if (workRevealWords && workRevealWords.length > 0) {
-        if (prefersReducedMotion) {
-          gsap.set(workRevealWords, { y: '0%', rotateZ: 0, opacity: 1 });
-        } else {
-          gsap.set(workRevealWords, { y: '120%', rotateZ: 3, opacity: 0 });
-          ScrollTrigger.create({
-            trigger: '.work-list_head',
-            start: 'top 85%',
-            once: true,
-            onEnter: () => {
-              gsap.to(workRevealWords, {
-                y: '0%',
-                rotateZ: 0,
-                opacity: 1,
-                duration: 0.95,
-                stagger: 0.08,
-                ease: 'power3.out',
-              });
-            },
-          });
-        }
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const handleCardMouseEnter = () => {
-    isHovering.current = true;
-    if (hoverPillRef.current) {
-      gsap.to(hoverPillRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.25,
-        ease: 'power2.out',
-      });
-    }
-  };
-
-  const handleCardMouseLeave = () => {
-    isHovering.current = false;
-    if (hoverPillRef.current) {
-      gsap.to(hoverPillRef.current, {
-        opacity: 0,
-        scale: 0.75,
-        duration: 0.2,
-        ease: 'power2.in',
-      });
-    }
+  // Helper for circular difference (-3 to +3)
+  const getOffset = (index: number) => {
+    let diff = (index - currentIndex) % total;
+    if (diff > total / 2) diff -= total;
+    if (diff < -total / 2) diff += total;
+    return diff;
   };
 
   return (
     <section
-      ref={sectionRef}
       id="selected-work"
-      className="section_work-list"
-      style={{
-        position: 'relative',
-        backgroundColor: '#f5f5f3',
-        paddingTop: 'clamp(4.5rem, 7vw, 7rem)',
-        paddingBottom: 'clamp(5rem, 8vw, 8rem)',
-        overflow: 'hidden',
-      }}
-      onMouseEnter={() => setIsInteracting(true)}
+      className="relative w-full overflow-hidden bg-[#fafaf9] py-16 sm:py-20 lg:py-24 select-none"
+      onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
-        setIsInteracting(false);
-        handleMouseLeaveWrapper();
+        setIsHovered(false);
+        handleDragEnd();
       }}
     >
-      {/* Floating Hover Pill for Desktop */}
-      <div
-        ref={hoverWrapRef}
-        className="hover_wrap"
-        style={{
-          position: 'fixed',
-          inset: 0,
-          pointerEvents: 'none',
-          zIndex: 9999,
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-        }}
-      >
-        <div
-          ref={hoverPillRef}
-          className="hover_pill"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            transform: 'translate(-50%, -50%) scale(0.75)',
-            opacity: 0,
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            color: '#ffffff',
-            borderRadius: '4rem',
-            padding: '0.65rem 1.15rem',
-            fontSize: '0.72rem',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.35)',
-            willChange: 'transform, opacity',
-          }}
-        >
-          <span>View work</span>
-          <ArrowUpRight size={13} />
-        </div>
-      </div>
-
-      <div className="padding-global container-medium" style={{ width: '100%', maxWidth: '84rem', margin: '0 auto' }}>
-        {/* Section Header */}
-        <div
-          className="work-list_head"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2rem',
-            width: '100%',
-            marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
-            paddingBottom: '2rem',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-          }}
-        >
-          {/* Top: One-line heading on desktop */}
-          <div
-            className="work-list_heading-wrap"
-            style={{
-              position: 'relative',
-              display: 'inline-flex',
-              alignItems: 'flex-start',
-              width: '100%',
-              maxWidth: '100%',
-            }}
-          >
-            <h2
-              className="heading-style-display work-heading-single-line"
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.4rem, 5.2vw, 5.2rem)',
-                fontWeight: 500,
-                letterSpacing: '-0.04em',
-                lineHeight: 1.05,
-                color: '#111111',
-                margin: 0,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-              }}
-            >
-              {['The', 'work', 'is', 'the', 'proof.'].map((word, idx) => (
-                <span
-                  key={idx}
-                  style={{
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    verticalAlign: 'top',
-                    marginRight: '0.28em',
-                  }}
-                >
-                  <span
-                    className="work-word-reveal"
-                    style={{
-                      display: 'inline-block',
-                      willChange: 'transform, opacity',
-                    }}
-                  >
-                    {word}
-                  </span>
-                </span>
-              ))}
-            </h2>
-            <div
-              className="work-list_number"
-              style={{
-                color: '#ffffff',
-                backgroundColor: '#DE322D',
-                borderRadius: '50%',
-                display: 'inline-flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '24px',
-                height: '24px',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-display)',
-                fontWeight: 600,
-                marginLeft: '0.75rem',
-                marginTop: '0.35rem',
-                flexShrink: 0,
-              }}
-            >
-              {totalProjects}
-            </div>
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
+        {/* ================================================================= */}
+        {/* 1. SECTION HEADER (Exact layout from reference image)             */}
+        {/* ================================================================= */}
+        <div className="mb-10 sm:mb-14">
+          {/* Small label with red dash */}
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <span className="w-4 h-[2px] bg-[#DE322D]" />
+            <span className="text-[11px] font-mono tracking-widest text-[#666666] uppercase font-semibold">
+              SELECTED WORK
+            </span>
           </div>
 
-          {/* Bottom row: Description, Controls & copyright */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              width: '100%',
-              flexWrap: 'wrap',
-              gap: '1.5rem',
-            }}
-          >
-            <div
-              className="work-list_head-texts"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.75rem',
-                maxWidth: '32rem',
-              }}
-            >
-              <h3
-                className="text-style-label"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  color: '#DE322D',
-                  textTransform: 'uppercase',
-                  margin: 0,
-                }}
-              >
-                SELECTED WORK
-              </h3>
-              <p
-                style={{
-                  color: '#555555',
-                  fontSize: '0.95rem',
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.
-              </p>
-            </div>
-
-            {/* Navigation Arrows & Year Badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <button
-                  type="button"
-                  aria-label="Previous Project"
-                  onClick={handlePrev}
-                  style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    border: '1px solid rgba(0, 0, 0, 0.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#111111',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#DE322D';
-                    e.currentTarget.style.color = '#ffffff';
-                    e.currentTarget.style.borderColor = '#DE322D';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#ffffff';
-                    e.currentTarget.style.color = '#111111';
-                    e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.12)';
-                  }}
-                >
-                  <ArrowLeft size={17} />
-                </button>
-
-                <button
-                  type="button"
-                  aria-label="Next Project"
-                  onClick={handleNext}
-                  style={{
-                    width: '42px',
-                    height: '42px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    border: '1px solid rgba(0, 0, 0, 0.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#111111',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#DE322D';
-                    e.currentTarget.style.color = '#ffffff';
-                    e.currentTarget.style.borderColor = '#DE322D';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#ffffff';
-                    e.currentTarget.style.color = '#111111';
-                    e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.12)';
-                  }}
-                >
-                  <ArrowRight size={17} />
-                </button>
-              </div>
-
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-10">
+            {/* Title with red period */}
+            <div>
               <h2
-                className="heading-style-display"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.2rem, 4.5vw, 4rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.04em',
-                  lineHeight: 0.95,
-                  color: '#111111',
-                  margin: 0,
-                }}
+                className="text-[38px] sm:text-[50px] lg:text-[62px] font-bold tracking-tight text-[#0f1115] leading-[1.06] m-0"
+                style={{ fontFamily: 'var(--font-display)' }}
               >
-                ©26
+                The work
+                <br />
+                is the proof
+                <span className="text-[#DE322D]">.</span>
               </h2>
             </div>
+
+            {/* Right side: Description & ©26 Badge */}
+            <div className="flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-10">
+              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed max-w-[340px] m-0">
+                A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.
+              </p>
+
+              <div className="flex items-center gap-3 self-start sm:self-auto">
+                <span
+                  className="text-[46px] sm:text-[54px] font-normal text-[#bcc4cf] tracking-tight leading-none select-none"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  ©26
+                </span>
+                <div className="flex flex-col text-[10px] tracking-wider text-[#88909c] font-bold leading-[1.3] uppercase font-mono">
+                  <span>REAL BRANDS.</span>
+                  <span>REAL IMPACT.</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* HORIZONTAL INTERACTIVE CAROUSEL TRACK */}
+        {/* ================================================================= */}
+        {/* 2. 3D PERSPECTIVE HORIZONTAL CAROUSEL                            */}
+        {/* ================================================================= */}
         <div
-          className="work-carousel-viewport"
-          style={{
-            position: 'relative',
-            width: '100%',
-            overflow: 'hidden',
-            padding: '1rem 0 2rem 0',
-            cursor: isDragging ? 'grabbing' : 'grab',
-            userSelect: 'none',
-          }}
-          onTouchStart={handleTouchStart}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
+          ref={containerRef}
+          className="relative w-full h-[420px] sm:h-[460px] lg:h-[480px] flex items-center justify-center cursor-grab active:cursor-grabbing"
+          style={{ perspective: '1200px' }}
+          onMouseDown={(e) => handleDragStart(e.clientX)}
+          onMouseMove={(e) => handleDragMove(e.clientX)}
+          onMouseUp={handleDragEnd}
+          onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+          onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+          onTouchEnd={handleDragEnd}
         >
-          <div
-            className="work-carousel-track"
-            style={{
-              display: 'flex',
-              gap: isMobile ? '1rem' : '1.75rem',
-              transform: isMobile
-                ? `translateX(calc(-${currentIndex} * (min(max(280px, 82vw), 360px) + 1rem) + ${dragDelta}px))`
-                : `translateX(calc(-${currentIndex} * (min(max(320px, 42vw), 540px) + 1.75rem) + ${dragDelta}px))`,
-              transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              willChange: 'transform',
+          {/* Navigation Arrows (Left & Right) */}
+          <button
+            type="button"
+            aria-label="Previous Brand"
+            onClick={(e) => {
+              e.stopPropagation();
+              prevSlide();
             }}
+            className="absolute left-2 sm:left-4 z-50 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
           >
-            {projects.map((project, idx) => {
-              const isActive = idx === currentIndex;
+            <ChevronLeft size={20} />
+          </button>
+
+          <button
+            type="button"
+            aria-label="Next Brand"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextSlide();
+            }}
+            className="absolute right-2 sm:right-4 z-50 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
+          >
+            <ChevronRight size={20} />
+          </button>
+
+          {/* Cards Track Container */}
+          <div
+            className="relative w-full h-full flex items-center justify-center"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {PROJECTS.map((project, idx) => {
+              const offset = getOffset(idx);
+              const absOffset = Math.abs(offset);
+              const isActive = offset === 0;
+
+              // Compute transform based on screen size
+              let transformStyle = '';
+              let opacity = 0;
+              let zIndex = 10;
+              let pointerEvents: 'auto' | 'none' = 'none';
+
+              if (isMobile) {
+                // Mobile layout: centered active card with peeking side cards
+                const cardSpacing = 240;
+                const tx = offset * cardSpacing + (isDragging ? dragOffset : 0);
+                const scale = isActive ? 1 : 0.88;
+
+                if (absOffset <= 1) {
+                  opacity = isActive ? 1 : 0.65;
+                  zIndex = 30 - absOffset * 10;
+                  pointerEvents = 'auto';
+                } else {
+                  opacity = 0;
+                }
+
+                transformStyle = `translateX(${tx}px) scale(${scale})`;
+              } else {
+                // Desktop 3D curved perspective layout
+                const cardSpacing = 180;
+                const tx = offset * cardSpacing + (isDragging ? dragOffset : 0);
+                const tz = -absOffset * 80;
+                const ry = -offset * 14;
+                const scale = isActive ? 1.08 : Math.max(0.76, 1 - absOffset * 0.08);
+
+                if (absOffset <= 3) {
+                  if (isActive) opacity = 1;
+                  else if (absOffset === 1) opacity = 0.96;
+                  else if (absOffset === 2) opacity = 0.85;
+                  else opacity = 0.45;
+
+                  zIndex = 40 - absOffset * 8;
+                  pointerEvents = 'auto';
+                } else {
+                  opacity = 0;
+                }
+
+                transformStyle = `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) scale(${scale})`;
+              }
+
               return (
                 <div
                   key={project.id}
-                  className="work-carousel-card"
+                  onClick={() => {
+                    if (!isActive && Math.abs(dragOffset) < 10) {
+                      setCurrentIndex(idx);
+                    }
+                  }}
+                  className="absolute transition-transform duration-500 ease-out will-change-transform"
                   style={{
-                    flex: isMobile
-                      ? '0 0 clamp(280px, 82vw, 360px)'
-                      : '0 0 clamp(320px, 42vw, 540px)',
-                    position: 'relative',
+                    width: isMobile ? '260px' : '230px',
+                    height: isMobile ? '370px' : '380px',
+                    transform: transformStyle,
+                    opacity,
+                    zIndex,
+                    pointerEvents,
+                    cursor: isActive ? 'default' : 'pointer',
                   }}
                 >
-                  <Link
-                    href={project.link}
-                    className="work-card-inner"
-                    onMouseEnter={handleCardMouseEnter}
-                    onMouseLeave={handleCardMouseLeave}
-                    onClick={(e) => {
-                      // Prevent click trigger during intentional drag
-                      if (Math.abs(dragDelta) > 10) {
-                        e.preventDefault();
-                      }
-                    }}
-                    style={{
-                      position: 'relative',
-                      display: 'block',
-                      aspectRatio: '16 / 10',
-                      width: '100%',
-                      borderRadius: '1.75rem',
-                      overflow: 'hidden',
-                      backgroundColor: '#0c0c0e',
-                      textDecoration: 'none',
-                      boxShadow: isActive
-                        ? '0 20px 50px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08)'
-                        : '0 12px 30px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05)',
-                      transform: isActive ? 'scale(1.01)' : 'scale(0.985)',
-                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
+                  <div
+                    className={`w-full h-full rounded-[20px] overflow-hidden flex flex-col transition-all duration-400 ${
+                      isActive
+                        ? 'bg-[#15171a] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4),0_10px_25px_-5px_rgba(0,0,0,0.2)] ring-1 ring-white/10'
+                        : 'bg-[#f4f5f7] border border-black/[0.07] shadow-[0_12px_30px_rgba(0,0,0,0.06)]'
+                    }`}
                   >
-                    {/* Project Image */}
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      priority={idx <= 1}
-                      sizes="(max-width: 768px) 85vw, 45vw"
-                      style={{
-                        objectFit: 'cover',
-                        width: '100%',
-                        height: '100%',
-                        transition: 'transform 0.8s ease',
-                      }}
-                    />
-
-                    {/* Subtle dark gradient overlay */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background:
-                          'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.85) 100%)',
-                      }}
-                    />
-
-                    {/* Top Index Badge */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '1.25rem',
-                        left: '1.25rem',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.72rem',
-                        fontWeight: 700,
-                        padding: '4px 10px',
-                        borderRadius: '9999px',
-                        backgroundColor: 'rgba(0, 0, 0, 0.65)',
-                        backdropFilter: 'blur(8px)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        color: '#ffffff',
-                      }}
-                    >
-                      [ {project.index} ]
+                    {/* Top Media / Artwork Container */}
+                    <div className="relative w-full h-[54%] overflow-hidden bg-gray-200">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 260px, 240px"
+                        priority={isActive}
+                        className="object-cover w-full h-full transition-transform duration-700 hover:scale-105"
+                      />
                     </div>
 
-                    {/* Bottom-Left Information Pill */}
-                    <div
-                      className="work-list_name"
-                      style={{
-                        position: 'absolute',
-                        bottom: '1.25rem',
-                        left: '1.25rem',
-                        right: '1.25rem',
-                        backdropFilter: 'blur(16px)',
-                        WebkitBackdropFilter: 'blur(16px)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                        color: '#000000',
-                        borderRadius: '1.25rem',
-                        padding: '0.75rem 1.15rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.3rem',
-                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.16)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '0.5rem',
-                          flexWrap: 'wrap',
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                          <span
-                            style={{
-                              backgroundColor: '#DE322D',
-                              borderRadius: '50%',
-                              width: '0.38rem',
-                              height: '0.38rem',
-                              flexShrink: 0,
-                            }}
-                          />
-                          <h4
-                            style={{
-                              fontSize: '0.98rem',
-                              lineHeight: 1.2,
-                              fontFamily: 'var(--font-display)',
-                              fontWeight: 600,
-                              color: '#000000',
-                              margin: 0,
-                            }}
-                          >
-                            {project.title}
-                          </h4>
-                        </div>
-                        <span
-                          style={{
-                            fontSize: '0.72rem',
-                            fontFamily: 'var(--font-mono)',
-                            color: '#DE322D',
-                            fontWeight: 600,
-                            letterSpacing: '0.04em',
-                            textTransform: 'uppercase',
-                          }}
+                    {/* Bottom Details Container */}
+                    <div className="relative w-full h-[46%] p-4 sm:p-5 flex flex-col justify-between">
+                      <div>
+                        <h3
+                          className={`font-display text-[15px] sm:text-[16px] font-bold leading-tight mb-2 whitespace-pre-line ${
+                            isActive ? 'text-white' : 'text-[#0f1115]'
+                          }`}
                         >
-                          {project.tags}
-                        </span>
+                          {project.title}
+                        </h3>
+
+                        <div className="flex flex-col gap-0.5">
+                          {project.tags.map((tag, tagIdx) => (
+                            <span
+                              key={tagIdx}
+                              className={`text-[10px] sm:text-[11px] font-normal leading-tight ${
+                                isActive ? 'text-gray-400' : 'text-gray-500'
+                              }`}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontSize: '0.8rem',
-                          color: '#555555',
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {project.desc}
-                      </p>
+
+                      {/* Bottom-right diagonal arrow button */}
+                      <div className="flex justify-end pt-2">
+                        {isActive ? (
+                          <Link
+                            href={project.link}
+                            aria-label={`View ${project.title} case study`}
+                            className="w-8 h-8 rounded-full bg-[#202328] border border-white/20 text-white flex items-center justify-center hover:bg-[#DE322D] hover:border-[#DE322D] transition-colors"
+                          >
+                            <ArrowUpRight size={15} />
+                          </Link>
+                        ) : (
+                          <div className="w-7 h-7 rounded-full bg-white border border-black/10 text-gray-600 flex items-center justify-center shadow-xs">
+                            <ArrowUpRight size={13} />
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Carousel Indicators & Active Ticker */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1rem',
-            paddingTop: '1.5rem',
-            borderTop: '1px solid rgba(0, 0, 0, 0.08)',
-          }}
-        >
-          {/* Active Ticker */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.85rem',
-                color: '#DE322D',
-                fontWeight: 700,
-              }}
-            >
-              {projects[currentIndex].index}
+        {/* ================================================================= */}
+        {/* 3. MOBILE CONTROLS (Pagination bar, Dropdown, Full-width CTA)     */}
+        {/* ================================================================= */}
+        <div className="flex lg:hidden flex-col items-center gap-4 mt-6">
+          {/* Progress Indicator: '04 / 07' + Slider track */}
+          <div className="flex items-center gap-3">
+            <span className="text-[12px] font-mono text-gray-500 font-semibold">
+              {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                color: '#111111',
-              }}
-            >
-              {projects[currentIndex].title}
-            </span>
-            <span className="hide-on-mobile" style={{ fontSize: '0.8rem', color: '#777777' }}>
-              — {projects[currentIndex].tags}
-            </span>
-          </div>
-
-          {/* Dots Indicator */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            {projects.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`Go to project slide ${i + 1}`}
-                onClick={() => {
-                  setCurrentIndex(i);
-                  resetAutoplay();
-                }}
+            <div className="w-24 h-[3px] bg-gray-200 rounded-full overflow-hidden relative">
+              <div
+                className="h-full bg-[#DE322D] rounded-full transition-all duration-300"
                 style={{
-                  height: '4px',
-                  width: currentIndex === i ? '26px' : '6px',
-                  borderRadius: '9999px',
-                  backgroundColor: currentIndex === i ? '#DE322D' : 'rgba(0, 0, 0, 0.2)',
-                  transition: 'all 0.3s ease',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
+                  width: `${100 / total}%`,
+                  transform: `translateX(${currentIndex * 100}%)`,
                 }}
               />
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* Bottom CTA to All Work */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 'clamp(3rem, 6vw, 5rem)',
-          }}
-        >
+          {/* Styled Category Dropdown */}
+          <div className="relative w-full max-w-[320px]">
+            <button
+              type="button"
+              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+              className="w-full bg-white border border-gray-200 rounded-full py-3 px-5 flex items-center justify-between text-[13px] font-medium text-gray-800 shadow-xs"
+            >
+              <span>{selectedCategory}</span>
+              <ChevronDown size={16} className="text-gray-400" />
+            </button>
+
+            {showCategoryDropdown && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50 py-1">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setShowCategoryDropdown(false);
+                    }}
+                    className={`w-full text-left px-5 py-2.5 text-[13px] transition-colors ${
+                      selectedCategory === cat
+                        ? 'bg-gray-100 text-black font-semibold'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Full-width Black Pill Button */}
           <Link
             href="/work"
-            className="button-editorial button-editorial-dark"
-            style={{ height: '50px', padding: '0 2.25rem' }}
+            className="w-full max-w-[320px] bg-[#0f1115] text-white rounded-full py-3.5 px-6 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-[#222222] active:scale-98 transition-all shadow-sm"
           >
-            <div className="button-texts-slider">
-              <span className="button-text-item">View all work</span>
-              <span className="button-text-item">View all work</span>
-            </div>
+            <span>View All Case Studies</span>
             <ArrowUpRight size={16} />
           </Link>
         </div>
-      </div>
 
-      <style jsx>{`
-        @media screen and (min-width: 992px) {
-          .work-heading-single-line {
-            white-space: nowrap !important;
-          }
-        }
-        @media screen and (max-width: 991px) {
-          .work-heading-single-line {
-            white-space: normal !important;
-          }
-          .work-list_head {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 1.5rem !important;
-            margin-bottom: 2.5rem !important;
-          }
-          .hover_wrap {
-            display: none !important;
-          }
-        }
-        @media screen and (max-width: 767px) {
-          .work-list_name {
-            bottom: 0.75rem !important;
-            left: 0.75rem !important;
-            right: 0.75rem !important;
-            padding: 0.65rem 0.85rem !important;
-          }
-          .hide-on-mobile {
-            display: none !important;
-          }
-        }
-      `}</style>
+        {/* ================================================================= */}
+        {/* 4. DESKTOP CONTROLS ROW (Category pills + divider + link)        */}
+        {/* ================================================================= */}
+        <div className="hidden lg:flex items-center justify-between mt-12 pt-6">
+          {/* Left: Category filter buttons */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {CATEGORIES.map((cat) => {
+              const isSelected = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`text-[13px] font-medium transition-all ${
+                    isSelected
+                      ? 'bg-[#0f1115] text-white px-5 py-2.5 rounded-full shadow-sm'
+                      : 'text-gray-600 hover:text-black px-3.5 py-2 rounded-full hover:bg-gray-100/80'
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Divider line & View All Case Studies link */}
+          <div className="flex items-center gap-6">
+            <div className="w-16 xl:w-28 h-[1px] bg-gray-300" />
+            <Link
+              href="/work"
+              className="text-[14px] font-semibold text-[#0f1115] hover:text-[#DE322D] flex items-center gap-1.5 transition-colors whitespace-nowrap group"
+            >
+              <span>View All Case Studies</span>
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
