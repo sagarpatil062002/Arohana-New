@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowUpRight, ChevronDown } from 'lucide-react';
 
-interface ProjectItem {
+export interface ProjectItem {
   id: string;
   index: string;
   title: string;
@@ -91,7 +91,7 @@ const PROJECTS: ProjectItem[] = [
 ];
 
 export default function SelectedWork() {
-  // Center card initially on Abhijeet Magdum (index 3) to match reference image
+  // Center card initially on Abhijeet Magdum (index 3) to match reference layout
   const [currentIndex, setCurrentIndex] = useState(3);
   const [selectedCategory, setSelectedCategory] = useState('All Projects');
   const [isHovered, setIsHovered] = useState(false);
@@ -106,17 +106,16 @@ export default function SelectedWork() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const total = PROJECTS.length;
 
-  // Screen size check
+  // Responsive screen check
   useEffect(() => {
-    const checkMobile = () => {
+    const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Slide navigation
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % total);
   }, [total]);
@@ -125,20 +124,32 @@ export default function SelectedWork() {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Autoplay every 1.5 seconds from left to right
-  useEffect(() => {
+  // Autoplay every 1.5 seconds from left to right (like Army Spotlight animation)
+  const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-
     if (!isHovered && !isDragging) {
       timerRef.current = setInterval(() => {
         nextSlide();
       }, 1500);
     }
+  }, [isHovered, isDragging, nextSlide]);
 
+  useEffect(() => {
+    resetAutoplay();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isHovered, isDragging, nextSlide]);
+  }, [resetAutoplay]);
+
+  const handlePrev = () => {
+    prevSlide();
+    resetAutoplay();
+  };
+
+  const handleNext = () => {
+    nextSlide();
+    resetAutoplay();
+  };
 
   // Mouse & Touch drag handlers
   const handleDragStart = (clientX: number) => {
@@ -156,71 +167,87 @@ export default function SelectedWork() {
     if (!isDragging) return;
     if (dragDelta < -40) {
       nextSlide();
+      resetAutoplay();
     } else if (dragDelta > 40) {
       prevSlide();
+      resetAutoplay();
     }
     setIsDragging(false);
     setDragDelta(0);
   };
 
-  // Card sizing constants
-  const cardWidth = isMobile ? 260 : 215;
-  const cardGap = isMobile ? 16 : 22;
-  const cardStep = cardWidth + cardGap;
-
   return (
     <section
       id="selected-work"
-      className="relative w-full overflow-hidden bg-[#fafaf9] py-16 sm:py-20 lg:py-24 select-none"
+      className="selected-work-section"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
         handleDragEnd();
       }}
     >
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
+      <div className="sw-container">
         {/* ================================================================= */}
-        {/* 1. SECTION HEADER                                                 */}
+        {/* 1. SECTION HEADER (Exact match to Reference Image)                */}
         {/* ================================================================= */}
-        <div className="mb-10 sm:mb-14">
+        <div className="sw-header">
           {/* Eyebrow with red bar */}
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <span className="w-5 h-[2px] bg-[#DE322D]" />
-            <span className="text-[11px] font-mono tracking-widest text-[#555555] uppercase font-semibold">
-              SELECTED WORK
-            </span>
+          <div className="sw-eyebrow-row">
+            <span className="sw-red-bar" />
+            <span className="sw-eyebrow-text">SELECTED WORK</span>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 lg:gap-10">
+          <div className="sw-header-main">
             {/* Title with red period */}
-            <div>
-              <h2
-                className="text-[38px] sm:text-[50px] lg:text-[62px] font-bold tracking-tight text-[#0f1115] leading-[1.06] m-0"
-                style={{ fontFamily: 'var(--font-display)' }}
-              >
+            <div className="sw-title-col">
+              <h2 className="sw-title">
                 The work
                 <br />
-                is the proof
-                <span className="text-[#DE322D]">.</span>
+                is the proof<span className="sw-dot-red">.</span>
               </h2>
             </div>
 
-            {/* Description & ©26 Badge */}
-            <div className="flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-10">
-              <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed max-w-[340px] m-0">
+            {/* Description & ©26 Badge & Manual < > buttons */}
+            <div className="sw-meta-col">
+              <p className="sw-description">
                 A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.
               </p>
 
-              <div className="flex items-center gap-3 self-start sm:self-auto">
-                <span
-                  className="text-[46px] sm:text-[54px] font-normal text-[#bcc4cf] tracking-tight leading-none select-none"
-                  style={{ fontFamily: 'var(--font-display)' }}
-                >
-                  ©26
-                </span>
-                <div className="flex flex-col text-[10px] tracking-wider text-[#88909c] font-bold leading-[1.3] uppercase font-mono">
-                  <span>REAL BRANDS.</span>
-                  <span>REAL IMPACT.</span>
+              <div className="sw-meta-right-group">
+                <div className="sw-watermark-wrap">
+                  <span className="sw-watermark-num">&copy;26</span>
+                  <div className="sw-watermark-labels">
+                    <span>REAL BRANDS.</span>
+                    <span>REAL IMPACT.</span>
+                  </div>
+                </div>
+
+                {/* Header Navigation Buttons (< >) matching reference image */}
+                <div className="sw-header-nav-btns">
+                  <button
+                    type="button"
+                    aria-label="Previous Project"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handlePrev();
+                    }}
+                    className="sw-hdr-nav-btn"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next Project"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    className="sw-hdr-nav-btn"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
                 </div>
               </div>
             </div>
@@ -228,10 +255,10 @@ export default function SelectedWork() {
         </div>
 
         {/* ================================================================= */}
-        {/* 2. HORIZONTAL SCROLLING CAROUSEL WITH CENTERED TRACK             */}
+        {/* 2. 3D COVERFLOW HORIZONTAL CAROUSEL (ARMY SECTION ANIMATION STYLE)*/}
         {/* ================================================================= */}
         <div
-          className="relative w-full h-[430px] sm:h-[460px] lg:h-[480px] overflow-hidden flex items-center cursor-grab active:cursor-grabbing"
+          className="sw-carousel-stage"
           onMouseDown={(e) => handleDragStart(e.clientX)}
           onMouseMove={(e) => handleDragMove(e.clientX)}
           onMouseUp={handleDragEnd}
@@ -239,117 +266,206 @@ export default function SelectedWork() {
           onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
           onTouchEnd={handleDragEnd}
         >
-          {/* Circular Left Arrow Button */}
+          {/* Floating Left Arrow Button */}
           <button
             type="button"
             aria-label="Previous Brand"
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
-              prevSlide();
+              handlePrev();
             }}
-            className="absolute left-2 sm:left-4 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
+            className="sw-stage-nav-btn sw-stage-prev"
           >
             <ChevronLeft size={20} />
           </button>
 
-          {/* Circular Right Arrow Button */}
+          {/* Floating Right Arrow Button */}
           <button
             type="button"
             aria-label="Next Brand"
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
-              nextSlide();
+              handleNext();
             }}
-            className="absolute right-2 sm:right-4 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
+            className="sw-stage-nav-btn sw-stage-next"
           >
             <ChevronRight size={20} />
           </button>
 
-          {/* Track container centered around active card */}
-          <div
-            className="flex items-center will-change-transform"
-            style={{
-              gap: `${cardGap}px`,
-              transform: `translateX(calc(50% - ${
-                currentIndex * cardStep + cardWidth / 2
-              }px + ${dragDelta}px))`,
-              transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
+          {/* 3D Cards Perspective Stage */}
+          <div className="sw-cards-stage">
             {PROJECTS.map((project, idx) => {
-              const isActive = idx === currentIndex;
-              const isLeft = idx < currentIndex;
-              const isRight = idx > currentIndex;
-
-              // Perspective rotation for a subtle curved stage effect
-              let cardTransform = '';
-              if (isActive) {
-                cardTransform = 'scale(1.08) translateY(-10px)';
-              } else if (isLeft) {
-                cardTransform = isMobile
-                  ? 'scale(0.92)'
-                  : 'perspective(1000px) rotateY(12deg) scale(0.94)';
-              } else if (isRight) {
-                cardTransform = isMobile
-                  ? 'scale(0.92)'
-                  : 'perspective(1000px) rotateY(-12deg) scale(0.94)';
+              // Calculate position offset relative to currentIndex (-3, -2, -1, 0, 1, 2, 3)
+              let offset = (idx - currentIndex + total) % total;
+              if (offset > total / 2) {
+                offset -= total;
               }
+
+              const isActive = offset === 0;
+
+              // 3D Perspective Parameters (Exact Army Section Style)
+              let translateX = 0;
+              let translateY = 0;
+              let translateZ = 0;
+              let rotateY = 0;
+              let scale = 1;
+              let opacity = 1;
+              let zIndex = 100;
+
+              if (isMobile) {
+                if (offset === 0) {
+                  translateX = 0;
+                  translateY = 0;
+                  translateZ = 0;
+                  rotateY = 0;
+                  scale = 1.0;
+                  opacity = 1;
+                  zIndex = 100;
+                } else if (offset === -1) {
+                  translateX = -95;
+                  translateY = 0;
+                  translateZ = -45;
+                  rotateY = 12;
+                  scale = 0.86;
+                  opacity = 0.45;
+                  zIndex = 90;
+                } else if (offset === 1) {
+                  translateX = 95;
+                  translateY = 0;
+                  translateZ = -45;
+                  rotateY = -12;
+                  scale = 0.86;
+                  opacity = 0.45;
+                  zIndex = 90;
+                } else {
+                  translateX = offset > 0 ? 170 : -170;
+                  translateY = 0;
+                  translateZ = -100;
+                  rotateY = offset > 0 ? -20 : 20;
+                  scale = 0.72;
+                  opacity = 0;
+                  zIndex = 50;
+                }
+              } else {
+                // Desktop 7-card 3D perspective coverflow
+                if (offset === 0) {
+                  translateX = 0;
+                  translateY = -10;
+                  translateZ = 0;
+                  rotateY = 0;
+                  scale = 1.08;
+                  opacity = 1;
+                  zIndex = 100;
+                } else if (offset === -1) {
+                  translateX = -215;
+                  translateY = 0;
+                  translateZ = -60;
+                  rotateY = 16;
+                  scale = 0.94;
+                  opacity = 0.95;
+                  zIndex = 90;
+                } else if (offset === 1) {
+                  translateX = 215;
+                  translateY = 0;
+                  translateZ = -60;
+                  rotateY = -16;
+                  scale = 0.94;
+                  opacity = 0.95;
+                  zIndex = 90;
+                } else if (offset === -2) {
+                  translateX = -395;
+                  translateY = 0;
+                  translateZ = -130;
+                  rotateY = 28;
+                  scale = 0.86;
+                  opacity = 0.85;
+                  zIndex = 80;
+                } else if (offset === 2) {
+                  translateX = 395;
+                  translateY = 0;
+                  translateZ = -130;
+                  rotateY = -28;
+                  scale = 0.86;
+                  opacity = 0.85;
+                  zIndex = 80;
+                } else if (offset === -3) {
+                  translateX = -550;
+                  translateY = 0;
+                  translateZ = -200;
+                  rotateY = 36;
+                  scale = 0.78;
+                  opacity = 0.65;
+                  zIndex = 70;
+                } else if (offset === 3) {
+                  translateX = 550;
+                  translateY = 0;
+                  translateZ = -200;
+                  rotateY = -36;
+                  scale = 0.78;
+                  opacity = 0.65;
+                  zIndex = 70;
+                }
+              }
+
+              // Real-time drag displacement
+              const appliedTranslateX = translateX + (isDragging ? dragDelta * 0.65 : 0);
 
               return (
                 <div
                   key={project.id}
                   onClick={() => {
-                    if (!isActive && Math.abs(dragDelta) < 10) {
-                      setCurrentIndex(idx);
+                    if (Math.abs(dragDelta) < 10) {
+                      if (!isActive) {
+                        setCurrentIndex(idx);
+                        resetAutoplay();
+                      } else {
+                        // Clicking active card directly opens case study
+                        window.location.href = project.link;
+                      }
                     }
                   }}
-                  className="flex-shrink-0 transition-all duration-500 ease-out"
+                  className={`sw-card-shell ${isActive ? 'is-active-shell' : ''}`}
                   style={{
-                    width: `${cardWidth}px`,
-                    height: isMobile ? '370px' : '385px',
-                    transform: cardTransform,
-                    zIndex: isActive ? 30 : 10,
-                    cursor: isActive ? 'default' : 'pointer',
+                    transform: `translate3d(${appliedTranslateX}px, ${translateY}px, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                    opacity,
+                    zIndex,
+                    pointerEvents: isMobile && Math.abs(offset) > 1 ? 'none' : 'auto',
+                    transition: isDragging
+                      ? 'none'
+                      : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease',
                   }}
                 >
-                  <div
-                    className={`w-full h-full rounded-[20px] overflow-hidden flex flex-col transition-all duration-400 ${
-                      isActive
-                        ? 'bg-[#15171a] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.45),0_10px_20px_-5px_rgba(0,0,0,0.2)] ring-1 ring-white/10'
-                        : 'bg-[#f4f5f7] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-black/20'
-                    }`}
-                  >
-                    {/* Top Image Container */}
-                    <div className="relative w-full h-[52%] overflow-hidden bg-gray-200">
+                  <div className={`sw-card-box ${isActive ? 'active-card-box' : 'inactive-card-box'}`}>
+                    {/* Top Photo Container */}
+                    <div className="sw-card-img-wrap">
                       <Image
                         src={project.image}
-                        alt=""
-                        aria-hidden="true"
+                        alt={project.title}
                         fill
-                        sizes="(max-width: 768px) 260px, 220px"
+                        sizes="(max-width: 768px) 260px, 240px"
                         priority={isActive}
-                        className="object-cover w-full h-full transition-transform duration-700 hover:scale-105"
+                        style={{
+                          objectFit: 'cover',
+                          transform: isActive ? 'scale(1.04)' : 'scale(1.0)',
+                          transition: 'transform 0.8s ease',
+                        }}
                       />
                     </div>
 
                     {/* Bottom Details Container */}
-                    <div className="relative w-full h-[48%] p-4 sm:p-5 flex flex-col justify-between">
-                      <div>
-                        <h3
-                          className={`font-display text-[15px] sm:text-[16px] font-bold leading-tight mb-2 whitespace-pre-line ${
-                            isActive ? 'text-white' : 'text-[#0f1115]'
-                          }`}
-                        >
+                    <div className="sw-card-details">
+                      <div className="sw-card-text-col">
+                        <h3 className={`sw-card-title ${isActive ? 'text-white' : 'text-dark'}`}>
                           {project.title}
                         </h3>
 
-                        <div className="flex flex-col gap-0.5">
+                        <div className="sw-card-tags">
                           {project.tags.map((tag, tagIdx) => (
                             <span
                               key={tagIdx}
-                              className={`text-[11px] leading-tight ${
-                                isActive ? 'text-gray-400' : 'text-gray-500'
-                              }`}
+                              className={`sw-tag-line ${isActive ? 'tag-light' : 'tag-dark'}`}
                             >
                               {tag}
                             </span>
@@ -357,21 +473,18 @@ export default function SelectedWork() {
                         </div>
                       </div>
 
-                      {/* Bottom-right diagonal arrow button */}
-                      <div className="flex justify-end pt-1">
-                        {isActive ? (
-                          <Link
-                            href={project.link}
-                            aria-label={`View ${project.title} case study`}
-                            className="w-8 h-8 rounded-full bg-[#202328] border border-white/20 text-white flex items-center justify-center hover:bg-[#DE322D] hover:border-[#DE322D] transition-colors"
-                          >
-                            <ArrowUpRight size={15} />
-                          </Link>
-                        ) : (
-                          <div className="w-7 h-7 rounded-full bg-white border border-black/10 text-gray-600 flex items-center justify-center shadow-xs">
-                            <ArrowUpRight size={13} />
-                          </div>
-                        )}
+                      {/* Bottom-right diagonal arrow redirecting directly to case study */}
+                      <div className="sw-card-action">
+                        <Link
+                          href={project.link}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          aria-label={`View ${project.title} case study`}
+                          className={`sw-action-btn ${isActive ? 'active-btn' : 'inactive-btn'}`}
+                        >
+                          <ArrowUpRight size={isActive ? 16 : 14} />
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -382,17 +495,17 @@ export default function SelectedWork() {
         </div>
 
         {/* ================================================================= */}
-        {/* 3. MOBILE CONTROLS                                                */}
+        {/* 3. MOBILE CONTROLS (Matching Reference Image Right Side)          */}
         {/* ================================================================= */}
-        <div className="flex lg:hidden flex-col items-center gap-4 mt-6">
+        <div className="sw-mobile-controls">
           {/* Slide counter & red indicator line */}
-          <div className="flex items-center gap-3">
-            <span className="text-[12px] font-mono text-gray-500 font-semibold">
+          <div className="sw-mobile-counter-row">
+            <span className="sw-counter-text">
               {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
             </span>
-            <div className="w-24 h-[3px] bg-gray-200 rounded-full overflow-hidden relative">
+            <div className="sw-counter-bar-bg">
               <div
-                className="h-full bg-[#DE322D] rounded-full transition-all duration-300"
+                className="sw-counter-bar-fill"
                 style={{
                   width: `${100 / total}%`,
                   transform: `translateX(${currentIndex * 100}%)`,
@@ -402,18 +515,18 @@ export default function SelectedWork() {
           </div>
 
           {/* Dropdown Selector */}
-          <div className="relative w-full max-w-[320px]">
+          <div className="sw-mobile-dropdown-wrap">
             <button
               type="button"
               onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-              className="w-full bg-white border border-gray-200 rounded-full py-3 px-5 flex items-center justify-between text-[13px] font-medium text-gray-800 shadow-xs"
+              className="sw-dropdown-btn"
             >
               <span>{selectedCategory}</span>
-              <ChevronDown size={16} className="text-gray-400" />
+              <ChevronDown size={16} color="#888" />
             </button>
 
             {showCategoryDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-2xl shadow-xl overflow-hidden z-50 py-1">
+              <div className="sw-dropdown-menu">
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat}
@@ -422,11 +535,7 @@ export default function SelectedWork() {
                       setSelectedCategory(cat);
                       setShowCategoryDropdown(false);
                     }}
-                    className={`w-full text-left px-5 py-2.5 text-[13px] transition-colors ${
-                      selectedCategory === cat
-                        ? 'bg-gray-100 text-black font-semibold'
-                        : 'text-gray-600 hover:bg-gray-50'
-                    }`}
+                    className={`sw-dropdown-item ${selectedCategory === cat ? 'is-selected' : ''}`}
                   >
                     {cat}
                   </button>
@@ -436,21 +545,18 @@ export default function SelectedWork() {
           </div>
 
           {/* Full-width Black Pill Button */}
-          <Link
-            href="/work"
-            className="w-full max-w-[320px] bg-[#0f1115] text-white rounded-full py-3.5 px-6 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-[#222222] transition-colors shadow-sm"
-          >
+          <Link href="/work" className="sw-mobile-all-btn">
             <span>View All Case Studies</span>
             <ArrowUpRight size={16} />
           </Link>
         </div>
 
         {/* ================================================================= */}
-        {/* 4. DESKTOP CONTROLS ROW                                           */}
+        {/* 4. DESKTOP CONTROLS ROW (Matching Reference Image Bottom)         */}
         {/* ================================================================= */}
-        <div className="hidden lg:flex items-center justify-between mt-12 pt-6">
+        <div className="sw-desktop-controls">
           {/* Category filter pills */}
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="sw-pills-row">
             {CATEGORIES.map((cat) => {
               const isSelected = selectedCategory === cat;
               return (
@@ -458,11 +564,7 @@ export default function SelectedWork() {
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`text-[13px] font-medium transition-all ${
-                    isSelected
-                      ? 'bg-[#0f1115] text-white px-5 py-2.5 rounded-full shadow-sm'
-                      : 'text-gray-600 hover:text-black px-3.5 py-2 rounded-full hover:bg-gray-100/80'
-                  }`}
+                  className={`sw-pill-btn ${isSelected ? 'active-pill' : ''}`}
                 >
                   {cat}
                 </button>
@@ -471,21 +573,628 @@ export default function SelectedWork() {
           </div>
 
           {/* Divider line & View All Case Studies link */}
-          <div className="flex items-center gap-6">
-            <div className="w-16 xl:w-28 h-[1px] bg-gray-300" />
-            <Link
-              href="/work"
-              className="text-[14px] font-semibold text-[#0f1115] hover:text-[#DE322D] flex items-center gap-1.5 transition-colors whitespace-nowrap group"
-            >
+          <div className="sw-desktop-all-wrap">
+            <div className="sw-horizontal-divider" />
+            <Link href="/work" className="sw-all-link">
               <span>View All Case Studies</span>
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
+              <ArrowUpRight size={16} />
             </Link>
           </div>
         </div>
       </div>
+
+      {/* ================================================================= */}
+      {/* 5. 100% PURE BULLETPROOF VANILLA CSS                              */}
+      {/* ================================================================= */}
+      <style jsx>{`
+        /* Overall Section Container */
+        .selected-work-section {
+          background-color: #fbfbfb;
+          color: #111111;
+          padding: clamp(3.5rem, 6vw, 6rem) 0 clamp(4rem, 7vw, 6.5rem);
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sw-container {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 1.5rem;
+          box-sizing: border-box;
+          width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+          .sw-container {
+            padding: 0 3rem;
+          }
+        }
+
+        /* 1. Header Styles */
+        .sw-header {
+          margin-bottom: clamp(2rem, 3.5vw, 3rem);
+        }
+
+        .sw-eyebrow-row {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          margin-bottom: 1rem;
+        }
+
+        .sw-red-bar {
+          display: inline-block;
+          width: 22px;
+          height: 2px;
+          background-color: #DE322D;
+        }
+
+        .sw-eyebrow-text {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          color: #DE322D;
+          text-transform: uppercase;
+        }
+
+        .sw-header-main {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+        }
+
+        @media (min-width: 900px) {
+          .sw-header-main {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+          }
+        }
+
+        .sw-title-col {
+          flex: 1;
+        }
+
+        .sw-title {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+          line-height: 1.05;
+          letter-spacing: -0.035em;
+          color: #111111;
+          margin: 0;
+          font-weight: 400;
+        }
+
+        .sw-title br + span,
+        .sw-title :global(strong) {
+          font-weight: 700;
+        }
+
+        .sw-dot-red {
+          color: #DE322D;
+        }
+
+        .sw-meta-col {
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+        }
+
+        @media (min-width: 900px) {
+          .sw-meta-col {
+            flex-direction: row;
+            align-items: flex-end;
+            gap: clamp(1.5rem, 3vw, 2.75rem);
+          }
+        }
+
+        .sw-description {
+          font-size: 0.92rem;
+          color: #555555;
+          line-height: 1.6;
+          max-width: 340px;
+          margin: 0;
+        }
+
+        .sw-meta-right-group {
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+        }
+
+        .sw-watermark-wrap {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-shrink: 0;
+        }
+
+        .sw-watermark-num {
+          font-size: clamp(2.8rem, 4vw, 3.5rem);
+          font-weight: 400;
+          color: #bcc4cf;
+          line-height: 1;
+          letter-spacing: -0.04em;
+        }
+
+        .sw-watermark-labels {
+          display: flex;
+          flex-direction: column;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.65rem;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          color: #88909c;
+          line-height: 1.35;
+          text-transform: uppercase;
+        }
+
+        /* Header Navigation Buttons (< >) */
+        .sw-header-nav-btns {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .sw-hdr-nav-btn {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #333333;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .sw-hdr-nav-btn:hover {
+          background: #111216;
+          border-color: #111216;
+          color: #ffffff;
+          transform: scale(1.06);
+        }
+
+        /* 2. 3D Carousel Stage (Army section style) */
+        .sw-carousel-stage {
+          position: relative;
+          width: 100%;
+          height: clamp(420px, 48vw, 490px);
+          perspective: 1200px;
+          transform-style: preserve-3d;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: grab;
+          user-select: none;
+          margin: 1.5rem 0 2.5rem;
+        }
+
+        .sw-carousel-stage:active {
+          cursor: grabbing;
+        }
+
+        .sw-cards-stage {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform-style: preserve-3d;
+        }
+
+        /* Floating Stage Nav Buttons */
+        .sw-stage-nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 120;
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.92);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #222222;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          backdrop-filter: blur(4px);
+        }
+
+        .sw-stage-nav-btn:hover {
+          background: #ffffff;
+          color: #DE322D;
+          transform: translateY(-50%) scale(1.08);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .sw-stage-prev {
+          left: 4px;
+        }
+
+        .sw-stage-next {
+          right: 4px;
+        }
+
+        @media (min-width: 1024px) {
+          .sw-stage-prev {
+            left: 12px;
+          }
+          .sw-stage-next {
+            right: 12px;
+          }
+        }
+
+        /* Card Shell & 3D Positioning */
+        .sw-card-shell {
+          position: absolute;
+          width: clamp(210px, 24vw, 240px);
+          height: clamp(360px, 40vw, 410px);
+          cursor: pointer;
+          transform-style: preserve-3d;
+          will-change: transform, opacity;
+        }
+
+        .is-active-shell {
+          width: clamp(225px, 26vw, 255px);
+          height: clamp(380px, 42vw, 430px);
+        }
+
+        .sw-card-box {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 18px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          box-sizing: border-box;
+          transition: all 0.5s ease;
+        }
+
+        /* Active Card (Dark theme with elevated shadow) */
+        .active-card-box {
+          background-color: #111216;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+
+        /* Inactive Cards (Light theme matching reference image) */
+        .inactive-card-box {
+          background-color: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.08);
+        }
+
+        .inactive-card-box:hover {
+          border-color: rgba(0, 0, 0, 0.16);
+          box-shadow: 0 14px 36px -8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Top Photo Wrap */
+        .sw-card-img-wrap {
+          position: relative;
+          width: 100%;
+          height: 58%;
+          overflow: hidden;
+          background-color: #0d0e12;
+        }
+
+        /* Bottom Details */
+        .sw-card-details {
+          position: relative;
+          height: 42%;
+          padding: 1.1rem 1.15rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          box-sizing: border-box;
+        }
+
+        .sw-card-text-col {
+          flex: 1;
+          min-width: 0;
+          padding-right: 0.5rem;
+        }
+
+        .sw-card-title {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(0.95rem, 1.15vw, 1.12rem);
+          font-weight: 700;
+          line-height: 1.25;
+          letter-spacing: -0.02em;
+          margin: 0 0 0.6rem 0;
+          white-space: pre-line;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .text-white {
+          color: #ffffff;
+        }
+
+        .text-dark {
+          color: #151618;
+        }
+
+        .sw-card-tags {
+          display: flex;
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+
+        .sw-tag-line {
+          font-size: 0.68rem;
+          line-height: 1.35;
+          letter-spacing: -0.01em;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .tag-light {
+          color: rgba(255, 255, 255, 0.65);
+        }
+
+        .tag-dark {
+          color: #777e8a;
+        }
+
+        /* Bottom-right diagonal arrow redirecting directly to case study */
+        .sw-card-action {
+          flex-shrink: 0;
+        }
+
+        .sw-action-btn {
+          width: 34px;
+          height: 34px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s ease;
+          text-decoration: none;
+        }
+
+        .active-btn {
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          color: #ffffff;
+        }
+
+        .active-btn:hover {
+          background: #DE322D;
+          border-color: #DE322D;
+          color: #ffffff;
+          transform: scale(1.1);
+        }
+
+        .inactive-btn {
+          background: #f3f4f6;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: #151618;
+        }
+
+        .inactive-btn:hover {
+          background: #DE322D;
+          border-color: #DE322D;
+          color: #ffffff;
+          transform: scale(1.1);
+        }
+
+        /* 3. Mobile Controls */
+        .sw-mobile-controls {
+          display: flex;
+          flex-direction: column;
+          gap: 1.25rem;
+          margin-top: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+          .sw-mobile-controls {
+            display: none;
+          }
+        }
+
+        .sw-mobile-counter-row {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .sw-counter-text {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #555555;
+          letter-spacing: 0.05em;
+        }
+
+        .sw-counter-bar-bg {
+          flex: 1;
+          height: 2px;
+          background: rgba(0, 0, 0, 0.08);
+          border-radius: 2px;
+          overflow: hidden;
+          position: relative;
+        }
+
+        .sw-counter-bar-fill {
+          height: 100%;
+          background: #DE322D;
+          transition: transform 0.4s ease;
+        }
+
+        .sw-mobile-dropdown-wrap {
+          position: relative;
+          width: 100%;
+        }
+
+        .sw-dropdown-btn {
+          width: 100%;
+          padding: 0.85rem 1.2rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 9999px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 0.88rem;
+          font-weight: 500;
+          color: #222222;
+          cursor: pointer;
+        }
+
+        .sw-dropdown-menu {
+          position: absolute;
+          bottom: calc(100% + 6px);
+          left: 0;
+          right: 0;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          border-radius: 16px;
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+          padding: 0.5rem;
+          z-index: 50;
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+
+        .sw-dropdown-item {
+          padding: 0.65rem 1rem;
+          text-align: left;
+          background: transparent;
+          border: none;
+          border-radius: 8px;
+          font-size: 0.85rem;
+          color: #444444;
+          cursor: pointer;
+          transition: background 0.15s ease;
+        }
+
+        .sw-dropdown-item:hover,
+        .sw-dropdown-item.is-selected {
+          background: #f4f5f7;
+          color: #111111;
+          font-weight: 600;
+        }
+
+        .sw-mobile-all-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          width: 100%;
+          padding: 0.95rem;
+          background: #111216;
+          color: #ffffff;
+          border-radius: 9999px;
+          text-decoration: none;
+          font-size: 0.88rem;
+          font-weight: 600;
+          box-sizing: border-box;
+          transition: background 0.2s ease;
+        }
+
+        .sw-mobile-all-btn:hover {
+          background: #252830;
+        }
+
+        /* 4. Desktop Controls */
+        .sw-desktop-controls {
+          display: none;
+        }
+
+        @media (min-width: 768px) {
+          .sw-desktop-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+            margin-top: 1rem;
+          }
+        }
+
+        .sw-pills-row {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+
+        .sw-pill-btn {
+          padding: 0.45rem 1rem;
+          border-radius: 9999px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          cursor: pointer;
+          background: transparent;
+          color: #666666;
+          border: 1px solid transparent;
+          transition: all 0.2s ease;
+        }
+
+        .sw-pill-btn:hover {
+          color: #111111;
+          background: rgba(0, 0, 0, 0.04);
+        }
+
+        .active-pill {
+          background: #111216;
+          color: #ffffff;
+          border-color: #111216;
+        }
+
+        .active-pill:hover {
+          background: #222328;
+          color: #ffffff;
+        }
+
+        .sw-desktop-all-wrap {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 2rem;
+        }
+
+        .sw-horizontal-divider {
+          flex: 1;
+          height: 1px;
+          background: rgba(0, 0, 0, 0.08);
+        }
+
+        .sw-all-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.78rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: #111111;
+          text-decoration: none;
+          text-transform: uppercase;
+          transition: color 0.2s ease, transform 0.2s ease;
+          flex-shrink: 0;
+        }
+
+        .sw-all-link:hover {
+          color: #DE322D;
+          transform: translateX(3px);
+        }
+      `}</style>
     </section>
   );
 }

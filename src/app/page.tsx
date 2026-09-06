@@ -28,7 +28,7 @@ export default function HomePage() {
       {/* 05: Editorial Introduction / A Point of View */}
       <PointOfView />
 
-      {/* 06: Selected Work Sticky Scroll Showcase */}
+      {/* 06: Selected Work Showcase — The work is the proof. (3D Coverflow) */}
       <SelectedWork />
 
       {/* 07: Deep Black Services Section */}
