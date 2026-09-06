@@ -36,7 +36,7 @@ export default function Footer() {
     );
   }, [pathname]);
 
-  if (pathname === '/tourin') {
+  if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects') {
     return null;
   }
 

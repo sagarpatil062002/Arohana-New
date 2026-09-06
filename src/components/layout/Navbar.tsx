@@ -28,8 +28,8 @@ export default function Navbar() {
     { label: 'Studio', href: '/about' },
     { label: 'Work', href: '/work', badge: '6' },
     { label: 'Services', href: '/services' },
-    { label: 'Tourism', href: '/tourin' },
-    { label: 'Army Projects', href: '/#army-projects' },
+    { label: 'Tourin', href: '/tourin' },
+    { label: 'Army Projects', href: '/indian-army-projects' },
     { label: 'Contact', href: '/contact' },
   ];
 
@@ -192,8 +192,8 @@ export default function Navbar() {
               e.currentTarget.style.backgroundColor = isTourinDarkHero ? 'rgba(255, 255, 255, 0.15)' : '#0c1626';
             }}
           >
-            <span>Start a Conversation</span>
-            <span style={{ fontSize: '1rem', lineHeight: 1 }}>→</span>
+            <span>Let&apos;s Talk</span>
+            <ArrowUpRight size={14} />
           </Link>
 
           {/* Mobile hamburger button */}
