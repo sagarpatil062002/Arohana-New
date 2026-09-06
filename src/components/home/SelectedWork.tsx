@@ -10,7 +10,6 @@ interface ProjectItem {
   index: string;
   title: string;
   category: string;
-  desc: string;
   tags: string[];
   image: string;
   link: string;
@@ -31,7 +30,6 @@ const PROJECTS: ProjectItem[] = [
     index: '01',
     title: 'Vital Wellness',
     category: 'Wellness & Healthcare',
-    desc: 'Holistic health and wellness brand identity, packaging design and spatial experience.',
     tags: ['Brand Identity', 'Experience Design', 'Packaged Goods'],
     image: '/images/case-studies/selected-work/vital-wellness.jpg',
     link: '/work',
@@ -41,7 +39,6 @@ const PROJECTS: ProjectItem[] = [
     index: '02',
     title: 'Residency Club Kolhapur',
     category: 'Hospitality & F&B',
-    desc: 'Heritage hospitality branding, content production and spatial identity systems.',
     tags: ['Hospitality Branding', 'Content Production', 'Spatial Identity'],
     image: '/images/case-studies/selected-work/residency-club.jpg',
     link: '/work',
@@ -51,7 +48,6 @@ const PROJECTS: ProjectItem[] = [
     index: '03',
     title: 'Raysons Group',
     category: 'Construction & Infrastructure',
-    desc: 'Corporate rebranding, architectural film series and unified multi-vertical visual language.',
     tags: ['Corporate Branding', 'Brand Film Series', 'Spatial Experience'],
     image: '/images/case-studies/selected-work/raysons-group.jpg',
     link: '/work/raysons-group',
@@ -61,7 +57,6 @@ const PROJECTS: ProjectItem[] = [
     index: '04',
     title: 'Abhijeet Magdum\nGroup of Constructions',
     category: 'Construction & Infrastructure',
-    desc: 'End-to-end brand identity, high-altitude project documentary, and multi-channel media production.',
     tags: ['Brand Identity', 'Project Documentary', 'Media Production'],
     image: '/images/case-studies/selected-work/abhijeet-magdum.jpg',
     link: '/work',
@@ -69,9 +64,8 @@ const PROJECTS: ProjectItem[] = [
   {
     id: 'misu',
     index: '05',
-    title: 'Misu Restaurant',
+    title: 'Misu Pan-Asian',
     category: 'Hospitality & F&B',
-    desc: 'Contemporary Asian dining identity, signage systems, and digital customer acquisition.',
     tags: ['Brand Identity', 'Interior Signage', 'Digital Assets'],
     image: '/images/case-studies/selected-work/misu.jpg',
     link: '/work/misu',
@@ -81,7 +75,6 @@ const PROJECTS: ProjectItem[] = [
     index: '06',
     title: 'Khau Gully',
     category: 'Hospitality & F&B',
-    desc: 'Urban food court concept, dynamic culinary branding, and experiential street-food aesthetics.',
     tags: ['The Urban F&B', 'Experience Design', 'Social Media'],
     image: '/images/case-studies/selected-work/khau-gully.jpg',
     link: '/work',
@@ -91,7 +84,6 @@ const PROJECTS: ProjectItem[] = [
     index: '07',
     title: 'The Pretty Plants',
     category: 'Lifestyle & Retail',
-    desc: 'Botanical retail branding, flagship floral store experience, and digital campaigns.',
     tags: ['Retail Identity', 'Campaign Shoot', 'Store Branding'],
     image: '/images/case-studies/selected-work/pretty-plants.jpg',
     link: '/work',
@@ -99,24 +91,22 @@ const PROJECTS: ProjectItem[] = [
 ];
 
 export default function SelectedWork() {
-  // Start with index 3 (Abhijeet Magdum) to match reference image active state
+  // Center card initially on Abhijeet Magdum (index 3) to match reference image
   const [currentIndex, setCurrentIndex] = useState(3);
   const [selectedCategory, setSelectedCategory] = useState('All Projects');
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
-  // Drag / Touch state
+  // Drag / Swipe state
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
+  const [dragDelta, setDragDelta] = useState(0);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
   const total = PROJECTS.length;
 
-  // Screen size listener
+  // Screen size check
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -126,7 +116,7 @@ export default function SelectedWork() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Navigation handlers
+  // Slide navigation
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % total);
   }, [total]);
@@ -150,36 +140,33 @@ export default function SelectedWork() {
     };
   }, [isHovered, isDragging, nextSlide]);
 
-  // Drag / Swipe handlers for Desktop & Mobile
+  // Mouse & Touch drag handlers
   const handleDragStart = (clientX: number) => {
     setIsDragging(true);
     setDragStartX(clientX);
-    setDragOffset(0);
+    setDragDelta(0);
   };
 
   const handleDragMove = (clientX: number) => {
     if (!isDragging) return;
-    setDragOffset(clientX - dragStartX);
+    setDragDelta(clientX - dragStartX);
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
-    if (dragOffset < -40) {
+    if (dragDelta < -40) {
       nextSlide();
-    } else if (dragOffset > 40) {
+    } else if (dragDelta > 40) {
       prevSlide();
     }
     setIsDragging(false);
-    setDragOffset(0);
+    setDragDelta(0);
   };
 
-  // Helper for circular difference (-3 to +3)
-  const getOffset = (index: number) => {
-    let diff = (index - currentIndex) % total;
-    if (diff > total / 2) diff -= total;
-    if (diff < -total / 2) diff += total;
-    return diff;
-  };
+  // Card sizing constants
+  const cardWidth = isMobile ? 260 : 215;
+  const cardGap = isMobile ? 16 : 22;
+  const cardStep = cardWidth + cardGap;
 
   return (
     <section
@@ -191,15 +178,15 @@ export default function SelectedWork() {
         handleDragEnd();
       }}
     >
-      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
         {/* ================================================================= */}
-        {/* 1. SECTION HEADER (Exact layout from reference image)             */}
+        {/* 1. SECTION HEADER                                                 */}
         {/* ================================================================= */}
         <div className="mb-10 sm:mb-14">
-          {/* Small label with red dash */}
+          {/* Eyebrow with red bar */}
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <span className="w-4 h-[2px] bg-[#DE322D]" />
-            <span className="text-[11px] font-mono tracking-widest text-[#666666] uppercase font-semibold">
+            <span className="w-5 h-[2px] bg-[#DE322D]" />
+            <span className="text-[11px] font-mono tracking-widest text-[#555555] uppercase font-semibold">
               SELECTED WORK
             </span>
           </div>
@@ -218,7 +205,7 @@ export default function SelectedWork() {
               </h2>
             </div>
 
-            {/* Right side: Description & ©26 Badge */}
+            {/* Description & ©26 Badge */}
             <div className="flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-10">
               <p className="text-[14px] sm:text-[15px] text-[#555555] leading-relaxed max-w-[340px] m-0">
                 A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.
@@ -241,12 +228,10 @@ export default function SelectedWork() {
         </div>
 
         {/* ================================================================= */}
-        {/* 2. 3D PERSPECTIVE HORIZONTAL CAROUSEL                            */}
+        {/* 2. HORIZONTAL SCROLLING CAROUSEL WITH CENTERED TRACK             */}
         {/* ================================================================= */}
         <div
-          ref={containerRef}
-          className="relative w-full h-[420px] sm:h-[460px] lg:h-[480px] flex items-center justify-center cursor-grab active:cursor-grabbing"
-          style={{ perspective: '1200px' }}
+          className="relative w-full h-[430px] sm:h-[460px] lg:h-[480px] overflow-hidden flex items-center cursor-grab active:cursor-grabbing"
           onMouseDown={(e) => handleDragStart(e.clientX)}
           onMouseMove={(e) => handleDragMove(e.clientX)}
           onMouseUp={handleDragEnd}
@@ -254,7 +239,7 @@ export default function SelectedWork() {
           onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
           onTouchEnd={handleDragEnd}
         >
-          {/* Navigation Arrows (Left & Right) */}
+          {/* Circular Left Arrow Button */}
           <button
             type="button"
             aria-label="Previous Brand"
@@ -262,11 +247,12 @@ export default function SelectedWork() {
               e.stopPropagation();
               prevSlide();
             }}
-            className="absolute left-2 sm:left-4 z-50 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
+            className="absolute left-2 sm:left-4 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
           >
             <ChevronLeft size={20} />
           </button>
 
+          {/* Circular Right Arrow Button */}
           <button
             type="button"
             aria-label="Next Brand"
@@ -274,105 +260,80 @@ export default function SelectedWork() {
               e.stopPropagation();
               nextSlide();
             }}
-            className="absolute right-2 sm:right-4 z-50 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
+            className="absolute right-2 sm:right-4 z-40 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border border-black/10 shadow-md flex items-center justify-center text-gray-700 hover:text-black hover:bg-white hover:scale-105 active:scale-95 transition-all"
           >
             <ChevronRight size={20} />
           </button>
 
-          {/* Cards Track Container */}
+          {/* Track container centered around active card */}
           <div
-            className="relative w-full h-full flex items-center justify-center"
-            style={{ transformStyle: 'preserve-3d' }}
+            className="flex items-center will-change-transform"
+            style={{
+              gap: `${cardGap}px`,
+              transform: `translateX(calc(50% - ${
+                currentIndex * cardStep + cardWidth / 2
+              }px + ${dragDelta}px))`,
+              transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
           >
             {PROJECTS.map((project, idx) => {
-              const offset = getOffset(idx);
-              const absOffset = Math.abs(offset);
-              const isActive = offset === 0;
+              const isActive = idx === currentIndex;
+              const isLeft = idx < currentIndex;
+              const isRight = idx > currentIndex;
 
-              // Compute transform based on screen size
-              let transformStyle = '';
-              let opacity = 0;
-              let zIndex = 10;
-              let pointerEvents: 'auto' | 'none' = 'none';
-
-              if (isMobile) {
-                // Mobile layout: centered active card with peeking side cards
-                const cardSpacing = 240;
-                const tx = offset * cardSpacing + (isDragging ? dragOffset : 0);
-                const scale = isActive ? 1 : 0.88;
-
-                if (absOffset <= 1) {
-                  opacity = isActive ? 1 : 0.65;
-                  zIndex = 30 - absOffset * 10;
-                  pointerEvents = 'auto';
-                } else {
-                  opacity = 0;
-                }
-
-                transformStyle = `translateX(${tx}px) scale(${scale})`;
-              } else {
-                // Desktop 3D curved perspective layout
-                const cardSpacing = 180;
-                const tx = offset * cardSpacing + (isDragging ? dragOffset : 0);
-                const tz = -absOffset * 80;
-                const ry = -offset * 14;
-                const scale = isActive ? 1.08 : Math.max(0.76, 1 - absOffset * 0.08);
-
-                if (absOffset <= 3) {
-                  if (isActive) opacity = 1;
-                  else if (absOffset === 1) opacity = 0.96;
-                  else if (absOffset === 2) opacity = 0.85;
-                  else opacity = 0.45;
-
-                  zIndex = 40 - absOffset * 8;
-                  pointerEvents = 'auto';
-                } else {
-                  opacity = 0;
-                }
-
-                transformStyle = `translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) scale(${scale})`;
+              // Perspective rotation for a subtle curved stage effect
+              let cardTransform = '';
+              if (isActive) {
+                cardTransform = 'scale(1.08) translateY(-10px)';
+              } else if (isLeft) {
+                cardTransform = isMobile
+                  ? 'scale(0.92)'
+                  : 'perspective(1000px) rotateY(12deg) scale(0.94)';
+              } else if (isRight) {
+                cardTransform = isMobile
+                  ? 'scale(0.92)'
+                  : 'perspective(1000px) rotateY(-12deg) scale(0.94)';
               }
 
               return (
                 <div
                   key={project.id}
                   onClick={() => {
-                    if (!isActive && Math.abs(dragOffset) < 10) {
+                    if (!isActive && Math.abs(dragDelta) < 10) {
                       setCurrentIndex(idx);
                     }
                   }}
-                  className="absolute transition-transform duration-500 ease-out will-change-transform"
+                  className="flex-shrink-0 transition-all duration-500 ease-out"
                   style={{
-                    width: isMobile ? '260px' : '230px',
-                    height: isMobile ? '370px' : '380px',
-                    transform: transformStyle,
-                    opacity,
-                    zIndex,
-                    pointerEvents,
+                    width: `${cardWidth}px`,
+                    height: isMobile ? '370px' : '385px',
+                    transform: cardTransform,
+                    zIndex: isActive ? 30 : 10,
                     cursor: isActive ? 'default' : 'pointer',
                   }}
                 >
                   <div
                     className={`w-full h-full rounded-[20px] overflow-hidden flex flex-col transition-all duration-400 ${
                       isActive
-                        ? 'bg-[#15171a] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4),0_10px_25px_-5px_rgba(0,0,0,0.2)] ring-1 ring-white/10'
-                        : 'bg-[#f4f5f7] border border-black/[0.07] shadow-[0_12px_30px_rgba(0,0,0,0.06)]'
+                        ? 'bg-[#15171a] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.45),0_10px_20px_-5px_rgba(0,0,0,0.2)] ring-1 ring-white/10'
+                        : 'bg-[#f4f5f7] border border-black/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-black/20'
                     }`}
                   >
-                    {/* Top Media / Artwork Container */}
-                    <div className="relative w-full h-[54%] overflow-hidden bg-gray-200">
+                    {/* Top Image Container */}
+                    <div className="relative w-full h-[52%] overflow-hidden bg-gray-200">
                       <Image
                         src={project.image}
-                        alt={project.title}
+                        alt=""
+                        aria-hidden="true"
                         fill
-                        sizes="(max-width: 768px) 260px, 240px"
+                        sizes="(max-width: 768px) 260px, 220px"
                         priority={isActive}
                         className="object-cover w-full h-full transition-transform duration-700 hover:scale-105"
                       />
                     </div>
 
                     {/* Bottom Details Container */}
-                    <div className="relative w-full h-[46%] p-4 sm:p-5 flex flex-col justify-between">
+                    <div className="relative w-full h-[48%] p-4 sm:p-5 flex flex-col justify-between">
                       <div>
                         <h3
                           className={`font-display text-[15px] sm:text-[16px] font-bold leading-tight mb-2 whitespace-pre-line ${
@@ -386,7 +347,7 @@ export default function SelectedWork() {
                           {project.tags.map((tag, tagIdx) => (
                             <span
                               key={tagIdx}
-                              className={`text-[10px] sm:text-[11px] font-normal leading-tight ${
+                              className={`text-[11px] leading-tight ${
                                 isActive ? 'text-gray-400' : 'text-gray-500'
                               }`}
                             >
@@ -397,7 +358,7 @@ export default function SelectedWork() {
                       </div>
 
                       {/* Bottom-right diagonal arrow button */}
-                      <div className="flex justify-end pt-2">
+                      <div className="flex justify-end pt-1">
                         {isActive ? (
                           <Link
                             href={project.link}
@@ -421,10 +382,10 @@ export default function SelectedWork() {
         </div>
 
         {/* ================================================================= */}
-        {/* 3. MOBILE CONTROLS (Pagination bar, Dropdown, Full-width CTA)     */}
+        {/* 3. MOBILE CONTROLS                                                */}
         {/* ================================================================= */}
         <div className="flex lg:hidden flex-col items-center gap-4 mt-6">
-          {/* Progress Indicator: '04 / 07' + Slider track */}
+          {/* Slide counter & red indicator line */}
           <div className="flex items-center gap-3">
             <span className="text-[12px] font-mono text-gray-500 font-semibold">
               {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
@@ -440,7 +401,7 @@ export default function SelectedWork() {
             </div>
           </div>
 
-          {/* Styled Category Dropdown */}
+          {/* Dropdown Selector */}
           <div className="relative w-full max-w-[320px]">
             <button
               type="button"
@@ -477,7 +438,7 @@ export default function SelectedWork() {
           {/* Full-width Black Pill Button */}
           <Link
             href="/work"
-            className="w-full max-w-[320px] bg-[#0f1115] text-white rounded-full py-3.5 px-6 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-[#222222] active:scale-98 transition-all shadow-sm"
+            className="w-full max-w-[320px] bg-[#0f1115] text-white rounded-full py-3.5 px-6 text-[14px] font-semibold flex items-center justify-center gap-2 hover:bg-[#222222] transition-colors shadow-sm"
           >
             <span>View All Case Studies</span>
             <ArrowUpRight size={16} />
@@ -485,10 +446,10 @@ export default function SelectedWork() {
         </div>
 
         {/* ================================================================= */}
-        {/* 4. DESKTOP CONTROLS ROW (Category pills + divider + link)        */}
+        {/* 4. DESKTOP CONTROLS ROW                                           */}
         {/* ================================================================= */}
         <div className="hidden lg:flex items-center justify-between mt-12 pt-6">
-          {/* Left: Category filter buttons */}
+          {/* Category filter pills */}
           <div className="flex items-center gap-2 flex-wrap">
             {CATEGORIES.map((cat) => {
               const isSelected = selectedCategory === cat;
