@@ -70,8 +70,12 @@ const ARMY_CAROUSEL_ITEMS: ArmyCard[] = [
 export default function IndianArmySpotlight() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const mouseStartX = useRef<number | null>(null);
+  const isMouseDown = useRef(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const total = ARMY_CAROUSEL_ITEMS.length;
 
@@ -90,14 +94,33 @@ export default function IndianArmySpotlight() {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Autoplay every 1.5 seconds
+  // Autoplay every 1.5 seconds, resetting on interaction
+  const resetAutoplay = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (!isHovered && !isDragging) {
+      timerRef.current = setInterval(() => {
+        nextSlide();
+      }, 1500);
+    }
+  }, [isHovered, isDragging, nextSlide]);
+
   useEffect(() => {
-    if (isHovered) return;
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 1500);
-    return () => clearInterval(timer);
-  }, [isHovered, nextSlide]);
+    resetAutoplay();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetAutoplay]);
+
+  // Manual Arrow / Button Navigation
+  const handlePrev = () => {
+    prevSlide();
+    resetAutoplay();
+  };
+
+  const handleNext = () => {
+    nextSlide();
+    resetAutoplay();
+  };
 
   // Touch Swipe handlers
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -108,11 +131,48 @@ export default function IndianArmySpotlight() {
     if (touchStartX.current === null) return;
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX.current - touchEndX;
-    if (Math.abs(diff) > 40) {
+    if (Math.abs(diff) > 35) {
       if (diff > 0) nextSlide();
       else prevSlide();
+      resetAutoplay();
     }
     touchStartX.current = null;
+  };
+
+  // Desktop Mouse Drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isMouseDown.current = true;
+    mouseStartX.current = e.clientX;
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = () => {
+    // optional move tracking
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (!isMouseDown.current || mouseStartX.current === null) {
+      isMouseDown.current = false;
+      setIsDragging(false);
+      return;
+    }
+    const diff = mouseStartX.current - e.clientX;
+    if (Math.abs(diff) > 35) {
+      if (diff > 0) nextSlide();
+      else prevSlide();
+      resetAutoplay();
+    }
+    isMouseDown.current = false;
+    mouseStartX.current = null;
+    setIsDragging(false);
+  };
+
+  const handleMouseLeaveWrapper = () => {
+    if (isMouseDown.current) {
+      isMouseDown.current = false;
+      setIsDragging(false);
+      mouseStartX.current = null;
+    }
   };
 
   return (
@@ -264,9 +324,15 @@ export default function IndianArmySpotlight() {
             width: '100%',
             userSelect: 'none',
             marginBottom: 'clamp(2rem, 4vw, 3rem)',
+            position: 'relative',
+            cursor: isDragging ? 'grabbing' : 'grab',
           }}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeaveWrapper}
         >
           <div
             style={{
@@ -282,6 +348,96 @@ export default function IndianArmySpotlight() {
               transformStyle: 'preserve-3d',
             }}
           >
+            {/* Flanking Left Arrow Button (as requested in PDF: "ADD THE ARROWS LIKE THIS") */}
+            <button
+              type="button"
+              aria-label="Previous Indian Army Project"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
+              style={{
+                position: 'absolute',
+                left: isMobile ? '-6px' : '-16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 120,
+                width: isMobile ? '42px' : '52px',
+                height: isMobile ? '42px' : '52px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(18, 18, 22, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                cursor: 'pointer',
+                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.65)',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#DE322D';
+                e.currentTarget.style.borderColor = '#DE322D';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                e.currentTarget.style.boxShadow = '0 0 25px rgba(222, 50, 45, 0.65)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(18, 18, 22, 0.88)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.22)';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.65)';
+              }}
+            >
+              <ArrowLeft size={isMobile ? 18 : 22} />
+            </button>
+
+            {/* Flanking Right Arrow Button (as requested in PDF: "ADD THE ARROWS LIKE THIS") */}
+            <button
+              type="button"
+              aria-label="Next Indian Army Project"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
+              style={{
+                position: 'absolute',
+                right: isMobile ? '-6px' : '-16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 120,
+                width: isMobile ? '42px' : '52px',
+                height: isMobile ? '42px' : '52px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(18, 18, 22, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#ffffff',
+                cursor: 'pointer',
+                boxShadow: '0 8px 30px rgba(0, 0, 0, 0.65)',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#DE322D';
+                e.currentTarget.style.borderColor = '#DE322D';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                e.currentTarget.style.boxShadow = '0 0 25px rgba(222, 50, 45, 0.65)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(18, 18, 22, 0.88)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.22)';
+                e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.65)';
+              }}
+            >
+              <ArrowRight size={isMobile ? 18 : 22} />
+            </button>
+
             <div
               style={{
                 position: 'relative',
@@ -605,7 +761,7 @@ export default function IndianArmySpotlight() {
                 <button
                   type="button"
                   aria-label="Previous Project"
-                  onClick={prevSlide}
+                  onClick={handlePrev}
                   style={{
                     width: '36px',
                     height: '36px',
@@ -632,7 +788,7 @@ export default function IndianArmySpotlight() {
                 <button
                   type="button"
                   aria-label="Next Project"
-                  onClick={nextSlide}
+                  onClick={handleNext}
                   style={{
                     width: '36px',
                     height: '36px',

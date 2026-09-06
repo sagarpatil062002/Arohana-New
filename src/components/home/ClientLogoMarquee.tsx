@@ -78,25 +78,34 @@ const PRIMARY_CLIENTS: ClientLogoItem[] = [
     link: '/work/picturetime',
   },
   {
-    id: 'badge-plus-8',
-    name: '+8',
-    sub: 'Collaborations',
-    badgeBg: '#111111',
+    id: 'khau-gully',
+    name: 'Khau Gully',
+    sub: 'Street Gourmet & Casual Dining · Pune',
+    badgeBg: '#E65100',
     badgeColor: '#ffffff',
-    textColor: '#111111',
-    monogram: '+8',
-    isSpecial: 'badge',
+    textColor: '#E65100',
+    monogram: 'KG',
+    link: '/work',
   },
   {
-    id: 'more-partners',
-    name: 'More Partners',
-    sub: 'View all engagements',
-    badgeBg: '#111111',
+    id: 'tranquil-studio',
+    name: 'Tranquil Studio',
+    sub: 'Architecture & Master Planning · Goa',
+    badgeBg: '#2E4053',
     badgeColor: '#ffffff',
-    textColor: '#111111',
-    monogram: '↗',
+    textColor: '#2E4053',
+    monogram: 'TS',
     link: '/work',
-    isSpecial: 'more',
+  },
+  {
+    id: 'glamp-wilderness',
+    name: 'Glamp Wilderness',
+    sub: 'High-Altitude Eco-Resorts · Spiti',
+    badgeBg: '#1B4F72',
+    badgeColor: '#ffffff',
+    textColor: '#1B4F72',
+    monogram: 'GW',
+    link: '/work',
   },
   // Additional studio partners from Hero Image reference
   {
@@ -249,106 +258,9 @@ export default function ClientLogoMarquee() {
           willChange: 'transform',
         }}
       >
-        {marqueeItems.map((client, idx) => {
-          // Special element: Distinctive Circular "+8" Badge
-          if (client.isSpecial === 'badge') {
-            return (
-              <div
-                key={`badge-${idx}`}
-                style={{
-                  width: '92px',
-                  height: '92px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  border: '2px dashed rgba(0, 0, 0, 0.18)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  margin: '0 0.5rem',
-                  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.06)',
-                  transition: 'all 0.25s ease',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.08)';
-                  e.currentTarget.style.borderColor = '#DE322D';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.18)';
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '1.5rem',
-                    fontWeight: 700,
-                    color: '#DE322D',
-                    lineHeight: 1,
-                  }}
-                >
-                  +8
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.62rem',
-                    color: '#666666',
-                    letterSpacing: '0.06em',
-                    marginTop: '2px',
-                  }}
-                >
-                  CLIENTS
-                </span>
-              </div>
-            );
-          }
-
-          // Special element: Clickable "More Partners" Link
-          if (client.isSpecial === 'more') {
-            return (
-              <Link
-                key={`more-${idx}`}
-                href="/work"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.55rem',
-                  padding: '0.95rem 1.65rem',
-                  borderRadius: '9999px',
-                  backgroundColor: '#111111',
-                  color: '#ffffff',
-                  fontSize: '0.85rem',
-                  fontWeight: 500,
-                  letterSpacing: '0.04em',
-                  textDecoration: 'none',
-                  flexShrink: 0,
-                  margin: '0 0.5rem',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
-                  transition: 'all 0.25s ease',
-                  whiteSpace: 'nowrap',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#DE322D';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#111111';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                <span>More Partners</span>
-                <ArrowUpRight size={15} />
-              </Link>
-            );
-          }
-
-          // Standard Brand Logo Card with Cropped-Edge Diagonal Corners
-          return (
-            <Link
-              key={`${client.id}-${idx}`}
+        {marqueeItems.map((client, idx) => (
+          <Link
+            key={`${client.id}-${idx}`}
               href={client.link || '/work'}
               className="trusted-logo-card cropped-box"
               style={{
@@ -439,8 +351,7 @@ export default function ClientLogoMarquee() {
                 </span>
               </div>
             </Link>
-          );
-        })}
+        ))}
       </div>
 
       <style jsx>{`

@@ -1,121 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useHeroSlides } from '@/data/hero-crm-store';
-import { HeroSlide } from '@/types/crm';
-
-const slideVariants: Variants = {
-  enter: (dir: number) => ({
-    opacity: 0,
-    x: dir > 0 ? 40 : -40,
-  }),
-  center: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.65,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-  exit: (dir: number) => ({
-    opacity: 0,
-    x: dir > 0 ? -40 : 40,
-    transition: {
-      duration: 0.5,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  }),
-};
-
-const bgVariants: Variants = {
-  enter: { opacity: 0 },
-  center: {
-    opacity: 1,
-    transition: {
-      duration: 0.75,
-      ease: 'easeInOut',
-    },
-  },
-  exit: {
-    opacity: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeInOut',
-    },
-  },
-};
+import { ArrowUpRight, Play, X, ChevronDown } from 'lucide-react';
 
 export default function Hero() {
-  const { slides, isLoaded } = useHeroSlides();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
-  const [isPaused, setIsPaused] = useState(false);
-
-  const totalSlides = slides.length;
-
-  // Safe current index
-  const safeIndex = totalSlides > 0 ? ((currentIndex % totalSlides) + totalSlides) % totalSlides : 0;
-  const currentSlide: HeroSlide | undefined = slides[safeIndex];
-
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % totalSlides);
-  }, [totalSlides]);
-
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-  }, [totalSlides]);
-
-  const goToSlide = useCallback(
-    (index: number) => {
-      setDirection(index > safeIndex ? 1 : -1);
-      setCurrentIndex(index);
-    },
-    [safeIndex]
-  );
-
-  // Auto-advance slides every 5.0 seconds, pausing on hover/interaction
-  useEffect(() => {
-    if (isPaused || totalSlides <= 1) return;
-
-    const timer = setInterval(() => {
-      nextSlide();
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [isPaused, nextSlide, totalSlides]);
-
-  if (!currentSlide) return null;
-
-  const isDarkText = currentSlide.textColorTheme === 'dark';
-  const textColor = isDarkText ? '#0f172a' : '#ffffff';
-  const subtitleColor = isDarkText ? '#334155' : 'rgba(255, 255, 255, 0.88)';
-  const preTitleColor = isDarkText ? '#475569' : 'rgba(255, 255, 255, 0.9)';
-  const chevronBg = isDarkText ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.15)';
-  const chevronHoverBg = isDarkText ? 'rgba(15, 23, 42, 0.16)' : 'rgba(255, 255, 255, 0.28)';
-  const chevronBorder = isDarkText ? 'rgba(15, 23, 42, 0.15)' : 'rgba(255, 255, 255, 0.28)';
-  const chevronColor = isDarkText ? '#0f172a' : '#ffffff';
-
-  // Render title with line breaks and support for red dot accent
-  const renderTitle = (title: string) => {
-    const lines = title.split('\n');
-    return lines.map((line, idx) => {
-      // Check if line ends with a period for accent
-      const hasPeriod = line.endsWith('.');
-      const cleanLine = hasPeriod ? line.slice(0, -1) : line;
-
-      return (
-        <span key={idx} style={{ display: 'block' }}>
-          {cleanLine}
-          {hasPeriod && <span style={{ color: '#DE322D' }}>.</span>}
-        </span>
-      );
-    });
-  };
+  const [showShowreel, setShowShowreel] = useState(false);
 
   return (
     <>
@@ -138,8 +29,6 @@ export default function Hero() {
           paddingBottom: 'clamp(2rem, 3.5vw, 3.5rem)',
           backgroundColor: '#f5f5f3',
         }}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
       >
         <div
           className="padding-global"
@@ -149,298 +38,414 @@ export default function Hero() {
           }}
         >
           {/* ============================================================
-              ORGANIC CUTOUT HERO CAROUSEL CONTAINER (ZERO EXTERIOR BORDER LINES)
+              ORGANIC CUTOUT HERO CONTAINER (ZERO EXTERIOR BORDER LINES)
               ============================================================ */}
           <div
             className="hero-container organic-box"
             style={{
               position: 'relative',
               width: '100%',
-              minHeight: 'clamp(580px, 74vh, 760px)',
+              minHeight: 'clamp(600px, 80vh, 880px)',
+              backgroundColor: '#eef3f8',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)',
               overflow: 'hidden',
-              userSelect: 'none',
             }}
           >
-            {/* Smooth Background Transitions */}
-            <AnimatePresence initial={false} mode="sync">
-              <motion.div
-                key={currentSlide.id + '-bg'}
-                variants={bgVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
+            {/* Background Image: Supplied Hero Image with Floating Brand Logos */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                zIndex: 1,
+                overflow: 'hidden',
+              }}
+            >
+              <Image
+                src="/images/home/Hero Image Home Page.png"
+                alt="Ārohana Ideas into Impact Hero Background"
+                fill
+                priority
+                quality={95}
+                sizes="100vw"
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'center 45%',
+                }}
+              />
+
+              {/* Gentle left-side readability gradient */}
+              <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  zIndex: 1,
-                  overflow: 'hidden',
+                  background:
+                    'linear-gradient(90deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.72) 32%, rgba(255, 255, 255, 0.2) 58%, rgba(255, 255, 255, 0) 100%)',
+                  pointerEvents: 'none',
                 }}
-              >
-                <Image
-                  src={currentSlide.backgroundImageUrl}
-                  alt={currentSlide.title.replace('\n', ' ')}
-                  fill
-                  priority
-                  quality={95}
-                  sizes="100vw"
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center 46%',
-                  }}
-                />
-
-                {/* Subtle contrast gradient for dark theme slide */}
-                {!isDarkText && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background:
-                        'linear-gradient(110deg, rgba(8, 16, 30, 0.88) 0%, rgba(8, 16, 30, 0.72) 42%, rgba(8, 16, 30, 0.15) 75%, rgba(8, 16, 30, 0.5) 100%)',
-                      pointerEvents: 'none',
-                    }}
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
+              />
+            </div>
 
             {/* Top Spacer for Tab Notch Breathing Room */}
-            <div style={{ height: 'clamp(2.5rem, 4vw, 4rem)', position: 'relative', zIndex: 2 }} />
+            <div style={{ height: 'clamp(2rem, 3.5vw, 3.5rem)', position: 'relative', zIndex: 2 }} />
 
-            {/* Gesture-Aware Slide Drag Container */}
-            <motion.div
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={(_, info) => {
-                if (info.offset.x < -45) {
-                  nextSlide();
-                } else if (info.offset.x > 45) {
-                  prevSlide();
-                }
-              }}
+            {/* Main Hero Body Content */}
+            <div
+              className="hero-main-content"
               style={{
                 position: 'relative',
                 zIndex: 20,
-                width: '100%',
-                flex: 1,
+                padding: 'clamp(1rem, 2vw, 2rem) clamp(2.5rem, 5.5vw, 5.5rem)',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
-                padding: 'clamp(1rem, 2.5vw, 2.5rem) clamp(2.5rem, 5.5vw, 5.5rem)',
-                cursor: 'grab',
-                minHeight: 'clamp(460px, 62vh, 620px)',
+                justifyContent: 'center',
+                flex: 1,
+                maxWidth: '820px',
               }}
-              whileTap={{ cursor: 'grabbing' }}
             >
-              {/* Left-Aligned Typography Area */}
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={currentSlide.id + '-content'}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
+              {/* Pre-title Tracker: — BRANDS · EXPERIENCES · IMPACT */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  marginBottom: '1.25rem',
+                }}
+              >
+                <span
                   style={{
-                    maxWidth: '780px',
-                    pointerEvents: 'auto',
+                    width: '28px',
+                    height: '2px',
+                    backgroundColor: '#DE322D',
+                  }}
+                />
+                <span
+                  className="tag-mono"
+                  style={{
+                    color: '#DE322D',
+                    fontSize: '0.82rem',
+                    letterSpacing: '0.14em',
+                    fontWeight: 700,
                   }}
                 >
-                  {/* Pre-title Tracker (e.g. BRANDS · EXPERIENCES · IMPACT) */}
-                  {currentSlide.preTitle && (
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.65rem',
-                        marginBottom: '1.25rem',
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: '26px',
-                          height: '2px',
-                          backgroundColor: '#DE322D',
-                        }}
-                      />
-                      <span
-                        className="tag-mono"
-                        style={{
-                          color: preTitleColor,
-                          fontSize: '0.82rem',
-                          letterSpacing: '0.14em',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {currentSlide.preTitle}
-                      </span>
-                    </div>
-                  )}
+                  BRANDS · EXPERIENCES · IMPACT
+                </span>
+              </div>
 
-                  {/* Headline: Crisp, bold, stacked lines */}
-                  <h1
+              {/* Main Headline: Ideas into Impact. */}
+              <h1
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(3.4rem, 6.6vw, 6.8rem)',
+                  lineHeight: 1.02,
+                  fontWeight: 600,
+                  letterSpacing: '-0.04em',
+                  color: '#0f172a',
+                  margin: 0,
+                  marginBottom: '1.5rem',
+                }}
+              >
+                <span style={{ display: 'block' }}>Ideas</span>
+                <span style={{ display: 'block' }}>into</span>
+                <span style={{ display: 'block' }}>
+                  Impact<span style={{ color: '#DE322D' }}>.</span>
+                </span>
+              </h1>
+
+              {/* Subtitle Paragraph */}
+              <p
+                style={{
+                  fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
+                  color: '#334155',
+                  lineHeight: 1.55,
+                  maxWidth: '560px',
+                  margin: 0,
+                  marginBottom: '2.5rem',
+                  fontWeight: 400,
+                }}
+              >
+                We create visual stories, experiences and brands that connect people, places and possibilities.
+              </p>
+
+              {/* CTAs */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  gap: '1rem',
+                }}
+              >
+                {/* Primary CTA: Explore Our Work */}
+                <Link
+                  href="/work"
+                  className="button-editorial"
+                  style={{
+                    height: '50px',
+                    padding: '0 1.85rem',
+                    backgroundColor: '#0f172a',
+                    color: '#ffffff',
+                    borderRadius: '9999px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    boxShadow: '0 8px 24px rgba(15, 23, 42, 0.2)',
+                    transition: 'all 0.25s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.backgroundColor = '#1e293b';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.backgroundColor = '#0f172a';
+                  }}
+                >
+                  <span>Explore Our Work</span>
+                  <ArrowUpRight size={17} />
+                </Link>
+
+                {/* Secondary CTA: Watch Showreel */}
+                <button
+                  type="button"
+                  onClick={() => setShowShowreel(true)}
+                  className="button-editorial"
+                  style={{
+                    height: '50px',
+                    padding: '0 1.65rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    color: '#0f172a',
+                    border: '1px solid rgba(15, 23, 42, 0.15)',
+                    borderRadius: '9999px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
+                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.25s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffffff';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = 'rgba(15, 23, 42, 0.15)';
+                  }}
+                >
+                  <div
                     style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(3.2rem, 6.2vw, 6.4rem)',
-                      lineHeight: 1.02,
-                      fontWeight: isDarkText ? 700 : 500,
-                      letterSpacing: '-0.04em',
-                      color: textColor,
-                      margin: 0,
-                      marginBottom: currentSlide.subtitle ? '1.5rem' : '2rem',
-                      textShadow: isDarkText
-                        ? 'none'
-                        : '0 2px 20px rgba(0, 0, 0, 0.45)',
-                      transition: 'color 0.4s ease',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      border: '1.5px solid #0f172a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
-                    {renderTitle(currentSlide.title)}
-                  </h1>
+                    <Play size={10} fill="#0f172a" style={{ marginLeft: '1.5px' }} />
+                  </div>
+                  <span>Watch Showreel</span>
+                </button>
+              </div>
+            </div>
 
-                  {/* Optional/Editable Subtitle brand statement */}
-                  {currentSlide.subtitle && (
-                    <p
-                      style={{
-                        fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
-                        color: subtitleColor,
-                        lineHeight: 1.55,
-                        maxWidth: '620px',
-                        margin: 0,
-                        textShadow: isDarkText
-                          ? 'none'
-                          : '0 1px 8px rgba(0, 0, 0, 0.35)',
-                        transition: 'color 0.4s ease',
-                      }}
-                    >
-                      {currentSlide.subtitle}
-                    </p>
-                  )}
-                </motion.div>
-              </AnimatePresence>
+            {/* Bottom Section: Metrics & Indian Roots Global Stories */}
+            <div
+              className="hero-bottom-bar"
+              style={{
+                position: 'relative',
+                zIndex: 20,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: 'clamp(1rem, 2vw, 1.4rem) clamp(2.5rem, 5.5vw, 5.5rem)',
+                borderTop: '1px solid rgba(15, 23, 42, 0.08)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                backgroundColor: 'rgba(255, 255, 255, 0.55)',
+              }}
+            >
+              {/* Left Side: TRUSTED BY DIVERSE BRANDS & Stats */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1rem, 2vw, 2rem)', flexWrap: 'wrap' }}>
+                <div
+                  className="tag-mono"
+                  style={{
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.12em',
+                    color: '#64748b',
+                    fontWeight: 600,
+                  }}
+                >
+                  — TRUSTED BY DIVERSE BRANDS
+                </div>
 
-              {/* Minimal Left Carousel Controls (subtle < > chevrons below text area) */}
+                <div
+                  style={{
+                    width: '1px',
+                    height: '14px',
+                    backgroundColor: 'rgba(15, 23, 42, 0.15)',
+                  }}
+                  className="hero-bar-divider"
+                />
+
+                <div
+                  className="tag-mono hero-stats-row"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1.25rem',
+                    fontSize: '0.78rem',
+                    letterSpacing: '0.06em',
+                    color: '#334155',
+                  }}
+                >
+                  <span>
+                    <strong style={{ color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>50+</strong> Projects Delivered
+                  </span>
+                  <span style={{ color: 'rgba(15, 23, 42, 0.2)' }}>|</span>
+                  <span>
+                    <strong style={{ color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>15+</strong> Industries
+                  </span>
+                  <span style={{ color: 'rgba(15, 23, 42, 0.2)' }}>|</span>
+                  <span>
+                    <strong style={{ color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>6</strong> Core Verticals
+                  </span>
+                  <span style={{ color: 'rgba(15, 23, 42, 0.2)' }}>|</span>
+                  <span>
+                    <strong style={{ color: '#0f172a', fontWeight: 700, fontSize: '0.9rem' }}>1</strong> Purpose
+                  </span>
+                </div>
+              </div>
+
+              {/* Center: Scroll to explore */}
+              <div
+                className="hide-on-mobile"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  fontSize: '0.72rem',
+                  fontFamily: 'var(--font-mono)',
+                  color: '#64748b',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                <span>Scroll to explore</span>
+                <ChevronDown size={14} />
+              </div>
+
+              {/* Right Side: INDIAN ROOTS GLOBAL STORIES */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.75rem',
-                  marginTop: 'clamp(1.5rem, 2.5vw, 3rem)',
-                  zIndex: 25,
+                  gap: '0.65rem',
                 }}
               >
-                {/* Chevron Prev */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    prevSlide();
-                  }}
-                  aria-label="Previous slide"
+                <span
                   style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '50%',
-                    backgroundColor: chevronBg,
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: `1px solid ${chevronBorder}`,
-                    color: chevronColor,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.25s ease',
-                    padding: 0,
+                    width: '16px',
+                    height: '1.5px',
+                    backgroundColor: '#DE322D',
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = chevronHoverBg;
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = chevronBg;
-                    e.currentTarget.style.transform = 'scale(1)';
+                />
+                <span
+                  className="tag-mono"
+                  style={{
+                    fontSize: '0.74rem',
+                    letterSpacing: '0.14em',
+                    color: '#0f172a',
+                    fontWeight: 700,
                   }}
                 >
-                  <ChevronLeft size={18} strokeWidth={2.2} />
-                </button>
-
-                {/* Chevron Next */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    nextSlide();
-                  }}
-                  aria-label="Next slide"
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '50%',
-                    backgroundColor: chevronBg,
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: `1px solid ${chevronBorder}`,
-                    color: chevronColor,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.25s ease',
-                    padding: 0,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = chevronHoverBg;
-                    e.currentTarget.style.transform = 'scale(1.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = chevronBg;
-                    e.currentTarget.style.transform = 'scale(1)';
-                  }}
-                >
-                  <ChevronRight size={18} strokeWidth={2.2} />
-                </button>
-
-                {/* Subtle Slide Indicators: 01 / 02 */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    marginLeft: '0.5rem',
-                  }}
-                >
-                  {slides.map((_, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        goToSlide(idx);
-                      }}
-                      aria-label={`Go to slide ${idx + 1}`}
-                      style={{
-                        width: idx === safeIndex ? '24px' : '7px',
-                        height: '7px',
-                        borderRadius: '9999px',
-                        backgroundColor:
-                          idx === safeIndex
-                            ? '#DE322D'
-                            : isDarkText
-                            ? 'rgba(15, 23, 42, 0.25)'
-                            : 'rgba(255, 255, 255, 0.35)',
-                        border: 'none',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                        padding: 0,
-                      }}
-                    />
-                  ))}
-                </div>
+                  INDIAN ROOTS GLOBAL STORIES
+                </span>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
+
+        {/* Modal for Showreel Video */}
+        {showShowreel && (
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              backdropFilter: 'blur(12px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1.5rem',
+            }}
+            onClick={() => setShowShowreel(false)}
+          >
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '960px',
+                aspectRatio: '16/9',
+                backgroundColor: '#000000',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 25px 80px rgba(0, 0, 0, 0.6)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setShowShowreel(false)}
+                aria-label="Close Showreel modal"
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  right: '1rem',
+                  zIndex: 10,
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(8px)',
+                  border: 'none',
+                  color: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+              >
+                <X size={20} />
+              </button>
+
+              <video
+                src="/videos/services.webm"
+                controls
+                autoPlay
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         <style jsx>{`
           .organic-box {
@@ -452,6 +457,25 @@ export default function Hero() {
               clip-path: none;
               -webkit-clip-path: none;
               border-radius: 24px;
+            }
+            .hero-main-content {
+              padding: 2.5rem 1.5rem !important;
+            }
+            .hero-bottom-bar {
+              flex-direction: column !important;
+              align-items: flex-start !important;
+              gap: 1rem !important;
+              padding: 1.25rem 1.5rem !important;
+            }
+            .hero-stats-row {
+              flex-wrap: wrap !important;
+              gap: 0.75rem !important;
+            }
+            .hero-bar-divider {
+              display: none !important;
+            }
+            .hide-on-mobile {
+              display: none !important;
             }
           }
         `}</style>
