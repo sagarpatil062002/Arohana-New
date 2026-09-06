@@ -1052,4 +1052,581 @@ button, input, select, textarea {
   }
 }
 
+/* ==========================================================================
+   Tourin — Genesis & Philosophy Section Styles
+   ========================================================================== */
+.genesis-main-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.genesis-row {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  position: relative;
+}
+.genesis-timeline-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 70px;
+  flex-shrink: 0;
+  padding-top: 0.25rem;
+  position: relative;
+}
+.timeline-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  z-index: 2;
+  background-color: #fafafb;
+  padding: 2px 0;
+}
+.timeline-num-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  padding: 2px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 9999px;
+  display: inline-block;
+}
+.timeline-dot-red {
+  width: 9px;
+  height: 9px;
+  background-color: #DE322D;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 2px rgba(222, 50, 45, 0.2);
+}
+.timeline-dot-open {
+  width: 9px;
+  height: 9px;
+  background-color: #ffffff;
+  border: 2px solid #4b5563;
+  border-radius: 50%;
+  display: inline-block;
+}
+.timeline-connector-line {
+  width: 1px;
+  background-color: #e5e7eb;
+  flex-grow: 1;
+  margin-top: 0.5rem;
+  position: relative;
+  left: 37px;
+}
+.timeline-connector-line-bottom {
+  width: 1px;
+  background-color: #e5e7eb;
+  flex-grow: 1;
+  margin-top: 0.5rem;
+  position: relative;
+  left: 37px;
+  min-height: 180px;
+}
+.genesis-row-content {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: start;
+  flex-grow: 1;
+  padding-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+.genesis-text-col {
+  max-width: 560px;
+}
+.genesis-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #4b5563;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+.tag-red-bullet {
+  color: #DE322D;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.genesis-heading {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(2.3rem, 3.8vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #111111;
+  margin-bottom: 1.75rem;
+}
+.genesis-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  color: #4b5563;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.68;
+}
+.genesis-paragraphs p {
+  margin: 0;
+}
+.genesis-story-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 2rem;
+  color: #111111;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1.5px solid #111111;
+  padding-bottom: 0.25rem;
+  transition: all 0.2s ease;
+}
+.genesis-story-link:hover {
+  color: #DE322D;
+  border-bottom-color: #DE322D;
+  transform: translateX(2px);
+}
+.genesis-media-col {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 1.5vw, 1.25rem);
+  padding-top: 0.5rem;
+}
+.genesis-img-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  background-color: #e5e7eb;
+}
+.terrace-card {
+  width: clamp(230px, 23vw, 310px);
+  height: clamp(160px, 16vw, 220px);
+}
+.veranda-card {
+  width: clamp(140px, 14vw, 190px);
+  height: clamp(160px, 16vw, 220px);
+}
+.genesis-slogan-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #6b7280;
+  line-height: 1.35;
+  text-transform: uppercase;
+  padding-left: 0.5rem;
+}
+.genesis-divider-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: clamp(1.5rem, 2.5vw, 2.5rem) 0;
+}
+.genesis-divider-spacer {
+  width: 70px;
+  flex-shrink: 0;
+}
+.genesis-divider-line {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #e5e7eb;
+}
+.philosophy-row {
+  padding-top: 0;
+}
+.genesis-quote-col {
+  position: relative;
+  padding-left: clamp(1rem, 2vw, 2.5rem);
+  padding-top: 0.5rem;
+}
+.quote-watermark-ring {
+  position: absolute;
+  top: -40px;
+  right: -100px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 48px solid rgba(0, 0, 0, 0.025);
+  pointer-events: none;
+  z-index: 0;
+}
+.quote-mark {
+  color: #d1d5db;
+  font-family: Georgia, serif;
+  font-size: 3.6rem;
+  line-height: 0.8;
+  margin-bottom: 0.75rem;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
+.quote-statement {
+  font-family: inherit;
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+.quote-attribution {
+  color: #4b5563;
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+  line-height: 1.5;
+  margin-top: 1.75rem;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1024px) {
+  .genesis-row-content {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .genesis-media-col {
+    flex-wrap: wrap;
+  }
+  .genesis-quote-col {
+    padding-left: 0;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .genesis-timeline-col {
+    display: none;
+  }
+  .genesis-divider-spacer {
+    display: none;
+  }
+  .genesis-media-col {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .terrace-card, .veranda-card {
+    width: 100%;
+    height: 220px;
+  }
+  .genesis-slogan-stack {
+    flex-direction: row;
+    gap: 0.75rem;
+    padding-left: 0;
+    flex-wrap: wrap;
+  }
+}
+
+/* Tourin Sections 03, 04, 05 — Editorial Layout */
+.tourin-section-row {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 3rem);
+  align-items: stretch;
+  width: 100%;
+}
+
+.tourin-section-inner {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.tourin-section-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 420px;
+}
+
+.tourin-section-heading {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: #111111;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  margin-top: 0;
+}
+
+.tourin-section-body {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #555555;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tourin-section-body p {
+  margin: 0;
+}
+
+/* 03: Destination Grid */
+.dest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+  width: 100%;
+}
+
+.dest-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.dest-card {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  background-color: #e5e7eb;
+}
+
+.dest-card-img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dest-card:hover .dest-card-img {
+  transform: scale(1.05);
+}
+
+.dest-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.25) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.dest-card-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.dest-card-arrow:hover {
+  transform: translateY(-50%) scale(1.08);
+  background-color: #DE322D;
+  color: #ffffff;
+}
+
+.dest-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.dest-card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #111111;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.dest-card-sub {
+  font-size: 0.75rem;
+  color: #777777;
+  font-family: inherit;
+}
+
+/* 04: The Traveller */
+.traveller-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.traveller-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 0.75rem 0.65rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: 8px;
+}
+
+.traveller-row:hover,
+.traveller-row--active {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.traveller-row-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #DE322D;
+  flex-shrink: 0;
+}
+
+.traveller-row-text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #4b5563;
+  transition: color 0.2s ease;
+}
+
+.traveller-row--active .traveller-row-text {
+  font-weight: 600;
+  color: #111111;
+}
+
+.traveller-photo-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.traveller-photo-card {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08);
+  background-color: #1a1a1a;
+}
+
+.traveller-photo-img {
+  transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.traveller-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
+}
+
+.traveller-cursive-block {
+  position: absolute;
+  right: 2.5rem;
+  bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  color: #ffffff;
+  font-family: Georgia, 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  padding: 0.75rem 0;
+  border-top: 2px solid #DE322D;
+  border-bottom: 2px solid #DE322D;
+  z-index: 2;
+  user-select: none;
+}
+
+/* 05: The Experience */
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.85rem;
+  align-items: stretch;
+  width: 100%;
+}
+
+.exp-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.exp-card {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  background-color: #e5e7eb;
+}
+
+.exp-card-img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-card:hover .exp-card-img {
+  transform: scale(1.06);
+}
+
+.exp-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.18) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.exp-card-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #111111;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+/* Responsive adjustments for 03, 04, 05 */
+@media (max-width: 1120px) {
+  .tourin-section-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .tourin-section-left {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dest-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .exp-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .traveller-photo-card {
+    height: 300px;
+  }
+  .traveller-cursive-block {
+    right: 1.5rem;
+    bottom: 1.5rem;
+    font-size: 1.3rem;
+  }
+}
 

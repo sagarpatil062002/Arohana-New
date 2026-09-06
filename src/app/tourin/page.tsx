@@ -441,10 +441,14 @@ export default function TourinPage() {
       <section
         id="the-genesis"
         style={{
-          paddingTop: 'clamp(5rem, 10vw, 8.5rem)',
-          paddingBottom: 'clamp(5rem, 10vw, 8.5rem)',
-          backgroundColor: '#0d0d10',
-          color: '#ffffff',
+          paddingTop: 'clamp(4.5rem, 8vw, 7rem)',
+          paddingBottom: 'clamp(4.5rem, 8vw, 7rem)',
+          backgroundColor: '#fafafb',
+          color: '#111111',
+          position: 'relative',
+          overflow: 'hidden',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
         }}
       >
         <div
@@ -452,360 +456,242 @@ export default function TourinPage() {
           style={{
             maxWidth: '1440px',
             margin: '0 auto',
+            position: 'relative',
           }}
         >
-          <div
-            style={{
-              maxWidth: '820px',
-              margin: '0 auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 'clamp(3rem, 6vw, 5rem)',
-            }}
-          >
-            {/* ── THE GENESIS ── */}
-            <div>
-              <div
-                style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.14em',
-                  marginBottom: '1.25rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                # 01 - THE GENESIS
+          {/* Main Wrapper with Timeline + Content */}
+          <div className="genesis-main-container">
+
+            {/* ── ROW 1: 01 • THE GENESIS ── */}
+            <div className="genesis-row">
+              {/* Timeline Indicator Column */}
+              <div className="genesis-timeline-col">
+                <div className="timeline-badge-wrap">
+                  <span className="timeline-num-badge">01</span>
+                  <span className="timeline-dot-red" />
+                </div>
+                <div className="timeline-connector-line" />
               </div>
 
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.6rem, 5vw, 4.2rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  color: '#ffffff',
-                  lineHeight: 1.08,
-                  marginBottom: '2rem',
-                }}
-              >
-                Why Tourin.
-              </h2>
+              {/* Row 1 Content Grid: Left Text Column + Right Media Gallery */}
+              <div className="genesis-row-content">
+                <div className="genesis-text-col">
+                  <div className="genesis-tag">
+                    <span className="tag-red-bullet">•</span>
+                    <span>THE GENESIS</span>
+                  </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.25rem',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  fontSize: 'clamp(1rem, 1.25vw, 1.125rem)',
-                  lineHeight: 1.7,
-                }}
-              >
-                <p style={{ margin: 0 }}>
-                  Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.
-                </p>
-                <p style={{ margin: 0 }}>
-                  There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.
-                </p>
-                <p style={{ margin: 0 }}>
-                  Tourin was created to make space for the second one.
-                </p>
-              </div>
+                  <h2 className="genesis-heading">
+                    Why Tourin.
+                  </h2>
 
-              <a
-                href="#the-genesis"
-                style={{
-                  display: 'inline-block',
-                  marginTop: '2rem',
-                  color: '#ffffff',
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.18em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
-                  paddingBottom: '0.35rem',
-                  transition: 'all 0.25s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderBottomColor = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderBottomColor = 'rgba(255, 255, 255, 0.3)';
-                }}
-              >
-                OUR STORY
-              </a>
-            </div>
+                  <div className="genesis-paragraphs">
+                    <p>
+                      Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.
+                    </p>
+                    <p>
+                      There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.
+                    </p>
+                    <p>
+                      Tourin was created to make space for the second one.
+                    </p>
+                  </div>
 
-            {/* ── OUR PHILOSOPHY ── */}
-            <div>
-              <div
-                style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontSize: '0.8rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.14em',
-                  marginBottom: '1.25rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                OUR PHILOSOPHY
-              </div>
+                  <Link href="/about" className="genesis-story-link">
+                    <span>OUR STORY</span>
+                    <ArrowUpRight size={15} strokeWidth={2.4} />
+                  </Link>
+                </div>
 
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.4rem, 4.5vw, 3.6rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  color: '#ffffff',
-                  lineHeight: 1.1,
-                  marginBottom: '1.75rem',
-                }}
-              >
-                What we believe.
-              </h2>
+                {/* Right Side: Two Image Cards + Vertical Editorial Slogan */}
+                <div className="genesis-media-col">
+                  {/* Image 1: Lush Terrace Valley */}
+                  <div className="genesis-img-card terrace-card">
+                    <Image
+                      src="/images/tourin/tourin-genesis-terrace.jpg"
+                      alt="Lush green stepped rice terraces in mountain valley"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 360px"
+                      className="object-cover"
+                    />
+                  </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.15rem',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  fontSize: 'clamp(1rem, 1.25vw, 1.125rem)',
-                  lineHeight: 1.7,
-                }}
-              >
-                <p style={{ margin: 0 }}>
-                  A good trip should leave you with more than photographs. It should give you a sense of where you were.
-                </p>
-                <p style={{ margin: 0 }}>
-                  That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.
-                </p>
-                <p style={{ margin: 0 }}>
-                  We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.
-                </p>
+                  {/* Image 2: Wooden Veranda Balcony */}
+                  <div className="genesis-img-card veranda-card">
+                    <Image
+                      src="/images/tourin/tourin-genesis-veranda.jpg"
+                      alt="Rustic wooden veranda overlooking mountain forest"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 240px"
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* Vertical Slogan: TRAVEL DEEPER LIVE FULLER */}
+                  <div className="genesis-slogan-stack">
+                    <span>TRAVEL</span>
+                    <span>DEEPER</span>
+                    <span>LIVE</span>
+                    <span>FULLER</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* ── QUOTE BLOCK ── */}
-            <div
-              style={{
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                paddingTop: 'clamp(2rem, 4vw, 3rem)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1.25rem',
-              }}
-            >
-              <div
-                style={{
-                  color: '#DE322D',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '3.5rem',
-                  lineHeight: 0.8,
-                  marginBottom: '0.5rem',
-                }}
-              >
-                “
-              </div>
-
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(1.3rem, 2vw, 1.7rem)',
-                  lineHeight: 1.25,
-                  fontWeight: 500,
-                  color: '#ffffff',
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  marginBottom: '1rem',
-                }}
-              >
-                A GOOD JOURNEY IS NOT ABOUT HOW MUCH YOU CAN FIT INTO IT.
-              </div>
-
-              <p
-                style={{
-                  color: 'rgba(255, 255, 255, 0.55)',
-                  fontSize: 'clamp(0.95rem, 1.1vw, 1.05rem)',
-                  lineHeight: 1.6,
-                  margin: 0,
-                  fontStyle: 'italic',
-                }}
-              >
-                It is about what you have time to notice.
-              </p>
+            {/* ── SUBTLE HORIZONTAL DIVIDER ── */}
+            <div className="genesis-divider-wrap">
+              <div className="genesis-divider-spacer" />
+              <div className="genesis-divider-line" />
             </div>
+
+            {/* ── ROW 2: 02 • OUR PHILOSOPHY ── */}
+            <div className="genesis-row philosophy-row">
+              {/* Timeline Indicator Column */}
+              <div className="genesis-timeline-col">
+                <div className="timeline-badge-wrap">
+                  <span className="timeline-num-badge">02</span>
+                  <span className="timeline-dot-open" />
+                </div>
+                <div className="timeline-connector-line-bottom" />
+              </div>
+
+              {/* Row 2 Content Grid: Left Philosophy Text + Right Quote Block */}
+              <div className="genesis-row-content">
+                <div className="genesis-text-col">
+                  <div className="genesis-tag">
+                    <span className="tag-red-bullet">•</span>
+                    <span>OUR PHILOSOPHY</span>
+                  </div>
+
+                  <h2 className="genesis-heading">
+                    What we believe.
+                  </h2>
+
+                  <div className="genesis-paragraphs">
+                    <p>
+                      A good trip should leave you with more than photographs. It should give you a sense of where you were.
+                    </p>
+                    <p>
+                      That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.
+                    </p>
+                    <p>
+                      We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Side: The Stylized Quote Block */}
+                <div className="genesis-quote-col">
+                  {/* Decorative faint concentric watermark ring */}
+                  <div className="quote-watermark-ring" />
+
+                  <div className="quote-mark">“</div>
+
+                  <blockquote className="quote-statement">
+                    A GOOD JOURNEY<br />
+                    IS NOT ABOUT<br />
+                    HOW MUCH YOU<br />
+                    CAN FIT INTO IT.
+                  </blockquote>
+
+                  <p className="quote-attribution">
+                    It is about what you have time to notice.
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
+
       </section>
 
+
+
       {/* ================================================================
-           03 — SECTION: 03 • THE DESTINATION — Why Ladakh.
+           03 — SECTION: 03 • THE DESTINATION — Where we go.
       ================================================================ */}
       <section
+        id="the-destination"
         style={{
-          paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
-          paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
-          backgroundColor: '#ffffff',
+          paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
+          paddingBottom: 'clamp(4rem, 7vw, 6.5rem)',
+          backgroundColor: '#fafafb',
+          borderTop: '1px solid rgba(0,0,0,0.06)',
+          borderBottom: '1px solid rgba(0,0,0,0.06)',
         }}
       >
         <div
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
-            }}
-          >
-            {/* Left text */}
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#DE322D',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  marginBottom: '1rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                03 • THE DESTINATION
+          {/* Section Row */}
+          <div className="tourin-section-row">
+            {/* Timeline Col */}
+            <div className="genesis-timeline-col">
+              <div className="timeline-badge-wrap">
+                <span className="timeline-num-badge">03</span>
+                <span className="timeline-dot-red" />
               </div>
-
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  color: '#111111',
-                  lineHeight: 1.1,
-                  marginBottom: '1.75rem',
-                }}
-              >
-                Why Ladakh.
-              </h2>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.25rem',
-                  color: '#444444',
-                  fontSize: 'clamp(0.95rem, 1.2vw, 1.075rem)',
-                  lineHeight: 1.7,
-                  maxWidth: '540px',
-                }}
-              >
-                <p style={{ margin: 0 }}>
-                  Ladakh is where Tourin begins because it is a place we know closely enough to
-                  design experiences around more than the obvious itinerary.
-                </p>
-                <p style={{ margin: 0 }}>
-                  The first journeys are built around exploration, culture, landscapes and
-                  meaningful encounters — with enough structure to make the trip comfortable and
-                  enough space for the unexpected.
-                </p>
-              </div>
+              <div className="timeline-connector-line" />
             </div>
 
-            {/* Right: Landscape Panorama with Route Overlay */}
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                boxShadow: '0 16px 48px rgba(0, 0, 0, 0.08)',
-                backgroundColor: '#111',
-              }}
-            >
-              <div style={{ position: 'relative', width: '100%', aspectRatio: '16/10' }}>
-                <Image
-                  src="/images/tourin/tourin-2.jpg"
-                  alt="Dramatic mountain panorama of Ladakh with high altitude lakes"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
+            {/* Content: Left text + Right image grid */}
+            <div className="tourin-section-inner">
+              {/* Left Text */}
+              <div className="tourin-section-left">
+                <div className="genesis-tag">
+                  <span className="tag-red-bullet">•</span>
+                  <span>THE DESTINATION</span>
+                </div>
+
+                <h2 className="tourin-section-heading">
+                  Where we go.
+                </h2>
+
+                <div className="tourin-section-body">
+                  <p>
+                    Ladakh is where Tourin begins, but it is only the start. We design journeys
+                    across India and select international destinations — each chosen for its culture,
+                    landscapes and meaningful experiences.
+                  </p>
+                </div>
+
+                <Link href="#curated-journeys" className="genesis-story-link" style={{ marginTop: '2rem' }}>
+                  <span>EXPLORE DESTINATIONS</span>
+                  <ArrowUpRight size={15} strokeWidth={2.4} />
+                </Link>
               </div>
 
-              {/* Bottom Route Timeline Overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  backgroundColor: 'rgba(15, 15, 18, 0.82)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                  padding: '0.85rem 1.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  overflowX: 'auto',
-                }}
-              >
+              {/* Right: Destination Cards Grid */}
+              <div className="dest-grid">
                 {[
-                  { name: 'LEH', active: true },
-                  { name: 'SHAM VALLEY', active: false },
-                  { name: 'NUBRA', active: false },
-                  { name: 'CHANGTHANG', active: false },
-                  { name: 'PANGONG', active: false },
-                ].map((stop, idx, arr) => (
-                  <React.Fragment key={stop.name}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.45rem',
-                        flexShrink: 0,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: stop.active ? '9px' : '6px',
-                          height: stop.active ? '9px' : '6px',
-                          borderRadius: '50%',
-                          backgroundColor: stop.active ? '#DE322D' : 'rgba(255, 255, 255, 0.4)',
-                          boxShadow: stop.active ? '0 0 8px rgba(222, 50, 45, 0.7)' : 'none',
-                        }}
+                  { label: 'LADAKH', sub: 'Mountains & Culture', img: '/images/tourin/dest-ladakh.jpg', alt: 'High altitude Himalayan lake with snow-capped peaks' },
+                  { label: 'INDIA', sub: 'Diverse Landscapes', img: '/images/tourin/dest-india.jpg', alt: 'Pristine Indian coast with turquoise water' },
+                  { label: 'INTERNATIONAL', sub: 'Curated Experiences', img: '/images/tourin/dest-international.jpg', alt: 'Mediterranean hilltop town at sunset' },
+                  { label: 'MORE PLACES', sub: 'Worth Knowing', img: '/images/tourin/dest-more-places.jpg', alt: 'Japanese shrine with red torii gates' },
+                ].map((dest, idx) => (
+                  <div key={dest.label} className="dest-card-wrap">
+                    <div className="dest-card">
+                      <Image
+                        src={dest.img}
+                        alt={dest.alt}
+                        fill
+                        sizes="(max-width: 768px) 45vw, (max-width: 1200px) 22vw, 260px"
+                        className="object-cover dest-card-img"
                       />
-                      <span
-                        className="tag-mono"
-                        style={{
-                          fontSize: '0.675rem',
-                          letterSpacing: '0.08em',
-                          color: stop.active ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-                          fontWeight: stop.active ? 700 : 500,
-                        }}
-                      >
-                        {stop.name}
-                      </span>
+                      <div className="dest-card-overlay" />
+                      {idx === 3 && (
+                        <div className="dest-card-arrow">
+                          <ArrowRight size={16} strokeWidth={2.5} />
+                        </div>
+                      )}
                     </div>
-
-                    {idx < arr.length - 1 && (
-                      <span
-                        style={{
-                          flex: 1,
-                          height: '1px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                          margin: '0 0.85rem',
-                          minWidth: '20px',
-                        }}
-                      />
-                    )}
-                  </React.Fragment>
+                    <div className="dest-card-meta">
+                      <span className="dest-card-label">{dest.label}</span>
+                      <span className="dest-card-sub">{dest.sub}</span>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -814,205 +700,80 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-           04 — SECTION: 04 • THE TRAVELLER — Who is Tourin for? (Interactive)
+           04 — SECTION: 04 • THE TRAVELLER — Who is Tourin for?
       ================================================================ */}
       <section
+        id="the-traveller"
         style={{
-          paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
-          paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
-          backgroundColor: '#0d0d10',
-          color: '#ffffff',
-          position: 'relative',
+          paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
+          paddingBottom: 'clamp(4rem, 7vw, 6.5rem)',
+          backgroundColor: '#fafafb',
+          borderBottom: '1px solid rgba(0,0,0,0.06)',
         }}
       >
         <div
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
-            }}
-          >
-            {/* Left: Interactive list of travellers */}
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#DE322D',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  marginBottom: '1rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                04 • THE TRAVELLER
+          <div className="tourin-section-row">
+            {/* Timeline Col */}
+            <div className="genesis-timeline-col">
+              <div className="timeline-badge-wrap">
+                <span className="timeline-num-badge">04</span>
+                <span className="timeline-dot-red" />
               </div>
-
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  color: '#ffffff',
-                  lineHeight: 1.1,
-                  marginBottom: '2.5rem',
-                }}
-              >
-                Who is Tourin for?
-              </h2>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {travellerItems.map((item, idx) => {
-                  const isActive = idx === activeTravellerIndex;
-                  return (
-                    <div
-                      key={item.num}
-                      onClick={() => setActiveTravellerIndex(idx)}
-                      onMouseEnter={() => handlePillEnter(`0${idx + 1} TRAVELLER`)}
-                      onMouseLeave={handlePillLeave}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '1.5rem',
-                        padding: '1.1rem 1.25rem',
-                        borderRadius: '16px',
-                        backgroundColor: isActive
-                          ? 'rgba(255, 255, 255, 0.06)'
-                          : 'transparent',
-                        border: isActive
-                          ? '1px solid rgba(222, 50, 45, 0.35)'
-                          : '1px solid transparent',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                      }}
-                    >
-                      <span
-                        className="tag-mono"
-                        style={{
-                          fontSize: '1.15rem',
-                          fontFamily: 'var(--font-mono)',
-                          fontWeight: 700,
-                          color: isActive ? '#DE322D' : 'rgba(255, 255, 255, 0.35)',
-                          transition: 'color 0.3s ease',
-                        }}
-                      >
-                        {item.num}
-                      </span>
-                      <p
-                        style={{
-                          margin: 0,
-                          fontSize: 'clamp(0.95rem, 1.1vw, 1.05rem)',
-                          lineHeight: 1.6,
-                          color: isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.55)',
-                          fontWeight: isActive ? 500 : 400,
-                          transition: 'color 0.3s ease',
-                        }}
-                      >
-                        {item.text}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
+              <div className="timeline-connector-line" />
             </div>
 
-            {/* Right: Dynamic Photograph + Vertical Arrow Controls */}
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1.5rem',
-              }}
-            >
-              <div
-                style={{
-                  position: 'relative',
-                  flex: 1,
-                  aspectRatio: '4/3',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  boxShadow: '0 24px 60px rgba(0, 0, 0, 0.4)',
-                  backgroundColor: '#111',
-                }}
-              >
-                <Image
-                  src={travellerItems[activeTravellerIndex].image}
-                  alt={travellerItems[activeTravellerIndex].alt}
-                  fill
-                  style={{
-                    objectFit: 'cover',
-                    transition: 'opacity 0.4s ease, transform 0.6s ease',
-                  }}
-                />
+            {/* Content */}
+            <div className="tourin-section-inner">
+              {/* Left: Traveller list */}
+              <div className="tourin-section-left">
+                <div className="genesis-tag">
+                  <span className="tag-red-bullet">•</span>
+                  <span>THE TRAVELLER</span>
+                </div>
+
+                <h2 className="tourin-section-heading">
+                  Who is Tourin for?
+                </h2>
+
+                <div className="traveller-list">
+                  {travellerItems.map((item, idx) => {
+                    const isActive = idx === activeTravellerIndex;
+                    return (
+                      <div
+                        key={item.num}
+                        onClick={() => setActiveTravellerIndex(idx)}
+                        className={`traveller-row${isActive ? ' traveller-row--active' : ''}`}
+                      >
+                        <span className="traveller-row-num">{item.num}</span>
+                        <p className="traveller-row-text">{item.text}</p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Vertical Navigation Buttons */}
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.85rem',
-                  flexShrink: 0,
-                }}
-              >
-                <button
-                  onClick={prevTraveller}
-                  aria-label="Previous traveller profile"
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '50%',
-                    backgroundColor: '#DE322D',
-                    border: 'none',
-                    color: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(222, 50, 45, 0.35)',
-                    transition: 'transform 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                >
-                  <ArrowUp size={18} />
-                </button>
-
-                <button
-                  onClick={nextTraveller}
-                  aria-label="Next traveller profile"
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#DE322D';
-                    e.currentTarget.style.borderColor = '#DE322D';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                  }}
-                >
-                  <ArrowDown size={18} />
-                </button>
+              {/* Right: Hero Photo with cursive overlay text */}
+              <div className="traveller-photo-wrap">
+                <div className="traveller-photo-card">
+                  <Image
+                    src={travellerItems[activeTravellerIndex].image}
+                    alt={travellerItems[activeTravellerIndex].alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 580px"
+                    className="object-cover traveller-photo-img"
+                  />
+                  <div className="traveller-photo-overlay" />
+                  {/* Cursive italic brand statement overlay */}
+                  <div className="traveller-cursive-block">
+                    <span>Curious</span>
+                    <span>Thoughtful</span>
+                    <span>Open</span>
+                    <span>For More</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1020,155 +781,78 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-           05 — SECTION: 05 • JOURNEY PHILOSOPHY — The experience.
+           05 — SECTION: 05 • THE EXPERIENCE — More than just a trip.
       ================================================================ */}
       <section
+        id="the-experience"
         style={{
-          paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
-          paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
-          backgroundColor: '#ffffff',
+          paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
+          paddingBottom: 'clamp(4rem, 7vw, 6.5rem)',
+          backgroundColor: '#fafafb',
+          borderBottom: '1px solid rgba(0,0,0,0.06)',
         }}
       >
         <div
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          {/* Top text row: 3 columns */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-              gap: 'clamp(1.5rem, 3vw, 3rem)',
-              alignItems: 'flex-start',
-              marginBottom: '3.5rem',
-            }}
-          >
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#DE322D',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  marginBottom: '0.75rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                05 • JOURNEY PHILOSOPHY
+          <div className="tourin-section-row">
+            {/* Timeline Col */}
+            <div className="genesis-timeline-col">
+              <div className="timeline-badge-wrap">
+                <span className="timeline-num-badge">05</span>
+                <span className="timeline-dot-red" />
               </div>
-
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  color: '#111111',
-                  lineHeight: 1.1,
-                  margin: 0,
-                }}
-              >
-                The experience.
-              </h2>
             </div>
 
-            <div>
-              <p
-                style={{
-                  color: '#444444',
-                  fontSize: '0.975rem',
-                  lineHeight: 1.65,
-                  margin: 0,
-                }}
-              >
-                Tourin's journeys can bring together carefully chosen stays, local experiences, food,
-                culture, landscapes and the practical planning that makes travel work.
-              </p>
-            </div>
-
-            <div>
-              <p
-                style={{
-                  color: '#666666',
-                  fontSize: '0.975rem',
-                  lineHeight: 1.65,
-                  margin: 0,
-                }}
-              >
-                The point is not to add experiences for the sake of adding them. Each element
-                should have a reason to be there.
-              </p>
-            </div>
-          </div>
-
-          {/* Bottom row: 5 Visual Pillar Cards */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 210px), 1fr))',
-              gap: '1.25rem',
-            }}
-          >
-            {experiencePillars.map((pillar) => (
-              <div
-                key={pillar.label}
-                onMouseEnter={() => handlePillEnter(pillar.label)}
-                onMouseLeave={handlePillLeave}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  aspectRatio: '16/11',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
-                  backgroundColor: '#eee',
-                }}
-              >
-                <Image
-                  src={pillar.image}
-                  alt={pillar.alt}
-                  fill
-                  style={{
-                    objectFit: 'cover',
-                    transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.08)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)';
-                  }}
-                />
-
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background:
-                      'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)',
-                  }}
-                />
-
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '1rem',
-                    left: '1.25rem',
-                    color: '#ffffff',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.1em',
-                  }}
-                >
-                  {pillar.label}
+            {/* Content */}
+            <div className="tourin-section-inner">
+              {/* Left: Text + CTA */}
+              <div className="tourin-section-left">
+                <div className="genesis-tag">
+                  <span className="tag-red-bullet">•</span>
+                  <span>THE EXPERIENCE</span>
                 </div>
+
+                <h2 className="tourin-section-heading">
+                  More than just a trip.
+                </h2>
+
+                <div className="tourin-section-body">
+                  <p>
+                    Tourin&apos;s journeys bring together carefully chosen stays, local experiences, food,
+                    culture, landscapes and the practical planning that makes travel work.
+                  </p>
+                  <p>
+                    Each element should have a reason to be there.
+                  </p>
+                </div>
+
+                <Link href="/tourin#curated-journeys" className="genesis-story-link" style={{ marginTop: '2rem' }}>
+                  <span>OUR APPROACH</span>
+                  <ArrowUpRight size={15} strokeWidth={2.4} />
+                </Link>
               </div>
-            ))}
+
+              {/* Right: 5 experience category image cards */}
+              <div className="exp-grid">
+                {experiencePillars.map((pillar) => (
+                  <div key={pillar.label} className="exp-card-wrap">
+                    <div className="exp-card">
+                      <Image
+                        src={pillar.image}
+                        alt={pillar.alt}
+                        fill
+                        sizes="(max-width: 768px) 40vw, (max-width: 1200px) 18vw, 200px"
+                        className="object-cover exp-card-img"
+                      />
+                      <div className="exp-card-overlay" />
+                    </div>
+                    <span className="exp-card-label">{pillar.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1224,11 +908,9 @@ export default function TourinPage() {
                 </React.Fragment>
               ))}
             </div>
-
-            {/* Group 2 (Duplicate for Seamless Loop) */}
+            {/* Group 2 */}
             <div
               className="marquee-group"
-              aria-hidden="true"
               style={{
                 display: 'flex',
                 alignItems: 'center',

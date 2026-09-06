@@ -107,12 +107,10 @@ export default function SectorMontage() {
 
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isHovered) {
-      timerRef.current = setInterval(() => {
-        handleNext();
-      }, 3500);
-    }
-  }, [isHovered, handleNext]);
+    timerRef.current = setInterval(() => {
+      handleNext();
+    }, 3500);
+  }, [handleNext]);
 
   useEffect(() => {
     resetAutoplay();

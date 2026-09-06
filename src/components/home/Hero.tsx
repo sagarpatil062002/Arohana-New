@@ -37,9 +37,9 @@ const HERO_SLIDES: HeroSlideData[] = [
     image: '/images/home/hero-slide-2-symbolic.jpg',
     theme: 'dark',
     tag: 'STRATEGY · COMMUNICATION · EXECUTION',
-    title: 'We build brands,\nbusinesses & experiences.',
+    title: 'We build brands,\nbusinesses &\nexperiences.',
     subtitle:
-      'Ārohana brings together business thinking, creative communication and execution — from digital brand growth and content to hospitality consulting and complex on-ground projects.',
+      'Ārohana brings together business thinking, creative communication and execution across sectors.',
     primaryCtaText: 'Explore Our Work',
     primaryCtaLink: '/work',
   },
@@ -48,7 +48,6 @@ const HERO_SLIDES: HeroSlideData[] = [
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [isInteracting, setIsInteracting] = useState(false);
   const [showShowreel, setShowShowreel] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -67,15 +66,13 @@ export default function Hero() {
     setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
   }, [totalSlides]);
 
-  // Autoplay every 3.5 seconds
+  // Continuous Autoplay every 4 seconds
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isInteracting) {
-      timerRef.current = setInterval(() => {
-        nextSlide();
-      }, 3500);
-    }
-  }, [isInteracting, nextSlide]);
+    timerRef.current = setInterval(() => {
+      nextSlide();
+    }, 4000);
+  }, [nextSlide]);
 
   useEffect(() => {
     resetAutoplay();
@@ -124,11 +121,6 @@ export default function Hero() {
           backgroundColor: '#f5f5f3',
           overflow: 'hidden',
         }}
-        onMouseEnter={() => setIsInteracting(true)}
-        onMouseLeave={() => {
-          setIsInteracting(false);
-          resetAutoplay();
-        }}
       >
         <div
           className="padding-global"
@@ -146,9 +138,9 @@ export default function Hero() {
             style={{
               position: 'relative',
               width: '100%',
-              height: 'clamp(640px, 82vh, 840px)',
-              minHeight: '640px',
-              maxHeight: '840px',
+              height: '720px',
+              minHeight: '720px',
+              maxHeight: '720px',
               backgroundColor: '#0a0d14',
               display: 'flex',
               flexDirection: 'column',
@@ -219,14 +211,12 @@ export default function Hero() {
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.2}
-              onDragStart={() => setIsInteracting(true)}
               onDragEnd={(_, info) => {
                 if (info.offset.x < -35) {
                   nextSlide();
                 } else if (info.offset.x > 35) {
                   prevSlide();
                 }
-                setIsInteracting(false);
                 resetAutoplay();
               }}
               style={{
@@ -247,20 +237,22 @@ export default function Hero() {
                 style={{
                   position: 'relative',
                   width: '100%',
-                  minHeight: 'clamp(320px, 42vh, 420px)',
+                  height: '380px',
+                  minHeight: '380px',
+                  maxHeight: '380px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                 }}
               >
-                <AnimatePresence mode="popLayout" custom={direction}>
+                <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={currentSlide.id + '-content'}
                     custom={direction}
-                    initial={{ opacity: 0, x: direction > 0 ? 30 : -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: direction > 0 ? -30 : 30 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
                     style={{ width: '100%' }}
                   >
                     {/* Pre-title Tracker */}
@@ -708,9 +700,9 @@ export default function Hero() {
 
         <style jsx>{`
           .hero-container {
-            height: clamp(640px, 82vh, 840px);
-            min-height: 640px;
-            max-height: 840px;
+            height: 720px;
+            min-height: 720px;
+            max-height: 720px;
           }
           .organic-box {
             clip-path: url(#heroOrganicClip);
@@ -718,9 +710,9 @@ export default function Hero() {
           }
           @media (max-width: 991px) {
             .hero-container {
-              height: clamp(600px, 82vh, 760px);
-              min-height: 580px;
-              max-height: 760px;
+              height: 640px;
+              min-height: 640px;
+              max-height: 640px;
             }
             .organic-box {
               clip-path: none;
@@ -743,9 +735,9 @@ export default function Hero() {
           }
           @media (max-width: 640px) {
             .hero-container {
-              height: clamp(560px, 85vh, 680px);
-              min-height: 540px;
-              max-height: 680px;
+              height: 580px;
+              min-height: 580px;
+              max-height: 580px;
             }
           }
         `}</style>

@@ -124,15 +124,15 @@ export default function SelectedWork() {
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Autoplay every 1.5 seconds from left to right (like Army Spotlight animation)
+  // Autoplay automatically from left to right
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isHovered && !isDragging) {
+    if (!isDragging) {
       timerRef.current = setInterval(() => {
         nextSlide();
-      }, 1500);
+      }, 2500);
     }
-  }, [isHovered, isDragging, nextSlide]);
+  }, [isDragging, nextSlide]);
 
   useEffect(() => {
     resetAutoplay();

@@ -903,10 +903,7 @@ export default function IndianArmyProjectsPage() {
           <div className="footer-top-grid">
             {/* Brand Summary */}
             <div className="footer-brand">
-              <Link href="/" className="f-logo">
-                ĀROHANA
-              </Link>
-              <p className="f-tagline">
+              <p className="f-tagline" style={{ marginTop: 0 }}>
                 Strategic Communication.
                 <br />
                 Real-World Impact.

@@ -88,15 +88,15 @@ export default function IndianArmySpotlight() {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Autoplay every 2.4 seconds, pausing on hover or drag
+  // Autoplay automatically every 2.8 seconds
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isHovered && !isDragging) {
+    if (!isDragging) {
       timerRef.current = setInterval(() => {
         nextSlide();
-      }, 2400);
+      }, 2800);
     }
-  }, [isHovered, isDragging, nextSlide]);
+  }, [isDragging, nextSlide]);
 
   useEffect(() => {
     resetAutoplay();

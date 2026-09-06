@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     'Indian Army Special Projects',
   ],
   authors: [{ name: 'Ārohana Consultancy' }],
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({

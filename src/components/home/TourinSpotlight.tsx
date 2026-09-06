@@ -50,12 +50,10 @@ export default function TourinSpotlight() {
 
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isHovered) {
-      timerRef.current = setInterval(() => {
-        nextCategory();
-      }, 3500);
-    }
-  }, [isHovered, nextCategory]);
+    timerRef.current = setInterval(() => {
+      nextCategory();
+    }, 3500);
+  }, [nextCategory]);
 
   useEffect(() => {
     resetAutoplay();
