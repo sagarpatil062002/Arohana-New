@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   ArrowRight,
+  ArrowLeft,
   ArrowUpRight,
   ArrowDown,
   ArrowUp,
@@ -38,6 +39,18 @@ export default function TourinPage() {
 
   // Active Journey for Itinerary Modal
   const [activeJourney, setActiveJourney] = useState<JourneyItem | null>(null);
+
+  const journeysScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollJourneys = (direction: 'left' | 'right') => {
+    if (journeysScrollRef.current) {
+      const scrollAmount = 380;
+      journeysScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   const travellerItems = [
     {
@@ -81,14 +94,12 @@ export default function TourinPage() {
   ];
 
   const proofCollage = [
-    { src: '/images/tourin/tourin-3.jpg', alt: 'Bikers on mountain pass' },
-    { src: '/images/tourin/tourin-gallery-6.jpg', alt: 'Campfire and night sky in Ladakh' },
-    { src: '/images/tourin/tourin-hero.jpg', alt: 'Group expedition team in high Himalayas' },
-    { src: '/images/tourin/tourin-2.jpg', alt: 'Pangong crystal alpine lake' },
-    { src: '/images/tourin/tourin-1.jpg', alt: 'Traditional rammed-earth manor interior' },
-    { src: '/images/tourin/tourin-gallery-4.jpg', alt: 'Traveller in ancient monastery window' },
-    { src: '/images/tourin/tourin-gallery-1.jpg', alt: 'Traveller seated in wooden pavilion' },
-    { src: '/images/tourin/tourin-gallery-3.jpg', alt: 'Scenic mountain road and valley' },
+    { src: '/images/tourin/tourin-hero.jpg', alt: 'Hikers walking on mountain trail' },
+    { src: '/images/tourin/tourin-campfire.jpg', alt: 'Campfire and night gathering' },
+    { src: '/images/tourin/tourin-gallery-6.jpg', alt: 'Group expedition team in high Himalayas' },
+    { src: '/images/tourin/tourin-lake-deck.jpg', alt: 'Wooden viewpoint terrace overlooking alpine lake' },
+    { src: '/images/tourin/tourin-lantern-street.jpg', alt: 'Historic Asian street with hanging lanterns' },
+    { src: '/images/tourin/santorini-sunset.jpg', alt: 'Coastal cliffside town over the blue sea' },
   ];
 
   const journeys: JourneyItem[] = [
@@ -97,8 +108,8 @@ export default function TourinPage() {
       title: 'The Slow Ladakh Odyssey',
       duration: '8 Days / 7 Nights',
       type: 'Cultural Immersion & Slow Exploration',
-      desc: 'Leh, Sham Valley, Thiksey, and hidden Indus villages. Staying at heritage homestays, eating local cuisine, and walking ancient paths without rushing.',
-      image: '/images/tourin/tourin-gallery-3.jpg',
+      desc: 'Cultural immersion, heritage stays and hidden villages without rushing.',
+      image: '/images/tourin/dest-ladakh.jpg',
       elevation: '9,500 — 11,500 FT',
       highlights: [
         'Earthen heritage manor homestays in ancient apricot valleys',
@@ -112,41 +123,41 @@ export default function TourinPage() {
       ],
     },
     {
-      id: 'nubra-silk-route',
-      title: 'Nubra Valley & The Silk Route',
+      id: 'india-unexplored',
+      title: 'India Unexplored',
       duration: '7 Days / 6 Nights',
-      type: 'High Passes, Deserts & Monasteries',
-      desc: 'Crossing Khardung La into the dramatic dune valleys of Hunder and Diskit, spending time with local artisans, and discovering village monasteries.',
-      image: '/images/tourin/tourin-gallery-5.jpg',
-      elevation: '10,000 — 17,582 FT',
+      type: 'Offbeat Destinations & Local Experiences',
+      desc: 'Offbeat destinations, local experiences and thoughtful travel.',
+      image: '/images/tourin/dest-india.jpg',
+      elevation: 'Various',
       highlights: [
-        'Calibrated crossing of Khardung La pass with emergency medical logistics',
-        'Secluded Balti heritage encounters in remote Turtuk village',
-        'Diskit and Ensa cliffside monastery meditation halls',
+        'Curated offbeat destinations away from typical tourist circuits',
+        'Authentic local food experiences and community interactions',
+        'Thoughtful pacing with time for personal exploration',
       ],
       phases: [
-        { phase: 'Days 1–2', title: 'Leh Acclimatisation & Orientation', description: 'Paced walking, oxygen saturation checks, and cultural briefing.' },
-        { phase: 'Days 3–4', title: 'Across Khardung La to Diskit & Hunder', description: 'Dramatic high-pass crossing into dunes and ancient monastic caves.' },
-        { phase: 'Days 5–7', title: 'Turtuk Living Silk Route & Return', description: 'Balti apricot orchards, stone irrigation channels, and return.' },
+        { phase: 'Days 1–2', title: 'Arrival & Local Immersion', description: 'Settle in, explore the neighbourhood, meet local hosts.' },
+        { phase: 'Days 3–5', title: 'Deep Exploration & Cultural Encounters', description: 'Off-the-beaten-path villages, artisan workshops, and nature trails.' },
+        { phase: 'Days 5–7', title: 'Reflection & Meaningful Return', description: 'Community meals, storytelling evenings, and gentle departure.' },
       ],
     },
     {
-      id: 'changthang-nomads',
-      title: 'Changthang High Lakes & Nomads',
+      id: 'asia-reimagined',
+      title: 'Asia Reimagined',
       duration: '9 Days / 8 Nights',
-      type: 'Wild Plateaus & High-Altitude Waters',
-      desc: 'Expedition across Pangong Tso, Tso Moriri, and the Changpa nomadic settlements. Experience raw silence and vast Himalayan skies.',
-      image: '/images/tourin/tourin-2.jpg',
-      elevation: '13,500 — 14,764 FT',
+      type: 'Curated International Experiences',
+      desc: 'Curated international experiences for curious travellers.',
+      image: '/images/tourin/dest-international.jpg',
+      elevation: 'Various',
       highlights: [
-        'Secluded lakeside eco-camps away from mass tourist transit hubs',
-        'Respectful encounters with Changpa Pashmina nomadic pastoralists',
-        'Night-sky stargazing under India’s premier Dark Sky Reserve in Hanle',
+        'Handpicked destinations across Asia for authentic cultural immersion',
+        'Boutique stays that reflect local architecture and craft traditions',
+        'Guided experiences led by regional storytellers and artisans',
       ],
       phases: [
-        { phase: 'Days 1–3', title: 'Leh & Indus Valley Acclimatisation', description: 'Essential rest, hydration, and lower valley exploration.' },
-        { phase: 'Days 4–6', title: 'Pangong Tso & Changthang Plateau', description: 'Deep turquoise shoreline walks and nomadic pasture trails.' },
-        { phase: 'Days 7–9', title: 'Hanle Dark Sky Reserve & Tso Moriri', description: 'Astronomical observatory night sky and return traverse.' },
+        { phase: 'Days 1–3', title: 'Arrival & Cultural Orientation', description: 'Heritage walks, local market exploration, and introductory cuisine.' },
+        { phase: 'Days 4–6', title: 'Deep Cultural & Landscape Immersion', description: 'Temple trails, craft villages, and countryside experiences.' },
+        { phase: 'Days 7–9', title: 'Coastal, Culinary & Departure', description: 'Seaside serenity, farewell meals, and thoughtful return.' },
       ],
     },
   ];
@@ -950,7 +961,7 @@ export default function TourinPage() {
       </div>
 
       {/* ================================================================
-           07 — SECTION: VALIDATED EXECUTION — Proof that the idea works.
+           06 — SECTION: PROOF THAT IT WORKS — Journeys already taken.
       ================================================================ */}
       <section
         style={{
@@ -963,129 +974,132 @@ export default function TourinPage() {
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
-            }}
-          >
-            {/* Left: Heading and 15+ Statistic */}
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#DE322D',
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  marginBottom: '1rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                VALIDATED EXECUTION
+          <div className="tourin-section-row">
+            {/* Timeline Col */}
+            <div className="genesis-timeline-col">
+              <div className="timeline-badge-wrap">
+                <span className="timeline-num-badge">06</span>
+                <span className="timeline-dot-red" />
               </div>
+              <div className="timeline-connector-line" />
+            </div>
 
-              <h2
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.2rem, 4.2vw, 3.4rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
-                  color: '#111111',
-                  lineHeight: 1.15,
-                  marginBottom: '2rem',
-                }}
-              >
-                Proof that the
-                <br />
-                idea works.
-              </h2>
+            {/* Content */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(280px, 1fr) 1.4fr',
+                gap: 'clamp(2rem, 4vw, 4rem)',
+                alignItems: 'start',
+                flex: 1,
+              }}
+              className="proof-content-grid"
+            >
+              {/* Left: Text */}
+              <div>
+                <div className="genesis-tag">
+                  <span className="tag-red-bullet">•</span>
+                  <span>PROOF THAT IT WORKS</span>
+                </div>
 
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  gap: '1.5rem',
-                  marginBottom: '1.5rem',
-                }}
-              >
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+                    fontWeight: 500,
+                    letterSpacing: '-0.03em',
+                    color: '#111111',
+                    lineHeight: 1.12,
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  Journeys already taken.
+                </h2>
+
                 <div
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(3.8rem, 6.5vw, 6rem)',
+                    fontSize: 'clamp(3.5rem, 6vw, 5.5rem)',
                     fontWeight: 600,
-                    color: '#DE322D',
-                    lineHeight: 0.9,
+                    color: '#111111',
+                    lineHeight: 0.95,
+                    marginBottom: '1.5rem',
                   }}
                 >
                   15+
                 </div>
 
-                <div
-                  style={{
-                    color: '#444444',
-                    fontSize: '0.95rem',
-                    lineHeight: 1.6,
-                    maxWidth: '380px',
-                  }}
-                >
-                  <p style={{ margin: 0, marginBottom: '0.75rem' }}>
-                    Tourin has already completed 15+ separate bookings, ranging from individual
-                    travellers and small groups to larger groups, including a 20-biker trip.
-                  </p>
-                  <p style={{ margin: 0, color: '#777777', fontSize: '0.85rem' }}>
-                    These are early proof that there is an audience for the kind of travel Tourin is
-                    building.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: 8-Photo Collage Grid (2 rows x 4 columns) */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '0.75rem',
-              }}
-            >
-              {proofCollage.map((item, idx) => (
-                <div
-                  key={idx}
-                  onMouseEnter={() => handlePillEnter('MOMENTS')}
-                  onMouseLeave={handlePillLeave}
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    aspectRatio: '16/11',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
-                    backgroundColor: '#eee',
-                    boxShadow: '0 4px 16px rgba(0, 0, 0, 0.05)',
-                  }}
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
+                <div style={{ maxWidth: '380px' }}>
+                  <p
                     style={{
-                      objectFit: 'cover',
-                      transition: 'transform 0.5s ease',
+                      fontSize: '0.95rem',
+                      color: '#555555',
+                      lineHeight: 1.65,
+                      marginBottom: '0.75rem',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                  />
+                  >
+                    Tourin has already completed 15+ separate bookings, ranging from individual travellers and small groups to larger groups, including a 20-biker trip.
+                  </p>
+                  <p
+                    style={{
+                      fontSize: '0.875rem',
+                      color: '#777777',
+                      lineHeight: 1.6,
+                      marginBottom: '2rem',
+                    }}
+                  >
+                    These are early proof that there is an audience for the kind of travel Tourin is building.
+                  </p>
                 </div>
-              ))}
+
+                <Link href="/tourin#curated-journeys" className="genesis-story-link">
+                  <span>REAL TRAVELLER STORIES</span>
+                  <ArrowUpRight size={15} strokeWidth={2.4} />
+                </Link>
+              </div>
+
+              {/* Right: 3-Column Photo Grid (2 rows x 3 columns) */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '0.65rem',
+                }}
+              >
+                {proofCollage.map((item, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      aspectRatio: '16/11',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                    }}
+                  >
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(max-width: 768px) 33vw, 220px"
+                      style={{
+                        objectFit: 'cover',
+                        transition: 'transform 0.5s ease',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.06)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ================================================================
-           08 — SECTION: CURATED LADAKH JOURNEYS
+           07 — SECTION: CURATED JOURNEYS
       ================================================================ */}
       <section
         id="curated-journeys"
@@ -1093,300 +1107,260 @@ export default function TourinPage() {
           paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
           paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
           backgroundColor: '#ffffff',
-          position: 'relative',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
         }}
       >
         <div
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'minmax(240px, 300px) 1fr auto',
-              gap: 'clamp(1.5rem, 3vw, 3rem)',
-              alignItems: 'stretch',
-            }}
-            className="journeys-layout-grid"
-          >
-            {/* Left Column: Heading & Large Watermark 'Ā' */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                position: 'relative',
-              }}
-            >
-              <div>
-                <div
-                  className="tag-mono"
-                  style={{
-                    color: '#DE322D',
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.12em',
-                    marginBottom: '1rem',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  CURATED LADAKH JOURNEYS
-                </div>
-
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(2.2rem, 3.8vw, 3.4rem)',
-                    fontWeight: 500,
-                    letterSpacing: '-0.03em',
-                    color: '#111111',
-                    lineHeight: 1.15,
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  Journeys designed with a reason to be there.
-                </h2>
+          <div className="tourin-section-row">
+            {/* Timeline Col */}
+            <div className="genesis-timeline-col">
+              <div className="timeline-badge-wrap">
+                <span className="timeline-num-badge">07</span>
+                <span className="timeline-dot-red" />
               </div>
-
-              {/* Large artistic watermark Ā */}
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(6rem, 10vw, 9.5rem)',
-                  color: 'rgba(0, 0, 0, 0.05)',
-                  fontWeight: 500,
-                  lineHeight: 1,
-                  userSelect: 'none',
-                  pointerEvents: 'none',
-                }}
-              >
-                Ā
-              </div>
+              <div className="timeline-connector-line" />
             </div>
 
-            {/* Middle Column: 3 Curated Journey Cards */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-                gap: '1.5rem',
-              }}
-            >
-              {journeys.map((journey) => (
-                <div
-                  key={journey.id}
-                  className="tourin-journey-card"
-                  onMouseEnter={() => handlePillEnter('EXPLORE')}
-                  onMouseLeave={handlePillLeave}
-                  style={{
-                    borderRadius: '16px',
-                    backgroundColor: '#ffffff',
-                    border: '1px solid rgba(0, 0, 0, 0.08)',
-                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.04)',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    transition: 'all 0.35s ease',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'relative',
-                      width: '100%',
-                      aspectRatio: '16/10',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Image
-                      src={journey.image}
-                      alt={journey.title}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
+            {/* Main Content Area */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {/* Header Row */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '1.5rem',
+                  marginBottom: '2.5rem',
+                }}
+              >
+                <div>
+                  <div className="genesis-tag">
+                    <span className="tag-red-bullet">•</span>
+                    <span>CURATED JOURNEYS</span>
                   </div>
 
-                  <div
+                  <h2
                     style={{
-                      padding: '1.25rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flex: 1,
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+                      fontWeight: 500,
+                      letterSpacing: '-0.03em',
+                      color: '#111111',
+                      lineHeight: 1.12,
+                      margin: 0,
                     }}
                   >
-                    <h3
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.25rem',
-                        fontWeight: 500,
-                        color: '#111111',
-                        lineHeight: 1.25,
-                        marginBottom: '0.4rem',
-                      }}
-                    >
-                      {journey.title}
-                    </h3>
+                    Journeys designed with a reason.
+                  </h2>
+                </div>
 
-                    <div
-                      className="tag-mono"
-                      style={{
-                        color: '#DE322D',
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        letterSpacing: '0.08em',
-                        marginBottom: '0.35rem',
-                      }}
-                    >
-                      {journey.duration}
-                    </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1.5rem',
+                  }}
+                >
+                  <Link
+                    href="/tourin#curated-journeys"
+                    className="genesis-story-link"
+                    style={{ margin: 0 }}
+                  >
+                    <span>VIEW ALL JOURNEYS</span>
+                    <ArrowUpRight size={15} strokeWidth={2.4} />
+                  </Link>
 
-                    <div
-                      style={{
-                        fontSize: '0.775rem',
-                        color: '#777777',
-                        marginBottom: '0.85rem',
-                      }}
-                    >
-                      {journey.type}
-                    </div>
-
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        color: '#555555',
-                        lineHeight: 1.55,
-                        marginBottom: '1.25rem',
-                        flex: 1,
-                      }}
-                    >
-                      {journey.desc}
-                    </p>
-
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <button
-                      onClick={() => setActiveJourney(journey)}
+                      onClick={() => scrollJourneys('left')}
+                      aria-label="Previous journey"
                       style={{
-                        display: 'inline-flex',
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '1px solid rgba(0, 0, 0, 0.15)',
+                        backgroundColor: '#ffffff',
+                        display: 'flex',
                         alignItems: 'center',
-                        gap: '0.4rem',
-                        fontSize: '0.75rem',
-                        fontFamily: 'var(--font-mono)',
-                        fontWeight: 700,
-                        letterSpacing: '0.08em',
-                        color: '#DE322D',
-                        background: 'none',
-                        border: 'none',
-                        padding: 0,
+                        justifyContent: 'center',
                         cursor: 'pointer',
-                        textAlign: 'left',
-                        textTransform: 'uppercase',
+                        color: '#111111',
+                        transition: 'all 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = '#111111';
+                        e.currentTarget.style.backgroundColor = '#f7f7f7';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.15)';
+                        e.currentTarget.style.backgroundColor = '#ffffff';
                       }}
                     >
-                      <span>EXPLORE JOURNEY</span>
-                      <ArrowRight size={13} />
+                      <ArrowLeft size={16} />
+                    </button>
+                    <button
+                      onClick={() => scrollJourneys('right')}
+                      aria-label="Next journey"
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '1px solid rgba(0, 0, 0, 0.15)',
+                        backgroundColor: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        color: '#111111',
+                        transition: 'all 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = '#111111';
+                        e.currentTarget.style.backgroundColor = '#f7f7f7';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.15)';
+                        e.currentTarget.style.backgroundColor = '#ffffff';
+                      }}
+                    >
+                      <ArrowRight size={16} />
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Right Column: Destination Expansion Vertical Tracker */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                paddingLeft: '1rem',
-                borderLeft: '1px solid rgba(0, 0, 0, 0.08)',
-                minWidth: '160px',
-              }}
-              className="destination-tracker-col"
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span
-                  style={{
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: '#DE322D',
-                    boxShadow: '0 0 8px rgba(222, 50, 45, 0.6)',
-                  }}
-                />
-                <span
-                  className="tag-mono"
-                  style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    color: '#DE322D',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  LADAKH
-                </span>
               </div>
 
+              {/* 3 Cards Grid */}
               <div
+                ref={journeysScrollRef}
                 style={{
-                  width: '1px',
-                  height: '48px',
-                  backgroundColor: 'rgba(0, 0, 0, 0.15)',
-                  margin: '0.5rem 0 0.5rem 3.5px',
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '1.5rem',
                 }}
-              />
+                className="curated-cards-grid"
+              >
+                {journeys.map((journey, idx) => (
+                  <div
+                    key={journey.id}
+                    className="tourin-journey-card"
+                    onClick={() => setActiveJourney(journey)}
+                    onMouseEnter={() => handlePillEnter('EXPLORE')}
+                    onMouseLeave={handlePillLeave}
+                    style={{
+                      borderRadius: '16px',
+                      backgroundColor: '#ffffff',
+                      border: '1px solid rgba(0, 0, 0, 0.08)',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      cursor: 'pointer',
+                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                    }}
+                  >
+                    {/* Top Image with Number Badge */}
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '16/10',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src={journey.image}
+                        alt={journey.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        style={{
+                          objectFit: 'cover',
+                          transition: 'transform 0.6s ease',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                      />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '1.25rem',
+                          left: '1.25rem',
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '1.75rem',
+                          fontWeight: 400,
+                          color: '#ffffff',
+                          lineHeight: 1,
+                          textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+                          userSelect: 'none',
+                        }}
+                      >
+                        {String(idx + 1).padStart(2, '0')}
+                      </div>
+                    </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                    marginLeft: '1px',
-                  }}
-                />
-                <span
-                  className="tag-mono"
-                  style={{
-                    fontSize: '0.7rem',
-                    color: '#777777',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  NORTH INDIA
-                </span>
-              </div>
+                    {/* Card Body */}
+                    <div
+                      style={{
+                        padding: '1.5rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flex: 1,
+                      }}
+                    >
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-display)',
+                          fontSize: '1.3rem',
+                          fontWeight: 500,
+                          color: '#111111',
+                          lineHeight: 1.2,
+                          marginBottom: '0.35rem',
+                        }}
+                      >
+                        {journey.title}
+                      </h3>
 
-              <div
-                style={{
-                  width: '1px',
-                  height: '48px',
-                  backgroundColor: 'rgba(0, 0, 0, 0.15)',
-                  margin: '0.5rem 0 0.5rem 3.5px',
-                }}
-              />
+                      <div
+                        style={{
+                          fontSize: '0.825rem',
+                          color: '#777777',
+                          marginBottom: '0.85rem',
+                          fontWeight: 400,
+                        }}
+                      >
+                        {journey.duration}
+                      </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-                    marginLeft: '1px',
-                  }}
-                />
-                <span
-                  className="tag-mono"
-                  style={{
-                    fontSize: '0.675rem',
-                    color: '#999999',
-                    letterSpacing: '0.08em',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  MORE PLACES
-                  <br />
-                  WORTH KNOWING
-                </span>
+                      <p
+                        style={{
+                          fontSize: '0.875rem',
+                          color: '#555555',
+                          lineHeight: 1.55,
+                          marginBottom: '1.5rem',
+                          flex: 1,
+                        }}
+                      >
+                        {journey.desc}
+                      </p>
+
+                      <div
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          fontSize: '0.825rem',
+                          fontWeight: 600,
+                          color: '#111111',
+                        }}
+                      >
+                        <span>Explore Journey</span>
+                        <ArrowUpRight size={14} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -1394,19 +1368,21 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-           09 — SECTION: FINAL CTA ("Come travel differently.")
+           08 — SECTION: CTA BANNER ("Come travel differently.")
       ================================================================ */}
       <section
         style={{
           position: 'relative',
-          paddingTop: 'clamp(5rem, 9vw, 8.5rem)',
-          paddingBottom: 'clamp(5rem, 9vw, 8.5rem)',
           overflow: 'hidden',
-          backgroundColor: '#0c0c0e',
+          backgroundColor: '#0a1017',
           color: '#ffffff',
+          padding: 'clamp(4.5rem, 7vw, 7rem) 0',
+          minHeight: '480px',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        {/* Background Visual: Expedition Vehicle on Mountain Road */}
+        {/* Background Panoramic Photo */}
         <div
           style={{
             position: 'absolute',
@@ -1418,13 +1394,13 @@ export default function TourinPage() {
           }}
         >
           <Image
-            src="/images/tourin/tourin-3.jpg"
-            alt="Tourin 4x4 expedition vehicle driving on dramatic mountain road"
+            src="/images/tourin/tourin-cta-banner.jpg"
+            alt="Traveller looking out over sunset mountains and coast"
             fill
+            priority
             style={{
               objectFit: 'cover',
               objectPosition: 'center 40%',
-              opacity: 0.38,
             }}
           />
           <div
@@ -1435,7 +1411,7 @@ export default function TourinPage() {
               right: 0,
               bottom: 0,
               background:
-                'linear-gradient(to right, rgba(12,12,14,0.92) 0%, rgba(12,12,14,0.7) 50%, rgba(12,12,14,0.92) 100%)',
+                'linear-gradient(to right, rgba(16, 28, 40, 0.92) 0%, rgba(16, 28, 40, 0.78) 38%, rgba(16, 28, 40, 0.25) 70%, rgba(16, 28, 40, 0.4) 100%)',
             }}
           />
         </div>
@@ -1450,122 +1426,162 @@ export default function TourinPage() {
             width: '100%',
           }}
         >
+          {/* Top Location Tabs */}
           <div
             style={{
               display: 'flex',
-              flexWrap: 'wrap',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '2.5rem',
+              gap: 'clamp(1.25rem, 3vw, 2.5rem)',
+              marginBottom: '2rem',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.72rem',
+              letterSpacing: '0.12em',
+              color: 'rgba(255, 255, 255, 0.75)',
+              textTransform: 'uppercase',
+              fontWeight: 500,
             }}
           >
-            {/* Left Headline */}
-            <div>
+            <span>LADAKH</span>
+            <span>NORTH INDIA</span>
+            <span>MORE PLACES WORTH KNOWING</span>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '3rem',
+            }}
+          >
+            {/* Left Headline & Buttons */}
+            <div style={{ maxWidth: '580px' }}>
               <h2
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(2.8rem, 5.5vw, 4.8rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.03em',
+                  fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.025em',
                   color: '#ffffff',
-                  lineHeight: 1.05,
+                  lineHeight: 1.1,
                   marginBottom: '1rem',
                 }}
               >
-                Come travel
-                <br />
-                differently.
+                Come travel differently.
               </h2>
               <p
                 style={{
-                  color: 'rgba(255, 255, 255, 0.75)',
-                  fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
-                  margin: 0,
+                  color: 'rgba(255, 255, 255, 0.82)',
+                  fontSize: 'clamp(1rem, 1.4vw, 1.25rem)',
+                  marginBottom: '2.5rem',
+                  lineHeight: 1.5,
                 }}
               >
-                Explore our Ladakh journeys.
+                Explore our journeys.
               </p>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <a
+                  href="#curated-journeys"
+                  style={{
+                    height: '46px',
+                    padding: '0 1.8rem',
+                    backgroundColor: '#111111',
+                    color: '#ffffff',
+                    borderRadius: '9999px',
+                    fontSize: '0.825rem',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    transition: 'all 0.25s ease',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#222222')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#111111')}
+                >
+                  <span>Explore Journeys</span>
+                  <ArrowUpRight size={15} />
+                </a>
+
+                <Link
+                  href="/contact"
+                  style={{
+                    height: '46px',
+                    padding: '0 1.8rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.35)',
+                    color: '#ffffff',
+                    borderRadius: '9999px',
+                    fontSize: '0.825rem',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 500,
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    transition: 'all 0.25s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.22)';
+                    e.currentTarget.style.borderColor = '#ffffff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
+                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.35)';
+                  }}
+                >
+                  <span>Talk to us about a journey</span>
+                </Link>
+              </div>
             </div>
 
-            {/* Right Buttons */}
+            {/* Right: Handwritten Script text */}
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                alignItems: 'flex-start',
+                fontFamily: "'Caveat', cursive",
+                fontSize: 'clamp(2.6rem, 4.5vw, 3.8rem)',
+                lineHeight: 1.05,
+                color: 'rgba(255, 255, 255, 0.88)',
+                transform: 'rotate(-5deg)',
+                textAlign: 'right',
+                fontWeight: 700,
+                letterSpacing: '0.02em',
+                textShadow: '0 2px 14px rgba(0,0,0,0.3)',
+                userSelect: 'none',
+                paddingRight: '1rem',
               }}
             >
-              <a
-                href="#curated-journeys"
-                className="button-editorial"
-                style={{
-                  height: '48px',
-                  padding: '0 2rem',
-                  backgroundColor: '#DE322D',
-                  color: '#ffffff',
-                  borderRadius: '9999px',
-                  fontSize: '0.78rem',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                <span>VIEW LADAKH EXPERIENCES</span>
-                <ArrowRight size={14} />
-              </a>
-
-              <Link
-                href="/contact"
-                className="button-editorial"
-                style={{
-                  height: '48px',
-                  padding: '0 2rem',
-                  backgroundColor: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.65)',
-                  color: '#ffffff',
-                  borderRadius: '9999px',
-                  fontSize: '0.78rem',
-                  fontFamily: 'var(--font-mono)',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textDecoration: 'none',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  transition: 'all 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                  e.currentTarget.style.borderColor = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.65)';
-                }}
-              >
-                <span>TALK TO US ABOUT A JOURNEY</span>
-              </Link>
+              <div>Same</div>
+              <div>World</div>
+              <div>Different</div>
+              <div>Stories</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ================================================================
-          11 — PRE-FOOTER TOURIN IDENTITY & FOOTER
+          09 — TOURIN LIGHT FOOTER
       ================================================================ */}
       <footer
         style={{
-          backgroundColor: '#0a0a0c',
-          color: '#ffffff',
-          paddingTop: 'clamp(4rem, 6vw, 6rem)',
-          paddingBottom: 'clamp(2rem, 4vw, 3rem)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          backgroundColor: '#ffffff',
+          color: '#111111',
+          paddingTop: 'clamp(3.5rem, 5vw, 5rem)',
+          paddingBottom: 'clamp(2rem, 3vw, 2.5rem)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.08)',
         }}
       >
         <div
@@ -1576,51 +1592,49 @@ export default function TourinPage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
+              gridTemplateColumns: '1.2fr 1.6fr 1.4fr 1fr',
               gap: 'clamp(2rem, 4vw, 4rem)',
               paddingBottom: '3.5rem',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+              borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             }}
+            className="tourin-footer-grid"
           >
-            {/* Column 1: TOURIN Brand Identity */}
-            <div style={{ gridColumn: 'span 1' }}>
+            {/* Column 1: TOURIN Brand */}
+            <div>
               <div
                 style={{
                   fontFamily: 'var(--font-display)',
-                  fontSize: '1.4rem',
+                  fontSize: '1.35rem',
                   fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  color: '#ffffff',
-                  marginBottom: '0.75rem',
+                  letterSpacing: '0.04em',
+                  color: '#111111',
+                  marginBottom: '0.5rem',
                 }}
               >
                 TOURIN
               </div>
               <p
                 style={{
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  color: '#666666',
                   fontSize: '0.85rem',
                   lineHeight: 1.5,
                   margin: 0,
                   maxWidth: '220px',
                 }}
               >
-                Experiential travel,
-                <br />
-                beginning with Ladakh.
+                Experiential travel, beyond boundaries.
               </p>
             </div>
 
             {/* Column 2: ĀROHANA Nav */}
             <div>
               <div
-                className="tag-mono"
                 style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.1em',
-                  marginBottom: '1rem',
-                  textTransform: 'uppercase',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  color: '#111111',
+                  marginBottom: '0.85rem',
                 }}
               >
                 ĀROHANA
@@ -1628,9 +1642,9 @@ export default function TourinPage() {
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.55rem',
-                  fontSize: '0.825rem',
+                  flexWrap: 'wrap',
+                  gap: '1.25rem',
+                  fontSize: '0.85rem',
                 }}
               >
                 {[
@@ -1645,14 +1659,15 @@ export default function TourinPage() {
                     key={item.label}
                     href={item.href}
                     style={{
-                      color: item.label === 'Tourin' ? '#DE322D' : 'rgba(255, 255, 255, 0.75)',
+                      color: item.label === 'Tourin' ? '#DE322D' : '#555555',
                       textDecoration: 'none',
                       transition: 'color 0.2s ease',
+                      fontWeight: item.label === 'Tourin' ? 500 : 400,
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
                     onMouseLeave={(e) =>
                       (e.currentTarget.style.color =
-                        item.label === 'Tourin' ? '#DE322D' : 'rgba(255, 255, 255, 0.75)')
+                        item.label === 'Tourin' ? '#DE322D' : '#555555')
                     }
                   >
                     {item.label}
@@ -1666,33 +1681,36 @@ export default function TourinPage() {
               <div
                 className="tag-mono"
                 style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontSize: '0.7rem',
+                  color: '#888888',
+                  fontSize: '0.72rem',
                   letterSpacing: '0.1em',
-                  marginBottom: '1rem',
+                  marginBottom: '0.75rem',
                   textTransform: 'uppercase',
+                  fontWeight: 600,
                 }}
               >
                 OFFICE
               </div>
               <div
                 style={{
-                  color: 'rgba(255, 255, 255, 0.75)',
+                  color: '#555555',
                   fontSize: '0.825rem',
                   lineHeight: 1.6,
                 }}
               >
-                <div style={{ color: '#ffffff', fontWeight: 500, marginBottom: '0.25rem' }}>
+                <div style={{ color: '#111111', fontWeight: 600, marginBottom: '0.25rem' }}>
                   ĀROHANA Consultancy
                 </div>
                 <div>30, Goodwill Square, Aundh-Ravet BRTS Rd,</div>
-                <div style={{ marginBottom: '0.75rem' }}>Near D Mart, Thergaon, Pune 411033, India.</div>
+                <div style={{ marginBottom: '0.75rem' }}>
+                  Near D Mart, Thergaon, Pune 411033, India.
+                </div>
 
                 <div>
                   <a
                     href="mailto:founder@byarohana.com"
                     style={{
-                      color: '#ffffff',
+                      color: '#111111',
                       textDecoration: 'none',
                       display: 'block',
                       marginBottom: '0.2rem',
@@ -1703,7 +1721,7 @@ export default function TourinPage() {
                   <a
                     href="tel:+918380092241"
                     style={{
-                      color: 'rgba(255, 255, 255, 0.75)',
+                      color: '#555555',
                       textDecoration: 'none',
                     }}
                   >
@@ -1718,11 +1736,12 @@ export default function TourinPage() {
               <div
                 className="tag-mono"
                 style={{
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  fontSize: '0.7rem',
+                  color: '#888888',
+                  fontSize: '0.72rem',
                   letterSpacing: '0.1em',
-                  marginBottom: '1rem',
+                  marginBottom: '0.75rem',
                   textTransform: 'uppercase',
+                  fontWeight: 600,
                 }}
               >
                 SOCIAL
@@ -1731,7 +1750,7 @@ export default function TourinPage() {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '0.55rem',
+                  gap: '0.45rem',
                   fontSize: '0.825rem',
                 }}
               >
@@ -1746,12 +1765,12 @@ export default function TourinPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      color: 'rgba(255, 255, 255, 0.75)',
+                      color: '#555555',
                       textDecoration: 'none',
                       transition: 'color 0.2s ease',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = '#555555')}
                   >
                     {s.label}
                   </a>
@@ -1763,21 +1782,20 @@ export default function TourinPage() {
           {/* Bottom Copyright */}
           <div
             style={{
-              paddingTop: '2rem',
+              paddingTop: '1.75rem',
               display: 'flex',
               flexWrap: 'wrap',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '1rem',
-              color: 'rgba(255, 255, 255, 0.45)',
+              color: '#777777',
               fontSize: '0.75rem',
               fontFamily: 'var(--font-mono)',
             }}
           >
             <div>© 2025 ĀROHANA Consultancy. All Rights Reserved.</div>
-            <div style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-              Pune • Ladakh • Pan-India Engagements
-            </div>
+            <div style={{ color: '#555555' }}>Pune • Ladakh • Pan-India Engagements</div>
+            <div style={{ color: '#777777' }}>Tourin | Experiential Travel & Journeys</div>
           </div>
         </div>
       </footer>
@@ -1993,19 +2011,19 @@ export default function TourinPage() {
       {/* Responsive media query adjustments */}
       <style jsx>{`
         @media (max-width: 991px) {
-          .journeys-layout-grid {
+          .curated-cards-grid {
             grid-template-columns: 1fr !important;
           }
-          .destination-tracker-col {
-            flex-direction: row !important;
-            border-left: none !important;
-            border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
-            padding-left: 0 !important;
-            padding-top: 1.5rem !important;
-            justify-content: space-between !important;
+          .tourin-footer-grid {
+            grid-template-columns: 1fr 1fr !important;
           }
-          .destination-tracker-col > div[style*='width: 1px'] {
-            display: none !important;
+          .proof-content-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .tourin-footer-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>
