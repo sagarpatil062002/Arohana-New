@@ -28,8 +28,8 @@ export default function Navbar() {
     { label: 'Studio', href: '/about' },
     { label: 'Work', href: '/work', badge: '6' },
     { label: 'Services', href: '/services' },
-    { label: 'Tourin', href: '/tourin' },
-    { label: 'Army Projects', href: '/indian-army-projects' },
+    { label: 'Tourism', href: '/tourin' },
+    { label: 'Army Projects', href: '/#army-projects' },
     { label: 'Contact', href: '/contact' },
   ];
 
@@ -143,13 +143,59 @@ export default function Navbar() {
                     {link.badge}
                   </span>
                 )}
+                {isActive && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      bottom: '-6px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '16px',
+                      height: '2px',
+                      backgroundColor: '#DE322D',
+                      borderRadius: '1px',
+                    }}
+                  />
+                )}
               </Link>
             );
           })}
         </nav>
 
-        {/* Mobile Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        {/* Right CTA Button (Desktop) & Mobile Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Link
+            href="/contact"
+            className="desktop-header-cta"
+            style={{
+              height: '42px',
+              padding: '0 1.35rem',
+              backgroundColor: isTourinDarkHero ? 'rgba(255, 255, 255, 0.15)' : '#0c1626',
+              color: '#ffffff',
+              borderRadius: '9999px',
+              display: 'none',
+              alignItems: 'center',
+              gap: '0.55rem',
+              fontSize: '0.84rem',
+              fontWeight: 500,
+              textDecoration: 'none',
+              transition: 'all 0.25s ease',
+              border: isTourinDarkHero ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid rgba(0, 0, 0, 0.1)',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.backgroundColor = isTourinDarkHero ? 'rgba(255, 255, 255, 0.25)' : '#16233b';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.backgroundColor = isTourinDarkHero ? 'rgba(255, 255, 255, 0.15)' : '#0c1626';
+            }}
+          >
+            <span>Start a Conversation</span>
+            <span style={{ fontSize: '1rem', lineHeight: 1 }}>→</span>
+          </Link>
+
           {/* Mobile hamburger button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -287,6 +333,9 @@ export default function Navbar() {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+          }
+          .desktop-header-cta {
+            display: inline-flex !important;
           }
           .mobile-toggle {
             display: none !important;

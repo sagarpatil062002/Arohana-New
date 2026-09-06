@@ -22,7 +22,7 @@ const ARMY_CAROUSEL_ITEMS: ArmyCard[] = [
     category: 'Community Health Initiative',
     title: 'SHE Ladakh',
     location: '14 CORPS · REMOTE BORDER VALLEYS',
-    image: '/images/case-studies/she-hero.jpg',
+    image: '/images/army/symbolic-army-terrain.jpg',
     activeBadge: true,
   },
   {
@@ -31,7 +31,7 @@ const ARMY_CAROUSEL_ITEMS: ArmyCard[] = [
     category: 'Operation Sampark / Homestays',
     title: 'Field Operations & Training',
     location: 'ZANSKAR · NUBRA · CHANGTHANG',
-    image: '/images/tourin/tourin-2.jpg',
+    image: '/images/army/sampark-1.jpg',
   },
   {
     id: 'western-command-film',
@@ -63,7 +63,7 @@ const ARMY_CAROUSEL_ITEMS: ArmyCard[] = [
     category: 'Ceremonial Master Film',
     title: 'Western Command Sound & Master',
     location: 'THEATRE COMMAND · PROTOCOL',
-    image: '/images/army/western-command-2.jpg',
+    image: '/images/army/symbolic-army-terrain.jpg',
   },
 ];
 
@@ -90,12 +90,12 @@ export default function IndianArmySpotlight() {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Autoplay
+  // Autoplay every 1.5 seconds
   useEffect(() => {
     if (isHovered) return;
     const timer = setInterval(() => {
       nextSlide();
-    }, 4500);
+    }, 1500);
     return () => clearInterval(timer);
   }, [isHovered, nextSlide]);
 
@@ -117,6 +117,7 @@ export default function IndianArmySpotlight() {
 
   return (
     <section
+      id="army-projects"
       className="section-dark"
       style={{
         backgroundColor: '#0A0A0C',
@@ -179,32 +180,47 @@ export default function IndianArmySpotlight() {
               className="tag-mono"
               style={{
                 color: '#DE322D',
-                marginBottom: '1rem',
+                marginBottom: '0.85rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
                 fontSize: '0.8rem',
                 letterSpacing: '0.15em',
+                fontWeight: 600,
               }}
             >
               <ShieldCheck size={16} />
-              <span>PROOF OF WORK</span>
+              <span>DEFENCE &amp; STRATEGIC BRIEFS</span>
               <span style={{ color: 'rgba(255, 255, 255, 0.4)' }}>•</span>
-              <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>DEFENCE & SPECIAL BRIEFS</span>
+              <span style={{ color: '#ffffff' }}>HIGH-ALTITUDE IMPACT</span>
             </div>
 
             <h2
               style={{
-                fontSize: 'clamp(2.2rem, 5vw, 4.4rem)',
+                fontSize: 'clamp(2.4rem, 5.2vw, 4.4rem)',
                 fontWeight: 500,
                 letterSpacing: '-0.035em',
-                lineHeight: 1.08,
+                lineHeight: 1.05,
                 color: '#ffffff',
-                marginBottom: '1.25rem',
+                marginBottom: '0.65rem',
+                fontFamily: 'var(--font-display)',
               }}
             >
-              Work that doesn't fit a standard agency box.
+              INDIAN ARMY PROJECTS
             </h2>
+
+            <h3
+              style={{
+                fontSize: 'clamp(1.2rem, 2vw, 1.75rem)',
+                fontWeight: 400,
+                color: 'rgba(255, 255, 255, 0.85)',
+                letterSpacing: '-0.02em',
+                marginBottom: '1.25rem',
+                lineHeight: 1.25,
+              }}
+            >
+              Work that doesn&apos;t fit a standard agency box.
+            </h3>
 
             <p
               style={{
@@ -358,7 +374,11 @@ export default function IndianArmySpotlight() {
                         position: 'relative',
                         width: '100%',
                         height: '100%',
-                        borderRadius: '24px',
+                        borderRadius: '16px',
+                        clipPath:
+                          'polygon(18px 0%, calc(100% - 18px) 0%, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0% calc(100% - 18px), 0% 18px)',
+                        WebkitClipPath:
+                          'polygon(18px 0%, calc(100% - 18px) 0%, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0% calc(100% - 18px), 0% 18px)',
                         overflow: 'hidden',
                         border: isActive
                           ? '1px solid rgba(222, 50, 45, 0.8)'
@@ -378,7 +398,8 @@ export default function IndianArmySpotlight() {
                         fill
                         style={{
                           objectFit: 'cover',
-                          transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
+                          transform: isActive ? 'scale(1.06)' : 'scale(1.0)',
+                          transition: 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)',
                         }}
                       />
 

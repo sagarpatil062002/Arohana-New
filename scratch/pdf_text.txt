@@ -1,0 +1,25 @@
+=== Page 0 ===
+Use this image for Hero Section of Home Page and 
+remove the currently used ﬂower video 
+Make the design ﬁt in this kind of box,
+which has cropped edges
+ADD THE ARROWS LIKE THIS
+Here,
+•
+User should be to able scroll from left to right (vice versa) on desktop and mobile as well
+•
+By default the cards should move from left to right every 1.5 secs
+INDIAN
+ARMY
+PROJECTS
+ADD DIFFERENT
+KIND OF IMAGE
+NOT NECESSARILY
+SOLDIER, SOMETHING
+THAT SHOWS ARMY 
+SYMBOLICALLY
+Instead of this 8+ Client,
+make the logos move in animation
+from left to right
+(just like in the current website)
+

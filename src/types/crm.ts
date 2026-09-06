@@ -99,8 +99,20 @@ export interface FinalCtaContent {
   badge3: string;
 }
 
+export interface HeroSlide {
+  id: string;
+  slideOrder: number;
+  backgroundImageUrl: string;
+  textColorTheme: 'light' | 'dark'; // 'light' for dusk slide, 'dark' for daylight slide
+  preTitle?: string;
+  title: string;          // Supports multi-line/linebreak rendering
+  subtitle?: string;
+  isActive: boolean;
+}
+
 export interface CrmStoreState {
   hero: HeroContent;
+  heroSlides: HeroSlide[];
   pov: PovContent;
   offerings: OfferingsContent;
   proof: ProofContent;

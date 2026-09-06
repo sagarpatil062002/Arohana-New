@@ -1,6 +1,7 @@
 import {
   CrmInquiry,
   HeroContent,
+  HeroSlide,
   PovContent,
   OfferingsContent,
   ProofContent,
@@ -8,6 +9,29 @@ import {
   TourinContent,
   FinalCtaContent,
 } from '@/types/crm';
+
+export const DEFAULT_HERO_SLIDES: HeroSlide[] = [
+  {
+    id: 'slide-01',
+    slideOrder: 1,
+    backgroundImageUrl: '/images/home/hero-dusk-mountain.png',
+    textColorTheme: 'light',
+    preTitle: 'BRANDS · EXPERIENCES · IMPACT',
+    title: 'We build brands,\nbusinesses &\nexperiences.',
+    subtitle: 'Ārohana brings together business thinking, creative communication, and disciplined execution.',
+    isActive: true,
+  },
+  {
+    id: 'slide-02',
+    slideOrder: 2,
+    backgroundImageUrl: '/images/home/hero-daylight-cloud.png',
+    textColorTheme: 'dark',
+    preTitle: '',
+    title: 'Ideas\ninto\nImpact.',
+    subtitle: 'We create visual stories, experiences and brands that connect people, places and possibilities.',
+    isActive: true,
+  },
+];
 
 export const DEFAULT_HERO_CONTENT: HeroContent = {
   tagline: 'Next-Gen Creative Consultancy',
