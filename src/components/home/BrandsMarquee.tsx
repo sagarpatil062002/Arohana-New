@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
@@ -9,6 +10,7 @@ interface BrandItem {
   id: string;
   name: string;
   monogram: string;
+  logo?: string;
   badgeBg: string;
   badgeColor: string;
   link: string;
@@ -322,32 +324,44 @@ export default function BrandsMarquee() {
                     cursor: 'pointer',
                   }}
                 >
-                  {/* Square Logo Mark - ONLY Logo, No Brand Name or Tags */}
+                  {/* Square Logo Mark - Logo Image if present, else Monogram */}
                   <div
                     className="brand-logo-mark"
                     style={{
                       width: '54px',
                       height: '54px',
                       borderRadius: '6px',
-                      background: brand.badgeBg,
-                      color: brand.badgeColor,
+                      background: brand.badgeBg || '#111113',
+                      color: brand.badgeColor || '#ffffff',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontFamily: 'var(--font-display)',
                       fontWeight: 700,
                       fontSize:
-                        brand.monogram.length > 3
+                        (brand.monogram || '').length > 3
                           ? '0.78rem'
-                          : brand.monogram.length === 3
+                          : (brand.monogram || '').length === 3
                           ? '0.9rem'
                           : '1.05rem',
                       letterSpacing: '0.04em',
                       boxShadow: '0 3px 8px rgba(0, 0, 0, 0.1)',
                       transition: 'transform 0.25s ease',
+                      position: 'relative',
+                      overflow: 'hidden',
                     }}
                   >
-                    {brand.monogram}
+                    {brand.logo ? (
+                      <Image
+                        src={brand.logo}
+                        alt={brand.name || 'Brand logo'}
+                        fill
+                        sizes="54px"
+                        style={{ objectFit: 'contain', padding: '6px' }}
+                      />
+                    ) : (
+                      brand.monogram
+                    )}
                   </div>
                 </Link>
               ))}

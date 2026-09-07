@@ -25,6 +25,7 @@ import {
   LayoutGrid,
   Send,
   Sliders,
+  Upload,
 } from 'lucide-react';
 
 export default function AdminHomePage() {
@@ -32,6 +33,7 @@ export default function AdminHomePage() {
   const [homeData, setHomeData] = useState<any>(null);
   const [activeSectionId, setActiveSectionId] = useState<string>('hero');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
+  const [brandLogoIndex, setBrandLogoIndex] = useState<number | null>(null);
   const [savedStatus, setSavedStatus] = useState(false);
 
   useEffect(() => {
@@ -434,74 +436,204 @@ export default function AdminHomePage() {
                     <div
                       key={brand.id || idx}
                       style={{
-                        padding: '0.85rem',
-                        borderRadius: '10px',
+                        padding: '1rem',
+                        borderRadius: '12px',
                         border: '1px solid rgba(0,0,0,0.08)',
                         backgroundColor: '#F8F8FA',
-                        display: 'grid',
-                        gridTemplateColumns: '1.2fr 0.8fr 1fr 36px',
-                        gap: '0.65rem',
-                        alignItems: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.85rem',
                       }}
                     >
-                      <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Name</span>
-                        <input
-                          type="text"
-                          value={brand.name || ''}
-                          onChange={(e) => {
-                            const updated = [...homeData.brands.list];
-                            updated[idx] = { ...updated[idx], name: e.target.value };
-                            updateField(['brands', 'list'], updated);
-                          }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.8rem' }}
-                        />
-                      </div>
-                      <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Monogram</span>
-                        <input
-                          type="text"
-                          value={brand.monogram || ''}
-                          onChange={(e) => {
-                            const updated = [...homeData.brands.list];
-                            updated[idx] = { ...updated[idx], monogram: e.target.value };
-                            updateField(['brands', 'list'], updated);
-                          }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.8rem' }}
-                        />
-                      </div>
-                      <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Link</span>
-                        <input
-                          type="text"
-                          value={brand.link || ''}
-                          onChange={(e) => {
-                            const updated = [...homeData.brands.list];
-                            updated[idx] = { ...updated[idx], link: e.target.value };
-                            updateField(['brands', 'list'], updated);
-                          }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.8rem' }}
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const updated = homeData.brands.list.filter((_: any, i: number) => i !== idx);
-                          updateField(['brands', 'list'], updated);
-                        }}
+                      {/* Top Row: Name, Monogram, Link, Delete */}
+                      <div
                         style={{
-                          height: '32px',
-                          border: 'none',
-                          backgroundColor: 'transparent',
-                          color: '#EF4444',
-                          cursor: 'pointer',
-                          display: 'flex',
+                          display: 'grid',
+                          gridTemplateColumns: '1.2fr 0.8fr 1fr 36px',
+                          gap: '0.65rem',
                           alignItems: 'center',
-                          justifyContent: 'center',
                         }}
                       >
-                        <Trash2 size={15} />
-                      </button>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            BRAND NAME
+                          </span>
+                          <input
+                            type="text"
+                            value={brand.name || ''}
+                            placeholder="e.g. Raysons Group"
+                            onChange={(e) => {
+                              const updated = [...homeData.brands.list];
+                              updated[idx] = { ...updated[idx], name: e.target.value };
+                              updateField(['brands', 'list'], updated);
+                            }}
+                            style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.82rem' }}
+                          />
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            MONOGRAM (FALLBACK)
+                          </span>
+                          <input
+                            type="text"
+                            value={brand.monogram || ''}
+                            placeholder="e.g. RG"
+                            onChange={(e) => {
+                              const updated = [...homeData.brands.list];
+                              updated[idx] = { ...updated[idx], monogram: e.target.value };
+                              updateField(['brands', 'list'], updated);
+                            }}
+                            style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.82rem' }}
+                          />
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            TARGET LINK
+                          </span>
+                          <input
+                            type="text"
+                            value={brand.link || ''}
+                            placeholder="e.g. /work"
+                            onChange={(e) => {
+                              const updated = [...homeData.brands.list];
+                              updated[idx] = { ...updated[idx], link: e.target.value };
+                              updateField(['brands', 'list'], updated);
+                            }}
+                            style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.82rem' }}
+                          />
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '0.85rem' }}>
+                          <button
+                            type="button"
+                            title="Delete brand"
+                            onClick={() => {
+                              const updated = homeData.brands.list.filter((_: any, i: number) => i !== idx);
+                              updateField(['brands', 'list'], updated);
+                            }}
+                            style={{
+                              height: '32px',
+                              width: '32px',
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: '#EF4444',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              borderRadius: '6px',
+                            }}
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Bottom Row: Logo option (with preview and fallback indicator) */}
+                      <div
+                        style={{
+                          paddingTop: '0.75rem',
+                          borderTop: '1px dashed rgba(0, 0, 0, 0.08)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '1rem',
+                          flexWrap: 'wrap',
+                        }}
+                      >
+                        {/* Preview Box: shows logo if present, else monogram badge */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <div
+                            style={{
+                              width: '44px',
+                              height: '44px',
+                              borderRadius: '8px',
+                              background: brand.badgeBg || '#111113',
+                              color: brand.badgeColor || '#ffffff',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontFamily: 'var(--font-display, sans-serif)',
+                              fontWeight: 700,
+                              fontSize: (brand.monogram || '').length > 3 ? '0.7rem' : '0.85rem',
+                              position: 'relative',
+                              overflow: 'hidden',
+                              border: '1px solid rgba(0, 0, 0, 0.1)',
+                              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)',
+                              flexShrink: 0,
+                            }}
+                          >
+                            {brand.logo ? (
+                              <img
+                                src={brand.logo}
+                                alt={brand.name || 'Logo'}
+                                style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }}
+                              />
+                            ) : (
+                              brand.monogram || '?'
+                            )}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '0.74rem', fontWeight: 600, color: brand.logo ? '#16A34A' : '#71717A' }}>
+                              {brand.logo ? '✓ Logo Active' : '● Using Monogram'}
+                            </div>
+                            <div style={{ fontSize: '0.68rem', color: '#A1A1AA' }}>
+                              {brand.logo ? 'Displayed in marquee' : 'Upload logo or keep monogram'}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Logo URL Input & Actions */}
+                        <div style={{ flex: 1, minWidth: '220px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <input
+                            type="text"
+                            placeholder="Logo URL or pick file..."
+                            value={brand.logo || ''}
+                            onChange={(e) => {
+                              const updated = [...homeData.brands.list];
+                              updated[idx] = { ...updated[idx], logo: e.target.value };
+                              updateField(['brands', 'list'], updated);
+                            }}
+                            style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.78rem' }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setBrandLogoIndex(idx)}
+                            style={{
+                              ...mediaBtnStyle,
+                              padding: '0.4rem 0.75rem',
+                              fontSize: '0.74rem',
+                              height: '32px',
+                            }}
+                          >
+                            <Upload size={12} /> Upload
+                          </button>
+                          {brand.logo && (
+                            <button
+                              type="button"
+                              title="Remove logo (use monogram)"
+                              onClick={() => {
+                                const updated = [...homeData.brands.list];
+                                const { logo, ...rest } = updated[idx];
+                                updated[idx] = rest;
+                                updateField(['brands', 'list'], updated);
+                              }}
+                              style={{
+                                padding: '0.4rem 0.65rem',
+                                borderRadius: '8px',
+                                border: '1px solid rgba(239, 68, 68, 0.2)',
+                                backgroundColor: '#FEF2F2',
+                                color: '#EF4444',
+                                fontSize: '0.74rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                whiteSpace: 'nowrap',
+                                height: '32px',
+                              }}
+                            >
+                              Use Monogram
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -1702,15 +1834,25 @@ export default function AdminHomePage() {
       </div>
 
       {/* Media Picker Modal */}
-      {mediaPickerTarget && (
+      {(mediaPickerTarget || brandLogoIndex !== null) && (
         <MediaPickerModal
           isOpen={true}
-          onClose={() => setMediaPickerTarget(null)}
-          mediaType={mediaPickerTarget.type || 'image'}
-          onSelect={(url) => {
-            const parts = mediaPickerTarget.path.split('.');
-            updateField(parts, url);
+          onClose={() => {
             setMediaPickerTarget(null);
+            setBrandLogoIndex(null);
+          }}
+          mediaType={mediaPickerTarget?.type || 'image'}
+          onSelect={(url) => {
+            if (brandLogoIndex !== null) {
+              const updated = [...(homeData.brands?.list || [])];
+              updated[brandLogoIndex] = { ...updated[brandLogoIndex], logo: url };
+              updateField(['brands', 'list'], updated);
+              setBrandLogoIndex(null);
+            } else if (mediaPickerTarget) {
+              const parts = mediaPickerTarget.path.split('.');
+              updateField(parts, url);
+              setMediaPickerTarget(null);
+            }
           }}
         />
       )}

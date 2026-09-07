@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 
 interface ClientLogoItem {
@@ -12,6 +13,7 @@ interface ClientLogoItem {
   badgeColor: string;
   textColor: string;
   monogram: string;
+  logo?: string;
   link?: string;
   isSpecial?: 'badge' | 'more';
 }
@@ -295,7 +297,7 @@ export default function ClientLogoMarquee() {
                 e.currentTarget.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.03)';
               }}
             >
-              {/* Brand Monogram Icon Badge */}
+              {/* Brand Monogram or Logo Icon Badge */}
               <div
                 style={{
                   width: '42px',
@@ -308,13 +310,25 @@ export default function ClientLogoMarquee() {
                   justifyContent: 'center',
                   fontFamily: 'var(--font-display)',
                   fontWeight: 700,
-                  fontSize: client.monogram.length > 3 ? '0.7rem' : '0.85rem',
+                  fontSize: (client.monogram || '').length > 3 ? '0.7rem' : '0.85rem',
                   letterSpacing: '0.04em',
                   flexShrink: 0,
                   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                {client.monogram}
+                {client.logo ? (
+                  <Image
+                    src={client.logo}
+                    alt={client.name || 'Logo'}
+                    fill
+                    sizes="42px"
+                    style={{ objectFit: 'contain', padding: '4px' }}
+                  />
+                ) : (
+                  client.monogram
+                )}
               </div>
 
               {/* Brand Typography Details */}

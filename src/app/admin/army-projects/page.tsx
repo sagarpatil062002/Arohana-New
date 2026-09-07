@@ -14,6 +14,7 @@ export default function AdminArmyProjectsPage() {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>('western-command-investiture');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'hero' | 'stats' | 'disclaimer' | 'projects'>('hero');
   const [savedStatus, setSavedStatus] = useState(false);
 
   useEffect(() => {
@@ -26,7 +27,6 @@ export default function AdminArmyProjectsPage() {
     return <div style={{ padding: '2rem' }}>Loading Indian Army Projects...</div>;
   }
 
-  const [activeTab, setActiveTab] = useState<'hero' | 'stats' | 'disclaimer' | 'projects'>('hero');
   const selectedProject = armyData.projects?.find((p: any) => p.id === selectedProjectId) || armyData.projects?.[0];
 
   const handleHeroChange = (field: string, val: string) => {
