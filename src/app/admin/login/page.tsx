@@ -7,8 +7,8 @@ import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Loader2 } from 'lucid
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@arohana.com');
-  const [password, setPassword] = useState('Arohana@2026');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -165,7 +165,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@arohana.com"
+                placeholder="Enter admin email"
                 style={{
                   width: '100%',
                   padding: '0.8rem 1rem 0.8rem 2.65rem',
