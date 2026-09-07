@@ -221,12 +221,12 @@ export default function TourinSpotlight() {
               <div className="cta-buttons-row">
                 <Link href="/tourin" className="btn-primary-pill">
                   <span>Explore Tourin Journeys</span>
-                  <ArrowUpRight size={15} strokeWidth={2.4} />
+                  <ArrowRight size={15} strokeWidth={2.2} />
                 </Link>
 
                 <Link href="/contact" className="btn-secondary-pill">
                   <span>Plan a Journey</span>
-                  <ArrowUpRight size={15} strokeWidth={2.2} />
+                  <ArrowRight size={15} strokeWidth={2.2} />
                 </Link>
               </div>
 

@@ -1189,7 +1189,7 @@ export default function WorkPage() {
               <div className="work-directory-footer">
                 <Link href="/contact" className="work-dir-explore-btn">
                   <span>Explore the directory</span>
-                  <ArrowUpRight size={14} />
+                  <ArrowRight size={16} color="#ffffff" />
                 </Link>
               </div>
             </div>
@@ -1404,20 +1404,25 @@ export default function WorkPage() {
         .work-dir-explore-btn {
           display: inline-flex;
           align-items: center;
-          gap: 0.65rem;
-          padding: 0.65rem 1.4rem;
+          gap: 0.55rem;
+          padding: 0.8rem 1.65rem;
           border-radius: 9999px;
-          border: 1px solid rgba(0, 0, 0, 0.15);
-          background-color: #FFFFFF;
-          color: #111113;
-          font-size: 0.8rem;
+          border: 1px solid #000000;
+          background-color: #000000;
+          color: #FFFFFF;
+          font-family: var(--font-display, sans-serif);
+          font-size: 0.88rem;
           font-weight: 600;
           text-decoration: none;
-          transition: all 0.25s ease;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .work-dir-explore-btn:hover {
-          background-color: #111113;
+          background-color: #222226;
+          border-color: #222222;
           color: #FFFFFF;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
         }
 
         /* ── MOBILE VIEWPORT OPTIMIZATIONS (Exact match to uploaded Image 1) ── */

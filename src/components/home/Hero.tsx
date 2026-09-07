@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
 interface HeroSlideData {
@@ -390,7 +390,7 @@ export default function Hero() {
                         }}
                       >
                         <span>{currentSlide.primaryCtaText}</span>
-                        <ArrowUpRight size={17} />
+                        <ArrowRight size={17} />
                       </Link>
 
                       <button

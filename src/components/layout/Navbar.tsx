@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, ArrowRight } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -254,31 +254,31 @@ export default function Navbar() {
               className="desktop-header-cta"
               style={{
                 height: '42px',
-                padding: '0 1.35rem',
-                backgroundColor: isDarkHero ? 'rgba(212, 175, 55, 0.15)' : '#0c1626',
-                color: isDarkHero ? '#d4af37' : '#ffffff',
+                padding: '0 1.45rem',
+                backgroundColor: '#000000',
+                color: '#ffffff',
                 borderRadius: '9999px',
                 display: 'none',
                 alignItems: 'center',
                 gap: '0.55rem',
                 fontSize: '0.84rem',
-                fontWeight: 500,
+                fontWeight: 600,
                 textDecoration: 'none',
                 transition: 'all 0.25s ease',
-                border: isDarkHero ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 0, 0, 0.1)',
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.08)',
+                border: '1px solid #000000',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.backgroundColor = isDarkHero ? 'rgba(212, 175, 55, 0.25)' : '#16233b';
+                e.currentTarget.style.backgroundColor = '#222226';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.backgroundColor = isDarkHero ? 'rgba(212, 175, 55, 0.15)' : '#0c1626';
+                e.currentTarget.style.backgroundColor = '#000000';
               }}
             >
               <span>Let&apos;s Talk</span>
-              <ArrowUpRight size={14} />
+              <ArrowRight size={14} color="#ffffff" />
             </Link>
           )}
 
@@ -390,11 +390,23 @@ export default function Navbar() {
           >
             <Link
               href="/contact"
-              className="button-editorial button-editorial-dark"
-              style={{ height: '48px', width: '100%', justifyContent: 'center', backgroundColor: isDarkHero ? 'rgba(212, 175, 55, 0.15)' : undefined, borderColor: isDarkHero ? 'rgba(212, 175, 55, 0.3)' : undefined, color: isDarkHero ? '#d4af37' : undefined }}
+              className="button-editorial"
+              style={{
+                height: '48px',
+                width: '100%',
+                justifyContent: 'center',
+                backgroundColor: '#000000',
+                color: '#ffffff',
+                border: '1px solid #000000',
+                borderRadius: '9999px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.55rem',
+                fontWeight: 600,
+              }}
             >
               <span>Start a conversation</span>
-              <ArrowUpRight size={16} />
+              <ArrowRight size={16} color="#ffffff" />
             </Link>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.8rem', color: isDarkHero ? 'rgba(255, 255, 255, 0.5)' : '#666' }}>

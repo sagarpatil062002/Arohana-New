@@ -411,11 +411,12 @@ export default function TourinPage() {
               <div className="tourin-action-buttons">
                 <a href="#curated-journeys" className="tourin-primary-pill">
                   <span>Explore Journeys</span>
-                  <ArrowUpRight size={14} strokeWidth={2.4} />
+                  <ArrowRight size={15} strokeWidth={2.4} />
                 </a>
 
                 <Link href="/contact" className="tourin-secondary-pill">
                   <span>Talk to us about a journey</span>
+                  <ArrowRight size={15} strokeWidth={2.4} />
                 </Link>
               </div>
 
@@ -575,7 +576,7 @@ export default function TourinPage() {
 
                   <Link href="/about" className="genesis-story-link">
                     <span>{genesis.storyLinkText || 'OUR STORY'}</span>
-                    <ArrowUpRight size={15} strokeWidth={2.4} />
+                    <ArrowRight size={15} strokeWidth={2.4} />
                   </Link>
                 </div>
 
@@ -1554,57 +1555,63 @@ export default function TourinPage() {
                 <a
                   href="#curated-journeys"
                   style={{
-                    height: '46px',
-                    padding: '0 1.8rem',
-                    backgroundColor: '#111111',
+                    height: '48px',
+                    padding: '0 1.85rem',
+                    backgroundColor: '#000000',
                     color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
                     borderRadius: '9999px',
-                    fontSize: '0.825rem',
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 500,
+                    fontSize: '0.88rem',
+                    fontWeight: 550,
                     textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.45rem',
+                    gap: '0.6rem',
                     transition: 'all 0.25s ease',
-                    boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#222222')}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#111111')}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#222226';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#000000';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
                   <span>Explore Journeys</span>
-                  <ArrowUpRight size={15} />
+                  <ArrowRight size={15} />
                 </a>
 
                 <Link
                   href="/contact"
                   style={{
-                    height: '46px',
-                    padding: '0 1.8rem',
-                    backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: '1px solid rgba(255, 255, 255, 0.35)',
+                    height: '48px',
+                    padding: '0 1.85rem',
+                    backgroundColor: '#000000',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
                     color: '#ffffff',
                     borderRadius: '9999px',
-                    fontSize: '0.825rem',
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 500,
+                    fontSize: '0.88rem',
+                    fontWeight: 550,
                     textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
+                    gap: '0.6rem',
                     transition: 'all 0.25s ease',
+                    boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.22)';
-                    e.currentTarget.style.borderColor = '#ffffff';
+                    e.currentTarget.style.backgroundColor = '#222226';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.35)';
+                    e.currentTarget.style.backgroundColor = '#000000';
+                    e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
                   <span>Talk to us about a journey</span>
+                  <ArrowRight size={15} />
                 </Link>
               </div>
             </div>
@@ -2047,23 +2054,23 @@ export default function TourinPage() {
                 href="/contact"
                 className="button-editorial"
                 style={{
-                  height: '46px',
-                  padding: '0 1.75rem',
-                  backgroundColor: '#DE322D',
-                  color: '#fff',
+                  height: '48px',
+                  padding: '0 1.85rem',
+                  backgroundColor: '#000000',
+                  color: '#ffffff',
                   borderRadius: '9999px',
-                  fontSize: '0.8rem',
-                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.88rem',
                   fontWeight: 600,
-                  letterSpacing: '0.06em',
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.45rem',
+                  gap: '0.55rem',
+                  border: '1px solid rgba(255, 255, 255, 0.22)',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <span>TALK TO US ABOUT THIS TRIP</span>
-                <ArrowUpRight size={15} />
+                <span>Talk to us about this trip</span>
+                <ArrowRight size={16} color="#ffffff" />
               </Link>
             </div>
           </div>

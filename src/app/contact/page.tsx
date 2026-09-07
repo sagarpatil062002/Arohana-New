@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, Mail, Phone, MapPin, CheckCircle2, Shield } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Mail, Phone, MapPin, CheckCircle2, Shield } from 'lucide-react';
 import gsap from 'gsap';
 import { useCmsContent } from '@/lib/cms/content-context';
 
@@ -332,20 +332,20 @@ export default function ContactPage() {
                     style={{
                       height: '44px',
                       padding: '0 1.5rem',
-                      backgroundColor: '#ffffff',
-                      color: '#111111',
+                      backgroundColor: '#000000',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: '0.4rem',
+                      gap: '0.5rem',
                       borderRadius: '9999px',
-                      fontSize: '0.82rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontWeight: 600,
+                      fontSize: '0.85rem',
+                      fontWeight: 550,
                       textDecoration: 'none',
                     }}
                   >
                     <span>{callCta.buttonText || 'Book a call'}</span>
-                    <ArrowUpRight size={14} />
+                    <ArrowRight size={14} />
                   </a>
                 </div>
               </div>
@@ -388,10 +388,23 @@ export default function ContactPage() {
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="button-editorial"
-                  style={{ height: '46px', padding: '0 1.5rem' }}
+                  className="button-editorial button-editorial-dark"
+                  style={{
+                    height: '46px',
+                    padding: '0 1.6rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    borderRadius: '9999px',
+                    backgroundColor: '#000000',
+                    color: '#ffffff',
+                    border: '1px solid #000000',
+                    fontWeight: 550,
+                    cursor: 'pointer'
+                  }}
                 >
-                  Send another message
+                  <span>Send another message</span>
+                  <ArrowRight size={14} />
                 </button>
               </div>
             ) : (
@@ -600,13 +613,21 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   className="button-editorial button-editorial-dark"
-                  style={{ height: '52px', padding: '0 2rem', width: '100%', justifyContent: 'center' }}
+                  style={{
+                    height: '52px',
+                    padding: '0 2rem',
+                    width: '100%',
+                    justifyContent: 'center',
+                    borderRadius: '9999px',
+                    backgroundColor: '#000000',
+                    color: '#ffffff',
+                    border: '1px solid #000000',
+                    gap: '0.6rem',
+                    fontWeight: 550
+                  }}
                 >
-                  <div className="button-texts-slider">
-                    <span className="button-text-item">Send message</span>
-                    <span className="button-text-item">Send message</span>
-                  </div>
-                  <ArrowUpRight size={16} />
+                  <span>Send message</span>
+                  <ArrowRight size={16} />
                 </button>
               </form>
             )}

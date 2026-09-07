@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { useCmsContent } from '@/lib/cms/content-context';
@@ -358,13 +359,13 @@ export default function ServicesSection() {
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
-                              gap: '0.85rem',
+                              gap: '0.65rem',
                               padding: '0.85rem 1.75rem',
                               borderRadius: '9999px',
                               backgroundColor: '#000000',
                               color: '#ffffff',
                               border: '1px solid rgba(255, 255, 255, 0.25)',
-                              fontWeight: 600,
+                              fontWeight: 550,
                               fontSize: '0.925rem',
                               letterSpacing: '-0.01em',
                               textDecoration: 'none',
@@ -373,15 +374,7 @@ export default function ServicesSection() {
                             }}
                           >
                             <span>Get in touch</span>
-                            <span
-                              style={{
-                                width: '7px',
-                                height: '7px',
-                                borderRadius: '50%',
-                                backgroundColor: '#f3350c',
-                                display: 'inline-block',
-                              }}
-                            />
+                            <ArrowRight size={15} />
                           </Link>
                         </div>
                       )}

@@ -1,6 +1,16 @@
 {
   "assets": [
     {
+      "id": "asset-1788787864077",
+      "name": "arohana-logo.png",
+      "url": "/uploads/1788787864077-arohana-logo.png",
+      "type": "image",
+      "size": "33 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-07T13:31:04.087Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1",
       "name": "hero-montage.mp4",
       "url": "/videos/hero-montage.mp4",

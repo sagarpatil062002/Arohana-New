@@ -1079,34 +1079,30 @@ export default function ServicesPage() {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.75rem',
+                  gap: '0.65rem',
                   height: '48px',
                   padding: '0 1.85rem',
-                  backgroundColor: 'transparent',
+                  backgroundColor: '#000000',
                   color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.35)',
+                  border: '1px solid rgba(255, 255, 255, 0.22)',
                   borderRadius: '9999px',
-                  fontSize: '0.86rem',
+                  fontSize: '0.88rem',
                   fontWeight: 600,
-                  letterSpacing: '0.04em',
                   textDecoration: 'none',
-                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+                  transition: 'all 0.25s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#ffffff';
-                  e.currentTarget.style.color = DARK;
-                  e.currentTarget.style.borderColor = '#ffffff';
+                  e.currentTarget.style.backgroundColor = '#222226';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#ffffff';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.35)';
+                  e.currentTarget.style.backgroundColor = '#000000';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <span>START A CONVERSATION</span>
-                <ArrowRight size={15} />
+                <span>Start a Conversation</span>
+                <ArrowRight size={16} color="#ffffff" />
               </Link>
             </div>
           </div>

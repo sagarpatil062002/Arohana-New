@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CASE_STUDIES, getCaseStudyBySlug } from '@/data/case-studies';
 
 export async function generateStaticParams() {
@@ -481,14 +481,23 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
 
           <Link
             href={`/work/${nextCase.slug}`}
-            className="button-editorial button-editorial-white"
-            style={{ height: '48px', padding: '0 1.75rem' }}
+            className="button-editorial"
+            style={{
+              height: '48px',
+              padding: '0 1.65rem',
+              backgroundColor: '#000000',
+              color: '#ffffff',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255, 255, 255, 0.22)',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.55rem',
+              fontWeight: 600,
+            }}
           >
-            <div className="button-texts-slider">
-              <span className="button-text-item">View Next Case</span>
-              <span className="button-text-item">View Next Case</span>
-            </div>
-            <ArrowUpRight size={16} />
+            <span>View Next Case</span>
+            <ArrowRight size={16} color="#ffffff" />
           </Link>
         </div>
       </div>

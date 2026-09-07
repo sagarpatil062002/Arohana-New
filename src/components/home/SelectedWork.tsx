@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
 export interface ProjectItem {
@@ -484,7 +484,7 @@ export default function SelectedWork() {
           {/* Full-width Black Pill Button on Mobile */}
           <Link href="/work" className="sw-mobile-all-btn">
             <span>View All Case Studies</span>
-            <ArrowUpRight size={16} />
+            <ArrowRight size={16} />
           </Link>
         </div>
 
@@ -497,7 +497,7 @@ export default function SelectedWork() {
             <div className="sw-horizontal-divider" />
             <Link href="/work" className="sw-all-link">
               <span>View All Case Studies</span>
-              <ArrowUpRight size={16} />
+              <ArrowRight size={16} />
             </Link>
           </div>
         </div>

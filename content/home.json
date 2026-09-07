@@ -1,15 +1,65 @@
 {
   "sections": [
-    { "id": "hero", "name": "01: Hero Video / Carousel Container", "visible": true, "type": "hero" },
-    { "id": "brands", "name": "02: Selected Brands & Organisations Marquee", "visible": true, "type": "brands" },
-    { "id": "impact", "name": "03: Real-World Execution Impact Counters", "visible": true, "type": "stats" },
-    { "id": "army", "name": "04: Indian Army Projects 3D Spotlight", "visible": true, "type": "spotlight" },
-    { "id": "pov", "name": "05: Editorial Intro / A Point of View", "visible": true, "type": "philosophy" },
-    { "id": "work", "name": "06: Selected Work Showcase (3D Coverflow)", "visible": true, "type": "showcase" },
-    { "id": "services", "name": "07: Practice Areas / Deep Black Services", "visible": true, "type": "services" },
-    { "id": "montage", "name": "08: Sectors & Built Environment Montage", "visible": true, "type": "montage" },
-    { "id": "tourin", "name": "09: Tourin Experiential Travel Feature", "visible": true, "type": "spotlight" },
-    { "id": "cta", "name": "10: Signature Mouse-Trail Interactive CTA", "visible": true, "type": "cta" }
+    {
+      "id": "hero",
+      "name": "01: Hero Video / Carousel Container",
+      "visible": true,
+      "type": "hero"
+    },
+    {
+      "id": "brands",
+      "name": "02: Selected Brands & Organisations Marquee",
+      "visible": true,
+      "type": "brands"
+    },
+    {
+      "id": "impact",
+      "name": "03: Real-World Execution Impact Counters",
+      "visible": true,
+      "type": "stats"
+    },
+    {
+      "id": "army",
+      "name": "04: Indian Army Projects 3D Spotlight",
+      "visible": true,
+      "type": "spotlight"
+    },
+    {
+      "id": "pov",
+      "name": "05: Editorial Intro / A Point of View",
+      "visible": true,
+      "type": "philosophy"
+    },
+    {
+      "id": "work",
+      "name": "06: Selected Work Showcase (3D Coverflow)",
+      "visible": true,
+      "type": "showcase"
+    },
+    {
+      "id": "services",
+      "name": "07: Practice Areas / Deep Black Services",
+      "visible": true,
+      "type": "services"
+    },
+    {
+      "id": "montage",
+      "name": "08: Sectors & Built Environment Montage",
+      "visible": true,
+      "type": "montage"
+    },
+    {
+      "id": "tourin",
+      "name": "09: Tourin Experiential Travel Feature",
+      "visible": true,
+      "type": "spotlight"
+    },
+    {
+      "id": "cta",
+      "name": "10: Signature Mouse-Trail Interactive CTA",
+      "visible": true,
+      "type": "cta"
+    }
   ],
   "hero": {
     "badge": "BRAND STRATEGY · EXECUTION · CULTURE",
@@ -207,7 +257,11 @@
         "index": "01",
         "title": "Vital Wellness",
         "category": "Wellness & Healthcare",
-        "tags": ["Brand Identity", "Experience Design", "Packaged Goods"],
+        "tags": [
+          "Brand Identity",
+          "Experience Design",
+          "Packaged Goods"
+        ],
         "image": "/images/case-studies/selected-work/vital-wellness.jpg",
         "link": "/work"
       },
@@ -216,7 +270,11 @@
         "index": "02",
         "title": "Residency Club Kolhapur",
         "category": "Hospitality & F&B",
-        "tags": ["Hospitality Branding", "Content Production", "Spatial Identity"],
+        "tags": [
+          "Hospitality Branding",
+          "Content Production",
+          "Spatial Identity"
+        ],
         "image": "/images/case-studies/selected-work/residency-club.jpg",
         "link": "/work"
       },
@@ -225,7 +283,11 @@
         "index": "03",
         "title": "Raysons Group",
         "category": "Construction & Infrastructure",
-        "tags": ["Corporate Branding", "Brand Film Series", "Spatial Experience"],
+        "tags": [
+          "Corporate Branding",
+          "Brand Film Series",
+          "Spatial Experience"
+        ],
         "image": "/images/case-studies/selected-work/raysons-group.jpg",
         "link": "/work/raysons-group"
       },
@@ -234,7 +296,11 @@
         "index": "04",
         "title": "Abhijeet Magdum Group",
         "category": "Construction & Infrastructure",
-        "tags": ["Brand Identity", "Project Documentary", "Media Production"],
+        "tags": [
+          "Brand Identity",
+          "Project Documentary",
+          "Media Production"
+        ],
         "image": "/images/case-studies/selected-work/abhijeet-magdum.jpg",
         "link": "/work"
       },
@@ -243,7 +309,11 @@
         "index": "05",
         "title": "Misu Pan-Asian",
         "category": "Hospitality & F&B",
-        "tags": ["Brand Identity", "Interior Signage", "Digital Assets"],
+        "tags": [
+          "Brand Identity",
+          "Interior Signage",
+          "Digital Assets"
+        ],
         "image": "/images/case-studies/selected-work/misu.jpg",
         "link": "/work"
       }
@@ -257,7 +327,13 @@
       {
         "num": "1",
         "title": "Brand & Digital Growth",
-        "tags": ["Brand Strategy", "Social Ecosystems", "Creative Direction", "Performance Marketing", "Platform Execution"],
+        "tags": [
+          "Brand Strategy",
+          "Social Ecosystems",
+          "Creative Direction",
+          "Performance Marketing",
+          "Platform Execution"
+        ],
         "image": "/images/services/digital-growth.jpg",
         "description": "Brand strategy, content, social media, creative direction, video production, advertising and websites for businesses that need a stronger market presence.",
         "href": "/services#digital-growth"
@@ -265,7 +341,13 @@
       {
         "num": "2",
         "title": "Content & Communication",
-        "tags": ["Documentaries", "Films", "Extreme Terrains", "Scripting", "Post-Production"],
+        "tags": [
+          "Documentaries",
+          "Films",
+          "Extreme Terrains",
+          "Scripting",
+          "Post-Production"
+        ],
         "image": "/images/services/content-production.jpg",
         "description": "Corporate films, documentaries, campaigns and institutional content — from scripting through post-production.",
         "href": "/services#brand-production"
@@ -273,7 +355,13 @@
       {
         "num": "3",
         "title": "Hospitality & Experience",
-        "tags": ["Concept & Menu", "Kitchen Pass", "Unit Economics", "Staff Systems", "Guest Journeys"],
+        "tags": [
+          "Concept & Menu",
+          "Kitchen Pass",
+          "Unit Economics",
+          "Staff Systems",
+          "Guest Journeys"
+        ],
         "image": "/images/services/hospitality-consulting.jpg",
         "description": "Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.",
         "href": "/services#hospitality-consulting"
@@ -354,8 +442,8 @@
   },
   "tourinSpotlight": {
     "tag": "TOURIN EXPERIENTIAL TRAVEL",
-    "title": "A venture in destination thinking.",
-    "description": "High-altitude journeys and homestay initiatives across Ladakh and remote Himalayan valleys, built on cultural depth and ecological respect.",
+    "title": "And then there is Tourin.",
+    "description": "Curated Himalayan routes, community homestays,\nand high-altitude logistics planned directly by\npeople who know the mountain terrain intimately.",
     "ctaText": "Explore Tourin Expeditions",
     "ctaLink": "/tourin",
     "categories": [

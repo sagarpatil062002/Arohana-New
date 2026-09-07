@@ -363,19 +363,18 @@ export default function IndianArmyProjectsPage() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link href="/contact" className="card-action-link">
                     <span>View Project</span>
-                    <ArrowUpRight size={13} />
+                    <ArrowRight size={14} />
                   </Link>
                   <button
                     type="button"
                     onClick={() => setIsVideoModalOpen(true)}
                     className="card-action-link"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                   >
                     <span>Watch Film</span>
-                    <Play size={11} fill="currentColor" style={{ marginLeft: '4px' }} />
+                    <Play size={12} fill="currentColor" style={{ marginLeft: '2px' }} />
                   </button>
                 </div>
               </div>
@@ -573,7 +572,7 @@ export default function IndianArmyProjectsPage() {
               <div className="card-2-bottom-actions">
                 <Link href="/contact" className="btn-dark-pill">
                   <span>View Project</span>
-                  <ArrowUpRight size={13} />
+                  <ArrowRight size={14} />
                 </Link>
                 <button
                   type="button"
@@ -658,7 +657,7 @@ export default function IndianArmyProjectsPage() {
 
                 <Link href="/contact" className="card-action-link">
                   <span>View Project</span>
-                  <ArrowUpRight size={13} />
+                  <ArrowRight size={14} />
                 </Link>
               </div>
 
@@ -832,7 +831,7 @@ export default function IndianArmyProjectsPage() {
 
                 <Link href="/contact" className="card-action-link">
                   <span>View Project</span>
-                  <ArrowUpRight size={13} />
+                  <ArrowRight size={14} />
                 </Link>
               </div>
 
@@ -942,9 +941,9 @@ export default function IndianArmyProjectsPage() {
                         </div>
                       )}
                     </div>
-                    <Link href="/contact" className="card-action-link" style={{ marginTop: '1.25rem', display: 'inline-flex' }}>
+                    <Link href="/contact" className="card-action-link" style={{ marginTop: '1.25rem' }}>
                       <span>View Project</span>
-                      <ArrowUpRight size={13} />
+                      <ArrowRight size={14} />
                     </Link>
                   </div>
                   {p.image && (
@@ -994,7 +993,7 @@ export default function IndianArmyProjectsPage() {
 
             <Link href="/contact" className="banner-btn">
               <span>Let&apos;s Discuss a Project</span>
-              <ArrowUpRight size={15} />
+              <ArrowRight size={15} />
             </Link>
           </div>
 
@@ -1634,24 +1633,26 @@ export default function IndianArmyProjectsPage() {
         .card-action-link {
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
-          font-size: 0.82rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #de322d;
+          gap: 0.5rem;
+          font-size: 0.84rem;
+          font-weight: 550;
+          color: #ffffff;
+          background: #000000;
+          border: 1px solid #000000;
+          border-radius: 9999px;
+          padding: 0.75rem 1.6rem;
           margin-top: 1.25rem;
-          background: none;
-          border: none;
           cursor: pointer;
           text-decoration: none;
-          transition: all 0.25s ease;
-          padding: 0;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
         }
 
         .card-action-link:hover {
-          color: #c42722;
-          transform: translateX(3px);
+          background-color: #222226;
+          color: #ffffff;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .three-subsections-row {
@@ -1983,23 +1984,26 @@ export default function IndianArmyProjectsPage() {
 
         .btn-dark-pill {
           height: 44px;
-          padding: 0 1.5rem;
+          padding: 0 1.6rem;
           border-radius: 9999px;
-          background: rgba(255, 255, 255, 0.1);
+          background: #000000;
           border: 1px solid rgba(255, 255, 255, 0.2);
           color: #ffffff;
           font-size: 0.84rem;
-          font-weight: 600;
+          font-weight: 550;
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
           text-decoration: none;
-          transition: all 0.25s ease;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
 
         .btn-dark-pill:hover {
-          background: #ffffff;
-          color: #000000;
+          background: #222226;
+          color: #ffffff;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
         }
 
         .btn-circle-arrow {
@@ -2392,22 +2396,24 @@ export default function IndianArmyProjectsPage() {
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
-          background-color: #ffffff;
-          color: #111111;
+          background-color: #000000;
+          color: #ffffff;
           padding: 0.85rem 1.85rem;
           border-radius: 9999px;
+          border: 1px solid rgba(255, 255, 255, 0.25);
           font-size: 0.88rem;
-          font-weight: 700;
-          letter-spacing: 0.02em;
+          font-weight: 550;
+          letter-spacing: 0.01em;
           text-decoration: none;
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-          transition: all 0.25s ease;
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .banner-btn:hover {
-          background-color: #f0f0f0;
+          background-color: #222226;
+          color: #ffffff;
           transform: translateY(-2px);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
         }
 
         .banner-right-script {

@@ -1540,28 +1540,29 @@ export default function StudioPage() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.75rem',
-                    height: '52px',
-                    padding: '0 2rem',
-                    backgroundColor: RED,
+                    height: '50px',
+                    padding: '0 1.85rem',
+                    backgroundColor: '#000000',
                     color: '#ffffff',
                     borderRadius: '9999px',
-                    fontSize: '0.92rem',
+                    fontSize: '0.9rem',
                     fontWeight: 600,
                     textDecoration: 'none',
-                    boxShadow: '0 10px 25px rgba(222, 50, 45, 0.35)',
-                    transition: 'all 0.3s ease',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+                    border: '1px solid rgba(255, 255, 255, 0.18)',
+                    transition: 'all 0.25s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#C72420';
+                    e.currentTarget.style.backgroundColor = '#222226';
                     e.currentTarget.style.transform = 'translateY(-2px)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = RED;
+                    e.currentTarget.style.backgroundColor = '#000000';
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
                   <span>{ctaData.buttonText || 'Start a Conversation'}</span>
-                  <ArrowUpRight size={17} />
+                  <ArrowRight size={16} color="#ffffff" />
                 </Link>
 
                 <Link
@@ -1569,24 +1570,30 @@ export default function StudioPage() {
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.5rem',
-                    height: '52px',
-                    padding: '0 1.5rem',
-                    color: 'rgba(255, 255, 255, 0.75)',
-                    fontSize: '0.88rem',
-                    fontWeight: 500,
+                    gap: '0.75rem',
+                    height: '50px',
+                    padding: '0 1.85rem',
+                    backgroundColor: '#111113',
+                    color: '#ffffff',
+                    borderRadius: '9999px',
+                    fontSize: '0.9rem',
+                    fontWeight: 600,
                     textDecoration: 'none',
-                    transition: 'color 0.2s ease',
+                    border: '1px solid rgba(255, 255, 255, 0.18)',
+                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
+                    transition: 'all 0.25s ease',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#ffffff';
+                    e.currentTarget.style.backgroundColor = '#222226';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = 'rgba(255, 255, 255, 0.75)';
+                    e.currentTarget.style.backgroundColor = '#111113';
+                    e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
                   <span>Explore Selected Work</span>
-                  <ArrowRight size={15} />
+                  <ArrowRight size={16} color="#ffffff" />
                 </Link>
               </div>
 

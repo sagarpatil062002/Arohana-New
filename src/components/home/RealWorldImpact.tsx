@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useCmsContent } from '@/lib/cms/content-context';
@@ -238,7 +238,7 @@ export default function RealWorldImpact() {
 
             <Link href="/work" className="rwi-pill-button">
               <span>See our work</span>
-              <ArrowUpRight size={16} className="rwi-pill-arrow" />
+              <ArrowRight size={16} className="rwi-pill-arrow" />
             </Link>
           </div>
         </div>
@@ -390,22 +390,24 @@ export default function RealWorldImpact() {
           display: inline-flex;
           align-items: center;
           gap: 0.55rem;
-          background-color: #0b121e;
+          background-color: #000000;
           color: #ffffff;
           padding: 0.75rem 1.65rem;
           border-radius: 9999px;
+          border: 1px solid #000000;
           font-family: var(--font-display, sans-serif);
           font-size: 0.88rem;
-          font-weight: 500;
+          font-weight: 550;
           text-decoration: none;
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
           transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .rwi-pill-button:hover {
-          background-color: #DE322D;
+          background-color: #222226;
+          color: #ffffff;
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(222, 50, 45, 0.28);
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
         }
 
         .rwi-pill-button:hover :global(.rwi-pill-arrow) {

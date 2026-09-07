@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { useCmsContent } from '@/lib/cms/content-context';
 
@@ -188,10 +189,7 @@ export default function InteractiveCTA() {
               <span className="button-text-item">{activeButtonLabel}</span>
               <span className="button-text-item">{activeButtonLabel}</span>
             </div>
-            <div className="button-dot-wrap">
-              <div className="button-dot" />
-              <div className="button-dot-pulse" />
-            </div>
+            <ArrowRight size={16} />
           </Link>
 
           <a
