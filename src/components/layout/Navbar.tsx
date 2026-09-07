@@ -38,6 +38,10 @@ export default function Navbar() {
   // Studio/About page uses light editorial styling matching design
   const isDarkHero = false;
 
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <header
       style={{

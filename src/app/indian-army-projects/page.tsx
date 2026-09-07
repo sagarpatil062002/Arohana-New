@@ -994,7 +994,20 @@ export default function IndianArmyProjectsPage() {
           <div className="footer-bottom-bar">
             <div>&copy; {new Date().getFullYear()} Ārohana Consultancy. All Rights Reserved.</div>
             <div>Pune &middot; Ladakh &middot; Pan-India Engagements</div>
-            <div>Army Projects &middot; Institutional Production</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <span>Army Projects &middot; Institutional Production</span>
+              <span>&bull;</span>
+              <Link
+                href="/admin"
+                style={{
+                  color: '#777777',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s ease',
+                }}
+              >
+                Admin CRM
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

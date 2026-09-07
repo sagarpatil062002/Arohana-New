@@ -1,0 +1,210 @@
+{
+  "featuredReels": [
+    {
+      "id": "reel-1",
+      "hookTitle": "Spaces that belong",
+      "subtitle": "Architecture & Built Environment",
+      "coverImage": "/images/case-studies/raysons/neora-1.jpg",
+      "instagramUrl": "https://www.instagram.com/byarohana/",
+      "category": "Architecture"
+    },
+    {
+      "id": "reel-2",
+      "hookTitle": "More than a meal",
+      "subtitle": "Hospitality & Food Concepts",
+      "coverImage": "/images/case-studies/misu/misu-hero.jpg",
+      "instagramUrl": "https://www.instagram.com/byarohana/",
+      "category": "Hospitality"
+    },
+    {
+      "id": "reel-3",
+      "hookTitle": "Care in focus",
+      "subtitle": "Healthcare Communication",
+      "coverImage": "/images/case-studies/rrskins/rrskins-hero.jpg",
+      "instagramUrl": "https://www.instagram.com/byarohana/",
+      "category": "Healthcare"
+    },
+    {
+      "id": "reel-4",
+      "hookTitle": "On-ground execution",
+      "subtitle": "Events & Entertainment",
+      "coverImage": "/images/case-studies/picturetime/picturetime-hero.jpg",
+      "instagramUrl": "https://www.instagram.com/byarohana/",
+      "category": "Entertainment"
+    },
+    {
+      "id": "reel-5",
+      "hookTitle": "Stories with purpose",
+      "subtitle": "Community & Institutional Impact",
+      "coverImage": "/images/case-studies/she/she-hero.jpg",
+      "instagramUrl": "https://www.instagram.com/byarohana/",
+      "category": "Institutional"
+    },
+    {
+      "id": "reel-6",
+      "hookTitle": "People and process",
+      "subtitle": "Work Behind The Scenes",
+      "coverImage": "/images/army/14corps-1.jpg",
+      "instagramUrl": "https://www.instagram.com/byarohana/",
+      "category": "Behind The Scenes"
+    }
+  ],
+  "caseStudies": [
+    {
+      "id": "raysons-group",
+      "num": "01",
+      "slug": "raysons-group",
+      "title": "Raysons Group",
+      "client": "Raysons Group",
+      "category": "Hospitality & Real Estate",
+      "desc": "Shows how one client relationship grew across hospitality, real estate and specialized production.",
+      "tags": ["Hospitality", "Real Estate", "Brand Strategy"],
+      "image": "/images/case-studies/raysons/neora-1.jpg",
+      "published": true,
+      "featured": true,
+      "year": "2024 — Present"
+    },
+    {
+      "id": "loom-crafts",
+      "num": "02",
+      "slug": "loom-crafts",
+      "title": "Loom Crafts",
+      "client": "Loom Crafts",
+      "category": "Architecture & Living",
+      "desc": "Shows work with a premium outdoor furniture brand communication across architecture and luxury spaces.",
+      "tags": ["Architecture", "Brand Positioning", "Visual Direction"],
+      "image": "/images/case-studies/loom-crafts/loom-hero.jpg",
+      "published": true,
+      "featured": true,
+      "year": "2023 — 2024"
+    },
+    {
+      "id": "picturetime",
+      "num": "03",
+      "slug": "picturetime",
+      "title": "PictureTime",
+      "client": "PictureTime Digiplex",
+      "category": "Entertainment",
+      "desc": "Shows digital brand work plus cultural/event/on-ground content.",
+      "tags": ["Entertainment", "Events", "Content Production"],
+      "image": "/images/case-studies/picturetime/picturetime-hero.jpg",
+      "published": true,
+      "featured": true,
+      "year": "2024"
+    },
+    {
+      "id": "misu",
+      "num": "04",
+      "slug": "misu",
+      "title": "Misu",
+      "client": "Misu Asian Dining",
+      "category": "Hospitality",
+      "desc": "Shows the depth of hospitality consulting and digital execution.",
+      "tags": ["Hospitality", "Consulting", "Digital"],
+      "image": "/images/case-studies/misu/misu-hero.jpg",
+      "published": true,
+      "featured": true,
+      "year": "2023 — 2024"
+    },
+    {
+      "id": "she",
+      "num": "05",
+      "slug": "she",
+      "title": "SHE",
+      "client": "SHE Foundation",
+      "category": "Institutional",
+      "desc": "Shows complex institutional/community communication and on-ground execution.",
+      "tags": ["Institutional", "Community", "Documentary"],
+      "image": "/images/case-studies/she/she-hero.jpg",
+      "published": true,
+      "featured": true,
+      "year": "2022 — Present"
+    },
+    {
+      "id": "rr-skins",
+      "num": "06",
+      "slug": "rr-skins",
+      "title": "RR Skins",
+      "client": "RR Skins Dermatology",
+      "category": "Healthcare",
+      "desc": "Shows healthcare communication built around trust and education.",
+      "tags": ["Healthcare", "Brand Strategy", "Content"],
+      "image": "/images/case-studies/rrskins/rrskins-hero.jpg",
+      "published": true,
+      "featured": true,
+      "year": "2023 — Present"
+    }
+  ],
+  "directoryCategories": [
+    {
+      "num": "01",
+      "title": "Hospitality & F&B",
+      "subtitle": "RESTAURANTS · RESORTS · EXPERIENCES",
+      "clients": [
+        { "name": "Bija Resorts", "href": "/contact" },
+        { "name": "Qubice", "href": "/contact" },
+        { "name": "Kanopy", "href": "/contact" },
+        { "name": "Sorriso", "href": "/contact" },
+        { "name": "Spice Goa", "href": "/contact" },
+        { "name": "Khana Khazana", "href": "/contact" },
+        { "name": "Khau Gali", "href": "/contact" }
+      ]
+    },
+    {
+      "num": "02",
+      "title": "Real Estate & Built Environment",
+      "subtitle": "SPACES · COMMUNITIES · LONG-TERM VALUE",
+      "clients": [
+        { "name": "Raysons Group", "href": "/work/raysons-group" },
+        { "name": "Citron", "href": "/contact" },
+        { "name": "Loom Crafts", "href": "/work/loom-crafts" }
+      ]
+    },
+    {
+      "num": "03",
+      "title": "Healthcare",
+      "subtitle": "CARE · DEDICATION · IMPACT",
+      "clients": [
+        { "name": "RR Skins", "href": "/work/rr-skins" },
+        { "name": "and other approved healthcare work", "href": "/contact" }
+      ]
+    },
+    {
+      "num": "04",
+      "title": "Lifestyle & Consumer",
+      "subtitle": "BRANDS FOR EVERYDAY LIFE",
+      "clients": [
+        { "name": "DYK Bankers Jewellery", "href": "/contact" },
+        { "name": "Fraganza", "href": "/contact" },
+        { "name": "and other approved consumer work", "href": "/contact" }
+      ]
+    },
+    {
+      "num": "05",
+      "title": "Entertainment & Media",
+      "subtitle": "CULTURE · CONTENT · CONNECTIONS",
+      "clients": [
+        { "name": "PictureTime", "href": "/work/picturetime" }
+      ]
+    },
+    {
+      "num": "06",
+      "title": "Travel & Tourism",
+      "subtitle": "PLACES · PEOPLE · POSSIBILITIES",
+      "clients": [
+        { "name": "Tourin", "href": "/tourin" },
+        { "name": "Holiday Village", "href": "/contact" }
+      ]
+    },
+    {
+      "num": "07",
+      "title": "Institutional / Community",
+      "subtitle": "LARGER STORIES · REAL-WORLD IMPACT",
+      "clients": [
+        { "name": "SHE", "href": "/work/she" },
+        { "name": "Operation Sampark", "href": "/indian-army-projects" },
+        { "name": "Indian Army-related projects", "href": "/indian-army-projects" }
+      ]
+    }
+  ]
+}

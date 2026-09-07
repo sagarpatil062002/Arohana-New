@@ -8,8 +8,8 @@ import { usePathname } from 'next/navigation';
 export default function Footer() {
   const pathname = usePathname();
 
-  // For Tourin & Army Projects keep dedicated footer matching design
-  if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects') {
+  // For Tourin & Army Projects keep dedicated footer matching design; hide on admin
+  if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects' || pathname?.startsWith('/admin')) {
     return null;
   }
 
@@ -241,7 +241,23 @@ export default function Footer() {
         >
           <div>© {new Date().getFullYear()} ĀROHANA Consultancy. All Rights Reserved.</div>
           <div style={{ color: '#555555' }}>Pune • Ladakh • Pan-India Engagements</div>
-          <div style={{ color: '#777777' }}>Authentic Strategy & Brand Practice</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <span style={{ color: '#777777' }}>Authentic Strategy &amp; Brand Practice</span>
+            <span style={{ color: 'rgba(0, 0, 0, 0.2)' }}>&bull;</span>
+            <Link
+              href="/admin"
+              style={{
+                color: '#888888',
+                textDecoration: 'none',
+                fontSize: '0.72rem',
+                transition: 'color 0.2s ease',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#DE322D')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#888888')}
+            >
+              Admin CRM
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

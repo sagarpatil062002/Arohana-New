@@ -1,0 +1,45 @@
+{
+  "hero": {
+    "badge": "BRAND STRATEGY · EXECUTION · CULTURE",
+    "headline": "Ideas into Impact.",
+    "subheadline": "We build brands, businesses and experiences across very different environments.",
+    "ctaLabel": "Explore Our Work",
+    "ctaLink": "/work",
+    "secondaryCtaLabel": "Practice Areas",
+    "secondaryCtaLink": "/services",
+    "videoUrl": "/videos/hero-montage.mp4",
+    "posterImage": "/images/home/hero-mountain-sky.png"
+  },
+  "sections": [
+    { "id": "hero", "name": "Hero Section", "visible": true, "type": "hero" },
+    { "id": "brands", "name": "Selected Brands & Marquee", "visible": true, "type": "brands" },
+    { "id": "impact", "name": "Real-World Impact Counters", "visible": true, "type": "stats" },
+    { "id": "army", "name": "Indian Army Projects Spotlight", "visible": true, "type": "spotlight" },
+    { "id": "pov", "name": "A Point of View & Philosophy", "visible": true, "type": "philosophy" },
+    { "id": "work", "name": "Selected Work Showcase", "visible": true, "type": "showcase" },
+    { "id": "services", "name": "Services / Practice Areas", "visible": true, "type": "services" },
+    { "id": "montage", "name": "Sectors & Built Environment", "visible": true, "type": "montage" },
+    { "id": "tourin", "name": "Tourin Experiential Travel", "visible": true, "type": "spotlight" },
+    { "id": "cta", "name": "Interactive Signature CTA", "visible": true, "type": "cta" }
+  ],
+  "impactStats": [
+    { "number": "07+", "label": "YEARS IN BUSINESS", "description": "Building sustainable brand equity and commercial engines." },
+    { "number": "60+", "label": "ASSIGNMENTS DELIVERED", "description": "High-impact campaigns and operational turnarounds." },
+    { "number": "06", "label": "CORE VERTICALS", "description": "Cross-sector mastery from hospitality to high-altitude defence." },
+    { "number": "14k", "label": "FT ELEVATION", "description": "Tested production capacity in severe climates." }
+  ],
+  "pov": {
+    "eyebrow": "A POINT OF VIEW",
+    "headline": "Commercial thinking before creative expression.",
+    "quote": "Most agencies sell you what they know how to make. We start with what your business actually needs to achieve.",
+    "author": "MADHURA HOWAL",
+    "authorTitle": "FOUNDER & STRATEGIC LEAD, ĀROHANA"
+  },
+  "cta": {
+    "eyebrow": "START A CONVERSATION",
+    "headline": "Let's build something that lasts.",
+    "description": "Whether you are expanding a hospitality brand, scaling a built-environment asset, or launching a new venture, let's talk.",
+    "buttonLabel": "Get In Touch",
+    "buttonLink": "/contact"
+  }
+}

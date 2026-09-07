@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface HeroSlideData {
   id: string;
@@ -46,13 +47,32 @@ const HERO_SLIDES: HeroSlideData[] = [
 ];
 
 export default function Hero() {
+  const { content } = useCmsContent();
+  const heroCms = content?.home?.hero;
+
+  const activeSlides = React.useMemo(() => {
+    if (!heroCms) return HERO_SLIDES;
+    return [
+      {
+        ...HERO_SLIDES[0],
+        tag: heroCms.badge || HERO_SLIDES[0].tag,
+        title: heroCms.headline || HERO_SLIDES[0].title,
+        subtitle: heroCms.subheadline || HERO_SLIDES[0].subtitle,
+        primaryCtaText: heroCms.ctaLabel || HERO_SLIDES[0].primaryCtaText,
+        primaryCtaLink: heroCms.ctaLink || HERO_SLIDES[0].primaryCtaLink,
+        image: heroCms.posterImage || HERO_SLIDES[0].image,
+      },
+      HERO_SLIDES[1],
+    ];
+  }, [heroCms]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [showShowreel, setShowShowreel] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const totalSlides = HERO_SLIDES.length;
-  const currentSlide = HERO_SLIDES[currentIndex];
+  const totalSlides = activeSlides.length;
+  const currentSlide = activeSlides[currentIndex] || activeSlides[0];
   const isDark = currentSlide.theme === 'dark';
 
   // Navigation callbacks
@@ -308,7 +328,7 @@ export default function Hero() {
                         transition: 'color 0.4s ease',
                       }}
                     >
-                      {currentSlide.title.split('\n').map((line, idx) => {
+                      {currentSlide.title.split('\n').map((line: string, idx: number) => {
                         const hasPeriod = line.endsWith('.');
                         const cleanLine = hasPeriod ? line.slice(0, -1) : line;
                         return (
@@ -505,7 +525,7 @@ export default function Hero() {
               {/* Slide Indicator Dots, Index & Mobile Navigation Arrows */}
               <div className="hero-slide-nav-wrap" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  {HERO_SLIDES.map((_, idx) => (
+                  {activeSlides.map((_, idx) => (
                     <button
                       key={idx}
                       type="button"

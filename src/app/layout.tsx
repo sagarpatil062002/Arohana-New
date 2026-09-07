@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import SmoothScroll from '@/components/motion/SmoothScroll';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import AppShell from '@/components/layout/AppShell';
 import ExperienceLoader from '@/components/common/ExperienceLoader';
 
 export const viewport = {
@@ -57,9 +56,7 @@ export default function RootLayout({
         <ExperienceLoader />
         <div id="root-main-content">
           <SmoothScroll>
-            <Navbar />
-            <main style={{ minHeight: '100vh', paddingTop: '76px' }}>{children}</main>
-            <Footer />
+            <AppShell>{children}</AppShell>
           </SmoothScroll>
         </div>
       </body>

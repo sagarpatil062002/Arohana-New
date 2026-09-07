@@ -1,0 +1,12 @@
+{
+  "heading": "Trusted by forward-looking businesses and institutions",
+  "partners": [
+    { "id": "p-1", "name": "Raysons Group", "category": "Conglomerate", "url": "/work/raysons-group", "logo": "/images/partners/raysons.svg" },
+    { "id": "p-2", "name": "Loom Crafts", "category": "Luxury Outdoor Living", "url": "/work/loom-crafts", "logo": "/images/partners/loomcrafts.svg" },
+    { "id": "p-3", "name": "PictureTime", "category": "Mobile Digital Cinema", "url": "/work/picturetime", "logo": "/images/partners/picturetime.svg" },
+    { "id": "p-4", "name": "Misu", "category": "Hospitality & Dining", "url": "/work/misu", "logo": "/images/partners/misu.svg" },
+    { "id": "p-5", "name": "RR Skins", "category": "Healthcare & Dermatology", "url": "/work/rr-skins", "logo": "/images/partners/rrskins.svg" },
+    { "id": "p-6", "name": "Indian Army Formations", "category": "Institutional & Defence", "url": "/indian-army-projects", "logo": "/images/partners/indian-army.svg" },
+    { "id": "p-7", "name": "SHE Foundation", "category": "Non-Profit & Community", "url": "/work/she", "logo": "/images/partners/she.svg" }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "assets": [
+    {
+      "id": "asset-1",
+      "name": "hero-montage.mp4",
+      "url": "/videos/hero-montage.mp4",
+      "type": "video",
+      "size": "12.4 MB",
+      "dimensions": "1920x1080",
+      "uploadedAt": "2026-03-01T10:00:00Z",
+      "usedIn": "Homepage Hero"
+    },
+    {
+      "id": "asset-2",
+      "name": "neora-1.jpg",
+      "url": "/images/case-studies/raysons/neora-1.jpg",
+      "type": "image",
+      "size": "840 KB",
+      "dimensions": "1600x1000",
+      "uploadedAt": "2026-03-02T11:30:00Z",
+      "usedIn": "Raysons Group Case Study"
+    },
+    {
+      "id": "asset-3",
+      "name": "western-command-1.jpg",
+      "url": "/images/army/western-command-1.jpg",
+      "type": "image",
+      "size": "650 KB",
+      "dimensions": "1400x900",
+      "uploadedAt": "2026-03-03T14:15:00Z",
+      "usedIn": "Army Projects — Investiture Ceremony"
+    },
+    {
+      "id": "asset-4",
+      "name": "hero-mountain-sky.png",
+      "url": "/images/home/hero-mountain-sky.png",
+      "type": "image",
+      "size": "1.2 MB",
+      "dimensions": "1920x1080",
+      "uploadedAt": "2026-03-04T09:20:00Z",
+      "usedIn": "Tourin & Global Backdrop"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "hero": {
+    "eyebrow": "Defence & Institutional Production",
+    "title": "Stories of service",
+    "description": "On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations and institutional headquarters.",
+    "scrollLabel": "SCROLL TO EXPLORE"
+  },
+  "stats": [
+    { "value": "14,000+ FT", "label": "Ladakh High-Altitude Operations" },
+    { "value": "FEB 2026", "label": "Western Command Investiture" },
+    { "value": "06 ASSIGNMENTS", "label": "Verified Institutional Briefs" },
+    { "value": "100%", "label": "Protocol Clearance & Security" }
+  ],
+  "disclaimer": "Institutional Integrity: All presented Indian Army project materials represent verified shoot direction, post-production and communication assignments executed under authorized institutional protocols. No confidential operational details are disclosed.",
+  "projects": [
+    {
+      "id": "western-command-investiture",
+      "num": "01",
+      "command": "WESTERN COMMAND",
+      "location": "HQ Western Command Theatre",
+      "date": "February 2026",
+      "title": "Investiture Ceremony",
+      "subtitle": "Ceremonial protocol shoot and documentary post-production.",
+      "description": "Ārohana handled the shoot and post-production for the Western Command Investiture Ceremony in February 2026.",
+      "scopeOfWork": "Concepts of imagery, production, human and event distribution, and operations requirements.",
+      "creativeApproach": "Restrained, dignified visual pacing suited to military protocol and ceremonial integrity.",
+      "productionDiscipline": "Tight turnaround mobile post-production unit multi-track sound engineering and high-definition mastering.",
+      "videoUrl": "/videos/hero-montage.mp4",
+      "image": "/images/army/western-command-1.jpg",
+      "category": "western-command",
+      "published": true
+    },
+    {
+      "id": "14-corps-communication",
+      "num": "02",
+      "command": "14 CORPS HEADQUARTERS",
+      "location": "Leh & Indus Valley, Ladakh",
+      "date": "2023 – Present",
+      "title": "Communication & Production",
+      "subtitle": "High-altitude visual communication, films and archival design.",
+      "description": "Ārohana has undertaken communication, design and video-production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.",
+      "scopeOfWork": "Institutional communication campaigns, internal and public-facing visual communication, and video production.",
+      "creativeApproach": "Authentic high-altitude cinematography paired with authoritative scripting and professional narration.",
+      "productionDiscipline": "Cold filming in sub-zero and remote mountain environments requiring specialized equipment and acclimatized crews.",
+      "image": "/images/army/14corps-2.jpg",
+      "category": "14-corps",
+      "published": true
+    },
+    {
+      "id": "corps-publications",
+      "num": "03",
+      "command": "FIRE & FURY CORPS",
+      "location": "Ladakh Theatre",
+      "date": "Multi-Year Engagements",
+      "title": "Corps-Level Communication & Publications",
+      "subtitle": "XIV Corps communication, publications and community initiatives.",
+      "description": "Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, video and community-facing initiatives.",
+      "scopeOfWork": "Spans historical commemorative literature, community welfare communication, and social video production.",
+      "creativeApproach": "Balancing historical gravitas with contemporary digital readability across diverse audiences.",
+      "productionDiscipline": "Seamless integration between on-ground research, military history curation, and modern typography.",
+      "image": "/images/army/fire-fury-1.jpg",
+      "category": "14-corps",
+      "published": true
+    },
+    {
+      "id": "rezang-la-memorial",
+      "num": "04",
+      "command": "FIRE & FURY CORPS",
+      "location": "Chushul Sector, Ladakh (16,000+ ft)",
+      "date": "Commemorative Edition",
+      "title": "Rezang La War Memorial",
+      "subtitle": "Commemorative coffee-table book design and visual communication.",
+      "description": "Coffee-table book design and visual communication for the Rezang La War Memorial.",
+      "scopeOfWork": "Creating public awareness about the history of the war, its impact, and the sacrifices made by those who served.",
+      "creativeApproach": "Designing coffee-table books that tell the story of the war, its impact, and the sacrifices made by those who served.",
+      "productionDiscipline": "High-specification tactile print finishing, archival image treatment, and institutional review process management.",
+      "image": "/images/army/rezang-la-1.jpg",
+      "category": "border-initiatives",
+      "published": true
+    }
+  ]
+}

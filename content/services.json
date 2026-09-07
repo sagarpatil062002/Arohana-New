@@ -1,0 +1,59 @@
+{
+  "eyebrow": "PRACTICE AREAS & CAPABILITIES",
+  "headline": "What we do depends on what the business actually needs.",
+  "sectionLabel": "Three ways we work.",
+  "description": "Ārohana can come in as an ongoing digital partner, a hospitality and business consultant, or an on-ground production and creative team for high-stakes projects.",
+  "services": [
+    {
+      "id": "digital-marketing",
+      "num": "01",
+      "title": "Full-Scope Digital Marketing & Social Management",
+      "shortTitle": "Digital Marketing",
+      "tagline": "ONGOING RETAINERS · CAMPAIGNS · CONTENT SYSTEMS",
+      "description": "We run end-to-end digital operations for businesses that need consistency, brand authority, and revenue-driven audience engagement.",
+      "capabilities": [
+        "Social media strategy, content calendars, shoot planning, graphic design, and video editing.",
+        "Meta & Google performance ads with active campaign management and budget optimization.",
+        "Monthly reporting tied to business metrics: inquiries, engagement, footfall, and reach.",
+        "Crisis communication and brand reputation management across channels."
+      ],
+      "bestFor": "Businesses that need their digital presence handled professionally, month after month, with zero operational overhead.",
+      "image": "/images/services/services-digital.jpg",
+      "published": true
+    },
+    {
+      "id": "hospitality-consulting",
+      "num": "02",
+      "title": "Hospitality & Restaurant Consulting",
+      "shortTitle": "Hospitality Consulting",
+      "tagline": "PRE-LAUNCH · REPOSITIONING · TURNAROUND · OPERATIONS",
+      "description": "Built from over a decade of real hospitality experience — not textbook marketing theory.",
+      "capabilities": [
+        "Concept development, identity, positioning, and target-audience mapping.",
+        "Menu engineering, pricing architecture, and profitability analysis.",
+        "Pre-opening marketing launch campaigns and influencer programs.",
+        "Staff training for brand experience, customer service, and upselling."
+      ],
+      "bestFor": "F&B founders, hotel owners, and investors launching new properties or reviving existing venues.",
+      "image": "/images/services/services-hospitality.jpg",
+      "published": true
+    },
+    {
+      "id": "creative-production",
+      "num": "03",
+      "title": "Production, Films & Special Projects",
+      "shortTitle": "Creative Production",
+      "tagline": "ON-LOCATION · HIGH-ALTITUDE · SENSITIVE ENVIRONMENTS",
+      "description": "When the project requires more than an agency team with cameras, Ārohana brings serious production discipline.",
+      "capabilities": [
+        "Brand films, documentaries, corporate videos, and high-production content.",
+        "Challenging terrain production: sub-zero temperatures, remote locations, and institutional clearances.",
+        "Complete crew, equipment, logistics, sound, and post-production management.",
+        "Confidential institutional briefs and defence protocol compliance."
+      ],
+      "bestFor": "Institutions, corporations, and bold brands needing cinematic execution where standard production teams cannot go.",
+      "image": "/images/services/services-production.jpg",
+      "published": true
+    }
+  ]
+}
