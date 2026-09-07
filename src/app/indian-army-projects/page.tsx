@@ -1418,15 +1418,16 @@ export default function IndianArmyProjectsPage() {
         /* Responsive */
         @media (max-width: 1024px) {
           .hero-bg-blend {
-            width: 75%;
+            width: 80%;
+            opacity: 0.92;
           }
           .hero-blend-left {
             background: linear-gradient(
               to right,
               #f6f6f4 0%,
-              #f6f6f4 20%,
-              rgba(246, 246, 244, 0.94) 40%,
-              rgba(246, 246, 244, 0.5) 70%,
+              #f6f6f4 15%,
+              rgba(246, 246, 244, 0.92) 35%,
+              rgba(246, 246, 244, 0.5) 65%,
               transparent 100%
             );
           }
@@ -1435,20 +1436,33 @@ export default function IndianArmyProjectsPage() {
         @media (max-width: 860px) {
           .army-hero-section {
             min-height: auto;
-            padding-top: 3rem;
+            padding-top: 3.25rem;
             padding-bottom: 3.5rem;
           }
           .hero-bg-blend {
             width: 100%;
             min-width: 0;
-            opacity: 0.38;
+            opacity: 0.92;
+          }
+          :global(.hero-soldier-img) {
+            object-position: 78% 22% !important;
           }
           .hero-blend-left {
             background: linear-gradient(
               to right,
-              #f6f6f4 0%,
-              rgba(246, 246, 244, 0.92) 50%,
-              rgba(246, 246, 244, 0.7) 100%
+              rgba(246, 246, 244, 0.96) 0%,
+              rgba(246, 246, 244, 0.88) 32%,
+              rgba(246, 246, 244, 0.45) 65%,
+              rgba(246, 246, 244, 0.08) 100%
+            );
+          }
+          .hero-blend-bottom {
+            height: 120px;
+            background: linear-gradient(
+              to bottom,
+              transparent 0%,
+              rgba(246, 246, 244, 0.75) 50%,
+              #f6f6f4 100%
             );
           }
           .hero-left {
@@ -1456,6 +1470,42 @@ export default function IndianArmyProjectsPage() {
           }
           .hero-title {
             font-size: clamp(2.8rem, 10vw, 4.2rem);
+            color: #0b1120;
+            text-shadow: 0 1px 6px rgba(255, 255, 255, 0.75);
+          }
+          .hero-desc {
+            color: #1e293b;
+            font-weight: 500;
+            max-width: 95%;
+            text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .hero-eyebrow {
+            gap: 0.45rem;
+            margin-bottom: 1.15rem;
+          }
+          .eyebrow-badge {
+            font-size: 0.65rem;
+            padding: 0.3rem 0.7rem;
+            letter-spacing: 0.08em;
+          }
+          .eyebrow-sub {
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+          }
+          .hero-pillars {
+            margin-bottom: 1.75rem;
+            gap: 0.45rem 0.65rem;
+          }
+          .pillar-item {
+            font-size: 0.68rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(6px);
+            padding: 0.25rem 0.55rem;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
           }
         }
 
