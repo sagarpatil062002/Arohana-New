@@ -19,7 +19,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
 
   // Initial load of sections
   useEffect(() => {
-    const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'partners', 'contact', 'footer', 'settings'];
+    const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
     Promise.all(
       sections.map((sec) =>
         fetch(`/api/content/${sec}`)

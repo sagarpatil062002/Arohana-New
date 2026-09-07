@@ -1,45 +1,393 @@
 {
+  "sections": [
+    { "id": "hero", "name": "01: Hero Video / Carousel Container", "visible": true, "type": "hero" },
+    { "id": "brands", "name": "02: Selected Brands & Organisations Marquee", "visible": true, "type": "brands" },
+    { "id": "impact", "name": "03: Real-World Execution Impact Counters", "visible": true, "type": "stats" },
+    { "id": "army", "name": "04: Indian Army Projects 3D Spotlight", "visible": true, "type": "spotlight" },
+    { "id": "pov", "name": "05: Editorial Intro / A Point of View", "visible": true, "type": "philosophy" },
+    { "id": "work", "name": "06: Selected Work Showcase (3D Coverflow)", "visible": true, "type": "showcase" },
+    { "id": "services", "name": "07: Practice Areas / Deep Black Services", "visible": true, "type": "services" },
+    { "id": "montage", "name": "08: Sectors & Built Environment Montage", "visible": true, "type": "montage" },
+    { "id": "tourin", "name": "09: Tourin Experiential Travel Feature", "visible": true, "type": "spotlight" },
+    { "id": "cta", "name": "10: Signature Mouse-Trail Interactive CTA", "visible": true, "type": "cta" }
+  ],
   "hero": {
     "badge": "BRAND STRATEGY · EXECUTION · CULTURE",
-    "headline": "Ideas into Impact.",
+    "headline": "Ideas\ninto\nImpact.",
     "subheadline": "We build brands, businesses and experiences across very different environments.",
     "ctaLabel": "Explore Our Work",
     "ctaLink": "/work",
-    "secondaryCtaLabel": "Practice Areas",
+    "secondaryCtaLabel": "Watch Showreel",
     "secondaryCtaLink": "/services",
     "videoUrl": "/videos/hero-montage.mp4",
-    "posterImage": "/images/home/hero-mountain-sky.png"
+    "posterImage": "/images/home/Hero Image Home Page.png"
   },
-  "sections": [
-    { "id": "hero", "name": "Hero Section", "visible": true, "type": "hero" },
-    { "id": "brands", "name": "Selected Brands & Marquee", "visible": true, "type": "brands" },
-    { "id": "impact", "name": "Real-World Impact Counters", "visible": true, "type": "stats" },
-    { "id": "army", "name": "Indian Army Projects Spotlight", "visible": true, "type": "spotlight" },
-    { "id": "pov", "name": "A Point of View & Philosophy", "visible": true, "type": "philosophy" },
-    { "id": "work", "name": "Selected Work Showcase", "visible": true, "type": "showcase" },
-    { "id": "services", "name": "Services / Practice Areas", "visible": true, "type": "services" },
-    { "id": "montage", "name": "Sectors & Built Environment", "visible": true, "type": "montage" },
-    { "id": "tourin", "name": "Tourin Experiential Travel", "visible": true, "type": "spotlight" },
-    { "id": "cta", "name": "Interactive Signature CTA", "visible": true, "type": "cta" }
-  ],
-  "impactStats": [
-    { "number": "07+", "label": "YEARS IN BUSINESS", "description": "Building sustainable brand equity and commercial engines." },
-    { "number": "60+", "label": "ASSIGNMENTS DELIVERED", "description": "High-impact campaigns and operational turnarounds." },
-    { "number": "06", "label": "CORE VERTICALS", "description": "Cross-sector mastery from hospitality to high-altitude defence." },
-    { "number": "14k", "label": "FT ELEVATION", "description": "Tested production capacity in severe climates." }
-  ],
+  "brands": {
+    "eyebrow": "SELECTED PARTNERS & ORGANISATIONS",
+    "heading": "Trusted by forward-thinking businesses and institutions",
+    "list": [
+      {
+        "id": "raysons",
+        "name": "Raysons Group",
+        "monogram": "RG",
+        "badgeBg": "#0066B3",
+        "badgeColor": "#ffffff",
+        "link": "/work/raysons-group"
+      },
+      {
+        "id": "picturetime",
+        "name": "PictureTime",
+        "monogram": "PT",
+        "badgeBg": "linear-gradient(135deg, #E50914 0%, #831010 100%)",
+        "badgeColor": "#ffffff",
+        "link": "/work/picturetime"
+      },
+      {
+        "id": "khau-gully",
+        "name": "Khau Gully",
+        "monogram": "KG",
+        "badgeBg": "#E65100",
+        "badgeColor": "#ffffff",
+        "link": "/work"
+      },
+      {
+        "id": "tranquil-studio",
+        "name": "Tranquil Studio",
+        "monogram": "TS",
+        "badgeBg": "#2E4053",
+        "badgeColor": "#ffffff",
+        "link": "/work"
+      },
+      {
+        "id": "she-project",
+        "name": "SHE Project",
+        "monogram": "SHE",
+        "badgeBg": "linear-gradient(135deg, #DE322D 0%, #B22222 100%)",
+        "badgeColor": "#ffffff",
+        "link": "/work"
+      },
+      {
+        "id": "dtk",
+        "name": "DTK",
+        "monogram": "DTK",
+        "badgeBg": "#1B4F72",
+        "badgeColor": "#ffffff",
+        "link": "/work"
+      },
+      {
+        "id": "misu",
+        "name": "Misu",
+        "monogram": "MISU",
+        "badgeBg": "#881337",
+        "badgeColor": "#ffffff",
+        "link": "/work"
+      },
+      {
+        "id": "indian-army",
+        "name": "Indian Army",
+        "monogram": "IA",
+        "badgeBg": "linear-gradient(135deg, #1C3119 0%, #0D180B 100%)",
+        "badgeColor": "#ffffff",
+        "link": "/indian-army-projects"
+      }
+    ]
+  },
+  "impactStats": {
+    "eyebrow": "REAL-WORLD EXECUTION",
+    "heading": "Impact measured by delivery, not promises.",
+    "subtitle": "Numbers that represent sustained business equity and rigorous ground execution.",
+    "counters": [
+      {
+        "id": "commercial",
+        "tag": "01",
+        "target": 25,
+        "suffix": "+",
+        "title": "Commercial Engagements",
+        "desc": "Direct partnerships across hospitality, enterprise & consumer brands."
+      },
+      {
+        "id": "sectors",
+        "tag": "02",
+        "target": 6,
+        "twoDigits": true,
+        "title": "Industry Sectors",
+        "desc": "Hospitality, Real Estate, Healthcare, Media, Travel & Defence."
+      },
+      {
+        "id": "cases",
+        "tag": "03",
+        "target": 8,
+        "twoDigits": true,
+        "title": "Featured Case Studies",
+        "desc": "In-depth multi-entity execution, retainers and technical production."
+      },
+      {
+        "id": "expeditions",
+        "tag": "04",
+        "target": 15,
+        "suffix": "+",
+        "title": "Himalayan Expeditions",
+        "desc": "Curated high-altitude journeys and community homestay initiatives."
+      }
+    ]
+  },
+  "armySpotlight": {
+    "eyebrow": "DEFENCE & INSTITUTIONAL PRODUCTION",
+    "title": "Documenting service under demanding conditions.",
+    "description": "On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations.",
+    "badge": "VERIFIED INSTITUTIONAL BRIEFS",
+    "ctaText": "Explore All Army Projects",
+    "ctaLink": "/indian-army-projects",
+    "cards": [
+      {
+        "id": "army-ceremonies",
+        "index": "04",
+        "category": "INVESTITURE CEREMONY",
+        "title": "Indian Army Ceremonies",
+        "location": "WESTERN COMMAND HQ THEATRE",
+        "image": "/images/army/western-command-1.jpg"
+      },
+      {
+        "id": "logistics-support",
+        "index": "02",
+        "category": "OPERATIONAL",
+        "title": "Logistics Support",
+        "location": "HIGH-ALTITUDE REGIONS",
+        "image": "/images/army/sampark-1.jpg"
+      },
+      {
+        "id": "high-altitude-impact",
+        "index": "01",
+        "category": "VIBRANT VILLAGES INITIATIVE",
+        "title": "High-Altitude Impact",
+        "location": "EASTERN LADAKH – LAC BORDERS",
+        "image": "/images/army/vibrant-villages-1.jpg"
+      },
+      {
+        "id": "border-communities",
+        "index": "03",
+        "category": "COMMUNITY OUTREACH",
+        "title": "Border Communities",
+        "location": "PEOPLE, PLACES, PROGRESS",
+        "image": "/images/army/rezang-la-1.jpg"
+      },
+      {
+        "id": "institutional-content",
+        "index": "05",
+        "category": "TRAINING & DOCUMENTATION",
+        "title": "Institutional Content",
+        "location": "DISCIPLINE IN EVERY FRAME",
+        "image": "/images/army/western-command-2.jpg"
+      }
+    ]
+  },
   "pov": {
-    "eyebrow": "A POINT OF VIEW",
-    "headline": "Commercial thinking before creative expression.",
-    "quote": "Most agencies sell you what they know how to make. We start with what your business actually needs to achieve.",
-    "author": "MADHURA HOWAL",
-    "authorTitle": "FOUNDER & STRATEGIC LEAD, ĀROHANA"
+    "eyebrow": "POSITIONING & PHILOSOPHY",
+    "headline": "Some businesses need better marketing. Others need a better way of thinking about the business itself.",
+    "highlightPhrase": "the business itself.",
+    "paragraph1": "Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.",
+    "paragraph2": "Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.",
+    "btnPrimaryText": "Read Founder Story & Philosophy",
+    "btnPrimaryLink": "/about",
+    "btnSecondaryText": "Explore Three Practice Areas",
+    "btnSecondaryLink": "/services",
+    "quote": "Sometimes what looks like a marketing problem isn't a marketing problem at all.",
+    "attribution": "MADHURA HOWAL · FOUNDER, ĀROHANA",
+    "triadWords": "IDEAS · BRANDS · PEOPLE · PROGRESS"
+  },
+  "selectedWork": {
+    "eyebrow": "SELECTED WORK SHOWCASE",
+    "title": "The work is the proof.",
+    "subtitle": "Swipe or drag to explore selected engagements across sectors.",
+    "ctaText": "View All Case Studies",
+    "ctaLink": "/work",
+    "projects": [
+      {
+        "id": "vital-wellness",
+        "index": "01",
+        "title": "Vital Wellness",
+        "category": "Wellness & Healthcare",
+        "tags": ["Brand Identity", "Experience Design", "Packaged Goods"],
+        "image": "/images/case-studies/selected-work/vital-wellness.jpg",
+        "link": "/work"
+      },
+      {
+        "id": "residency-club",
+        "index": "02",
+        "title": "Residency Club Kolhapur",
+        "category": "Hospitality & F&B",
+        "tags": ["Hospitality Branding", "Content Production", "Spatial Identity"],
+        "image": "/images/case-studies/selected-work/residency-club.jpg",
+        "link": "/work"
+      },
+      {
+        "id": "raysons-group",
+        "index": "03",
+        "title": "Raysons Group",
+        "category": "Construction & Infrastructure",
+        "tags": ["Corporate Branding", "Brand Film Series", "Spatial Experience"],
+        "image": "/images/case-studies/selected-work/raysons-group.jpg",
+        "link": "/work/raysons-group"
+      },
+      {
+        "id": "abhijeet-magdum",
+        "index": "04",
+        "title": "Abhijeet Magdum Group",
+        "category": "Construction & Infrastructure",
+        "tags": ["Brand Identity", "Project Documentary", "Media Production"],
+        "image": "/images/case-studies/selected-work/abhijeet-magdum.jpg",
+        "link": "/work"
+      },
+      {
+        "id": "misu",
+        "index": "05",
+        "title": "Misu Pan-Asian",
+        "category": "Hospitality & F&B",
+        "tags": ["Brand Identity", "Interior Signage", "Digital Assets"],
+        "image": "/images/case-studies/selected-work/misu.jpg",
+        "link": "/work"
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "PRACTICE AREAS & SCOPE",
+    "title": "Three distinct capabilities. One strategic spine.",
+    "description": "We adapt our engagement model to what the client's business actually demands.",
+    "items": [
+      {
+        "num": "1",
+        "title": "Brand & Digital Growth",
+        "tags": ["Brand Strategy", "Social Ecosystems", "Creative Direction", "Performance Marketing", "Platform Execution"],
+        "image": "/images/services/digital-growth.jpg",
+        "description": "Brand strategy, content, social media, creative direction, video production, advertising and websites for businesses that need a stronger market presence.",
+        "href": "/services#digital-growth"
+      },
+      {
+        "num": "2",
+        "title": "Content & Communication",
+        "tags": ["Documentaries", "Films", "Extreme Terrains", "Scripting", "Post-Production"],
+        "image": "/images/services/content-production.jpg",
+        "description": "Corporate films, documentaries, campaigns and institutional content — from scripting through post-production.",
+        "href": "/services#brand-production"
+      },
+      {
+        "num": "3",
+        "title": "Hospitality & Experience",
+        "tags": ["Concept & Menu", "Kitchen Pass", "Unit Economics", "Staff Systems", "Guest Journeys"],
+        "image": "/images/services/hospitality-consulting.jpg",
+        "description": "Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.",
+        "href": "/services#hospitality-consulting"
+      }
+    ]
+  },
+  "sectorsMontage": {
+    "eyebrow": "SECTORS & BUILT ENVIRONMENT",
+    "title": "Where we do our work.",
+    "sectors": [
+      {
+        "id": "hospitality",
+        "number": "01",
+        "title": "Hospitality & F&B",
+        "subtitle": "MENU CREATION, OPERATING SYSTEMS & REPEAT GUEST VISITS",
+        "description": "Hands-on advisory across experiential dining, boutique resorts, and beverage concepts. We work on menu engineering, guest retention, and operational unit economics.",
+        "cornerTag": "GREAT FOOD BETTER EXPERIENCES",
+        "bottomTag": "PEOPLE FOOD EXPERIENCES",
+        "image": "/images/sectors/01-hospitality.jpg",
+        "link": "/work#hospitality"
+      },
+      {
+        "id": "real-estate",
+        "number": "02",
+        "title": "Real Estate & Built Environment",
+        "subtitle": "INDUSTRIAL FOUNDRIES, PREFAB & LUXURY MODULAR LIVING",
+        "description": "Translating complex technical capabilities and high-end living spaces into cohesive commercial brands across foundries, luxury composite decking, and modular architecture.",
+        "cornerTag": "PRECISION DESIGN BUILT SPACES",
+        "bottomTag": "SPACES FOR A BETTER TOMORROW",
+        "image": "/images/sectors/02-realestate.jpg",
+        "link": "/work#real-estate"
+      },
+      {
+        "id": "healthcare",
+        "number": "03",
+        "title": "Healthcare",
+        "subtitle": "CLINICAL AUTHORITY, PATIENT EDUCATION & DEEP TRUST",
+        "description": "Elevating patient trust and clinical authority through evidence-based health and dermatological education rather than superficial promises.",
+        "cornerTag": "CLINICAL AUTHORITY & INTEGRITY",
+        "bottomTag": "PEOPLE HEALTH POSSIBILITIES",
+        "image": "/images/sectors/03-healthcare.jpg",
+        "link": "/work#healthcare"
+      },
+      {
+        "id": "lifestyle",
+        "number": "04",
+        "title": "Lifestyle & Consumer Brands",
+        "subtitle": "PACKAGED GOODS, D2C & SPECIALTY RETAIL",
+        "description": "Building sustainable customer affinity, packaging appeal, and online traction for modern retail brands.",
+        "cornerTag": "MODERN RETAIL & PACKAGING",
+        "bottomTag": "BRANDS THAT ENDURE",
+        "image": "/images/sectors/04-lifestyle.jpg",
+        "link": "/work#lifestyle"
+      },
+      {
+        "id": "defence",
+        "number": "05",
+        "title": "Institutional & Defence",
+        "subtitle": "CEREMONIAL DOCUMENTATION, COLD TERRAINS & ARCHIVES",
+        "description": "Verified production work with Indian Army formations, capturing historical archives and ceremonial precision.",
+        "cornerTag": "PROTOCOL & DISCIPLINE",
+        "bottomTag": "STORIES OF SERVICE",
+        "image": "/images/sectors/05-defence.jpg",
+        "link": "/indian-army-projects"
+      },
+      {
+        "id": "travel",
+        "number": "06",
+        "title": "Travel & Experiential",
+        "subtitle": "HIGH-ALTITUDE HIMALAYAN EXPEDITIONS & HOMESTAYS",
+        "description": "Curated journeys built on destination thinking, responsible presence, and authentic community connections.",
+        "cornerTag": "HIGH-ALTITUDE HORIZONS",
+        "bottomTag": "PLACES PEOPLE PURPOSE",
+        "image": "/images/sectors/06-travel.jpg",
+        "link": "/tourin"
+      }
+    ]
+  },
+  "tourinSpotlight": {
+    "tag": "TOURIN EXPERIENTIAL TRAVEL",
+    "title": "A venture in destination thinking.",
+    "description": "High-altitude journeys and homestay initiatives across Ladakh and remote Himalayan valleys, built on cultural depth and ecological respect.",
+    "ctaText": "Explore Tourin Expeditions",
+    "ctaLink": "/tourin",
+    "categories": [
+      {
+        "id": "trekking",
+        "name": "Trekking",
+        "tagline": "High-Altitude Himalayan Trails",
+        "image": "/images/tourin/thumb-trekking.jpg",
+        "heroImage": "/images/tourin/tourin-hiker-hero.jpg"
+      },
+      {
+        "id": "homestays",
+        "name": "Homestays",
+        "tagline": "Heritage Community Living",
+        "image": "/images/tourin/thumb-homestay.jpg",
+        "heroImage": "/images/tourin/thumb-homestay.jpg"
+      },
+      {
+        "id": "experiences",
+        "name": "Experiences",
+        "tagline": "Glacial Passes & Bespoke Expeditions",
+        "image": "/images/tourin/thumb-experience.jpg",
+        "heroImage": "/images/tourin/thumb-experience.jpg"
+      }
+    ]
   },
   "cta": {
     "eyebrow": "START A CONVERSATION",
-    "headline": "Let's build something that lasts.",
-    "description": "Whether you are expanding a hospitality brand, scaling a built-environment asset, or launching a new venture, let's talk.",
-    "buttonLabel": "Get In Touch",
-    "buttonLink": "/contact"
+    "headline": "If you're building something serious, let's talk about what it actually needs.",
+    "description": "Let's start with what you're trying to solve or build, not a cookie-cutter agency proposal.",
+    "buttonLabel": "Start a conversation",
+    "buttonLink": "/contact",
+    "email": "founder@byarohana.com"
   }
 }

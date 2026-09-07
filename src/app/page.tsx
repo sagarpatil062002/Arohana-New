@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useCmsContent } from '@/lib/cms/content-context';
 import Hero from '@/components/home/Hero';
 import BrandsMarquee from '@/components/home/BrandsMarquee';
 import RealWorldImpact from '@/components/home/RealWorldImpact';
@@ -11,36 +14,46 @@ import TourinSpotlight from '@/components/home/TourinSpotlight';
 import InteractiveCTA from '@/components/home/InteractiveCTA';
 
 export default function HomePage() {
+  const { content } = useCmsContent();
+  const configuredSections = content?.home?.sections;
+
+  const sectionComponentMap: Record<string, React.ReactNode> = {
+    hero: <Hero key="hero" />,
+    brands: <BrandsMarquee key="brands" />,
+    impact: <RealWorldImpact key="impact" />,
+    army: <IndianArmySpotlight key="army" />,
+    pov: <PointOfView key="pov" />,
+    work: <SelectedWork key="work" />,
+    services: <ServicesSection key="services" />,
+    montage: <SectorMontage key="montage" />,
+    tourin: <TourinSpotlight key="tourin" />,
+    cta: <InteractiveCTA key="cta" />,
+  };
+
+  // If sections are configured in CMS, respect order and visibility
+  if (configuredSections && Array.isArray(configuredSections) && configuredSections.length > 0) {
+    return (
+      <>
+        {configuredSections.map((sec: any) => {
+          if (sec.visible === false) return null;
+          return sectionComponentMap[sec.id] || null;
+        })}
+      </>
+    );
+  }
+
+  // Fallback default order
   return (
     <>
-      {/* 01: Hero Video / Media Container */}
       <Hero />
-
-      {/* 02: Selected Brands & Organisations Marquee */}
       <BrandsMarquee />
-
-      {/* 03: Real-World Execution Mechanical Flip Counter */}
       <RealWorldImpact />
-
-      {/* 04: Selected Indian Army Projects 3D Perspective Showcase */}
       <IndianArmySpotlight />
-
-      {/* 05: Editorial Introduction / A Point of View */}
       <PointOfView />
-
-      {/* 06: Selected Work Showcase — The work is the proof. (3D Coverflow) */}
       <SelectedWork />
-
-      {/* 07: Deep Black Services Section */}
       <ServicesSection />
-
-      {/* 08: Sectors & Built Environment Montage */}
       <SectorMontage />
-
-      {/* 09: Tourin Experiential Travel Feature */}
       <TourinSpotlight />
-
-      {/* 10: Signature Mouse-Trail Interactive CTA */}
       <InteractiveCTA />
     </>
   );

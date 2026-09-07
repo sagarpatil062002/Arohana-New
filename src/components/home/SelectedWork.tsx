@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 export interface ProjectItem {
   id: string;
@@ -82,6 +83,13 @@ const PROJECTS: ProjectItem[] = [
 ];
 
 export default function SelectedWork() {
+  const { content } = useCmsContent();
+  const workCms = content?.home?.selectedWork;
+  const activeEyebrow = workCms?.eyebrow || 'SELECTED WORK';
+  const activeTitle = workCms?.title || 'The work is the proof.';
+  const activeSubtitle = workCms?.subtitle || 'A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.';
+  const projectsList: ProjectItem[] = (workCms?.projects && workCms.projects.length > 0) ? workCms.projects : PROJECTS;
+
   // Center card initially on Abhijeet Magdum (index 3) to match reference layout
   const [currentIndex, setCurrentIndex] = useState(3);
   const [isHovered, setIsHovered] = useState(false);
@@ -93,7 +101,7 @@ export default function SelectedWork() {
   const [dragDelta, setDragDelta] = useState(0);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const total = PROJECTS.length;
+  const total = projectsList.length;
 
   // Responsive screen check
   useEffect(() => {
@@ -183,23 +191,21 @@ export default function SelectedWork() {
           {/* Eyebrow with red bar */}
           <div className="sw-eyebrow-row">
             <span className="sw-red-bar" />
-            <span className="sw-eyebrow-text">SELECTED WORK</span>
+            <span className="sw-eyebrow-text">{activeEyebrow}</span>
           </div>
 
           <div className="sw-header-main">
             {/* Title with red period */}
             <div className="sw-title-col">
               <h2 className="sw-title">
-                The work
-                <br />
-                is the proof<span className="sw-dot-red">.</span>
+                {activeTitle}
               </h2>
             </div>
 
             {/* Description & ©26 Badge & Manual < > buttons */}
             <div className="sw-meta-col">
               <p className="sw-description">
-                A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.
+                {activeSubtitle}
               </p>
 
               <div className="sw-meta-right-group">
@@ -285,7 +291,7 @@ export default function SelectedWork() {
 
           {/* 3D Cards Perspective Stage */}
           <div className="sw-cards-stage">
-            {PROJECTS.map((project, idx) => {
+            {projectsList.map((project, idx) => {
               // Calculate position offset relative to currentIndex (-3, -2, -1, 0, 1, 2, 3)
               let offset = (idx - currentIndex + total) % total;
               if (offset > total / 2) {

@@ -26,8 +26,35 @@ export default function AdminArmyProjectsPage() {
     return <div style={{ padding: '2rem' }}>Loading Indian Army Projects...</div>;
   }
 
-  const selectedProject =
-    armyData.projects?.find((p: any) => p.id === selectedProjectId) || armyData.projects?.[0];
+  const [activeTab, setActiveTab] = useState<'hero' | 'stats' | 'disclaimer' | 'projects'>('hero');
+  const selectedProject = armyData.projects?.find((p: any) => p.id === selectedProjectId) || armyData.projects?.[0];
+
+  const handleHeroChange = (field: string, val: string) => {
+    const updated = {
+      ...armyData,
+      hero: {
+        ...(armyData.hero || {}),
+        [field]: val,
+      },
+    };
+    setArmyData(updated);
+    updateDraftInMemory('army-projects', updated);
+  };
+
+  const handleStatChange = (index: number, field: string, val: string) => {
+    const updatedStats = [...(armyData.stats || [])];
+    if (!updatedStats[index]) updatedStats[index] = { value: '', label: '' };
+    updatedStats[index] = { ...updatedStats[index], [field]: val };
+    const updated = { ...armyData, stats: updatedStats };
+    setArmyData(updated);
+    updateDraftInMemory('army-projects', updated);
+  };
+
+  const handleDisclaimerChange = (val: string) => {
+    const updated = { ...armyData, disclaimer: val };
+    setArmyData(updated);
+    updateDraftInMemory('army-projects', updated);
+  };
 
   const handleProjectChange = (field: string, val: any) => {
     if (!selectedProject) return;
@@ -183,25 +210,188 @@ export default function AdminArmyProjectsPage() {
           </div>
         </div>
 
-        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '210px 1fr', overflow: 'hidden' }}>
-          {/* Projects List */}
-          <div
-            style={{
-              borderRight: '1px solid rgba(0, 0, 0, 0.08)',
-              overflowY: 'auto',
-              padding: '0.75rem',
-              backgroundColor: '#FAFAFA',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.35rem',
-            }}
-          >
-            {armyData.projects.map((p: any, idx: number) => {
-              const isSelected = p.id === selectedProject?.id;
-              return (
-                <div
-                  key={p.id}
-                  onClick={() => setSelectedProjectId(p.id)}
+        {/* Section Tabs */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.25rem',
+            padding: '0.4rem 1rem',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+            backgroundColor: '#F4F4F5',
+            overflowX: 'auto',
+          }}
+        >
+          {[
+            { id: 'hero', label: '01: Hero Section' },
+            { id: 'stats', label: '02: Protocol Stats' },
+            { id: 'disclaimer', label: '03: Disclaimer' },
+            { id: 'projects', label: `04: Projects Directory (${armyData.projects?.length || 0})` },
+          ].map((tab) => {
+            const active = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id as any)}
+                style={{
+                  padding: '0.45rem 0.9rem',
+                  fontSize: '0.78rem',
+                  fontWeight: active ? 700 : 500,
+                  color: active ? '#111113' : '#71717A',
+                  background: active ? '#FFFFFF' : 'transparent',
+                  border: active ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid transparent',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Tab 01: Hero */}
+        {activeTab === 'hero' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Section 01: Page Hero & Editorial Header
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                EYEBROW / CATEGORY TAG
+              </label>
+              <input
+                type="text"
+                value={armyData.hero?.eyebrow || ''}
+                onChange={(e) => handleHeroChange('eyebrow', e.target.value)}
+                placeholder="Defence & Institutional Production"
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                HERO HEADLINE
+              </label>
+              <input
+                type="text"
+                value={armyData.hero?.title || ''}
+                onChange={(e) => handleHeroChange('title', e.target.value)}
+                placeholder="Stories of service"
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                HERO DESCRIPTION
+              </label>
+              <textarea
+                rows={3}
+                value={armyData.hero?.description || ''}
+                onChange={(e) => handleHeroChange('description', e.target.value)}
+                placeholder="On-location film direction..."
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit' }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                SCROLL ANCHOR LABEL
+              </label>
+              <input
+                type="text"
+                value={armyData.hero?.scrollLabel || ''}
+                onChange={(e) => handleHeroChange('scrollLabel', e.target.value)}
+                placeholder="Scroll to explore"
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Tab 02: Stats */}
+        {activeTab === 'stats' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Section 02: Protocol & Operational Counters (4 Stats)
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {(armyData.stats || [{}, {}, {}, {}]).map((stat: any, idx: number) => (
+                <div key={idx} style={{ padding: '1rem', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '10px', backgroundColor: '#FAFAFA' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#DE322D', marginBottom: '0.5rem' }}>
+                    STAT CARD {String(idx + 1).padStart(2, '0')}
+                  </div>
+                  <div style={{ marginBottom: '0.75rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                      VALUE / METRIC
+                    </label>
+                    <input
+                      type="text"
+                      value={stat.value || ''}
+                      onChange={(e) => handleStatChange(idx, 'value', e.target.value)}
+                      placeholder="14,000+ FT"
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                      LABEL
+                    </label>
+                    <input
+                      type="text"
+                      value={stat.label || ''}
+                      onChange={(e) => handleStatChange(idx, 'label', e.target.value)}
+                      placeholder="Ladakh High-Altitude Operations"
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tab 03: Disclaimer */}
+        {activeTab === 'disclaimer' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Section 03: Institutional Integrity & Clearance Disclaimer
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                PROTOCOL NOTICE TEXT
+              </label>
+              <textarea
+                rows={5}
+                value={armyData.disclaimer || ''}
+                onChange={(e) => handleDisclaimerChange(e.target.value)}
+                placeholder="Institutional Integrity: All presented Indian Army project materials represent verified shoot direction..."
+                style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit', lineHeight: '1.5' }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Tab 04: Projects */}
+        {activeTab === 'projects' && (
+          <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '210px 1fr', overflow: 'hidden' }}>
+            {/* Projects List */}
+            <div
+              style={{
+                borderRight: '1px solid rgba(0, 0, 0, 0.08)',
+                overflowY: 'auto',
+                padding: '0.75rem',
+                backgroundColor: '#FAFAFA',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.35rem',
+              }}
+            >
+              {armyData.projects.map((p: any, idx: number) => {
+                const isSelected = p.id === selectedProject?.id;
+                return (
+                  <div
+                    key={p.id}
+                    onClick={() => setSelectedProjectId(p.id)}
                   style={{
                     padding: '0.65rem',
                     borderRadius: '8px',
@@ -489,7 +679,8 @@ export default function AdminArmyProjectsPage() {
             </div>
           )}
         </div>
-      </div>
+      )}
+    </div>
 
       {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
       <div style={{ height: '100%' }}>

@@ -38,19 +38,21 @@ export default function AdminDashboardPage() {
       fetch('/api/content/services').then((r) => r.json()),
       fetch('/api/content/army-projects').then((r) => r.json()),
       fetch('/api/content/tourin').then((r) => r.json()),
+      fetch('/api/content/about').then((r) => r.json()),
       fetch('/api/content/partners').then((r) => r.json()),
       fetch('/content/media.json').then((r) => r.json()),
     ])
-      .then(([home, work, services, army, tourin, partners, media]) => {
+      .then(([home, work, services, army, tourin, about, partners, media]) => {
         setCounts({
           sections: home.data?.sections?.length || 10,
           caseStudies: work.data?.caseStudies?.length || 6,
           services: services.data?.services?.length || 3,
           armyProjects: army.data?.projects?.length || 4,
           tourinJourneys: tourin.data?.journeys?.length || 3,
+          aboutChapters: about.data?.chapters?.length || 3,
           partners: partners.data?.partners?.length || 7,
           mediaAssets: media.assets?.length || 4,
-        });
+        } as any);
       })
       .catch(() => {});
   }, []);
@@ -59,8 +61,9 @@ export default function AdminDashboardPage() {
     { label: 'Homepage Sections', value: counts.sections, href: '/admin/home', icon: Layers, color: '#3B82F6' },
     { label: 'Active Case Studies', value: counts.caseStudies, href: '/admin/work', icon: Briefcase, color: '#DE322D' },
     { label: 'Practice Areas', value: counts.services, href: '/admin/services', icon: FileText, color: '#10B981' },
-    { label: 'Army Projects', value: counts.armyProjects, href: '/admin/army-projects', icon: Shield, color: '#8B5CF6' },
     { label: 'Tourin Journeys', value: counts.tourinJourneys, href: '/admin/tourin', icon: Compass, color: '#F59E0B' },
+    { label: 'Army Projects', value: counts.armyProjects, href: '/admin/army-projects', icon: Shield, color: '#8B5CF6' },
+    { label: 'Studio Chapters', value: (counts as any).aboutChapters || 3, href: '/admin/about', icon: Users, color: '#0EA5E9' },
     { label: 'Partner Logos', value: counts.partners, href: '/admin/partners', icon: Users, color: '#6366F1' },
     { label: 'Uploaded Assets', value: counts.mediaAssets, href: '/admin/media', icon: ImageIcon, color: '#EC4899' },
   ];

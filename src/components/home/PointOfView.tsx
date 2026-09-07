@@ -6,8 +6,20 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 export default function PointOfView() {
+  const { content } = useCmsContent();
+  const povCms = content?.home?.pov;
+  const activeEyebrow = povCms?.eyebrow || 'POSITIONING & PHILOSOPHY';
+  const activeHeadline = povCms?.headline || 'Some businesses need better marketing. Others need a better way of thinking about the business itself.';
+  const activeParagraph1 = povCms?.paragraph1 || 'Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.';
+  const activeParagraph2 = povCms?.paragraph2 || "Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.";
+  const activeBtnPrimaryText = povCms?.btnPrimaryText || 'Read Founder Story & Philosophy';
+  const activeBtnPrimaryLink = povCms?.btnPrimaryLink || '/about';
+  const activeBtnSecondaryText = povCms?.btnSecondaryText || 'Explore Three Practice Areas';
+  const activeBtnSecondaryLink = povCms?.btnSecondaryLink || '/services';
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
   const rightRef = useRef<HTMLDivElement>(null);
@@ -83,47 +95,30 @@ export default function PointOfView() {
           <div ref={leftRef} className="pov-left-col">
             {/* Tag / Eyebrow with Red Dash */}
             <div className="pov-eyebrow-row">
-              <span className="pov-eyebrow-text">POSITIONING &amp; PHILOSOPHY</span>
+              <span className="pov-eyebrow-text">{activeEyebrow}</span>
               <span className="pov-eyebrow-dash" />
             </div>
 
             {/* Main Headline with Red Accent Text & Underline Dash */}
             <h2 className="pov-headline">
-              Some businesses need<br />
-              better marketing. Others<br />
-              need a better way of<br />
-              thinking about{' '}
-              <span className="pov-highlight-phrase">
-                the<br />
-                business itself<span className="pov-dot">.</span>
-                <span className="pov-headline-dash" />
-              </span>
+              {activeHeadline}
             </h2>
 
             {/* Body Copy */}
             <div className="pov-body-copy">
-              <p>
-                Ārohana works with businesses where communication cannot be separated from the
-                business itself. We combine commercial thinking, sector experience and creative
-                execution to help brands become clearer, more credible and more relevant to the people
-                they need to reach.
-              </p>
-              <p>
-                Depending on the brief, that can mean building a digital brand, running an ongoing
-                social ecosystem, creating a film, fixing a restaurant&apos;s menu and operating
-                systems, or taking a project from an idea to on-ground execution.
-              </p>
+              <p>{activeParagraph1}</p>
+              <p>{activeParagraph2}</p>
             </div>
 
             {/* CTA Buttons Row */}
             <div className="pov-buttons-row">
-              <Link href="/about" className="pov-btn-primary">
-                <span>Read Founder Story &amp; Philosophy</span>
+              <Link href={activeBtnPrimaryLink} className="pov-btn-primary">
+                <span>{activeBtnPrimaryText}</span>
                 <ArrowRight size={15} />
               </Link>
 
-              <Link href="/services" className="pov-btn-secondary">
-                <span>Explore Three Practice Areas</span>
+              <Link href={activeBtnSecondaryLink} className="pov-btn-secondary">
+                <span>{activeBtnSecondaryText}</span>
                 <ArrowRight size={15} />
               </Link>
             </div>

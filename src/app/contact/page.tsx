@@ -4,9 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowUpRight, Mail, Phone, MapPin, CheckCircle2, Shield } from 'lucide-react';
 import gsap from 'gsap';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 export default function ContactPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { content } = useCmsContent();
+  const contact = content.contact || {};
+
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +20,7 @@ export default function ContactPage() {
     message: '',
   });
 
-  const faqs = [
+  const defaultFaqs = [
     {
       q: 'How does Ārohana initiate a new client engagement?',
       a: 'We start with a diagnostic discussion directly with the founder to understand your core commercial challenge, current bottlenecks, and specific objectives. If there is mutual alignment, we propose a clear scope — whether a monthly retainer, a consulting sprint, or a project production brief.',
@@ -34,6 +38,8 @@ export default function ContactPage() {
       a: 'We operate under strict confidentiality and standard non-disclosure protocols. We have extensive experience delivering sensitive defence communication and high-security projects.',
     },
   ];
+
+  const faqs = contact.faqs && contact.faqs.length > 0 ? contact.faqs : defaultFaqs;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -56,6 +62,17 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+  };
+
+  const email = contact.email || 'founder@byarohana.com';
+  const phone = contact.phone || '+91 83800 92241';
+  const locations = contact.locations || 'Goa · Kolhapur · Delhi · Ladakh';
+  const callCta = contact.callCta || {
+    tag: 'DISCOVERY CALL',
+    title: 'Prefer to start with a call?',
+    description: 'Book a 15-minute discovery call to discuss your business challenge.',
+    buttonText: 'Book a call',
+    buttonPhone: phone,
   };
 
   return (
@@ -93,7 +110,7 @@ export default function ContactPage() {
               display: 'block',
             }}
           >
-            DIRECT ENGAGEMENT
+            {contact.tag || 'DIRECT ENGAGEMENT'}
           </div>
 
           <h1
@@ -107,7 +124,7 @@ export default function ContactPage() {
               marginBottom: '1.5rem',
             }}
           >
-            Let's start a conversation.
+            {contact.heading || "Let's start a conversation."}
           </h1>
 
           <p
@@ -119,7 +136,8 @@ export default function ContactPage() {
               maxWidth: '780px',
             }}
           >
-            Every conversation starts with understanding your business, your commercial reality, and what actually needs to be created, fixed, or scaled.
+            {contact.subheading ||
+              'Every conversation starts with understanding your business, your commercial reality, and what actually needs to be created, fixed, or scaled.'}
           </p>
         </div>
 
@@ -162,7 +180,7 @@ export default function ContactPage() {
                       <Mail size={16} color="#DE322D" /> Direct Email
                     </div>
                     <a
-                      href="mailto:founder@byarohana.com"
+                      href={`mailto:${email}`}
                       style={{
                         fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
                         fontWeight: 600,
@@ -174,7 +192,7 @@ export default function ContactPage() {
                       onMouseEnter={(e) => (e.currentTarget.style.color = '#DE322D')}
                       onMouseLeave={(e) => (e.currentTarget.style.color = '#111')}
                     >
-                      founder@byarohana.com
+                      {email}
                     </a>
                   </div>
 
@@ -183,7 +201,7 @@ export default function ContactPage() {
                       <Phone size={16} color="#DE322D" /> Direct Phone / WhatsApp
                     </div>
                     <a
-                      href="tel:+918380092241"
+                      href={`tel:${phone.replace(/\s+/g, '')}`}
                       style={{
                         fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
                         fontWeight: 600,
@@ -194,7 +212,7 @@ export default function ContactPage() {
                       onMouseEnter={(e) => (e.currentTarget.style.color = '#DE322D')}
                       onMouseLeave={(e) => (e.currentTarget.style.color = '#111')}
                     >
-                      +91 83800 92241
+                      {phone}
                     </a>
                   </div>
 
@@ -203,7 +221,7 @@ export default function ContactPage() {
                       <MapPin size={16} color="#DE322D" /> Locations
                     </div>
                     <div style={{ fontSize: '1.05rem', color: '#222', fontWeight: 500 }}>
-                      Goa · Kolhapur · Delhi · Ladakh
+                      {locations}
                     </div>
                   </div>
 
@@ -212,38 +230,60 @@ export default function ContactPage() {
                       SOCIAL LINKS
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                      <a
-                        href="https://linkedin.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          fontSize: '0.9rem',
-                          color: '#111',
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem',
-                          fontWeight: 500,
-                        }}
-                      >
-                        LinkedIn <ArrowUpRight size={13} />
-                      </a>
-                      <a
-                        href="https://instagram.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          fontSize: '0.9rem',
-                          color: '#111',
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem',
-                          fontWeight: 500,
-                        }}
-                      >
-                        Instagram <ArrowUpRight size={13} />
-                      </a>
+                      {contact.socials?.linkedin && (
+                        <a
+                          href={contact.socials.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontSize: '0.9rem',
+                            color: '#111',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            fontWeight: 500,
+                          }}
+                        >
+                          LinkedIn <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                      {contact.socials?.instagram && (
+                        <a
+                          href={contact.socials.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontSize: '0.9rem',
+                            color: '#111',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            fontWeight: 500,
+                          }}
+                        >
+                          Instagram <ArrowUpRight size={13} />
+                        </a>
+                      )}
+                      {contact.socials?.behance && (
+                        <a
+                          href={contact.socials.behance}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontSize: '0.9rem',
+                            color: '#111',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.25rem',
+                            fontWeight: 500,
+                          }}
+                        >
+                          Behance <ArrowUpRight size={13} />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -278,16 +318,16 @@ export default function ContactPage() {
                 <div style={{ position: 'relative', zIndex: 2 }}>
                   <div className="tag-mono" style={{ color: '#ff3b30', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <Shield size={14} />
-                    DISCOVERY CALL
+                    {callCta.tag || 'DISCOVERY CALL'}
                   </div>
                   <h3 style={{ fontSize: '1.4rem', fontWeight: 500, marginBottom: '0.75rem' }}>
-                    Prefer to start with a call?
+                    {callCta.title || 'Prefer to start with a call?'}
                   </h3>
                   <p style={{ color: 'rgba(255, 255, 255, 0.75)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-                    Book a 15-minute discovery call to discuss your business challenge.
+                    {callCta.description || 'Book a 15-minute discovery call to discuss your business challenge.'}
                   </p>
                   <a
-                    href="tel:+918380092241"
+                    href={`tel:${(callCta.buttonPhone || phone).replace(/\s+/g, '')}`}
                     className="button-editorial"
                     style={{
                       height: '44px',
@@ -304,7 +344,7 @@ export default function ContactPage() {
                       textDecoration: 'none',
                     }}
                   >
-                    <span>Book a call</span>
+                    <span>{callCta.buttonText || 'Book a call'}</span>
                     <ArrowUpRight size={14} />
                   </a>
                 </div>
@@ -602,7 +642,7 @@ export default function ContactPage() {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))', gap: '1.5rem' }}>
-            {faqs.map((faq, idx) => (
+            {faqs.map((faq: { q: string; a: string }, idx: number) => (
               <div
                 key={idx}
                 style={{

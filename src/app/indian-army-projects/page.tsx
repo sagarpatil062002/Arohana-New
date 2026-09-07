@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCmsContent } from '@/lib/cms/content-context';
 import {
   Shield,
   MapPin,
@@ -30,6 +31,91 @@ const SPREAD_PAGES = [
 ];
 
 export default function IndianArmyProjectsPage() {
+  const { content } = useCmsContent();
+  const armyCms = content['army-projects'] || {};
+  const hero = armyCms.hero || {
+    eyebrow: 'Defence & Institutional Production',
+    title: 'Stories of service',
+    description: 'On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations and institutional headquarters.',
+    scrollLabel: 'Scroll to explore',
+  };
+  const statsList = armyCms.stats || [
+    { value: '14,000+ FT', label: 'Ladakh High-Altitude Operations' },
+    { value: 'FEB 2026', label: 'Western Command Investiture' },
+    { value: '06 ASSIGNMENTS', label: 'Verified Institutional Briefs' },
+    { value: '100%', label: 'Protocol Clearance & Security' },
+  ];
+  const disclaimerText = armyCms.disclaimer || 'Institutional Integrity: All presented Indian Army project materials represent verified shoot direction, post-production and communication assignments executed under authorized institutional protocols. No confidential operational details are disclosed.';
+  const projectsList = armyCms.projects || [];
+
+  const p1 = projectsList.find((p: any) => p.id === 'western-command-investiture') || projectsList[0] || {
+    id: 'western-command-investiture',
+    num: '01',
+    command: 'WESTERN COMMAND',
+    location: 'HQ Western Command Theatre',
+    date: 'February 2026',
+    title: 'Investiture Ceremony',
+    subtitle: 'Ceremonial protocol shoot and documentary post-production.',
+    description: 'Ārohana handled the shoot and post-production for the Western Command Investiture Ceremony in February 2026.',
+    scopeOfWork: 'Coverage of formal investiture protocols, honors and awards distribution, parade sequences.',
+    creativeApproach: 'Restrained, dignified visual pacing tailored to military protocol and ceremonial integrity.',
+    productionDiscipline: 'Tight turnaround master post-production with multi-track sound engineering and high-definition mastering.',
+    image: '/images/army/western-command-1.jpg',
+    category: 'western-command',
+    published: true,
+  };
+
+  const p2 = projectsList.find((p: any) => p.id === '14-corps-communication') || projectsList[1] || {
+    id: '14-corps-communication',
+    num: '02',
+    command: '14 CORPS HEADQUARTERS',
+    location: 'Leh & Indus Valley, Ladakh',
+    date: '2023 – Present',
+    title: 'Communication & Production',
+    subtitle: 'High-altitude visual communication, films and archival design.',
+    description: 'Ārohana has undertaken communication, design and video-production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.',
+    scopeOfWork: 'Institutional communications campaign, internal and public-facing visual communication, and video production.',
+    creativeApproach: 'Authentic high-altitude cinematography paired with authoritative scripting and professional narration.',
+    productionDiscipline: 'Field filming in sub-zero and remote mountain environments requiring specialised equipment and acclimatised crews.',
+    image: '/images/army/14corps-2.jpg',
+    category: '14-corps',
+    published: true,
+  };
+
+  const p3 = projectsList.find((p: any) => p.id === 'corps-publications') || projectsList[2] || {
+    id: 'corps-publications',
+    num: '03',
+    command: 'FIRE & FURY CORPS',
+    location: 'Ladakh Theatre',
+    date: 'Multi-Year Engagements',
+    title: 'Corps-Level Communication & Publications',
+    subtitle: 'XIV Corps communication, publications and community initiatives.',
+    description: 'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, video and community-facing initiatives.',
+    scopeOfWork: 'Spans historical commemorative literature, community welfare communication, and social video production.',
+    creativeApproach: 'Balancing historical gravitas with contemporary digital readability across diverse audiences.',
+    productionDiscipline: 'Seamless integration between on-ground research, military history curation, and modern typography.',
+    image: '/images/army/fire-fury-1.jpg',
+    category: '14-corps',
+    published: true,
+  };
+
+  const p4 = projectsList.find((p: any) => p.id === 'rezang-la-memorial') || projectsList[3] || {
+    id: 'rezang-la-memorial',
+    num: '04',
+    command: 'FIRE & FURY CORPS',
+    location: 'Chushul Sector, Ladakh (16,000+ ft)',
+    date: 'Commemorative Edition',
+    title: 'Rezang La War Memorial',
+    subtitle: 'Commemorative coffee-table book design and visual communication.',
+    description: 'Coffee-table book design and visual communication for the Rezang La War Memorial.',
+    scopeOfWork: 'Complete publication design including hardbound cover architecture, typographic systems, and archival photo restoration.',
+    creativeApproach: 'Subtle, dignified layout allowing historical accounts and veteran testimonies to stand out with gravitas.',
+    productionDiscipline: 'High-specification tactile print finishing, custom clothbound styling, and museum-grade archival reproduction.',
+    image: '/images/army/rezang-la-1.jpg',
+    category: 'border-initiatives',
+    published: true,
+  };
+
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSpreadPage, setActiveSpreadPage] = useState('01');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -55,25 +141,30 @@ export default function IndianArmyProjectsPage() {
           <div className="hero-left">
             <div className="hero-eyebrow">
               <Shield size={14} className="shield-icon" />
-              <span>Defence &amp; Institutional Production</span>
+              <span>{hero.eyebrow}</span>
             </div>
 
             <h1 className="hero-title">
-              Stories
-              <br />
-              of service<span className="accent-dot">.</span>
+              {hero.title?.includes('service') ? (
+                <>
+                  Stories
+                  <br />
+                  of service<span className="accent-dot">.</span>
+                </>
+              ) : (
+                hero.title
+              )}
             </h1>
 
             <p className="hero-desc">
-              On-location film direction, ceremonial protocol documentation, and high-altitude field
-              production conducted directly with Army formations and institutional headquarters.
+              {hero.description}
             </p>
 
             <a href="#projects-overview" className="scroll-explore">
               <span className="scroll-circle">
                 <ArrowDown size={14} />
               </span>
-              <span>Scroll to explore</span>
+              <span>{hero.scrollLabel || 'Scroll to explore'}</span>
             </a>
           </div>
 
@@ -165,25 +256,12 @@ export default function IndianArmyProjectsPage() {
       <section className="stats-section" id="projects-overview">
         <div className="army-container">
           <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-number">14,000+ FT</div>
-              <div className="stat-label">Ladakh High-Altitude Operations</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-number">FEB 2026</div>
-              <div className="stat-label">Western Command Investiture</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-number">06 ASSIGNMENTS</div>
-              <div className="stat-label">Verified Institutional Briefs</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-number">100%</div>
-              <div className="stat-label">Protocol Clearance &amp; Security</div>
-            </div>
+            {statsList.map((st: any, idx: number) => (
+              <div key={idx} className="stat-card">
+                <div className="stat-number">{st.value}</div>
+                <div className="stat-label">{st.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -195,10 +273,7 @@ export default function IndianArmyProjectsPage() {
         <div className="integrity-banner">
           <div className="integrity-dot" />
           <p className="integrity-text">
-            <strong>Institutional Integrity:</strong> All presented Indian Army project materials
-            represent verified shoot direction, post-production and communication assignments
-            executed under authorized institutional protocols. No confidential operational details
-            are disclosed.
+            {disclaimerText}
           </p>
         </div>
       </div>
@@ -233,22 +308,22 @@ export default function IndianArmyProjectsPage() {
         {/* ----------------------------------------------------------------------
             CARD 1: "01 | INVESTITURE CEREMONY" (LIGHT CARD)
             ---------------------------------------------------------------------- */}
-        {(activeCategory === 'all' || activeCategory === 'western-command') && (
-          <article className="project-card card-light" data-category="western-command">
+        {(p1.published !== false && (activeCategory === 'all' || activeCategory === (p1.category || 'western-command'))) && (
+          <article className="project-card card-light" data-category={p1.category || 'western-command'}>
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">01</span>
-                <span className="meta-tag-pill">WESTERN COMMAND</span>
+                <span className="meta-badge-num">{p1.num}</span>
+                <span className="meta-tag-pill">{p1.command}</span>
               </div>
               <div className="card-meta-right">
                 <span className="meta-meta-item">
                   <MapPin size={13} />
-                  HQ Western Command Theatre
+                  {p1.location}
                 </span>
                 <span className="meta-meta-item">
                   <Calendar size={13} />
-                  February 2026
+                  {p1.date}
                 </span>
               </div>
             </div>
@@ -257,39 +332,33 @@ export default function IndianArmyProjectsPage() {
             <div className="card-1-grid">
               {/* Left Text & Sub-sections */}
               <div>
-                <h2 className="card-title">
-                  Investiture
-                  <br />
-                  Ceremony
+                <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
+                  {p1.title}
                 </h2>
                 <div className="card-subhead">
-                  Ceremonial protocol shoot and documentary post-production.
+                  {p1.subtitle}
                 </div>
                 <p className="card-description">
-                  Ārohana handled the shoot and post-production for the Western Command Investiture
-                  Ceremony in February 2026.
+                  {p1.description}
                 </p>
 
                 <div className="three-subsections-row">
                   <div className="subsection-box">
                     <span className="subsection-title highlight">Scope of Work</span>
                     <p className="subsection-desc">
-                      Coverage of formal investiture protocols, honors and awards distribution, parade
-                      sequences.
+                      {p1.scopeOfWork}
                     </p>
                   </div>
                   <div className="subsection-box">
                     <span className="subsection-title">Creative Approach</span>
                     <p className="subsection-desc">
-                      Restrained, dignified visual pacing tailored to military protocol and ceremonial
-                      integrity.
+                      {p1.creativeApproach}
                     </p>
                   </div>
                   <div className="subsection-box">
                     <span className="subsection-title">Production Discipline</span>
                     <p className="subsection-desc">
-                      Tight turnaround master post-production with multi-track sound engineering and
-                      high-definition mastering.
+                      {p1.productionDiscipline}
                     </p>
                   </div>
                 </div>
@@ -320,11 +389,11 @@ export default function IndianArmyProjectsPage() {
                   style={{ cursor: 'pointer' }}
                   role="button"
                   tabIndex={0}
-                  aria-label="Play Western Command Investiture video"
+                  aria-label={`Play ${p1.title} video`}
                 >
                   <Image
-                    src="/images/army/western-command-1.jpg"
-                    alt="Western Command Investiture Ceremony"
+                    src={p1.image || '/images/army/western-command-1.jpg'}
+                    alt={p1.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 450px"
                     style={{ objectFit: 'cover' }}
@@ -368,22 +437,22 @@ export default function IndianArmyProjectsPage() {
         {/* ----------------------------------------------------------------------
             CARD 2: "02 | 14 CORPS HEADQUARTERS" (TACTICAL DARK CARD)
             ---------------------------------------------------------------------- */}
-        {(activeCategory === 'all' || activeCategory === '14-corps') && (
-          <article className="project-card card-dark" data-category="14-corps">
+        {(p2.published !== false && (activeCategory === 'all' || activeCategory === (p2.category || '14-corps'))) && (
+          <article className="project-card card-dark" data-category={p2.category || '14-corps'}>
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">02</span>
-                <span className="meta-tag-pill">14 CORPS HEADQUARTERS</span>
+                <span className="meta-badge-num">{p2.num}</span>
+                <span className="meta-tag-pill">{p2.command}</span>
               </div>
               <div className="card-meta-right">
                 <span className="meta-meta-item">
                   <MapPin size={13} />
-                  Leh &amp; Indus Valley, Ladakh
+                  {p2.location}
                 </span>
                 <span className="meta-meta-item">
                   <Calendar size={13} />
-                  2023 – Present
+                  {p2.date}
                 </span>
               </div>
             </div>
@@ -391,18 +460,14 @@ export default function IndianArmyProjectsPage() {
             {/* Top Row: Text Description + 3D Publications */}
             <div className="card-2-top-grid">
               <div>
-                <h2 className="card-title">
-                  Communication
-                  <br />
-                  &amp; Production
+                <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
+                  {p2.title}
                 </h2>
                 <div className="card-subhead">
-                  High-altitude visual communication, films and archival design.
+                  {p2.subtitle}
                 </div>
                 <p className="card-description">
-                  Ārohana has undertaken communication, design and video-production work for 14 Corps
-                  Headquarters, including visual communication and films developed through scripting,
-                  voice-over, editing and sound.
+                  {p2.description}
                 </p>
 
                 {/* Mini Video Preview */}
@@ -412,11 +477,11 @@ export default function IndianArmyProjectsPage() {
                   style={{ cursor: 'pointer' }}
                   role="button"
                   tabIndex={0}
-                  aria-label="Watch high-altitude stories film"
+                  aria-label={`Watch ${p2.title} film`}
                 >
                   <Image
-                    src="/images/army/14corps-2.jpg"
-                    alt="High-Altitude Filming in Ladakh"
+                    src={p2.image || '/images/army/14corps-2.jpg'}
+                    alt={p2.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 400px"
                     style={{ objectFit: 'cover' }}
@@ -488,22 +553,19 @@ export default function IndianArmyProjectsPage() {
                 <div className="subsection-box">
                   <span className="subsection-title">Scope of Work</span>
                   <p className="subsection-desc">
-                    Institutional communications campaign, internal and public-facing visual
-                    communication, and video production.
+                    {p2.scopeOfWork}
                   </p>
                 </div>
                 <div className="subsection-box">
                   <span className="subsection-title">Creative Approach</span>
                   <p className="subsection-desc">
-                    Authentic high-altitude cinematography paired with authoritative scripting and
-                    professional narration.
+                    {p2.creativeApproach}
                   </p>
                 </div>
                 <div className="subsection-box">
                   <span className="subsection-title">Production Discipline</span>
                   <p className="subsection-desc">
-                    Field filming in sub-zero and remote mountain environments requiring specialised
-                    equipment and acclimatised crews.
+                    {p2.productionDiscipline}
                   </p>
                 </div>
               </div>
@@ -532,26 +594,26 @@ export default function IndianArmyProjectsPage() {
         {/* ----------------------------------------------------------------------
             CARD 3: "03 | FIRE & FURY CORPS" (LIGHT CARD)
             ---------------------------------------------------------------------- */}
-        {(activeCategory === 'all' || activeCategory === '14-corps') && (
+        {(p3.published !== false && (activeCategory === 'all' || activeCategory === (p3.category || '14-corps'))) && (
           <article
             className="project-card card-light"
             id="card-corps-publications"
-            data-category="14-corps"
+            data-category={p3.category || '14-corps'}
           >
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">03</span>
-                <span className="meta-tag-pill">FIRE &amp; FURY CORPS</span>
+                <span className="meta-badge-num">{p3.num}</span>
+                <span className="meta-tag-pill">{p3.command}</span>
               </div>
               <div className="card-meta-right">
                 <span className="meta-meta-item">
                   <MapPin size={13} />
-                  Ladakh Theatre
+                  {p3.location}
                 </span>
                 <span className="meta-meta-item">
                   <Calendar size={13} />
-                  Multi-Year Engagements
+                  {p3.date}
                 </span>
               </div>
             </div>
@@ -559,18 +621,14 @@ export default function IndianArmyProjectsPage() {
             <div className="card-3-grid">
               {/* Left Side: Title & Vertical Stepper */}
               <div>
-                <h2 className="card-title">
-                  Corps-Level
-                  <br />
-                  Communication &amp; Publications
+                <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
+                  {p3.title}
                 </h2>
                 <div className="card-subhead">
-                  XIV Corps communication, publications and community initiatives.
+                  {p3.subtitle}
                 </div>
                 <p className="card-description">
-                  Fire &amp; Fury Corps is the designation associated with XIV Corps. Ārohana has
-                  undertaken project work across communication, publications, video and community-facing
-                  initiatives.
+                  {p3.description}
                 </p>
 
                 {/* Vertical Stepper Timeline (Matching Reference Layout) */}
@@ -579,24 +637,21 @@ export default function IndianArmyProjectsPage() {
                     <div className="stepper-node" />
                     <div className="stepper-title">Scope of Work</div>
                     <p className="stepper-desc">
-                      Spans historical commemorative literature, community welfare communication, and
-                      social video production.
+                      {p3.scopeOfWork}
                     </p>
                   </div>
                   <div className="stepper-item">
                     <div className="stepper-node" />
                     <div className="stepper-title">Creative Approach</div>
                     <p className="stepper-desc">
-                      Balancing historical gravitas with contemporary digital readability across
-                      diverse audiences.
+                      {p3.creativeApproach}
                     </p>
                   </div>
                   <div className="stepper-item">
                     <div className="stepper-node" />
                     <div className="stepper-title">Production Discipline</div>
                     <p className="stepper-desc">
-                      Seamless integration between on-ground research, military history curation, and
-                      modern typography.
+                      {p3.productionDiscipline}
                     </p>
                   </div>
                 </div>
@@ -721,22 +776,22 @@ export default function IndianArmyProjectsPage() {
         {/* ----------------------------------------------------------------------
             CARD 4: "04 | REZANG LA WAR MEMORIAL" (TACTICAL DARK CARD)
             ---------------------------------------------------------------------- */}
-        {(activeCategory === 'all' || activeCategory === 'border-initiatives') && (
-          <article className="project-card card-dark" data-category="border-initiatives">
+        {(p4.published !== false && (activeCategory === 'all' || activeCategory === (p4.category || 'border-initiatives'))) && (
+          <article className="project-card card-dark" data-category={p4.category || 'border-initiatives'}>
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">04</span>
-                <span className="meta-tag-pill">FIRE &amp; FURY CORPS</span>
+                <span className="meta-badge-num">{p4.num}</span>
+                <span className="meta-tag-pill">{p4.command}</span>
               </div>
               <div className="card-meta-right">
                 <span className="meta-meta-item">
                   <MapPin size={13} />
-                  Chushul Sector, Ladakh (16,000+ ft)
+                  {p4.location}
                 </span>
                 <span className="meta-meta-item">
                   <Calendar size={13} />
-                  Commemorative Edition
+                  {p4.date}
                 </span>
               </div>
             </div>
@@ -744,38 +799,33 @@ export default function IndianArmyProjectsPage() {
             <div className="card-4-grid">
               {/* Left Side: Title & Subsections */}
               <div>
-                <h2 className="card-title">
-                  Rezang La
-                  <br />
-                  War Memorial
+                <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
+                  {p4.title}
                 </h2>
                 <div className="card-subhead">
-                  Commemorative coffee-table book design and visual communication.
+                  {p4.subtitle}
                 </div>
                 <p className="card-description">
-                  Coffee-table book design and visual communication for the Rezang La War Memorial.
+                  {p4.description}
                 </p>
 
                 <div className="three-subsections-row">
                   <div className="subsection-box">
                     <span className="subsection-title">Scope of Work</span>
                     <p className="subsection-desc">
-                      Complete publication design including hardbound cover architecture, typographic
-                      systems, and archival photo restoration.
+                      {p4.scopeOfWork}
                     </p>
                   </div>
                   <div className="subsection-box">
                     <span className="subsection-title">Creative Approach</span>
                     <p className="subsection-desc">
-                      Subtle, dignified layout allowing historical accounts and veteran testimonies to
-                      stand out with gravitas.
+                      {p4.creativeApproach}
                     </p>
                   </div>
                   <div className="subsection-box">
                     <span className="subsection-title">Production Discipline</span>
                     <p className="subsection-desc">
-                      High-specification tactile print finishing, custom clothbound styling, and
-                      museum-grade archival reproduction.
+                      {p4.productionDiscipline}
                     </p>
                   </div>
                 </div>
@@ -791,8 +841,8 @@ export default function IndianArmyProjectsPage() {
                 {/* Hardbound Volume */}
                 <div className="rezang-hardbound-book">
                   <Image
-                    src="/images/army/rezang-la-1.jpg"
-                    alt="Rezang La An Epic of Eternal Valour"
+                    src={p4.image || '/images/army/rezang-la-1.jpg'}
+                    alt={p4.title}
                     fill
                     sizes="240px"
                     style={{ objectFit: 'cover' }}
@@ -848,6 +898,64 @@ export default function IndianArmyProjectsPage() {
             </div>
           </article>
         )}
+
+        {/* Additional Custom Projects from CMS */}
+        {projectsList
+          .filter((p: any) => p.id !== p1.id && p.id !== p2.id && p.id !== p3.id && p.id !== p4.id && p.published !== false)
+          .map((p: any) => {
+            const isMatch = activeCategory === 'all' || activeCategory === p.category;
+            if (!isMatch) return null;
+            return (
+              <article key={p.id} className="project-card card-light" data-category={p.category}>
+                <div className="card-meta-bar">
+                  <div className="card-meta-left">
+                    <span className="meta-badge-num">{p.num}</span>
+                    <span className="meta-tag-pill">{p.command}</span>
+                  </div>
+                  <div className="card-meta-right">
+                    <span className="meta-meta-item"><MapPin size={13} /> {p.location}</span>
+                    <span className="meta-meta-item"><Calendar size={13} /> {p.date}</span>
+                  </div>
+                </div>
+                <div className="card-1-grid">
+                  <div>
+                    <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>{p.title}</h2>
+                    <div className="card-subhead">{p.subtitle}</div>
+                    <p className="card-description">{p.description}</p>
+                    <div className="three-subsections-row">
+                      {p.scopeOfWork && (
+                        <div className="subsection-box">
+                          <span className="subsection-title highlight">Scope of Work</span>
+                          <p className="subsection-desc">{p.scopeOfWork}</p>
+                        </div>
+                      )}
+                      {p.creativeApproach && (
+                        <div className="subsection-box">
+                          <span className="subsection-title">Creative Approach</span>
+                          <p className="subsection-desc">{p.creativeApproach}</p>
+                        </div>
+                      )}
+                      {p.productionDiscipline && (
+                        <div className="subsection-box">
+                          <span className="subsection-title">Production Discipline</span>
+                          <p className="subsection-desc">{p.productionDiscipline}</p>
+                        </div>
+                      )}
+                    </div>
+                    <Link href="/contact" className="card-action-link" style={{ marginTop: '1.25rem', display: 'inline-flex' }}>
+                      <span>View Project</span>
+                      <ArrowUpRight size={13} />
+                    </Link>
+                  </div>
+                  {p.image && (
+                    <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '12px', overflow: 'hidden' }}>
+                      <Image src={p.image} alt={p.title} fill sizes="450px" style={{ objectFit: 'cover' }} />
+                    </div>
+                  )}
+                </div>
+              </article>
+            );
+          })}
       </main>
 
       {/* ==========================================================================

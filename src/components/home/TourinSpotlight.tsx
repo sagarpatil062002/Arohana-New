@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface JourneyCategory {
   id: string;
@@ -38,11 +39,15 @@ const JOURNEY_CATEGORIES: JourneyCategory[] = [
 ];
 
 export default function TourinSpotlight() {
+  const { content } = useCmsContent();
+  const tourinCms = content?.home?.tourinSpotlight;
+  const categoriesList: JourneyCategory[] = (tourinCms?.categories && tourinCms.categories.length > 0) ? tourinCms.categories : JOURNEY_CATEGORIES;
+
   const [activeCategory, setActiveCategory] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const totalCategories = JOURNEY_CATEGORIES.length;
+  const totalCategories = categoriesList.length;
 
   const nextCategory = useCallback(() => {
     setActiveCategory((prev) => (prev + 1) % totalCategories);
@@ -87,7 +92,7 @@ export default function TourinSpotlight() {
         <div className="tourin-hero-card">
           {/* Background / Right Mountain Landscape Visual */}
           <div className="mountain-visual-layer">
-            {JOURNEY_CATEGORIES.map((cat, idx) => (
+            {categoriesList.map((cat, idx) => (
               <div
                 key={cat.id}
                 style={{
@@ -185,23 +190,18 @@ export default function TourinSpotlight() {
             <div className="panel-inner">
               {/* Eyebrow with Red Dash */}
               <div className="eyebrow-row">
-                <span className="eyebrow-text">EXPERIENTIAL TRAVEL</span>
+                <span className="eyebrow-text">{tourinCms?.tag || 'EXPERIENTIAL TRAVEL'}</span>
                 <span className="eyebrow-dash" />
               </div>
 
               {/* Main Headline */}
               <h2 className="headline-text">
-                And then
-                <br />
-                there is
-                <br />
-                Tourin<span className="headline-dot">.</span>
+                {tourinCms?.title || 'And then there is Tourin.'}
               </h2>
 
               {/* Body Description */}
               <p className="description-text">
-                Curated Himalayan routes, community homestays, and high-altitude logistics
-                planned directly by people who know the mountain terrain intimately.
+                {tourinCms?.description || 'Curated Himalayan routes, community homestays, and high-altitude logistics planned directly by people who know the mountain terrain intimately.'}
               </p>
 
               {/* Stat Card */}
@@ -241,7 +241,7 @@ export default function TourinSpotlight() {
           {/* Floating Bottom Thumbnails Strip (Trekking, Homestays, Experiences) */}
           <div className="floating-bottom-strip">
             <div className="thumbnails-group">
-              {JOURNEY_CATEGORIES.map((cat, idx) => (
+              {categoriesList.map((cat, idx) => (
                 <button
                   key={cat.id}
                   type="button"

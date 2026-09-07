@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface SectorItem {
   id: string;
@@ -93,17 +94,21 @@ const SECTORS: SectorItem[] = [
 ];
 
 export default function SectorMontage() {
+  const { content } = useCmsContent();
+  const montageCms = content?.home?.sectorsMontage;
+  const sectorsList: SectorItem[] = (montageCms?.sectors && montageCms.sectors.length > 0) ? montageCms.sectors : SECTORS;
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePrev = useCallback(() => {
-    setActiveIndex((prev) => (prev === 0 ? SECTORS.length - 1 : prev - 1));
-  }, []);
+    setActiveIndex((prev) => (prev === 0 ? sectorsList.length - 1 : prev - 1));
+  }, [sectorsList.length]);
 
   const handleNext = useCallback(() => {
-    setActiveIndex((prev) => (prev === SECTORS.length - 1 ? 0 : prev + 1));
-  }, []);
+    setActiveIndex((prev) => (prev === sectorsList.length - 1 ? 0 : prev + 1));
+  }, [sectorsList.length]);
 
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -134,7 +139,7 @@ export default function SectorMontage() {
     resetAutoplay();
   };
 
-  const activeSector = SECTORS[activeIndex];
+  const activeSector = sectorsList[activeIndex] || sectorsList[0];
 
   return (
     <section
@@ -153,10 +158,9 @@ export default function SectorMontage() {
             ============================================================ */}
         <div className="experience-header-row">
           <div className="experience-header-left">
-            <span className="experience-eyebrow">SECTOR DEPTH</span>
+            <span className="experience-eyebrow">{montageCms?.eyebrow || 'SECTOR DEPTH'}</span>
             <h2 className="experience-headline">
-              Where our <span className="headline-bold">experience sits</span>
-              <span className="headline-dot">.</span>
+              {montageCms?.title || 'Where our experience sits.'}
             </h2>
             <p className="experience-subheading">
               Cross-disciplinary capability deployed across 6 core commercial and
@@ -168,7 +172,7 @@ export default function SectorMontage() {
             {/* Dashed Progress Indicators */}
             <div className="progress-group">
               <div className="dashes-track">
-                {SECTORS.map((_, idx) => (
+                {sectorsList.map((_, idx) => (
                   <button
                     key={idx}
                     type="button"
@@ -181,7 +185,7 @@ export default function SectorMontage() {
               <span className="counter-text">
                 <span className="counter-active">{activeSector.number}</span>
                 <span className="counter-slash"> / </span>
-                <span className="counter-total">06</span>
+                <span className="counter-total">0{sectorsList.length}</span>
               </span>
             </div>
 
@@ -211,7 +215,7 @@ export default function SectorMontage() {
             DESKTOP INTERACTIVE CARD ACCORDION
             ============================================================ */}
         <div className="desktop-accordion-wrap">
-          {SECTORS.map((sector, idx) => {
+          {sectorsList.map((sector, idx) => {
             const isActive = idx === activeIndex;
 
             if (isActive) {
@@ -354,7 +358,7 @@ export default function SectorMontage() {
 
           {/* Sector Thumbnails Row */}
           <div className="mobile-thumbnails-row">
-            {SECTORS.map((sec, idx) => (
+            {sectorsList.map((sec, idx) => (
               <button
                 key={sec.id}
                 type="button"

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, Mountain, ShieldCheck, Video, Landmark } from 'lucide-react';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface ArmyCard {
   id: string;
@@ -60,6 +61,10 @@ const ARMY_PROJECT_CARDS: ArmyCard[] = [
 ];
 
 export default function IndianArmySpotlight() {
+  const { content } = useCmsContent();
+  const armyCms = content?.home?.armySpotlight;
+  const cards: ArmyCard[] = (armyCms?.cards && armyCms.cards.length > 0) ? armyCms.cards : ARMY_PROJECT_CARDS;
+
   // Center card (item 01 at index 2) is initially active
   const [activeIndex, setActiveIndex] = useState(2);
   const [isHovered, setIsHovered] = useState(false);
@@ -71,7 +76,7 @@ export default function IndianArmySpotlight() {
   const isMouseDown = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const total = ARMY_PROJECT_CARDS.length;
+  const total = cards.length;
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -342,20 +347,16 @@ export default function IndianArmySpotlight() {
           {/* Left Column: Eyebrow, Main Headline, Paragraph, Beyond Boundaries */}
           <div className="army-header-left">
             <div className="army-eyebrow-row">
-              <span className="army-eyebrow-text">PROOF OF WORK</span>
+              <span className="army-eyebrow-text">{armyCms?.eyebrow || 'PROOF OF WORK'}</span>
               <span className="army-eyebrow-dash" />
             </div>
 
             <h2 className="army-headline">
-              Work that doesn&apos;t fit a<br />
-              standard agency box<span className="army-red-dot">.</span>
+              {armyCms?.title || "Work that doesn't fit a standard agency box"}
             </h2>
 
             <p className="army-description">
-              From remote-community health initiatives in high-altitude Ladakh to official investiture
-              ceremony films for the Indian Army, AROHANA has worked on projects where the
-              environment, audience and institutional responsibility demanded an entirely different
-              level of preparation and discipline.
+              {armyCms?.description || "From remote-community health initiatives in high-altitude Ladakh to official investiture ceremony films for the Indian Army, Ārohana has worked on projects where the environment, audience and institutional responsibility demanded an entirely different level of preparation and discipline."}
             </p>
 
             <div className="army-script-badge">
@@ -408,7 +409,7 @@ export default function IndianArmySpotlight() {
           {/* 3D Cards Track */}
           <div className="army-carousel-viewport">
             <div className="army-cards-stage">
-              {ARMY_PROJECT_CARDS.map((item, index) => {
+              {cards.map((item, index) => {
                 // Calculate position offset relative to activeIndex (-2, -1, 0, 1, 2)
                 let offset = (index - activeIndex + total) % total;
                 if (offset > total / 2) {

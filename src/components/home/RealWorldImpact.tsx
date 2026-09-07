@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface CounterItem {
   id: string;
@@ -90,6 +91,12 @@ function FlipDigit({ digit }: { digit: string }) {
 }
 
 export default function RealWorldImpact() {
+  const { content } = useCmsContent();
+  const impactCms = content?.home?.impactStats;
+  const activeEyebrow = impactCms?.eyebrow || 'PROOF OF WORK  ·  COMMERCIAL & SECTOR IMPACT';
+  const activeHeading = impactCms?.heading || 'Real-world execution across sectors.';
+  const activeItems: CounterItem[] = (impactCms?.counters && impactCms.counters.length > 0) ? impactCms.counters : IMPACT_ITEMS;
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -139,10 +146,10 @@ export default function RealWorldImpact() {
         once: true,
         onEnter: () => {
           gsap.to(obj, {
-            v0: IMPACT_ITEMS[0].target,
-            v1: IMPACT_ITEMS[1].target,
-            v2: IMPACT_ITEMS[2].target,
-            v3: IMPACT_ITEMS[3].target,
+            v0: activeItems[0]?.target || 0,
+            v1: activeItems[1]?.target || 0,
+            v2: activeItems[2]?.target || 0,
+            v3: activeItems[3]?.target || 0,
             duration: 2.2,
             ease: 'power3.out',
             onUpdate: () =>
@@ -158,7 +165,7 @@ export default function RealWorldImpact() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [activeItems]);
 
   return (
     <section
@@ -182,12 +189,11 @@ export default function RealWorldImpact() {
           {/* Left: Eyebrow Tag + Main Headline */}
           <div className="rwi-header-left">
             <div className="rwi-eyebrow">
-              PROOF OF WORK &nbsp;·&nbsp; COMMERCIAL &amp; SECTOR IMPACT
+              {activeEyebrow}
             </div>
 
             <h2 className="rwi-headline">
-              Real-world execution<br />
-              across sectors<span className="rwi-red-dot">.</span>
+              {activeHeading}
             </h2>
           </div>
 
@@ -246,8 +252,8 @@ export default function RealWorldImpact() {
             4-COLUMN STATS GRID: Clean Flipping Numbers (NO BOXES)
             ============================================================ */}
         <div ref={gridRef} className="rwi-stats-grid">
-          {IMPACT_ITEMS.map((item, idx) => {
-            const v = counts[idx];
+          {activeItems.map((item, idx) => {
+            const v = counts[idx] ?? 0;
             const numStr = item.twoDigits && v < 10 ? `0${v}` : `${v}`;
             const digits = numStr.split('');
 

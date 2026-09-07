@@ -4,9 +4,13 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 export default function Footer() {
   const pathname = usePathname();
+  const { content } = useCmsContent();
+  const footer = content.footer || {};
+  const contact = content.contact || {};
 
   // For Tourin & Army Projects keep dedicated footer matching design; hide on admin
   if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects' || pathname?.startsWith('/admin')) {
@@ -21,6 +25,14 @@ export default function Footer() {
     { label: 'Army Projects', href: '/indian-army-projects' },
     { label: 'Contact', href: '/contact' },
   ];
+
+  const tagline = footer.tagline || 'Business Thinking • Creative Communication • Execution across very different environments.';
+  const officeName = contact.office?.name || 'ĀROHANA Consultancy';
+  const officeAddress = contact.office?.address || '30, Goodwill Square, Aundh-Ravet BRTS Rd, Near D Mart, Thergaon, Pune 411033, India.';
+  const email = contact.email || 'founder@byarohana.com';
+  const phone = contact.phone || '+91 83800 92241';
+  const locations = footer.locations || contact.locations || 'Pune • Ladakh • Pan-India Engagements';
+  const copyright = footer.copyright || `© ${new Date().getFullYear()} ĀROHANA Consultancy. All Rights Reserved.`;
 
   return (
     <footer
@@ -47,7 +59,7 @@ export default function Footer() {
           }}
           className="tourin-footer-grid"
         >
-          {/* Column 1: ĀROHANA Brand (with Logo instead of Tourin) */}
+          {/* Column 1: ĀROHANA Brand */}
           <div>
             <Link href="/" style={{ display: 'inline-block', marginBottom: '0.65rem' }}>
               <Image
@@ -67,7 +79,7 @@ export default function Footer() {
                 maxWidth: '240px',
               }}
             >
-              Business Thinking • Creative Communication • Execution across very different environments.
+              {tagline}
             </p>
           </div>
 
@@ -139,16 +151,15 @@ export default function Footer() {
               }}
             >
               <div style={{ color: '#111111', fontWeight: 600, marginBottom: '0.25rem' }}>
-                ĀROHANA Consultancy
+                {officeName}
               </div>
-              <div>30, Goodwill Square, Aundh-Ravet BRTS Rd,</div>
-              <div style={{ marginBottom: '0.75rem' }}>
-                Near D Mart, Thergaon, Pune 411033, India.
+              <div style={{ marginBottom: '0.75rem', whiteSpace: 'pre-line' }}>
+                {officeAddress}
               </div>
 
               <div>
                 <a
-                  href="mailto:founder@byarohana.com"
+                  href={`mailto:${email}`}
                   style={{
                     color: '#111111',
                     textDecoration: 'none',
@@ -159,10 +170,10 @@ export default function Footer() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#DE322D')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = '#111111')}
                 >
-                  founder@byarohana.com
+                  {email}
                 </a>
                 <a
-                  href="tel:+918380092241"
+                  href={`tel:${phone.replace(/\s+/g, '')}`}
                   style={{
                     color: '#555555',
                     textDecoration: 'none',
@@ -171,7 +182,7 @@ export default function Footer() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = '#555555')}
                 >
-                  +91 83800 92241
+                  {phone}
                 </a>
               </div>
             </div>
@@ -201,9 +212,9 @@ export default function Footer() {
               }}
             >
               {[
-                { label: 'LinkedIn', href: 'https://linkedin.com' },
-                { label: 'Instagram', href: 'https://instagram.com/arohana.studio' },
-                { label: 'Behance', href: 'https://behance.net' },
+                { label: 'LinkedIn', href: contact.socials?.linkedin || 'https://linkedin.com' },
+                { label: 'Instagram', href: contact.socials?.instagram || 'https://instagram.com/arohana.studio' },
+                { label: 'Behance', href: contact.socials?.behance || 'https://behance.net' },
               ].map((s) => (
                 <a
                   key={s.label}
@@ -239,8 +250,8 @@ export default function Footer() {
             fontFamily: 'var(--font-mono, monospace)',
           }}
         >
-          <div>© {new Date().getFullYear()} ĀROHANA Consultancy. All Rights Reserved.</div>
-          <div style={{ color: '#555555' }}>Pune • Ladakh • Pan-India Engagements</div>
+          <div>{copyright}</div>
+          <div style={{ color: '#555555' }}>{locations}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <span style={{ color: '#777777' }}>Authentic Strategy &amp; Brand Practice</span>
             <span style={{ color: 'rgba(0, 0, 0, 0.2)' }}>&bull;</span>

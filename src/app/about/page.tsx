@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCmsContent } from '@/lib/cms/content-context';
 import {
   ArrowRight,
   ArrowDown,
@@ -246,6 +247,38 @@ const TEAM = [
 ];
 
 export default function StudioPage() {
+  const { content } = useCmsContent();
+  const aboutCms = content.about || {};
+
+  const heroData = aboutCms.hero || {
+    eyebrow: 'THE AROHANA STORY',
+    headline: "I didn't plan to build Arohana.",
+    subheadline: "I built it because I kept seeing the same gap between what brands were being promised and what was actually happening on the ground.",
+    introP1: "The road to Arohana was anything but straight. I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people see only after they become responsible for the whole thing.",
+    introP2: "Today, Arohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building.",
+    founderName: "Madhura Howal",
+    founderTitle: "Founder & Strategic Director",
+    stats: STATS,
+  };
+
+  const chaptersData: ChapterData[] = (aboutCms.chapters && aboutCms.chapters.length > 0)
+    ? aboutCms.chapters
+    : CHAPTERS;
+
+  const teamData = aboutCms.team || {
+    eyebrow: 'OUR TEAM',
+    title: 'People behind\npossibilities.',
+    subtitle: 'A multidisciplinary team of strategists, creators and operators, united by a shared belief — that thoughtful work creates real impact.',
+    members: TEAM,
+  };
+
+  const ctaData = aboutCms.cta || {
+    eyebrow: 'GET IN TOUCH',
+    headline: "Serious about what\nyou're building.",
+    buttonText: 'Start a Conversation',
+    buttonUrl: '/contact',
+  };
+
   const containerRef = useRef<HTMLDivElement>(null);
   const hoverPillRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -254,7 +287,7 @@ export default function StudioPage() {
 
   // Interactive Chapter State
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
-  const activeChapter = CHAPTERS[activeChapterIndex];
+  const activeChapter = chaptersData[activeChapterIndex] || chaptersData[0];
 
   // Interactive Standard Tab State ('04' = Where Arohana stands today, '05' = What we bring)
   const [activeTab, setActiveTab] = useState<'04' | '05'>('04');
@@ -401,7 +434,7 @@ export default function StudioPage() {
                 }}
               >
                 <span style={{ width: '22px', height: '2px', backgroundColor: RED, display: 'inline-block' }} />
-                THE AROHANA STORY
+                {heroData.eyebrow}
               </div>
 
               {/* Main Headline */}
@@ -415,21 +448,16 @@ export default function StudioPage() {
                   marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
                 }}
               >
-                I didn&rsquo;t plan to
-                <br />
-                build Arohana<span style={{ color: RED }}>.</span>
+                {heroData.headline}
               </h1>
 
               {/* Description Paragraphs */}
               <div style={{ maxWidth: '580px', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: 'clamp(1.75rem, 2.5vw, 2.5rem)' }}>
                 <p style={{ fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)', lineHeight: 1.65, color: BODY_TEXT, fontWeight: 450 }}>
-                  The road to Arohana was anything but straight. I built it after spending years inside
-                  businesses — learning what makes them work, what makes them struggle, and what people
-                  see only after they become responsible for the whole thing.
+                  {heroData.introP1}
                 </p>
                 <p style={{ fontSize: 'clamp(0.92rem, 1.1vw, 1.02rem)', lineHeight: 1.65, color: MUTED }}>
-                  Today, Arohana brings together that experience with strategy, communication, creativity
-                  and execution — for businesses that are serious about what they are building.
+                  {heroData.introP2}
                 </p>
               </div>
 
@@ -480,9 +508,9 @@ export default function StudioPage() {
                   maxWidth: '560px',
                 }}
               >
-                {STATS.map((stat, i) => (
+                {(heroData.stats || STATS).map((stat: any, i: number) => (
                   <div
-                    key={stat.label}
+                    key={i}
                     style={{
                       borderRight: i < STATS.length - 1 ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
                       paddingRight: 'clamp(0.5rem, 1vw, 1rem)',
@@ -668,7 +696,7 @@ export default function StudioPage() {
                   }}
                 />
 
-                {CHAPTERS.map((ch, idx) => {
+                {chaptersData.map((ch, idx) => {
                   const isActive = idx === activeChapterIndex;
                   return (
                     <button
@@ -766,7 +794,7 @@ export default function StudioPage() {
                 <div className="chapters-mobile-line" />
 
                 <div className="chapters-mobile-nodes-grid">
-                  {CHAPTERS.map((ch, idx) => {
+                  {chaptersData.map((ch, idx) => {
                     const isActive = idx === activeChapterIndex;
                     const shortTag = idx === 0 ? 'The Roots' : idx === 1 ? 'The Turning Point' : 'Expansion & Ladakh';
                     const shortSub = idx === 0 ? 'Hospitality' : idx === 1 ? 'The Detour' : 'The Work Got Interesting';
@@ -1316,7 +1344,7 @@ export default function StudioPage() {
                   marginBottom: '0.85rem',
                 }}
               >
-                OUR TEAM
+                {teamData.eyebrow}
               </div>
               <h2
                 style={{
@@ -1327,16 +1355,13 @@ export default function StudioPage() {
                   color: DARK,
                 }}
               >
-                People behind
-                <br />
-                possibilities<span style={{ color: RED }}>.</span>
+                {teamData.title}
               </h2>
             </div>
 
             <div>
               <p style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.12rem)', lineHeight: 1.6, color: BODY_TEXT }}>
-                A multidisciplinary team of strategists, creators and operators, united by a shared belief —
-                that thoughtful work creates real impact.
+                {teamData.subtitle}
               </p>
             </div>
           </div>
@@ -1349,7 +1374,7 @@ export default function StudioPage() {
               gap: 'clamp(1rem, 1.6vw, 1.75rem)',
             }}
           >
-            {TEAM.map((member) => (
+            {(teamData.members || TEAM).map((member: any) => (
               <div
                 key={member.id}
                 style={{
@@ -1477,7 +1502,7 @@ export default function StudioPage() {
                 }}
               >
                 <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: RED }} />
-                GET IN TOUCH
+                {ctaData.eyebrow}
               </div>
 
               <h2
@@ -1488,11 +1513,10 @@ export default function StudioPage() {
                   lineHeight: 1.08,
                   color: '#ffffff',
                   marginBottom: '1.5rem',
+                  whiteSpace: 'pre-line',
                 }}
               >
-                Serious about what
-                <br />
-                you&rsquo;re building<span style={{ color: RED }}>.</span>
+                {ctaData.headline}
               </h2>
 
               <p
@@ -1510,7 +1534,7 @@ export default function StudioPage() {
 
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1.25rem' }}>
                 <Link
-                  href="/contact"
+                  href={ctaData.buttonUrl || '/contact'}
                   className="button-editorial"
                   style={{
                     display: 'inline-flex',
@@ -1536,7 +1560,7 @@ export default function StudioPage() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  <span>Start a Conversation</span>
+                  <span>{ctaData.buttonText || 'Start a Conversation'}</span>
                   <ArrowUpRight size={17} />
                 </Link>
 

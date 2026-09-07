@@ -5,9 +5,10 @@ import { Monitor, Tablet, Smartphone, RotateCcw, ExternalLink, Eye } from 'lucid
 
 interface LivePreviewPanelProps {
   previewUrl?: string;
+  title?: string;
 }
 
-export default function LivePreviewPanel({ previewUrl = '/' }: LivePreviewPanelProps) {
+export default function LivePreviewPanel({ previewUrl = '/', title }: LivePreviewPanelProps) {
   const [device, setDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [key, setKey] = useState(0);
 
@@ -57,7 +58,7 @@ export default function LivePreviewPanel({ previewUrl = '/' }: LivePreviewPanelP
             }}
           />
           <span style={{ fontSize: '0.76rem', fontWeight: 650, letterSpacing: '0.08em', color: '#E4E4E7' }}>
-            LIVE PREVIEW
+            {title || 'LIVE PREVIEW'}
           </span>
           <span style={{ fontSize: '0.72rem', color: '#71717A', marginLeft: '0.5rem' }}>
             {previewUrl}

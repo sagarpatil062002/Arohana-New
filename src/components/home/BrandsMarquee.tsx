@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface BrandItem {
   id: string;
@@ -147,8 +148,14 @@ const PARTNER_BRANDS: BrandItem[] = [
 export default function BrandsMarquee() {
   const [isPaused, setIsPaused] = useState(false);
 
+  const { content } = useCmsContent();
+  const brandsCms = content?.home?.brands;
+  const activeEyebrow = brandsCms?.eyebrow || 'TRUSTED BY';
+  const activeHeading = brandsCms?.heading || "Brands and organisations we've worked with.";
+  const activeBrands = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
+
   // Duplicate items for a seamless infinite loop
-  const marqueeItems = [...PARTNER_BRANDS, ...PARTNER_BRANDS];
+  const marqueeItems = [...activeBrands, ...activeBrands];
 
   return (
     <section
@@ -192,7 +199,7 @@ export default function BrandsMarquee() {
                   backgroundColor: '#DE322D',
                 }}
               />
-              TRUSTED BY
+              {activeEyebrow}
             </div>
 
             {/* Heading */}
@@ -208,7 +215,7 @@ export default function BrandsMarquee() {
                 marginBottom: '1rem',
               }}
             >
-              Brands and organisations we&apos;ve worked with.
+              {activeHeading}
             </h2>
 
             {/* Descriptive Paragraph */}

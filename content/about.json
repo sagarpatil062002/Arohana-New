@@ -1,0 +1,124 @@
+{
+  "hero": {
+    "eyebrow": "ABOUT ĀROHANA",
+    "headline": "I didn't plan to build Arohana.",
+    "subheadline": "I built it because I kept seeing the same gap between what brands were being promised and what was actually happening on the ground.",
+    "introP1": "Ārohana was founded by Madhura Howal after years of running cafes, leading operations in high-turnover hospitality, and directing brand transformations across India and the UK.",
+    "introP2": "Today, we work across hospitality, real estate, healthcare, lifestyle, and defence institutions — bringing strategic clarity, high-production creative execution, and disciplined operational follow-through.",
+    "founderName": "Madhura Howal",
+    "founderTitle": "Founder & Strategic Director",
+    "stats": [
+      { "value": "6+", "label": "Years of Experience" },
+      { "value": "50+", "label": "Brands Worked With" },
+      { "value": "5", "label": "Core Verticals" }
+    ]
+  },
+  "chapters": [
+    {
+      "number": "01",
+      "code": "01 / 03",
+      "tag": "THE ROOTS",
+      "title": "It started with hospitality.",
+      "subtitle": "My first world was hospitality.",
+      "leftText": "I studied Hospitality Management in Muscat before completing my degree in Goa. While studying in Goa, I was selected among the Top 10 finalists from the West Zone for Femina Miss India — an unexpected opportunity that taught me confidence, communication and comfort outside my comfort zone. Not long after, I was selected as one of just 16 students from across India for the Taj Management Training Programme.\n\nOver the years, I worked in Muscat, returned to Kolhapur and eventually decided to build something of my own — Mother India Cafe.",
+      "rightText": "Running a cafe teaches you things no business textbook can quite prepare you for. You learn about people, margins, suppliers, staff, customers, bad days, good days and the uncomfortable reality that every divine moment really shows up in the numbers.\n\nWhile the cafe was still running, another opportunity took me to Goa. I joined Passcode Hospitality as Operations Head and worked on Pings Bia Hoi and Jamun. Later, I moved to London, joined business and sales with Independent Brewers' Home Limited, winning tinted Goa and Delhi.\n\nBy then, I had understood something that would eventually become central to Arohana: a business needs a great-looking brand and still have a proven seasoned run.",
+      "quote": "Sometimes what looks like a marketing problem isn't a marketing problem at all.",
+      "attribution": "— MADHURA HAWAL · FOUNDER, AROHANA"
+    },
+    {
+      "number": "02",
+      "code": "02 / 03",
+      "tag": "THE TURNING POINT",
+      "title": "The turning point.",
+      "subtitle": "When the unexpected redirected everything.",
+      "leftText": "When COVID hit in 2020, hospitality ground to a complete halt overnight. The business environment shifted dramatically, forcing founders and operators to rethink survival, relevance, and communication. In that period of stillness and uncertainty, I began consulting informally for brands that were struggling to stay afloat.",
+      "rightText": "What started as ad-hoc crisis counsel quickly revealed a massive industry gap: businesses didn't just need decorative graphics or short-term social media posts — they needed end-to-end commercial alignment, strategic clarity, and disciplined operational execution. This detour became the foundation of what Arohana would become.",
+      "quote": "A business cannot outgrow the clarity of its strategy.",
+      "attribution": "— MADHURA HAWAL · FOUNDER, AROHANA"
+    },
+    {
+      "number": "03",
+      "code": "03 / 03",
+      "tag": "EXPANSION & LADAKH",
+      "title": "Expansion & Ladakh.",
+      "subtitle": "High-altitude challenges and national institutions.",
+      "leftText": "As Arohana grew, our footprint expanded from Kolhapur and Pune across western India and eventually into the high-altitude terrain of Ladakh. Working alongside defence institutions, including the Indian Army's 14 Corps (Fire & Fury Corps), Western Command, and border initiatives, transformed how we think about scale, discipline, and purpose.",
+      "rightText": "Operating in sensitive, extreme environments taught our entire team a different calibre of accountability. When communications and documentation affect lives and national legacy, there is no margin for superficiality. That standard of uncompromised precision now governs every client brand Arohana touches today.",
+      "quote": "Discipline in execution is the ultimate differentiator.",
+      "attribution": "— MADHURA HAWAL · FOUNDER, AROHANA"
+    }
+  ],
+  "team": {
+    "eyebrow": "THE PEOPLE",
+    "title": "People behind possibilities.",
+    "subtitle": "Strategists, storytellers, designers and producers dedicated to building enduring brand value.",
+    "members": [
+      {
+        "id": "madhura",
+        "name": "Madhura Howal",
+        "role": "FOUNDER & STRATEGIC LEAD",
+        "image": "/images/about/team-madhura.jpg"
+      },
+      {
+        "id": "aditya",
+        "name": "Aditya Kulkarni",
+        "role": "CREATIVE DIRECTOR",
+        "image": "/images/about/team-aditya.jpg"
+      },
+      {
+        "id": "tanvi",
+        "name": "Tanvi Sardesai, SA",
+        "role": "BRAND STRATEGY & COMMUNICATION",
+        "image": "/images/about/team-tanvi.jpg"
+      },
+      {
+        "id": "arjun",
+        "name": "Arjun Patel",
+        "role": "LEAD PRODUCER / MEDIA & FILM DIRECTOR",
+        "image": "/images/about/team-arjun.jpg"
+      },
+      {
+        "id": "radha",
+        "name": "Radha Sharma",
+        "role": "CLIENT SUCCESS MANAGER & OPERATIONS",
+        "image": "/images/about/team-radha.jpg"
+      },
+      {
+        "id": "prathamesh",
+        "name": "Prathamesh Shirole",
+        "role": "BRAND & DIGITAL STRATEGIST",
+        "image": "/images/about/team-prathamesh.jpg"
+      },
+      {
+        "id": "riya",
+        "name": "Riya Naik",
+        "role": "CONTENT & SOCIAL MEDIA",
+        "image": "/images/about/team-riya.jpg"
+      },
+      {
+        "id": "siddhant",
+        "name": "Siddhant More",
+        "role": "DESIGN & VISUAL COMMUNICATION",
+        "image": "/images/about/team-siddhant.jpg"
+      },
+      {
+        "id": "omkar",
+        "name": "Omkar Jadhav",
+        "role": "PROJECT COORDINATOR",
+        "image": "/images/about/team-omkar.jpg"
+      },
+      {
+        "id": "sanjiv",
+        "name": "Sanjiv Patil",
+        "role": "BUSINESS DEVELOPMENT",
+        "image": "/images/about/team-sanjiv.jpg"
+      }
+    ]
+  },
+  "cta": {
+    "eyebrow": "LET'S BUILD TOGETHER",
+    "headline": "Let's discuss what your brand needs next.",
+    "buttonText": "Start a Conversation",
+    "buttonUrl": "/contact"
+  }
+}

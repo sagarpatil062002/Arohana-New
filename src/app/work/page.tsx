@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 /* ═══════════════════════════════════════════════════════════════════
    WORK — "The work is the proof."
@@ -470,6 +471,21 @@ const DIRECTORY_CATEGORIES = [
 ];
 
 export default function WorkPage() {
+  const { content } = useCmsContent();
+  const workCms = content?.work;
+  const activeReelsList: ReelItem[] = (workCms?.featuredReels && workCms.featuredReels.length > 0)
+    ? workCms.featuredReels.map((r: any, i: number) => ({
+        id: r.id || `reel-${i}`,
+        num: String(i + 1).padStart(2, '0'),
+        hookTitle: r.hookTitle || '',
+        subtitle: r.subtitle || '',
+        category: r.category || '',
+        image: r.coverImage || r.image || '/images/case-studies/raysons/neora-1.jpg',
+        video: r.video || '/videos/hero-montage.mp4',
+        instagramUrl: r.instagramUrl || 'https://www.instagram.com/byarohana/',
+      }))
+    : REELS;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const reelsScrollRef = useRef<HTMLDivElement>(null);
   const [selectedReelFilter, setSelectedReelFilter] = useState('All');
@@ -480,8 +496,8 @@ export default function WorkPage() {
   // Filtered Reels
   const filteredReels =
     selectedReelFilter === 'All'
-      ? REELS
-      : REELS.filter((r) => r.category === selectedReelFilter);
+      ? activeReelsList
+      : activeReelsList.filter((r) => r.category === selectedReelFilter);
 
   // Check if a case study card should be dimmed based on active category filter
   const isCardDimmed = (tags: string[]) => {
@@ -594,7 +610,7 @@ export default function WorkPage() {
                   marginBottom: '0.65rem',
                 }}
               >
-                FEATURED CASE STUDIES
+                {workCms?.header?.eyebrow || 'FEATURED CASE STUDIES'}
               </div>
               <p
                 style={{

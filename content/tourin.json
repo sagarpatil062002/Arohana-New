@@ -1,38 +1,58 @@
 {
   "hero": {
-    "brand": "TOURIN",
-    "headline": "A venture in destination thinking.",
-    "subheadline": "Tourin represents Ārohana's conviction that travel should be built around depth, landscape, culture and respectful human presence.",
+    "eyebrow": "OWNED EXPERIENTIAL TRAVEL BRAND",
+    "headline": "Travel\nbeyond\nthe itinerary.",
+    "quote": "Some places are better experienced when you stop trying to see everything.",
+    "description": "Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh, and beyond.",
     "primaryDestination": "Ladakh, Himalayan Plateau",
     "elevation": "11,500 – 17,580 FT",
     "season": "May to October Active Windows"
   },
+  "genesis": {
+    "tag": "THE GENESIS",
+    "heading": "Why Tourin.",
+    "p1": "Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.",
+    "p2": "There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.",
+    "p3": "Tourin was created to make space for the second one.",
+    "storyLinkText": "OUR STORY"
+  },
+  "philosophy": {
+    "tag": "OUR PHILOSOPHY",
+    "heading": "What we believe.",
+    "p1": "A good trip should leave you with more than photographs. It should give you a sense of where you were.",
+    "p2": "That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.",
+    "p3": "We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.",
+    "quote": "Travel should not merely fill your calendar; it should reshape how you observe the earth."
+  },
   "journeys": [
     {
-      "id": "journey-1",
-      "title": "Nubra Valley & Silk Route Passage",
-      "duration": "7 Days / 6 Nights",
-      "pacing": "Contemplative & Immersive",
-      "overview": "Cross the highest motorable passes into the dune landscapes of Nubra, staying at boutique valley retreats and monastery guest houses.",
-      "image": "/images/home/hero-mountain-sky.png",
-      "published": true
-    },
-    {
-      "id": "journey-2",
-      "title": "Changthang Nomadic High Lakes",
+      "id": "slow-ladakh",
+      "title": "The Slow Ladakh Odyssey",
       "duration": "8 Days / 7 Nights",
-      "pacing": "Rugged Wilderness Expedition",
-      "overview": "Pangong Tso to Tso Moriri. Camp with Changpa pastoralists and witness untouched high-altitude wetlands.",
-      "image": "/images/case-studies/she/she-hero.jpg",
+      "type": "Cultural Immersion & Slow Exploration",
+      "desc": "Cultural immersion, heritage stays and hidden villages without rushing.",
+      "image": "/images/tourin/dest-ladakh.jpg",
+      "elevation": "9,500 — 11,500 FT",
       "published": true
     },
     {
-      "id": "journey-3",
-      "title": "Zanskar Gorge & Ancient Monasteries",
-      "duration": "10 Days / 9 Nights",
-      "pacing": "Deep Cultural Exploration",
-      "overview": "Traverse the newly opened roads into the heart of Zanskar, exploring millennium-old cave monasteries and living Buddhist heritage.",
-      "image": "/images/case-studies/raysons/neora-1.jpg",
+      "id": "india-unexplored",
+      "title": "India Unexplored",
+      "duration": "7 Days / 6 Nights",
+      "type": "Offbeat Destinations & Local Experiences",
+      "desc": "Offbeat destinations, local experiences and thoughtful travel.",
+      "image": "/images/tourin/dest-india.jpg",
+      "elevation": "Various",
+      "published": true
+    },
+    {
+      "id": "asia-reimagined",
+      "title": "Asia Reimagined",
+      "duration": "9 Days / 8 Nights",
+      "type": "Curated International Experiences",
+      "desc": "Curated international experiences for curious travellers.",
+      "image": "/images/tourin/dest-international.jpg",
+      "elevation": "Various",
       "published": true
     }
   ],

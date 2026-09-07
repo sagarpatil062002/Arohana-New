@@ -49,6 +49,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { label: 'Services', href: '/admin/services', icon: Layers },
     { label: 'Tourin Brand', href: '/admin/tourin', icon: Compass },
     { label: 'Army Projects', href: '/admin/army-projects', icon: Shield },
+    { label: 'About / Studio', href: '/admin/about', icon: Users },
     { label: 'Partner Logos', href: '/admin/partners', icon: Users },
     { label: 'Contact Info', href: '/admin/contact', icon: Mail },
     { label: 'Footer Settings', href: '/admin/footer', icon: PanelBottom },

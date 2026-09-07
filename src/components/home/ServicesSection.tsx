@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface ServiceItemData {
   num: string;
@@ -50,6 +51,13 @@ const SERVICES_DATA: ServiceItemData[] = [
 ];
 
 export default function ServicesSection() {
+  const { content } = useCmsContent();
+  const srvCms = content?.home?.services;
+  const activeEyebrow = srvCms?.eyebrow || 'Services & Practice Areas';
+  const activeTitle = srvCms?.title || 'Everything we do.';
+  const activeDesc = srvCms?.description || "Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.";
+  const servicesList: ServiceItemData[] = (srvCms?.items && srvCms.items.length > 0) ? srvCms.items : SERVICES_DATA;
+
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -143,7 +151,7 @@ export default function ServicesSection() {
                   fontSize: '0.8rem',
                 }}
               >
-                Services & Practice Areas
+                {activeEyebrow}
               </div>
               <h2
                 style={{
@@ -156,7 +164,7 @@ export default function ServicesSection() {
                   margin: '0 0 1rem 0',
                 }}
               >
-                Everything we do.
+                {activeTitle}
               </h2>
               <p
                 style={{
@@ -167,7 +175,7 @@ export default function ServicesSection() {
                   maxWidth: '740px',
                 }}
               >
-                Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.
+                {activeDesc}
               </p>
             </div>
 
@@ -200,8 +208,9 @@ export default function ServicesSection() {
             </div>
           </div>
 
-          {/* Services Stack */}
+          {/* Stacking Service Cards in strict natural document flow */}
           <div
+            className="services-cards-stack"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -210,8 +219,8 @@ export default function ServicesSection() {
               overflow: 'visible',
             }}
           >
-            {SERVICES_DATA.map((service, index) => {
-              const isLast = index === SERVICES_DATA.length - 1;
+            {servicesList.map((service, index) => {
+              const isLast = index === servicesList.length - 1;
 
               return (
                 <div

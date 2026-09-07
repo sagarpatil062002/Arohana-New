@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCmsContent } from '@/lib/cms/content-context';
 import {
   ArrowRight,
   ArrowLeft,
@@ -28,6 +29,37 @@ interface JourneyItem {
 }
 
 export default function TourinPage() {
+  const { content } = useCmsContent();
+  const tourinCms = content.tourin || {};
+
+  const hero = tourinCms.hero || {
+    eyebrow: 'OWNED EXPERIENTIAL TRAVEL BRAND',
+    headline: 'Travel\nbeyond\nthe itinerary.',
+    quote: 'Some places are better experienced when you stop trying to see everything.',
+    description: 'Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh, and beyond.',
+    primaryDestination: 'Ladakh, Himalayan Plateau',
+    elevation: '11,500 – 17,580 FT',
+    season: 'May to October Active Windows',
+  };
+
+  const genesis = tourinCms.genesis || {
+    tag: 'THE GENESIS',
+    heading: 'Why Tourin.',
+    p1: 'Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.',
+    p2: 'There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.',
+    p3: 'Tourin was created to make space for the second one.',
+    storyLinkText: 'OUR STORY',
+  };
+
+  const philosophy = tourinCms.philosophy || {
+    tag: 'OUR PHILOSOPHY',
+    heading: 'What we believe.',
+    p1: 'A good trip should leave you with more than photographs. It should give you a sense of where you were.',
+    p2: 'That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.',
+    p3: 'We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.',
+    quote: 'Travel should not merely fill your calendar; it should reshape how you observe the earth.',
+  };
+
   const containerRef = useRef<HTMLDivElement>(null);
   const hoverPillRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -102,7 +134,7 @@ export default function TourinPage() {
     { src: '/images/tourin/santorini-sunset.jpg', alt: 'Coastal cliffside town over the blue sea' },
   ];
 
-  const journeys: JourneyItem[] = [
+  const defaultJourneys: JourneyItem[] = [
     {
       id: 'slow-ladakh',
       title: 'The Slow Ladakh Odyssey',
@@ -161,6 +193,33 @@ export default function TourinPage() {
       ],
     },
   ];
+
+  const journeys: JourneyItem[] = (tourinCms.journeys && tourinCms.journeys.length > 0)
+    ? tourinCms.journeys
+        .filter((j: any) => j.published !== false)
+        .map((j: any) => {
+          const matched = defaultJourneys.find((dj) => dj.id === j.id);
+          return {
+            id: j.id,
+            title: j.title || matched?.title || 'Curated Expedition',
+            duration: j.duration || matched?.duration || '7 Days',
+            type: j.type || matched?.type || 'Cultural & Landscape Immersion',
+            desc: j.desc || j.overview || matched?.desc || '',
+            image: j.image || matched?.image || '/images/tourin/dest-ladakh.jpg',
+            elevation: j.elevation || matched?.elevation || 'Various',
+            highlights: matched?.highlights || [
+              'Curated offbeat destinations away from typical tourist circuits',
+              'Authentic local food experiences and community interactions',
+              'Thoughtful pacing with time for personal exploration',
+            ],
+            phases: matched?.phases || [
+              { phase: 'Phase 1', title: 'Arrival & Immersion', description: 'Settle in, explore the neighbourhood, meet local hosts.' },
+              { phase: 'Phase 2', title: 'Deep Exploration', description: 'Off-the-beaten-path trails, cultural sites, and community connections.' },
+              { phase: 'Phase 3', title: 'Farewell & Return', description: 'Storytelling evenings, reflection, and comfortable departure.' },
+            ],
+          };
+        })
+    : defaultJourneys;
 
   // Mouse Follower Loop
   useEffect(() => {
@@ -320,26 +379,32 @@ export default function TourinPage() {
             <div className="tourin-col-left">
               {/* Eyebrow */}
               <div className="tourin-tag-eyebrow">
-                OWNED EXPERIENTIAL TRAVEL BRAND
+                {hero.eyebrow}
               </div>
 
               {/* Main Headline */}
-              <h1 className="tourin-editorial-headline">
-                Travel
-                <br />
-                beyond
-                <br />
-                the itinerary<span className="tourin-red-dot">.</span>
+              <h1 className="tourin-editorial-headline" style={{ whiteSpace: 'pre-line' }}>
+                {hero.headline?.includes('itinerary') ? (
+                  <>
+                    Travel
+                    <br />
+                    beyond
+                    <br />
+                    the itinerary<span className="tourin-red-dot">.</span>
+                  </>
+                ) : (
+                  hero.headline
+                )}
               </h1>
 
               {/* Sub-quote */}
               <p className="tourin-quote-text">
-                Some places are better experienced when you stop trying to see everything.
+                {hero.quote}
               </p>
 
               {/* Description Body */}
               <p className="tourin-desc-text">
-                Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh, and beyond.
+                {hero.description}
               </p>
 
               {/* Action Buttons Row */}
@@ -489,27 +554,27 @@ export default function TourinPage() {
                 <div className="genesis-text-col">
                   <div className="genesis-tag">
                     <span className="tag-red-bullet">•</span>
-                    <span>THE GENESIS</span>
+                    <span>{genesis.tag || 'THE GENESIS'}</span>
                   </div>
 
                   <h2 className="genesis-heading">
-                    Why Tourin.
+                    {genesis.heading || 'Why Tourin.'}
                   </h2>
 
                   <div className="genesis-paragraphs">
                     <p>
-                      Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.
+                      {genesis.p1}
                     </p>
                     <p>
-                      There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.
+                      {genesis.p2}
                     </p>
                     <p>
-                      Tourin was created to make space for the second one.
+                      {genesis.p3}
                     </p>
                   </div>
 
                   <Link href="/about" className="genesis-story-link">
-                    <span>OUR STORY</span>
+                    <span>{genesis.storyLinkText || 'OUR STORY'}</span>
                     <ArrowUpRight size={15} strokeWidth={2.4} />
                   </Link>
                 </div>
@@ -571,22 +636,22 @@ export default function TourinPage() {
                 <div className="genesis-text-col">
                   <div className="genesis-tag">
                     <span className="tag-red-bullet">•</span>
-                    <span>OUR PHILOSOPHY</span>
+                    <span>{philosophy.tag || 'OUR PHILOSOPHY'}</span>
                   </div>
 
                   <h2 className="genesis-heading">
-                    What we believe.
+                    {philosophy.heading || 'What we believe.'}
                   </h2>
 
                   <div className="genesis-paragraphs">
                     <p>
-                      A good trip should leave you with more than photographs. It should give you a sense of where you were.
+                      {philosophy.p1}
                     </p>
                     <p>
-                      That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.
+                      {philosophy.p2}
                     </p>
                     <p>
-                      We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.
+                      {philosophy.p3}
                     </p>
                   </div>
                 </div>
@@ -598,11 +663,8 @@ export default function TourinPage() {
 
                   <div className="quote-mark">“</div>
 
-                  <blockquote className="quote-statement">
-                    A GOOD JOURNEY<br />
-                    IS NOT ABOUT<br />
-                    HOW MUCH YOU<br />
-                    CAN FIT INTO IT.
+                  <blockquote className="quote-statement" style={{ whiteSpace: 'pre-line' }}>
+                    {philosophy.quote || 'A GOOD JOURNEY IS NOT ABOUT HOW MUCH YOU CAN FIT INTO IT.'}
                   </blockquote>
 
                   <p className="quote-attribution">

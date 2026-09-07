@@ -3,8 +3,18 @@
 import React, { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 export default function InteractiveCTA() {
+  const { content } = useCmsContent();
+  const ctaCms = content?.home?.cta;
+  const activeEyebrow = ctaCms?.eyebrow || 'START A CONVERSATION';
+  const activeHeadline = ctaCms?.headline || "If you're building something serious, let's talk about what it actually needs.";
+  const activeDesc = ctaCms?.description || "Let's start with what you're trying to solve or build, not a cookie-cutter agency proposal.";
+  const activeButtonLabel = ctaCms?.buttonLabel || 'Start a conversation';
+  const activeButtonLink = ctaCms?.buttonLink || '/contact';
+  const activeEmail = ctaCms?.email || 'founder@byarohana.com';
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const visualWrapRef = useRef<HTMLDivElement>(null);
 
@@ -131,7 +141,7 @@ export default function InteractiveCTA() {
               display: 'block',
             }}
           >
-            START A CONVERSATION
+            {activeEyebrow}
           </div>
 
         <h2
@@ -145,7 +155,7 @@ export default function InteractiveCTA() {
             marginBottom: '1.25rem',
           }}
         >
-          If you’re building something serious, let’s talk about what it actually needs.
+          {activeHeadline}
         </h2>
 
         <p
@@ -157,18 +167,18 @@ export default function InteractiveCTA() {
             marginBottom: 'clamp(2rem, 4vw, 3.5rem)',
           }}
         >
-          Let’s start with what you’re trying to solve or build, not a cookie-cutter agency proposal.
+          {activeDesc}
         </p>
 
         <div className="interactive-cta-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
           <Link
-            href="/contact"
+            href={activeButtonLink}
             className="button-editorial button-editorial-white"
             style={{ height: '52px', padding: '0 2rem', fontSize: '0.95rem' }}
           >
             <div className="button-texts-slider">
-              <span className="button-text-item">Start a conversation</span>
-              <span className="button-text-item">Start a conversation</span>
+              <span className="button-text-item">{activeButtonLabel}</span>
+              <span className="button-text-item">{activeButtonLabel}</span>
             </div>
             <div className="button-dot-wrap">
               <div className="button-dot" />
@@ -177,7 +187,7 @@ export default function InteractiveCTA() {
           </Link>
 
           <a
-            href="mailto:founder@byarohana.com"
+            href={`mailto:${activeEmail}`}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -193,7 +203,7 @@ export default function InteractiveCTA() {
               transition: 'all 0.3s ease',
             }}
           >
-            founder@byarohana.com
+            {activeEmail}
           </a>
         </div>
 
