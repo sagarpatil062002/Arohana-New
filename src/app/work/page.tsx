@@ -1,780 +1,1449 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Instagram,
+  Compass,
+} from 'lucide-react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import { CASE_STUDIES } from '@/data/case-studies';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-export default function WorkPage() {
-  const [selectedFilter, setSelectedFilter] = useState('All');
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const hoverWrapRef = useRef<HTMLDivElement>(null);
-  const hoverPillRef = useRef<HTMLDivElement>(null);
+/* ═══════════════════════════════════════════════════════════════════
+   WORK — "The work is the proof."
+   Pixel-perfect replication of design reference:
+   01 Hero (The work is the proof. + ©26 Badge)
+   02 Instagram Reels Carousel (Auto-scrolling, easy left/right nav, "Watch Reel")
+   03 Featured Case Studies Bento Grid (Raysons, Loom Crafts, PictureTime, Misu, SHE, RR Skins)
+   04 Additional Work (Client / Project Directory across 7 sectors)
+   05 Work Footer
+   ═══════════════════════════════════════════════════════════════════ */
 
-  const mousePos = useRef({ x: -100, y: -100 });
-  const pillPos = useRef({ x: -100, y: -100 });
-  const isHovering = useRef(false);
+const RED = '#DE322D';
+const DARK = '#111113';
+const BG_PAGE = '#FBF9F5';
+const BODY_TEXT = '#4A4A52';
+const MUTED = '#71717A';
+const FAINT = '#A1A1AA';
+const BORDER = '1px solid rgba(0, 0, 0, 0.08)';
 
-  const featuredCaseStudies = [
-    {
-      slug: 'raysons-group',
-      title: 'Raysons Group',
-      desc: 'Shows long-term digital partnership across real estate and hospitality, plus project production.',
-      tags: ['Real Estate', 'Hospitality', 'Digital Growth'],
-      heroImage: '/images/case-studies/raysons/neora-1.jpg',
-      sector: 'Real Estate · Hospitality',
-    },
-    {
-      slug: 'loom-crafts',
-      title: 'Loom Crafts',
-      desc: 'Shows how one brand can require different communication systems across furniture and prefab.',
-      tags: ['Real Estate', 'Built Environment', 'Brand Strategy'],
-      heroImage: '/images/case-studies/loom/loom-hero.jpg',
-      sector: 'Real Estate · Built Environment',
-    },
-    {
-      slug: 'picturetime',
-      title: 'PictureTime',
-      desc: 'Shows digital brand work plus cultural/event/on-ground content.',
-      tags: ['Entertainment', 'Events', 'Content Production'],
-      heroImage: '/images/case-studies/picturetime/picturetime-hero.jpg',
-      sector: 'Entertainment · Events',
-    },
-    {
-      slug: 'she',
-      title: 'SHE',
-      desc: 'Shows complex institutional/community communication and on-ground execution.',
-      tags: ['Institutional', 'Community', 'Documentary'],
-      heroImage: '/images/case-studies/she/she-hero.jpg',
-      sector: 'Institutional · Community',
-    },
-    {
-      slug: 'misu',
-      title: 'Misu',
-      desc: 'Shows the depth of hospitality consulting and digital execution.',
-      tags: ['Hospitality', 'Consulting', 'Digital'],
-      heroImage: '/images/case-studies/misu/misu-hero.jpg',
-      sector: 'Hospitality · Consulting',
-    },
-    {
-      slug: 'rr-skins',
-      title: 'RR Skins',
-      desc: 'Shows healthcare communication built around trust and education.',
-      tags: ['Healthcare', 'Brand Strategy', 'Content'],
-      heroImage: '/images/case-studies/rrskins/rrskins-hero.jpg',
-      sector: 'Healthcare',
-    },
-  ];
+interface ReelItem {
+  id: string;
+  num: string;
+  hookTitle: string;
+  subtitle: string;
+  category: string;
+  image: string;
+  video?: string;
+  instagramUrl: string;
+}
 
-  const filters = [
-    'All',
-    'Real Estate & Built Environment',
-    'Hospitality & F&B',
-    'Healthcare',
-    'Entertainment & Media',
-    'Institutional & Community',
-  ];
+const REELS: ReelItem[] = [
+  {
+    id: 'reel-1',
+    num: '01',
+    hookTitle: 'Spaces that belong',
+    subtitle: 'Raysons Group · Architecture',
+    category: 'Real Estate & Built Environment',
+    image: '/images/case-studies/raysons/neora-1.jpg',
+    video: '/videos/hero-montage.mp4',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+  {
+    id: 'reel-2',
+    num: '02',
+    hookTitle: 'More than a meal',
+    subtitle: 'Misu · Pan-Asian Dining',
+    category: 'Hospitality & F&B',
+    image: '/images/case-studies/misu/misu-hero.jpg',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+  {
+    id: 'reel-3',
+    num: '03',
+    hookTitle: 'Care in focus',
+    subtitle: 'RR Skins · Healthcare & Trust',
+    category: 'Healthcare',
+    image: '/images/case-studies/rrskins/rrskins-hero.jpg',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+  {
+    id: 'reel-4',
+    num: '04',
+    hookTitle: 'Ideas in motion',
+    subtitle: 'PictureTime · Cinema Network',
+    category: 'Entertainment & Media',
+    image: '/images/case-studies/picturetime/picturetime-hero.jpg',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+  {
+    id: 'reel-5',
+    num: '05',
+    hookTitle: 'Stories with purpose',
+    subtitle: 'Indian Army · Ladakh Missions',
+    category: 'Institutions & Government',
+    image: '/images/army/14corps-2.jpg',
+    video: '/videos/hero-montage.mp4',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+  {
+    id: 'reel-6',
+    num: '06',
+    hookTitle: 'People and process',
+    subtitle: 'Loom Crafts · Handcrafted Living',
+    category: 'Real Estate & Built Environment',
+    image: '/images/case-studies/loom/furniture-1.jpg',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+  {
+    id: 'reel-7',
+    num: '07',
+    hookTitle: 'Beyond boundaries',
+    subtitle: 'Tourin · High-Altitude Journeys',
+    category: 'Institutions & Government',
+    image: '/images/tourin/tourin-hero.jpg',
+    instagramUrl: 'https://www.instagram.com/arohana.studio',
+  },
+];
 
-  const filteredCases =
-    selectedFilter === 'All'
-      ? featuredCaseStudies
-      : featuredCaseStudies.filter((cs) => {
-          if (selectedFilter === 'Real Estate & Built Environment')
-            return cs.tags.includes('Real Estate') || cs.tags.includes('Built Environment');
-          if (selectedFilter === 'Hospitality & F&B')
-            return cs.tags.includes('Hospitality');
-          if (selectedFilter === 'Healthcare')
-            return cs.tags.includes('Healthcare');
-          if (selectedFilter === 'Entertainment & Media')
-            return cs.tags.includes('Entertainment') || cs.tags.includes('Events');
-          if (selectedFilter === 'Institutional & Community')
-            return cs.tags.includes('Institutional') || cs.tags.includes('Community');
-          return true;
-        });
+const REEL_FILTERS = [
+  'All',
+  'Real Estate & Built Environment',
+  'Hospitality & F&B',
+  'Healthcare',
+  'Entertainment & Media',
+  'Institutions & Government',
+];
 
-  const directoryCategories = [
-    {
-      title: 'Hospitality & F&B',
-      items: ['Neora Deck', 'Blu Resorts', 'Qubice', 'Kanopy', 'Sorriso', 'Spice Goa', 'Khana Khazana', 'Khau Gali'],
-    },
-    {
-      title: 'Real Estate & Built Environment',
-      items: ['Raysons Group', 'Citron', 'Loom Crafts'],
-    },
-    {
-      title: 'Healthcare',
-      items: ['RR Skins and other approved healthcare work'],
-    },
-    {
-      title: 'Lifestyle & Consumer',
-      items: ['DTK Karekar Jewellery', 'Fraganta and other approved consumer work'],
-    },
-    {
-      title: 'Entertainment & Media',
-      items: ['PictureTime'],
-    },
-    {
-      title: 'Travel & Tourism',
-      items: ['Tourin', 'Holiday Village'],
-    },
-    {
-      title: 'Institutional / Community',
-      items: ['SHE', 'Operation Sampark', 'Indian Army-related projects'],
-    },
-  ];
+const CASE_FILTERS = [
+  'All',
+  'Real Estate',
+  'Hospitality',
+  'Healthcare',
+  'Entertainment',
+  'Institutional',
+  'Community',
+];
 
-  // Mouse tracking with lerp
-  useEffect(() => {
-    const pill = hoverPillRef.current;
-    if (!pill) return;
+interface CaseStudyItem {
+  id: string;
+  slug: string;
+  num: string;
+  title: string;
+  desc: string;
+  tags: string[];
+  category: string;
+  image: string;
+}
 
-    let rafId: number;
+const CASE_STUDIES: CaseStudyItem[] = [
+  {
+    id: 'raysons',
+    slug: 'raysons-group',
+    num: '01',
+    title: 'Raysons Group',
+    desc: 'Shows long-term digital partnership across real estate and hospitality, plus project production.',
+    tags: ['Real Estate', 'Hospitality', 'Digital Growth'],
+    category: 'Real Estate',
+    image: '/images/case-studies/raysons/neora-1.jpg',
+  },
+  {
+    id: 'loom',
+    slug: 'loom-crafts',
+    num: '02',
+    title: 'Loom Crafts',
+    desc: 'Shows how one brand can require different communication systems across furniture and prefab.',
+    tags: ['Real Estate', 'Built Environment', 'Brand Strategy'],
+    category: 'Real Estate',
+    image: '/images/case-studies/loom/loom-hero.jpg',
+  },
+  {
+    id: 'picturetime',
+    slug: 'picturetime',
+    num: '03',
+    title: 'PictureTime',
+    desc: 'Shows digital brand work plus cultural/event/on-ground content.',
+    tags: ['Entertainment', 'Events', 'Content Production'],
+    category: 'Entertainment',
+    image: '/images/case-studies/picturetime/picturetime-hero.jpg',
+  },
+  {
+    id: 'misu',
+    slug: 'misu',
+    num: '04',
+    title: 'Misu',
+    desc: 'Shows the depth of hospitality consulting and digital execution.',
+    tags: ['Hospitality', 'Consulting', 'Digital'],
+    category: 'Hospitality',
+    image: '/images/case-studies/misu/misu-hero.jpg',
+  },
+  {
+    id: 'she',
+    slug: 'she',
+    num: '05',
+    title: 'SHE',
+    desc: 'Shows complex institutional/community communication and on-ground execution.',
+    tags: ['Institutional', 'Community', 'Documentary'],
+    category: 'Institutional',
+    image: '/images/case-studies/she/she-hero.jpg',
+  },
+  {
+    id: 'rrskins',
+    slug: 'rr-skins',
+    num: '06',
+    title: 'RR Skins',
+    desc: 'Shows healthcare communication built around trust and education.',
+    tags: ['Healthcare', 'Brand Strategy', 'Content'],
+    category: 'Healthcare',
+    image: '/images/case-studies/rrskins/rrskins-hero.jpg',
+  },
+];
 
-    const onMouseMove = (e: MouseEvent) => {
-      mousePos.current.x = e.clientX;
-      mousePos.current.y = e.clientY;
-    };
-
-    const loop = () => {
-      pillPos.current.x += (mousePos.current.x - pillPos.current.x) * 0.18;
-      pillPos.current.y += (mousePos.current.y - pillPos.current.y) * 0.18;
-
-      if (pill) {
-        gsap.set(pill, {
-          x: pillPos.current.x,
-          y: pillPos.current.y,
-        });
-      }
-      rafId = requestAnimationFrame(loop);
-    };
-
-    window.addEventListener('mousemove', onMouseMove);
-    rafId = requestAnimationFrame(loop);
-
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  // Exact 3D Perspective Scroll Animation
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const items = gsap.utils.toArray<HTMLElement>('.work-page-item');
-    if (!items || items.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
-
-      items.forEach((item) => {
-        const link = item.querySelector('.work-page-link');
-        if (!link) return;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 100%',
-            end: 'bottom 0%',
-            scrub: 0.8,
-          },
-        });
-
-        tl.fromTo(
-          link,
-          {
-            y: isMobile ? '12vh' : '35vh',
-            rotateX: isMobile ? 22 : 65,
-            scale: isMobile ? 1.02 : 1.1,
-            transformOrigin: '50% 100%',
-          },
-          {
-            y: '0vh',
-            rotateX: 0,
-            scale: 1.0,
-            ease: 'power1.out',
-            duration: 1,
-          }
-        );
-
-        tl.to(link, {
-          y: isMobile ? '-8vh' : '-15vh',
-          rotateX: isMobile ? -8 : -15,
-          scale: isMobile ? 0.96 : 0.9,
-          ease: 'power1.in',
-          duration: 1,
-        });
-      });
-
-      gsap.fromTo(
-        '.work-title-masked',
-        { y: '110%', opacity: 0 },
-        { y: '0%', opacity: 1, duration: 1.1, stagger: 0.12, ease: 'power3.out' }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [filteredCases]);
-
-  const handleCardMouseEnter = () => {
-    isHovering.current = true;
-    if (hoverPillRef.current) {
-      gsap.to(hoverPillRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.25,
-        ease: 'power2.out',
-      });
-    }
-  };
-
-  const handleCardMouseLeave = () => {
-    isHovering.current = false;
-    if (hoverPillRef.current) {
-      gsap.to(hoverPillRef.current, {
-        opacity: 0,
-        scale: 0.75,
-        duration: 0.2,
-        ease: 'power2.in',
-      });
-    }
-  };
+/* ─── Bento Card Component matching exact editorial reference ─── */
+function WorkCaseCard({
+  cs,
+  isDimmed = false,
+  imageAspect = '16 / 9.5',
+  style,
+}: {
+  cs: CaseStudyItem;
+  isDimmed?: boolean;
+  imageAspect?: string;
+  style?: React.CSSProperties;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
-      ref={sectionRef}
-      className="section-light"
       style={{
-        paddingTop: '5rem',
-        paddingBottom: '10rem',
-        position: 'relative',
-        overflow: 'clip',
+        backgroundColor: '#FFFFFF',
+        borderRadius: '24px',
+        border: isHovered ? '1px solid rgba(0, 0, 0, 0.14)' : '1px solid rgba(0, 0, 0, 0.07)',
+        overflow: 'hidden',
+        boxShadow: isHovered
+          ? '0 16px 36px -6px rgba(0, 0, 0, 0.08)'
+          : '0 4px 18px rgba(0, 0, 0, 0.03)',
+        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        opacity: isDimmed ? 0.28 : 1,
+        filter: isDimmed ? 'grayscale(40%)' : 'none',
+        pointerEvents: isDimmed ? 'none' : 'auto',
+        transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+        display: 'flex',
+        flexDirection: 'column',
+        ...style,
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* FLOATING HOVER PILL */}
+      {/* Image Container with Number Overlay */}
       <div
-        ref={hoverWrapRef}
-        className="hover_wrap"
         style={{
-          position: 'fixed',
-          inset: 0,
-          pointerEvents: 'none',
-          zIndex: 9999,
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
+          position: 'relative',
+          width: '100%',
+          aspectRatio: imageAspect,
+          backgroundColor: '#EBEAE6',
+          overflow: 'hidden',
         }}
       >
-        <div
-          ref={hoverPillRef}
-          className="hover_pill"
+        <Image
+          src={cs.image}
+          alt={cs.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
+          style={{
+            objectFit: 'cover',
+            transform: isHovered ? 'scale(1.04)' : 'scale(1)',
+            transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        />
+
+        {/* 01, 02, etc. plain white mono text overlay in top-left */}
+        <span
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
-            transform: 'translate(-50%, -50%) scale(0.75)',
-            opacity: 0,
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            backgroundColor: 'rgba(0, 0, 0, 0.55)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            color: '#ffffff',
-            borderRadius: '4rem',
-            padding: '0.75rem 1.25rem',
-            fontSize: '0.75rem',
-            fontFamily: 'var(--font-mono)',
+            top: '16px',
+            left: '18px',
+            color: '#FFFFFF',
+            fontSize: '0.78rem',
             fontWeight: 500,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.35)',
-            willChange: 'transform, opacity',
+            fontFamily: 'var(--font-mono, monospace)',
+            letterSpacing: '0.04em',
+            textShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
+            zIndex: 2,
           }}
         >
-          <span>View case</span>
-        </div>
+          {cs.num}
+        </span>
       </div>
 
-      <div className="padding-global container-medium" style={{ width: '100%', maxWidth: '80rem', margin: '0 auto' }}>
-        {/* Alture Reference Header */}
-        <div
-          className="work-list_head"
+      {/* Card Content */}
+      <div
+        style={{
+          padding: '1.25rem 1.35rem 1.35rem 1.35rem',
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+        }}
+      >
+        <h3
           style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 0.5fr',
-            placeItems: 'end start',
-            columnGap: '1.5rem',
-            rowGap: '1.5rem',
-            width: '100%',
-            marginBottom: '4.5rem',
-            paddingBottom: '2.5rem',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+            fontSize: 'clamp(1.15rem, 1.35vw, 1.25rem)',
+            fontWeight: 650,
+            letterSpacing: '-0.02em',
+            color: DARK,
+            lineHeight: 1.2,
+            margin: 0,
           }}
         >
-          {/* Left: Heading wrap with absolute counter circle */}
-          <div className="work-list_heading-wrap" style={{ position: 'relative' }}>
-            <div style={{ overflow: 'hidden' }}>
-              <h1
-                className="heading-style-display work-title-masked"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
-                  fontWeight: 500,
-                  letterSpacing: '-0.04em',
-                  lineHeight: 0.95,
-                  color: '#111111',
-                  margin: 0,
-                }}
-              >
-                The work is<br />the proof.
-              </h1>
-            </div>
-            <div
-              className="work-list_number"
-              style={{
-                color: '#ffffff',
-                backgroundColor: '#f3350c',
-                borderRadius: '50%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '22px',
-                height: '22px',
-                fontSize: '0.75rem',
-                fontFamily: 'var(--font-mono)',
-                fontWeight: 600,
-                position: 'absolute',
-                top: '0.2rem',
-                left: 'calc(100% + 0.5rem)',
-              }}
-            >
-              {filteredCases.length}
-            </div>
-          </div>
+          {cs.title}
+        </h3>
 
-          {/* Center: Projects description */}
-          <div
-            className="work-list_head-texts"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              maxWidth: '24rem',
-            }}
-          >
-            <div
-              className="text-style-label"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                color: '#DE322D',
-                textTransform: 'uppercase',
-              }}
-            >
-              FEATURED CASE STUDIES
-            </div>
-            <p
-              style={{
-                color: '#666666',
-                fontSize: '0.95rem',
-                lineHeight: 1.6,
-                margin: 0,
-              }}
-            >
-              A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.
-            </p>
-          </div>
+        <p
+          style={{
+            fontSize: '0.82rem',
+            lineHeight: 1.45,
+            color: '#71717A',
+            marginTop: '0.35rem',
+            marginBottom: '0.85rem',
+          }}
+        >
+          {cs.desc}
+        </p>
 
-          {/* Right: Editorial Copyright */}
-          <div style={{ textAlign: 'right', width: '100%' }}>
-            <h2
-              className="heading-style-display"
+        {/* Tag Pills */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.35rem',
+            marginBottom: '1rem',
+          }}
+        >
+          {cs.tags.map((tag) => (
+            <span
+              key={tag}
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(3.2rem, 7.5vw, 7.2rem)',
+                fontSize: '0.68rem',
                 fontWeight: 500,
-                letterSpacing: '-0.04em',
-                lineHeight: 0.95,
-                color: '#111111',
-                margin: 0,
-              }}
-            >
-              ©26
-            </h2>
-          </div>
-        </div>
-
-        {/* Filter Bar */}
-        <div
-          className="touch-scroll-row work-filter-bar"
-          style={{
-            display: 'flex',
-            gap: '0.65rem',
-            flexWrap: 'wrap',
-            paddingBottom: '2.5rem',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-            marginBottom: '6rem',
-          }}
-        >
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setSelectedFilter(filter)}
-              style={{
-                fontSize: '0.85rem',
-                fontFamily: 'var(--font-mono)',
-                padding: '0.55rem 1.15rem',
+                padding: '0.28rem 0.65rem',
                 borderRadius: '9999px',
-                backgroundColor: selectedFilter === filter ? '#111111' : '#ffffff',
-                color: selectedFilter === filter ? '#ffffff' : '#555555',
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-                cursor: 'pointer',
-                transition: 'all 0.25s ease',
+                backgroundColor: '#F4F4F5',
+                color: '#52525B',
+                border: '1px solid rgba(0, 0, 0, 0.03)',
+                whiteSpace: 'nowrap',
               }}
             >
-              {filter}
-            </button>
+              {tag}
+            </span>
           ))}
         </div>
 
-        {/* Alture Continuous 3D Perspective List */}
+        {/* Bottom Link Row */}
         <div
-          className="work-list_list"
           style={{
             display: 'flex',
-            flexDirection: 'column',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            gap: '8rem',
-            width: '100%',
-            marginBottom: '9rem',
+            marginTop: 'auto',
+            paddingTop: '0.25rem',
           }}
         >
-          {filteredCases.map((cs, index) => (
-            <div
-              key={cs.slug}
-              className="work-page-item"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width: '100%',
-              }}
-            >
-              <div
-                className="work-list_block"
-                style={{
-                  perspective: '100vw',
-                  transformStyle: 'preserve-3d',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                <Link
-                  href={`/work/${cs.slug}`}
-                  className="work-page-link"
-                  onMouseEnter={handleCardMouseEnter}
-                  onMouseLeave={handleCardMouseLeave}
-                  style={{
-                    position: 'relative',
-                    aspectRatio: '16 / 9',
-                    height: '50vh',
-                    width: 'auto',
-                    maxWidth: '100%',
-                    borderRadius: '2rem',
-                    overflow: 'clip',
-                    backgroundColor: '#0c0c0e',
-                    display: 'block',
-                    textDecoration: 'none',
-                    boxShadow: '0 24px 70px rgba(0, 0, 0, 0.16)',
-                    willChange: 'transform',
-                  }}
-                >
-                  <Image
-                    src={cs.heroImage}
-                    alt={cs.title}
-                    fill
-                    priority={index <= 1}
-                    sizes="(max-width: 991px) 95vw, 50vh"
-                    className="work-list_img"
-                    style={{
-                      objectFit: 'cover',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-
-                  {/* Alture Exact Bottom-Left Name Pill */}
-                  <div
-                    className="work-list_name"
-                    style={{
-                      position: 'absolute',
-                      bottom: '1.5rem',
-                      left: '1.5rem',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      backgroundColor: '#ffffff',
-                      color: '#000000',
-                      borderRadius: '9rem',
-                      padding: '0.35rem 0.75rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-                    }}
-                  >
-                    <div
-                      className="work-list_dot"
-                      style={{
-                        backgroundColor: '#f3350c',
-                        borderRadius: '50%',
-                        width: '0.25rem',
-                        height: '0.25rem',
-                        flexShrink: 0,
-                      }}
-                    />
-                    <h3
-                      className="work-list_title"
-                      style={{
-                        fontSize: '0.875rem',
-                        lineHeight: '120%',
-                        fontFamily: 'var(--font-display)',
-                        fontWeight: 500,
-                        color: '#000000',
-                        margin: 0,
-                      }}
-                    >
-                      {cs.title}
-                    </h3>
-                  </div>
-                </Link>
-
-                {/* Case Study Info Block */}
-                <div
-                  style={{
-                    width: '100%',
-                    maxWidth: '850px',
-                    marginTop: '1.5rem',
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: '1rem',
-                    padding: '0 0.5rem',
-                  }}
-                >
-                  <div style={{ flex: '1 1 300px' }}>
-                    <p style={{ color: '#444', fontSize: '1rem', lineHeight: 1.5, margin: '0 0 0.5rem 0' }}>
-                      {cs.desc}
-                    </p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                      {cs.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.72rem',
-                            color: '#777',
-                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                            padding: '3px 8px',
-                            borderRadius: '4px',
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Link
-                    href={`/work/${cs.slug}`}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.35rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.8rem',
-                      fontWeight: 600,
-                      color: '#DE322D',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    <span>View case study</span>
-                    <ArrowUpRight size={14} />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Client & Project Directory */}
-        <div
-          style={{
-            borderRadius: '28px',
-            backgroundColor: '#ffffff',
-            border: '1px solid rgba(0, 0, 0, 0.08)',
-            padding: 'clamp(2rem, 4vw, 4rem)',
-            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.04)',
-          }}
-        >
-          <div style={{ marginBottom: '2.5rem' }}>
-            <div className="tag-mono" style={{ color: '#DE322D', marginBottom: '0.5rem', fontWeight: 600 }}>
-              CLIENT / PROJECT DIRECTORY
-            </div>
-            <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', fontWeight: 500, color: '#111', marginBottom: '0.5rem' }}>
-              Additional work.
-            </h3>
-            <p style={{ color: '#666', fontSize: '1rem' }}>
-              A selection of other businesses and projects we've worked with.
-            </p>
-          </div>
-
-          <div
+          <Link
+            href={`/work/${cs.slug}`}
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
-              gap: '1.5rem',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              color: isHovered ? RED : DARK,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              transition: 'color 0.2s ease',
             }}
           >
-            {directoryCategories.map((cat) => (
-              <div
-                key={cat.title}
-                style={{
-                  padding: '1.5rem',
-                  borderRadius: '16px',
-                  border: '1px solid rgba(0, 0, 0, 0.06)',
-                  backgroundColor: '#fafafa',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem',
-                }}
-              >
-                <div style={{ fontWeight: 600, fontSize: '1.05rem', color: '#111', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
-                  {cat.title}
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                  {cat.items.map((item) => (
-                    <span
-                      key={item}
-                      style={{
-                        fontSize: '0.88rem',
-                        color: '#444',
-                        backgroundColor: '#ffffff',
-                        padding: '4px 10px',
-                        borderRadius: '6px',
-                        border: '1px solid rgba(0,0,0,0.04)',
-                      }}
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+            View case study ↗
+          </Link>
 
-        {/* Final CTA Section */}
-        <div
-          style={{
-            marginTop: 'clamp(4rem, 7vw, 6rem)',
-            padding: 'clamp(2rem, 4vw, 3.5rem)',
-            borderRadius: 'clamp(20px, 4vw, 28px)',
-            backgroundColor: '#0c0c0e',
-            color: '#ffffff',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '2rem',
-            boxShadow: '0 16px 40px rgba(0, 0, 0, 0.2)',
-          }}
-        >
-          <div>
-            <h3 style={{ fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', fontWeight: 500, color: '#ffffff' }}>
-              Want to see what this could look like for your business?
-            </h3>
-          </div>
-
-          <Link href="/contact" className="button-editorial" style={{ height: '48px', padding: '0 1.75rem', backgroundColor: '#ffffff', color: '#111' }}>
-            <div className="button-texts-slider">
-              <span className="button-text-item">Start a conversation</span>
-              <span className="button-text-item">Start a conversation</span>
-            </div>
-            <ArrowUpRight size={16} />
+          <Link
+            href={`/work/${cs.slug}`}
+            aria-label={`View ${cs.title} case study`}
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              border: isHovered ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
+              backgroundColor: isHovered ? DARK : '#FFFFFF',
+              color: isHovered ? '#FFFFFF' : DARK,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <ArrowRight size={13} />
           </Link>
         </div>
       </div>
+    </div>
+  );
+}
 
-      <style jsx>{`
-        @media screen and (max-width: 991px) {
-          .work-list_head {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 1.5rem !important;
-            margin-bottom: 3.5rem !important;
-          }
-          .work-list_head > div:last-child {
-            text-align: left !important;
-          }
-          .work-list_list {
-            gap: 4rem !important;
-            margin-bottom: 6rem !important;
-          }
-          .work-page-link {
-            height: auto !important;
-            width: 100% !important;
-            max-width: 600px !important;
-            border-radius: 1.25rem !important;
-          }
-          .hover_wrap {
-            display: none !important;
-          }
+
+const DIRECTORY_CATEGORIES = [
+  {
+    num: '01',
+    title: 'Hospitality & F&B',
+    subtitle: 'RESTAURANTS · RESORTS · EXPERIENCES',
+    clients: [
+      { name: 'Bija Resorts', href: '/contact' },
+      { name: 'Qubice', href: '/contact' },
+      { name: 'Kanopy', href: '/contact' },
+      { name: 'Sorriso', href: '/contact' },
+      { name: 'Spice Goa', href: '/contact' },
+      { name: 'Khana Khazana', href: '/contact' },
+      { name: 'Khau Gali', href: '/contact' },
+    ],
+  },
+  {
+    num: '02',
+    title: 'Real Estate & Built Environment',
+    subtitle: 'SPACES · COMMUNITIES · LONG-TERM VALUE',
+    clients: [
+      { name: 'Raysons Group', href: '/work/raysons-group' },
+      { name: 'Citron', href: '/contact' },
+      { name: 'Loom Crafts', href: '/work/loom-crafts' },
+    ],
+  },
+  {
+    num: '03',
+    title: 'Healthcare',
+    subtitle: 'CARE · DEDICATION · IMPACT',
+    clients: [
+      { name: 'RR Skins', href: '/work/rr-skins' },
+      { name: 'and other approved healthcare work', href: '/contact' },
+    ],
+  },
+  {
+    num: '04',
+    title: 'Lifestyle & Consumer',
+    subtitle: 'BRANDS FOR EVERYDAY LIFE',
+    clients: [
+      { name: 'DYK Bankers Jewellery', href: '/contact' },
+      { name: 'Fraganza', href: '/contact' },
+      { name: 'and other approved consumer work', href: '/contact' },
+    ],
+  },
+  {
+    num: '05',
+    title: 'Entertainment & Media',
+    subtitle: 'CULTURE · CONTENT · CONNECTIONS',
+    clients: [{ name: 'PictureTime', href: '/work/picturetime' }],
+  },
+  {
+    num: '06',
+    title: 'Travel & Tourism',
+    subtitle: 'PLACES · PEOPLE · POSSIBILITIES',
+    clients: [
+      { name: 'Tourin', href: '/tourin' },
+      { name: 'Holiday Village', href: '/contact' },
+    ],
+  },
+  {
+    num: '07',
+    title: 'Institutional / Community',
+    subtitle: 'LARGER STORIES · REAL-WORLD IMPACT',
+    clients: [
+      { name: 'SHE', href: '/work/she' },
+      { name: 'Operation Sampark', href: '/indian-army-projects' },
+      { name: 'Indian Army-related projects', href: '/indian-army-projects' },
+    ],
+  },
+];
+
+export default function WorkPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const reelsScrollRef = useRef<HTMLDivElement>(null);
+  const [selectedReelFilter, setSelectedReelFilter] = useState('All');
+  const [selectedCaseFilter, setSelectedCaseFilter] = useState('All');
+  const [activeDirectoryIndex, setActiveDirectoryIndex] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+
+  // Filtered Reels
+  const filteredReels =
+    selectedReelFilter === 'All'
+      ? REELS
+      : REELS.filter((r) => r.category === selectedReelFilter);
+
+  // Check if a case study card should be dimmed based on active category filter
+  const isCardDimmed = (tags: string[]) => {
+    if (selectedCaseFilter === 'All') return false;
+    return !tags.includes(selectedCaseFilter);
+  };
+
+  // Manual scroll helper for Reels Carousel (left / right)
+  const scrollReels = (direction: 'left' | 'right') => {
+    if (!reelsScrollRef.current) return;
+    const scrollAmount = 340;
+    reelsScrollRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
+  // Auto-scroll animation for reels slider (pauses on user interaction)
+  useEffect(() => {
+    const el = reelsScrollRef.current;
+    if (!el || !isAutoScrolling) return;
+
+    let animId: number;
+    const speed = 0.5;
+
+    const step = () => {
+      if (el) {
+        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
+          el.scrollLeft = 0;
+        } else {
+          el.scrollLeft += speed;
         }
-        @media screen and (max-width: 767px) {
-          .work-filter-bar {
-            flex-wrap: nowrap !important;
-            overflow-x: auto !important;
-            padding-bottom: 1rem !important;
-            margin-bottom: 3.5rem !important;
-            scrollbar-width: none;
-          }
-          .work-filter-bar::-webkit-scrollbar {
-            display: none;
-          }
-          .work-filter-bar > button {
-            white-space: nowrap !important;
-            flex-shrink: 0 !important;
-          }
-          .work-list_list {
-            gap: 2.5rem !important;
-            margin-bottom: 4.5rem !important;
-          }
-          .work-list_name {
-            bottom: 0.75rem !important;
-            left: 0.75rem !important;
-            right: 0.75rem !important;
-            max-width: calc(100% - 1.5rem) !important;
-            padding: 0.55rem 0.85rem !important;
-          }
-          .work-list_name > div:first-child {
-            flex-wrap: wrap !important;
-            gap: 0.25rem 0.5rem !important;
-          }
+      }
+      animId = requestAnimationFrame(step);
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [isAutoScrolling]);
+
+  // Entrance animations
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.work-anim',
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.85,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: containerRef.current, start: 'top 85%', once: true },
         }
-      `}</style>
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        backgroundColor: BG_PAGE,
+        color: DARK,
+        minHeight: '100vh',
+        overflowX: 'hidden',
+        fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)',
+      }}
+    >
+      <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 1: HERO SECTION ("The work is the proof.")
+            ═══════════════════════════════════════════════════════════════════ */}
+        <section
+          style={{
+            paddingTop: 'clamp(5.5rem, 8vw, 7.5rem)',
+            paddingBottom: 'clamp(2rem, 3.5vw, 3rem)',
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+              gap: 'clamp(2rem, 4vw, 4rem)',
+              alignItems: 'flex-start',
+            }}
+          >
+            {/* Left: Main Heading */}
+            <div>
+              <h1
+                style={{
+                  fontSize: 'clamp(3rem, 6.2vw, 6.2rem)',
+                  lineHeight: 1.02,
+                  letterSpacing: '-0.04em',
+                  fontWeight: 650,
+                  color: DARK,
+                }}
+              >
+                The
+                <br />
+                work is
+                <br />
+                the proof<span style={{ color: RED }}>.</span>
+              </h1>
+            </div>
+
+            {/* Middle: Featured Case Studies Narrative */}
+            <div style={{ paddingTop: 'clamp(0.5rem, 1.5vw, 1.75rem)' }}>
+              <div
+                className="tag-mono"
+                style={{
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.2em',
+                  color: RED,
+                  fontWeight: 700,
+                  marginBottom: '0.75rem',
+                }}
+              >
+                FEATURED CASE STUDIES
+              </div>
+              <p
+                style={{
+                  fontSize: 'clamp(0.95rem, 1.25vw, 1.15rem)',
+                  lineHeight: 1.6,
+                  color: BODY_TEXT,
+                  maxWidth: '440px',
+                }}
+              >
+                A selection of businesses and projects that show how Arohana brings strategy,
+                communications and execution across very different environments.
+              </p>
+            </div>
+
+            {/* Right: Circle 26 Badge & Stats */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1.25rem',
+                justifySelf: 'flex-end',
+                paddingTop: 'clamp(0.5rem, 1.5vw, 1.75rem)',
+              }}
+            >
+              {/* Large outlined circle 26 */}
+              <div
+                style={{
+                  width: 'clamp(64px, 6vw, 76px)',
+                  height: 'clamp(64px, 6vw, 76px)',
+                  borderRadius: '50%',
+                  border: '1.5px solid rgba(0, 0, 0, 0.22)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
+                  fontWeight: 600,
+                  letterSpacing: '-0.03em',
+                  color: DARK,
+                  flexShrink: 0,
+                }}
+              >
+                &copy;26
+              </div>
+
+              <div
+                className="tag-mono"
+                style={{
+                  fontSize: '0.62rem',
+                  letterSpacing: '0.16em',
+                  color: MUTED,
+                  lineHeight: 1.6,
+                }}
+              >
+                <div>06 FOCUS</div>
+                <div>PROFILES</div>
+                <div>STORIES</div>
+                <div>PRODUCED 2021 — 25</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Reel Category Filters & Slider Controls */}
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '1rem',
+              marginTop: 'clamp(2.5rem, 4vw, 3.5rem)',
+              paddingBottom: '1.25rem',
+            }}
+          >
+            {/* Filter Pills */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+            >
+              {REEL_FILTERS.map((filter) => {
+                const isActive = selectedReelFilter === filter;
+                return (
+                  <button
+                    key={filter}
+                    type="button"
+                    onClick={() => setSelectedReelFilter(filter)}
+                    style={{
+                      padding: '0.45rem 1rem',
+                      borderRadius: '9999px',
+                      fontSize: '0.74rem',
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      transition: 'all 0.25s ease',
+                      backgroundColor: isActive ? DARK : '#FFFFFF',
+                      color: isActive ? '#FFFFFF' : DARK,
+                      border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.1)',
+                      boxShadow: isActive ? '0 4px 12px rgba(0, 0, 0, 0.12)' : 'none',
+                    }}
+                  >
+                    {filter}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Slider Navigation Arrows (Easy left/right controls as requested) */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <button
+                type="button"
+                aria-label="Scroll left"
+                onClick={() => scrollReels('left')}
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#F2EFEB';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                }}
+              >
+                <ChevronLeft size={17} color={DARK} />
+              </button>
+
+              <button
+                type="button"
+                aria-label="Scroll right"
+                onClick={() => scrollReels('right')}
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  backgroundColor: DARK,
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#2A2A30';
+                  e.currentTarget.style.transform = 'scale(1.04)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = DARK;
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
+              >
+                <ChevronRight size={17} color="#FFFFFF" />
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          SECTION 2: INSTAGRAM REELS CAROUSEL / HORIZONTAL SLIDER
+          ═══════════════════════════════════════════════════════════════════ */}
+      <section
+        style={{
+          width: '100%',
+          overflow: 'hidden',
+          paddingBottom: 'clamp(3.5rem, 5vw, 5rem)',
+        }}
+        onMouseEnter={() => setIsAutoScrolling(false)}
+        onMouseLeave={() => setIsAutoScrolling(true)}
+      >
+        <div
+          ref={reelsScrollRef}
+          style={{
+            display: 'flex',
+            gap: '1.25rem',
+            overflowX: 'auto',
+            scrollBehavior: 'smooth',
+            scrollbarWidth: 'none',
+            paddingLeft: 'max(1.5rem, calc((100vw - 1440px) / 2 + 1.5rem))',
+            paddingRight: 'max(1.5rem, calc((100vw - 1440px) / 2 + 1.5rem))',
+            paddingTop: '0.5rem',
+            paddingBottom: '1.5rem',
+          }}
+        >
+          {filteredReels.map((reel) => (
+            <div
+              key={reel.id}
+              style={{
+                position: 'relative',
+                flex: '0 0 clamp(230px, 20vw, 270px)',
+                aspectRatio: '9 / 16',
+                borderRadius: '18px',
+                overflow: 'hidden',
+                backgroundColor: '#1B1B1E',
+                boxShadow: '0 14px 30px -8px rgba(0, 0, 0, 0.22)',
+                transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.boxShadow = '0 22px 42px -10px rgba(0, 0, 0, 0.35)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 14px 30px -8px rgba(0, 0, 0, 0.22)';
+              }}
+            >
+              {/* Media: Image / Video */}
+              {reel.video ? (
+                <video
+                  src={reel.video}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : (
+                <Image
+                  src={reel.image}
+                  alt={reel.hookTitle}
+                  fill
+                  sizes="280px"
+                  style={{ objectFit: 'cover' }}
+                />
+              )}
+
+              {/* Gradient Dark Overlay */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.88) 100%)',
+                }}
+              />
+
+              {/* Top Row: Number Badge & Instagram Reel Icon */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '14px',
+                  left: '14px',
+                  right: '14px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  zIndex: 2,
+                }}
+              >
+                <span
+                  className="tag-mono"
+                  style={{
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    backdropFilter: 'blur(8px)',
+                    padding: '0.2rem 0.55rem',
+                    borderRadius: '6px',
+                  }}
+                >
+                  {reel.num}
+                </span>
+
+                <span
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+                    backdropFilter: 'blur(8px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                  }}
+                >
+                  <Instagram size={14} />
+                </span>
+              </div>
+
+              {/* Bottom Details & Direct Reel CTA */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '16px',
+                  left: '16px',
+                  right: '16px',
+                  zIndex: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.65rem',
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      fontSize: '1.15rem',
+                      fontWeight: 650,
+                      letterSpacing: '-0.02em',
+                      color: '#ffffff',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {reel.hookTitle}
+                  </h3>
+                  <div
+                    style={{
+                      fontSize: '0.74rem',
+                      color: 'rgba(255, 255, 255, 0.72)',
+                      marginTop: '0.25rem',
+                    }}
+                  >
+                    {reel.subtitle}
+                  </div>
+                </div>
+
+                {/* "Watch Reel" button redirecting directly to Instagram as instructed */}
+                <a
+                  href={reel.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '0.55rem 0.85rem',
+                    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                    borderRadius: '9999px',
+                    color: '#ffffff',
+                    fontSize: '0.76rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    transition: 'all 0.25s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    e.currentTarget.style.color = DARK;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.color = '#FFFFFF';
+                  }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <Play size={11} fill="currentColor" />
+                    Watch Reel
+                  </span>
+                  <ArrowUpRight size={13} />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 3: FEATURED CASE STUDIES BENTO GRID
+            Matching exact editorial reference layout:
+            Col 1: Intro + Filter Pills & Card 03 (PictureTime)
+            Col 2: Card 01 (Raysons Group) + Subgrid (04 Misu & 05 SHE + Slogan)
+            Col 3: Card 02 (Loom Crafts - staggered) & Card 06 (RR Skins)
+            ═══════════════════════════════════════════════════════════════════ */}
+        <section
+          style={{
+            paddingTop: 'clamp(3.5rem, 5vw, 5rem)',
+            paddingBottom: 'clamp(4.5rem, 7vw, 7rem)',
+            borderTop: BORDER,
+          }}
+        >
+          <div className="work-bento-grid">
+            {/* ─── COLUMN 1: Intro Narrative + Filter Pills & Card 03 (PictureTime) ─── */}
+            <div className="work-bento-col-1">
+              <div>
+                <p
+                  style={{
+                    fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
+                    lineHeight: 1.45,
+                    color: '#71717A',
+                    maxWidth: '430px',
+                    fontWeight: 400,
+                  }}
+                >
+                  A selection of businesses and projects that show how Ārohana thinks,
+                  creates and executes across very different environments.
+                </p>
+
+                {/* Filter Pills */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    marginTop: 'clamp(1.5rem, 2.2vw, 2.25rem)',
+                  }}
+                >
+                  {CASE_FILTERS.map((f) => {
+                    const isActive = selectedCaseFilter === f;
+                    return (
+                      <button
+                        key={f}
+                        type="button"
+                        onClick={() => setSelectedCaseFilter(f)}
+                        style={{
+                          padding: '0.42rem 0.95rem',
+                          borderRadius: '9999px',
+                          fontSize: '0.74rem',
+                          fontWeight: 500,
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          backgroundColor: isActive ? DARK : '#FFFFFF',
+                          color: isActive ? '#FFFFFF' : '#374151',
+                          border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
+                          boxShadow: isActive ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
+                        }}
+                      >
+                        {f}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Card 03: PictureTime */}
+              <WorkCaseCard
+                cs={CASE_STUDIES[2]}
+                isDimmed={isCardDimmed(CASE_STUDIES[2].tags)}
+                imageAspect="16 / 9"
+              />
+            </div>
+
+            {/* ─── COLUMN 2: Card 01 (Raysons Group) + Subgrid (Misu & SHE) ─── */}
+            <div className="work-bento-col-2">
+              {/* Card 01: Raysons Group */}
+              <WorkCaseCard
+                cs={CASE_STUDIES[0]}
+                isDimmed={isCardDimmed(CASE_STUDIES[0].tags)}
+                imageAspect="16 / 9.5"
+              />
+
+              {/* Nested Subgrid: Misu & SHE */}
+              <div className="work-bento-subgrid">
+                {/* Card 04: Misu */}
+                <WorkCaseCard
+                  cs={CASE_STUDIES[3]}
+                  isDimmed={isCardDimmed(CASE_STUDIES[3].tags)}
+                  imageAspect="1 / 1"
+                />
+
+                {/* Card 05: SHE + Tagline */}
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <WorkCaseCard
+                    cs={CASE_STUDIES[4]}
+                    isDimmed={isCardDimmed(CASE_STUDIES[4].tags)}
+                    imageAspect="16 / 8.5"
+                  />
+
+                  {/* Red Accent Dash + Editorial Statement below SHE */}
+                  <div style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.25rem)', paddingLeft: '0.25rem' }}>
+                    <div
+                      style={{
+                        width: '26px',
+                        height: '2px',
+                        backgroundColor: RED,
+                        borderRadius: '2px',
+                        marginBottom: '0.85rem',
+                      }}
+                    />
+                    <div
+                      style={{
+                        fontSize: 'clamp(1.2rem, 1.45vw, 1.4rem)',
+                        lineHeight: 1.22,
+                        color: '#8E8E93',
+                        fontWeight: 400,
+                        letterSpacing: '-0.015em',
+                      }}
+                    >
+                      Different
+                      <br />
+                      environments.
+                      <br />
+                      Same purpose.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ─── COLUMN 3: Card 02 (Loom Crafts) & Card 06 (RR Skins) ─── */}
+            <div className="work-bento-col-3">
+              {/* Card 02: Loom Crafts */}
+              <WorkCaseCard
+                cs={CASE_STUDIES[1]}
+                isDimmed={isCardDimmed(CASE_STUDIES[1].tags)}
+                imageAspect="16 / 9.5"
+              />
+
+              {/* Card 06: RR Skins */}
+              <WorkCaseCard
+                cs={CASE_STUDIES[5]}
+                isDimmed={isCardDimmed(CASE_STUDIES[5].tags)}
+                imageAspect="16 / 10"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 4: CLIENT / PROJECT DIRECTORY ("Additional work.")
+            ═══════════════════════════════════════════════════════════════════ */}
+        <section
+          style={{
+            paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
+            paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
+            borderTop: BORDER,
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+              gap: 'clamp(2.5rem, 5vw, 5rem)',
+              alignItems: 'start',
+            }}
+          >
+            {/* Left Column: Heading & Directory Context */}
+            <div style={{ position: 'sticky', top: '100px' }}>
+              <div
+                className="tag-mono"
+                style={{
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.2em',
+                  color: RED,
+                  fontWeight: 700,
+                  marginBottom: '0.85rem',
+                }}
+              >
+                CLIENT / PROJECT DIRECTORY
+              </div>
+
+              <h2
+                style={{
+                  fontSize: 'clamp(2.5rem, 4.8vw, 4.8rem)',
+                  fontWeight: 650,
+                  letterSpacing: '-0.035em',
+                  lineHeight: 1.05,
+                  color: DARK,
+                  marginBottom: '1.25rem',
+                }}
+              >
+                Additional
+                <br />
+                work<span style={{ color: RED }}>.</span>
+              </h2>
+
+              <p
+                style={{
+                  fontSize: 'clamp(0.95rem, 1.2vw, 1.12rem)',
+                  lineHeight: 1.6,
+                  color: BODY_TEXT,
+                  maxWidth: '420px',
+                  marginBottom: 'clamp(2rem, 3.5vw, 3rem)',
+                }}
+              >
+                A selection of other businesses and projects we&rsquo;ve worked with across different sectors.
+              </p>
+
+              <div
+                className="tag-mono hide-on-mobile"
+                style={{
+                  fontSize: '0.62rem',
+                  letterSpacing: '0.18em',
+                  color: FAINT,
+                  lineHeight: 1.8,
+                  borderLeft: '2px solid rgba(0, 0, 0, 0.1)',
+                  paddingLeft: '1rem',
+                }}
+              >
+                <div>DIFFERENT PEOPLE</div>
+                <div>DIFFERENT CHALLENGES</div>
+                <div>SAME PURPOSE.</div>
+              </div>
+            </div>
+
+            {/* Right Column: Directory Categories List with timeline nodes */}
+            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
+              {/* Connecting vertical line */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '20px',
+                  bottom: '20px',
+                  left: '32px',
+                  width: '1px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.12)',
+                  zIndex: 0,
+                }}
+                className="hide-on-mobile"
+              />
+
+              {DIRECTORY_CATEGORIES.map((cat, idx) => {
+                const isActive = activeDirectoryIndex === idx;
+                return (
+                  <div
+                    key={cat.num}
+                    style={{
+                      position: 'relative',
+                      zIndex: 1,
+                      paddingTop: 'clamp(1.5rem, 2vw, 2rem)',
+                      paddingBottom: 'clamp(1.5rem, 2vw, 2rem)',
+                      borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                    }}
+                    onMouseEnter={() => setActiveDirectoryIndex(idx)}
+                  >
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'clamp(50px, 6vw, 70px) minmax(0, 1fr)',
+                        gap: 'clamp(0.75rem, 1.5vw, 1.5rem)',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      {/* Node Indicator */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <span
+                          className="tag-mono"
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            color: isActive ? RED : MUTED,
+                          }}
+                        >
+                          {cat.num}
+                        </span>
+
+                        <span
+                          style={{
+                            width: '10px',
+                            height: '10px',
+                            borderRadius: '50%',
+                            backgroundColor: isActive ? RED : '#ffffff',
+                            border: isActive ? `2px solid ${RED}` : '2px solid rgba(0, 0, 0, 0.25)',
+                            transition: 'all 0.25s ease',
+                          }}
+                          className="hide-on-mobile"
+                        />
+                      </div>
+
+                      {/* Content Area */}
+                      <div>
+                        <div style={{ marginBottom: '0.85rem' }}>
+                          <h3
+                            style={{
+                              fontSize: 'clamp(1.25rem, 1.8vw, 1.55rem)',
+                              fontWeight: 650,
+                              letterSpacing: '-0.02em',
+                              color: DARK,
+                              marginBottom: '0.25rem',
+                            }}
+                          >
+                            {cat.title}
+                          </h3>
+                          <div
+                            className="tag-mono"
+                            style={{
+                              fontSize: '0.6rem',
+                              letterSpacing: '0.14em',
+                              color: MUTED,
+                            }}
+                          >
+                            {cat.subtitle}
+                          </div>
+                        </div>
+
+                        {/* Client links */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '0.6rem 1.25rem',
+                            marginTop: '0.75rem',
+                          }}
+                        >
+                          {cat.clients.map((client) => (
+                            <Link
+                              key={client.name}
+                              href={client.href}
+                              style={{
+                                fontSize: '0.88rem',
+                                color: BODY_TEXT,
+                                textDecoration: 'none',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                                transition: 'color 0.2s ease',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.color = RED;
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.color = BODY_TEXT;
+                              }}
+                            >
+                              <span>{client.name}</span>
+                              <ArrowUpRight size={13} color={MUTED} />
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Bottom Explore Button */}
+              <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'flex-end' }}>
+                <Link
+                  href="/contact"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    padding: '0.65rem 1.4rem',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF',
+                    color: DARK,
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                    transition: 'all 0.25s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = DARK;
+                    e.currentTarget.style.color = '#FFFFFF';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#FFFFFF';
+                    e.currentTarget.style.color = DARK;
+                  }}
+                >
+                  <span>Explore the directory</span>
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          SECTION 5: FOOTER
+          ═══════════════════════════════════════════════════════════════════ */}
+      <footer
+        style={{
+          borderTop: BORDER,
+          paddingTop: '2rem',
+          paddingBottom: '2.5rem',
+          backgroundColor: BG_PAGE,
+        }}
+      >
+        <div
+          className="padding-global"
+          style={{
+            maxWidth: '1440px',
+            margin: '0 auto',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '1.5rem',
+          }}
+        >
+          {/* Logo */}
+          <Link href="/" style={{ textDecoration: 'none' }}>
+            <Image
+              src="/images/arohana-logo.png"
+              alt="ĀROHANA"
+              width={105}
+              height={18}
+              style={{ height: '18px', width: 'auto' }}
+            />
+          </Link>
+
+          {/* Nav Links */}
+          <nav style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'clamp(1rem, 2vw, 2rem)' }}>
+            {[
+              { label: 'HOME', href: '/' },
+              { label: 'STUDIO', href: '/about' },
+              { label: 'WORK', href: '/work', active: true },
+              { label: 'SERVICES', href: '/services' },
+              { label: 'TOURISM', href: '/tourin' },
+              { label: 'ARMY PROJECTS', href: '/indian-army-projects' },
+            ].map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="tag-mono"
+                style={{
+                  fontSize: '0.7rem',
+                  letterSpacing: '0.14em',
+                  color: link.active ? DARK : MUTED,
+                  fontWeight: link.active ? 700 : 500,
+                  textDecoration: 'none',
+                  position: 'relative',
+                  paddingBottom: '4px',
+                  borderBottom: link.active ? `2px solid ${RED}` : 'none',
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Copyright */}
+          <div className="tag-mono" style={{ fontSize: '0.65rem', color: FAINT, letterSpacing: '0.1em' }}>
+            &copy; {new Date().getFullYear()} Arohana Consultancy
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
