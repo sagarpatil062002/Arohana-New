@@ -23,10 +23,16 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  const navLinks = [
+  interface NavLinkItem {
+    label: string;
+    href: string;
+    badge?: string;
+  }
+
+  const navLinks: NavLinkItem[] = [
     { label: 'Home', href: '/' },
     { label: 'Studio', href: '/about' },
-    { label: 'Work', href: '/work', badge: '6' },
+    { label: 'Work', href: '/work' },
     { label: 'Services', href: '/services' },
     { label: 'Tourin', href: '/tourin' },
     { label: 'Army Projects', href: '/indian-army-projects' },

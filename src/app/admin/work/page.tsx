@@ -27,7 +27,7 @@ import {
 export default function AdminWorkPage() {
   const { content, saveDraft, updateDraftInMemory } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'header' | 'reels' | 'cases'>('cases');
+  const [activeTab, setActiveTab] = useState<'header' | 'reels' | 'cases' | 'directory'>('cases');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
@@ -135,6 +135,64 @@ export default function AdminWorkPage() {
     }
   };
 
+  const handleUpdateCategory = (catIdx: number, field: string, val: any) => {
+    const updatedCats = [...(workData.directoryCategories || [])];
+    updatedCats[catIdx] = { ...updatedCats[catIdx], [field]: val };
+    const updated = { ...workData, directoryCategories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleAddClientToCategory = (catIdx: number) => {
+    const updatedCats = [...(workData.directoryCategories || [])];
+    const clients = [...(updatedCats[catIdx].clients || [])];
+    clients.push({ name: 'New Client', href: '/contact' });
+    updatedCats[catIdx] = { ...updatedCats[catIdx], clients };
+    const updated = { ...workData, directoryCategories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleUpdateClient = (catIdx: number, clientIdx: number, field: string, val: any) => {
+    const updatedCats = [...(workData.directoryCategories || [])];
+    const clients = [...(updatedCats[catIdx].clients || [])];
+    clients[clientIdx] = { ...clients[clientIdx], [field]: val };
+    updatedCats[catIdx] = { ...updatedCats[catIdx], clients };
+    const updated = { ...workData, directoryCategories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleDeleteClient = (catIdx: number, clientIdx: number) => {
+    const updatedCats = [...(workData.directoryCategories || [])];
+    const clients = updatedCats[catIdx].clients.filter((_: any, i: number) => i !== clientIdx);
+    updatedCats[catIdx] = { ...updatedCats[catIdx], clients };
+    const updated = { ...workData, directoryCategories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleAddCategory = () => {
+    const updatedCats = [...(workData.directoryCategories || [])];
+    const nextNum = String(updatedCats.length + 1).padStart(2, '0');
+    updatedCats.push({
+      num: nextNum,
+      title: 'New Sector Category',
+      subtitle: 'SPACES · COMMUNITY · PURPOSE',
+      clients: [{ name: 'New Project', href: '/contact' }],
+    });
+    const updated = { ...workData, directoryCategories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleDeleteCategory = (catIdx: number) => {
+    const updatedCats = workData.directoryCategories.filter((_: any, i: number) => i !== catIdx);
+    const updated = { ...workData, directoryCategories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
   const filteredCases = (workData.caseStudies || []).filter(
     (c: any) =>
       c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -185,7 +243,7 @@ export default function AdminWorkPage() {
                   gap: '0.35rem',
                   padding: '0.45rem 0.95rem',
                   borderRadius: '9999px',
-                  border: '1px solid rgba(0, 0, 0, 0.12)',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
                   backgroundColor: '#FFFFFF',
                   color: '#111113',
                   fontSize: '0.78rem',
@@ -195,6 +253,29 @@ export default function AdminWorkPage() {
               >
                 <Plus size={14} />
                 Add Project
+              </button>
+            )}
+
+            {activeTab === 'directory' && (
+              <button
+                type="button"
+                onClick={handleAddCategory}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  padding: '0.45rem 0.95rem',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#111113',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                <Plus size={14} />
+                Add Category
               </button>
             )}
 
@@ -227,6 +308,7 @@ export default function AdminWorkPage() {
             { id: 'header', label: '01: Page Header', icon: Sparkles },
             { id: 'reels', label: '02: Instagram Reels Carousel', icon: Video },
             { id: 'cases', label: `03: Case Studies (${workData.caseStudies?.length || 0})`, icon: FileText },
+            { id: 'directory', label: `04: Directory / Additional Work (${workData.directoryCategories?.length || 0})`, icon: Layers },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -656,6 +738,203 @@ export default function AdminWorkPage() {
                   Select a project from the left to edit.
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 4: ADDITIONAL WORK & DIRECTORY ─── */}
+        {activeTab === 'directory' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Header / Intro Card */}
+            <div style={{ padding: '1.25rem', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FAFAFA', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Directory Header &amp; Section Context
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                    EYEBROW
+                  </label>
+                  <input
+                    type="text"
+                    value={workData.directoryHeader?.eyebrow || 'CLIENT / PROJECT DIRECTORY'}
+                    onChange={(e) => updateField(['directoryHeader', 'eyebrow'], e.target.value)}
+                    style={inputStyle}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                    SECTION TITLE (Without full stop)
+                  </label>
+                  <input
+                    type="text"
+                    value={workData.directoryHeader?.title || 'Additional work'}
+                    onChange={(e) => updateField(['directoryHeader', 'title'], e.target.value)}
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                  SUBTITLE / DESCRIPTION
+                </label>
+                <textarea
+                  rows={2}
+                  value={workData.directoryHeader?.subtitle || 'A selection of other businesses and projects we’ve worked with across different sectors.'}
+                  onChange={(e) => updateField(['directoryHeader', 'subtitle'], e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            {/* Categories & Clients List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h4 style={{ fontSize: '0.92rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                  Sector Categories &amp; Client Projects
+                </h4>
+                <span style={{ fontSize: '0.74rem', color: '#71717A' }}>
+                  Clients with case study URLs (e.g. /work/raysons-group) will show the redirecting arrow.
+                </span>
+              </div>
+
+              {(workData.directoryCategories || []).map((cat: any, catIdx: number) => (
+                <div
+                  key={catIdx}
+                  style={{
+                    padding: '1.25rem',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(0,0,0,0.08)',
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', flex: 1, marginRight: '1rem' }}>
+                      <input
+                        type="text"
+                        value={cat.num || String(catIdx + 1).padStart(2, '0')}
+                        onChange={(e) => handleUpdateCategory(catIdx, 'num', e.target.value)}
+                        placeholder="01"
+                        style={{ ...inputStyle, width: '56px', textAlign: 'center', fontWeight: 700 }}
+                      />
+                      <input
+                        type="text"
+                        value={cat.title || ''}
+                        onChange={(e) => handleUpdateCategory(catIdx, 'title', e.target.value)}
+                        placeholder="Sector Category Title"
+                        style={{ ...inputStyle, fontWeight: 650 }}
+                      />
+                      <input
+                        type="text"
+                        value={cat.subtitle || ''}
+                        onChange={(e) => handleUpdateCategory(catIdx, 'subtitle', e.target.value)}
+                        placeholder="TAGS · SUBTITLE"
+                        style={{ ...inputStyle, fontSize: '0.78rem' }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCategory(catIdx)}
+                      title="Delete Category"
+                      style={{
+                        padding: '0.4rem',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(220,38,38,0.2)',
+                        backgroundColor: '#FEF2F2',
+                        color: '#DC2626',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+
+                  {/* Clients List for Category */}
+                  <div style={{ backgroundColor: '#F8F8FA', padding: '0.85rem', borderRadius: '8px' }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 600, color: '#71717A', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
+                      <span>CLIENTS IN THIS SECTOR</span>
+                      <span>LINK (Only detail pages show arrow)</span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      {(cat.clients || []).map((client: any, clientIdx: number) => {
+                        const hasDetail = client.href && client.href !== '/contact' && client.href !== '#' && client.href !== '';
+                        return (
+                          <div key={clientIdx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <input
+                              type="text"
+                              value={client.name || ''}
+                              onChange={(e) => handleUpdateClient(catIdx, clientIdx, 'name', e.target.value)}
+                              placeholder="Client / Brand Name"
+                              style={{ ...inputStyle, flex: 1 }}
+                            />
+                            <div style={{ flex: 1, position: 'relative' }}>
+                              <input
+                                type="text"
+                                value={client.href || ''}
+                                onChange={(e) => handleUpdateClient(catIdx, clientIdx, 'href', e.target.value)}
+                                placeholder="/work/case-slug or /contact"
+                                style={inputStyle}
+                              />
+                            </div>
+                            <span
+                              style={{
+                                fontSize: '0.68rem',
+                                padding: '0.25rem 0.5rem',
+                                borderRadius: '4px',
+                                whiteSpace: 'nowrap',
+                                backgroundColor: hasDetail ? '#DCFCE7' : '#F4F4F5',
+                                color: hasDetail ? '#15803D' : '#71717A',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {hasDetail ? '↗ Arrow' : 'No Arrow'}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteClient(catIdx, clientIdx)}
+                              style={{
+                                padding: '0.4rem',
+                                borderRadius: '6px',
+                                border: 'none',
+                                backgroundColor: 'transparent',
+                                color: '#9CA3AF',
+                                cursor: 'pointer',
+                              }}
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        );
+                      })}
+
+                      <button
+                        type="button"
+                        onClick={() => handleAddClientToCategory(catIdx)}
+                        style={{
+                          alignSelf: 'flex-start',
+                          marginTop: '0.25rem',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.35rem 0.75rem',
+                          borderRadius: '6px',
+                          border: '1px dashed rgba(0,0,0,0.2)',
+                          backgroundColor: '#FFFFFF',
+                          color: '#4B5563',
+                          fontSize: '0.74rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Plus size={13} />
+                        Add Client to {cat.title || 'Sector'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

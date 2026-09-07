@@ -211,5 +211,12 @@
         { "name": "Indian Army-related projects", "href": "/indian-army-projects" }
       ]
     }
-  ]
+  ],
+  "directoryHeader": {
+    "eyebrow": "CLIENT / PROJECT DIRECTORY",
+    "title": "Additional work",
+    "subtitle": "A selection of other businesses and projects we've worked with across different sectors.",
+    "ctaText": "Explore the directory",
+    "ctaHref": "/contact"
+  }
 }

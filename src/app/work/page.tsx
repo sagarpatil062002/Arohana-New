@@ -1055,7 +1055,7 @@ export default function WorkPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════════
-            SECTION 4: CLIENT / PROJECT DIRECTORY ("Additional work.")
+            SECTION 4: CLIENT / PROJECT DIRECTORY ("Additional work")
             ═══════════════════════════════════════════════════════════════════ */}
         <section
           style={{
@@ -1084,7 +1084,7 @@ export default function WorkPage() {
                   marginBottom: '0.85rem',
                 }}
               >
-                CLIENT / PROJECT DIRECTORY
+                {workCms?.directoryHeader?.eyebrow || 'CLIENT / PROJECT DIRECTORY'}
               </div>
 
               <h2
@@ -1097,9 +1097,15 @@ export default function WorkPage() {
                   marginBottom: '1.25rem',
                 }}
               >
-                Additional
-                <br />
-                work<span style={{ color: RED }}>.</span>
+                {workCms?.directoryHeader?.title ? (
+                  workCms.directoryHeader.title
+                ) : (
+                  <>
+                    Additional
+                    <br />
+                    work
+                  </>
+                )}
               </h2>
 
               <p
@@ -1111,7 +1117,7 @@ export default function WorkPage() {
                   marginBottom: 'clamp(2rem, 3.5vw, 3rem)',
                 }}
               >
-                A selection of other businesses and projects we&rsquo;ve worked with across different sectors.
+                {workCms?.directoryHeader?.subtitle || 'A selection of other businesses and projects we’ve worked with across different sectors.'}
               </p>
 
               <div
@@ -1136,11 +1142,14 @@ export default function WorkPage() {
               {/* Connecting vertical line (Desktop only) */}
               <div className="work-directory-line" />
 
-              {DIRECTORY_CATEGORIES.map((cat, idx) => {
+              {((workCms?.directoryCategories && workCms.directoryCategories.length > 0)
+                ? workCms.directoryCategories
+                : DIRECTORY_CATEGORIES
+              ).map((cat: any, idx: number) => {
                 const isExpanded = activeDirectoryIndex === idx;
                 return (
                   <div
-                    key={cat.num}
+                    key={cat.num || idx}
                     className={`work-directory-card ${isExpanded ? 'is-expanded' : ''}`}
                     onClick={() => setActiveDirectoryIndex(isExpanded ? -1 : idx)}
                   >
@@ -1168,17 +1177,34 @@ export default function WorkPage() {
                     {/* Client links (Always visible on desktop, expandable on mobile) */}
                     <div className={`work-dir-clients-wrap ${isExpanded ? 'show' : ''}`}>
                       <div className="work-dir-clients-grid">
-                        {cat.clients.map((client) => (
-                          <Link
-                            key={client.name}
-                            href={client.href}
-                            className="work-dir-client-item"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <span>{client.name}</span>
-                            <ArrowUpRight size={13} className="work-dir-client-arrow" />
-                          </Link>
-                        ))}
+                        {cat.clients.map((client: any) => {
+                          const hasDetailPage = Boolean(
+                            client.href &&
+                            client.href !== '/contact' &&
+                            client.href !== '#' &&
+                            client.href !== ''
+                          );
+
+                          return hasDetailPage ? (
+                            <Link
+                              key={client.name}
+                              href={client.href}
+                              className="work-dir-client-item"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <span>{client.name}</span>
+                              <ArrowUpRight size={13} className="work-dir-client-arrow" />
+                            </Link>
+                          ) : (
+                            <span
+                              key={client.name}
+                              className="work-dir-client-item work-dir-client-static"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <span>{client.name}</span>
+                            </span>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -1187,8 +1213,8 @@ export default function WorkPage() {
 
               {/* Bottom Explore Button */}
               <div className="work-directory-footer">
-                <Link href="/contact" className="work-dir-explore-btn">
-                  <span>Explore the directory</span>
+                <Link href={workCms?.directoryHeader?.ctaHref || '/contact'} className="work-dir-explore-btn">
+                  <span>{workCms?.directoryHeader?.ctaText || 'Explore the directory'}</span>
                   <ArrowRight size={16} color="#ffffff" />
                 </Link>
               </div>
@@ -1395,6 +1421,13 @@ export default function WorkPage() {
         }
         .work-dir-client-item:hover {
           color: #DE322D;
+        }
+        .work-dir-client-item.work-dir-client-static {
+          cursor: default;
+          color: #64748B;
+        }
+        .work-dir-client-item.work-dir-client-static:hover {
+          color: #1E293B;
         }
         .work-directory-footer {
           margin-top: 2.5rem;

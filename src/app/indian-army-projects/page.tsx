@@ -135,116 +135,86 @@ export default function IndianArmyProjectsPage() {
       {/* ==========================================================================
           1. HERO SECTION (Light Editorial Theme Matching Reference Image)
           ========================================================================== */}
+      {/* ==========================================================================
+          1. HERO SECTION (Atmospheric High-Altitude Soldier Backdrop Blended into Background)
+          ========================================================================== */}
       <section className="army-hero-section">
-        <div className="army-container hero-grid">
-          {/* Left Column: Heading & Lead */}
+        {/* Blended High-Altitude Himalayan Soldier Backdrop */}
+        <div className="hero-bg-blend" aria-hidden="true">
+          <Image
+            src="/images/army/soldier-peak.jpg"
+            alt="Indian Army soldier overlooking Himalayan mountain ranges"
+            fill
+            priority
+            quality={95}
+            sizes="100vw"
+            className="hero-soldier-img"
+          />
+          {/* Seamless gradient blend overlays into page background #f6f6f4 */}
+          <div className="hero-blend-left" />
+          <div className="hero-blend-bottom" />
+          <div className="hero-blend-top" />
+          <div className="hero-blend-radial" />
+        </div>
+
+        <div className="army-container hero-content-wrap">
           <div className="hero-left">
+            {/* Elegant Military Protocol Eyebrow */}
             <div className="hero-eyebrow">
-              <Shield size={14} className="shield-icon" />
-              <span>{hero.eyebrow}</span>
+              <span className="eyebrow-badge">
+                <Shield size={12} className="shield-icon" />
+                <span>DEFENCE &amp; INSTITUTIONAL PRODUCTION</span>
+              </span>
+              <span className="eyebrow-dot" />
+              <span className="eyebrow-sub">HIGH-ALTITUDE THEATRE</span>
             </div>
 
+            {/* Attractive Architectural Headline */}
             <h1 className="hero-title">
               {hero.title?.includes('service') ? (
                 <>
-                  Stories
+                  <span className="hero-title-top">Stories</span>
                   <br />
-                  of service<span className="accent-dot">.</span>
+                  <span className="hero-title-bottom">
+                    of service<span className="accent-dot">.</span>
+                  </span>
                 </>
               ) : (
                 hero.title
               )}
             </h1>
 
+            {/* Lead Description with Enhanced Readability */}
             <p className="hero-desc">
               {hero.description}
             </p>
 
-            <a href="#projects-overview" className="scroll-explore">
-              <span className="scroll-circle">
-                <ArrowDown size={14} />
+            {/* Distinctive Pillar Badges */}
+            <div className="hero-pillars">
+              <span className="pillar-item">
+                <span className="pillar-dot" /> HQ Western Command
               </span>
-              <span>{hero.scrollLabel || 'Scroll to explore'}</span>
-            </a>
-          </div>
+              <span className="pillar-item">
+                <span className="pillar-dot" /> 14 Corps &amp; High Altitude
+              </span>
+              <span className="pillar-item">
+                <span className="pillar-dot" /> Rezang La War Memorial
+              </span>
+            </div>
 
-          {/* Right Column: Visual Composition Matching Reference Image Exactly */}
-          <div className="hero-right">
-            <div className="hero-visual-wrapper">
-              {/* Concentric Radar / Contour Backdrop */}
-              <div className="hero-radar-lines" aria-hidden="true" />
+            {/* Attractive CTA Group */}
+            <div className="hero-cta-group">
+              <a href="#army-projects" className="hero-primary-btn">
+                <span>Explore Assignments</span>
+                <ArrowRight size={15} />
+              </a>
 
-              {/* Main High-Altitude Soldier Card */}
-              <div className="hero-main-photo-card">
-                <Image
-                  src="/images/army/army-hero.jpg"
-                  alt="Indian Army high-altitude field production"
-                  fill
-                  priority
-                  quality={95}
-                  sizes="(max-width: 768px) 100vw, 400px"
-                  style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                />
-              </div>
-
-              {/* Overlaid Script Photo Card */}
-              <div className="hero-script-card">
-                <Image
-                  src="/images/home/hero-mountain-sky.png"
-                  alt="People Places Purpose"
-                  fill
-                  sizes="220px"
-                  style={{ objectFit: 'cover', filter: 'brightness(0.65) contrast(1.1)' }}
-                />
-                <div className="hero-script-card-content">
-                  People
-                  <br />
-                  Preparations
-                  <br />
-                  Purpose
-                  <br />
-                  A Stronger
-                  <br />
-                  Tomorrow
-                </div>
-              </div>
-
-              {/* Far Right Editorial Column Stack */}
-              <div className="hero-side-stack">
-                <div className="hero-side-labels">
-                  INDIAN ARMY
-                  <br />
-                  PEOPLE
-                  <br />
-                  PLACES
-                  <br />
-                  PURPOSE
-                  <br />
-                  A STRONGER
-                  <br />
-                  TOMORROW
-                </div>
-
-                <div className="hero-side-thumb">
-                  <Image
-                    src="/images/army/14corps-2.jpg"
-                    alt="Ladakh Mountain Peaks"
-                    fill
-                    sizes="100px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
-
-                <div className="hero-side-values">
-                  TRUSTED
-                  <br />
-                  DISCIPLINED
-                  <br />
-                  DOCUMENTED
-                  <br />
-                  <span className="dot" />
-                </div>
-              </div>
+              <a href="#projects-overview" className="scroll-explore">
+                <span className="scroll-circle">
+                  <ArrowDown size={14} />
+                </span>
+                <span>{hero.scrollLabel || 'Scroll to explore'}</span>
+              </a>
             </div>
           </div>
         </div>
@@ -1165,82 +1135,277 @@ export default function IndianArmyProjectsPage() {
           padding: 0 clamp(1.25rem, 3.5vw, 3.5rem);
         }
 
-        /* ---------------- Hero Section ---------------- */
+        /* ---------------- Hero Section (Atmospheric Blended Soldier Backdrop) ---------------- */
         .army-hero-section {
-          padding-top: clamp(2.5rem, 5vw, 4.5rem);
-          padding-bottom: clamp(3rem, 6vw, 4.5rem);
           position: relative;
+          min-height: clamp(560px, 78vh, 760px);
+          display: flex;
+          align-items: center;
+          background-color: #f6f6f4;
           overflow: hidden;
+          padding-top: clamp(3rem, 6vw, 5.5rem);
+          padding-bottom: clamp(3.5rem, 6vw, 5rem);
         }
 
-        .hero-grid {
-          display: grid;
-          grid-template-columns: 1.05fr 1fr;
-          gap: clamp(2rem, 4vw, 4.5rem);
-          align-items: center;
+        /* The soldier image positioned seamlessly on the right & spanning backward */
+        .hero-bg-blend {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: 65%;
+          min-width: 520px;
+          height: 100%;
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        :global(.hero-soldier-img) {
+          object-fit: cover !important;
+          object-position: 70% 20% !important;
+        }
+
+        /* Seamless gradient blend overlays into page background #f6f6f4 */
+        .hero-blend-left {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to right,
+            #f6f6f4 0%,
+            #f6f6f4 12%,
+            rgba(246, 246, 244, 0.94) 28%,
+            rgba(246, 246, 244, 0.65) 50%,
+            rgba(246, 246, 244, 0.2) 75%,
+            transparent 100%
+          );
+          z-index: 2;
+        }
+
+        .hero-blend-bottom {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 180px;
+          background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(246, 246, 244, 0.5) 45%,
+            rgba(246, 246, 244, 0.92) 80%,
+            #f6f6f4 100%
+          );
+          z-index: 2;
+        }
+
+        .hero-blend-top {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 90px;
+          background: linear-gradient(
+            to bottom,
+            rgba(246, 246, 244, 0.85) 0%,
+            transparent 100%
+          );
+          z-index: 2;
+        }
+
+        .hero-blend-radial {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            ellipse at 85% 50%,
+            transparent 35%,
+            rgba(246, 246, 244, 0.25) 70%,
+            #f6f6f4 100%
+          );
+          z-index: 2;
+        }
+
+        .hero-content-wrap {
+          position: relative;
+          z-index: 3;
+          width: 100%;
         }
 
         .hero-left {
+          max-width: 680px;
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          align-items: flex-start;
         }
 
+        /* Eyebrow badge */
         .hero-eyebrow {
           display: inline-flex;
           align-items: center;
-          gap: 0.5rem;
-          font-size: 0.78rem;
-          font-weight: 700;
-          letter-spacing: 0.14em;
-          color: #555555;
-          text-transform: uppercase;
+          gap: 0.65rem;
           margin-bottom: 1.5rem;
+          flex-wrap: wrap;
         }
 
-        .hero-title {
-          font-size: clamp(3.2rem, 6.2vw, 5.75rem);
+        .eyebrow-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.35rem 0.85rem;
+          border-radius: 9999px;
+          background-color: rgba(255, 255, 255, 0.9);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
           font-weight: 700;
-          line-height: 1.02;
+          letter-spacing: 0.14em;
+          color: #111113;
+          text-transform: uppercase;
+        }
+
+        .eyebrow-badge .shield-icon {
+          color: #de322d;
+        }
+
+        .eyebrow-dot {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background-color: #a1a1aa;
+        }
+
+        .eyebrow-sub {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.68rem;
+          font-weight: 600;
+          letter-spacing: 0.15em;
+          color: #6b7280;
+          text-transform: uppercase;
+        }
+
+        /* Attractive, punchy, editorial headline */
+        .hero-title {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(3.4rem, 6.8vw, 6.2rem);
+          font-weight: 750;
+          line-height: 0.98;
           letter-spacing: -0.04em;
-          color: #111111;
+          color: #0f172a;
           margin: 0 0 1.75rem 0;
+        }
+
+        .hero-title-top {
+          display: inline-block;
+          font-weight: 750;
+          color: #0f172a;
+        }
+
+        .hero-title-bottom {
+          display: inline-block;
+          font-weight: 750;
+          color: #1e293b;
         }
 
         .hero-title .accent-dot {
           color: #de322d;
         }
 
+        /* Attractive Description */
         .hero-desc {
-          font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-          line-height: 1.6;
-          color: #555555;
+          font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+          line-height: 1.68;
+          color: #475569;
           max-width: 540px;
-          margin: 0 0 2.75rem 0;
+          margin: 0 0 2rem 0;
+          font-weight: 450;
+        }
+
+        /* Clean pillar badges */
+        .hero-pillars {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem 1rem;
+          margin-bottom: 2.25rem;
+        }
+
+        .pillar-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          color: #334155;
+          text-transform: uppercase;
+        }
+
+        .pillar-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background-color: #de322d;
+        }
+
+        /* CTA Buttons */
+        .hero-cta-group {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          flex-wrap: wrap;
+        }
+
+        .hero-primary-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.85rem 1.85rem;
+          border-radius: 9999px;
+          background-color: #111113;
+          color: #ffffff;
+          font-size: 0.88rem;
+          font-weight: 600;
+          text-decoration: none;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+          transition: all 0.28s ease;
+          border: 1px solid #111113;
+        }
+
+        .hero-primary-btn:hover {
+          background-color: #de322d;
+          border-color: #de322d;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 24px rgba(222, 50, 45, 0.28);
         }
 
         .scroll-explore {
           display: inline-flex;
           align-items: center;
-          gap: 0.85rem;
+          gap: 0.75rem;
           font-size: 0.76rem;
           font-weight: 700;
-          letter-spacing: 0.15em;
-          color: #222222;
+          letter-spacing: 0.14em;
+          color: #475569;
           text-transform: uppercase;
           text-decoration: none;
           cursor: pointer;
+          transition: color 0.25s ease;
         }
 
         .scroll-circle {
           width: 38px;
           height: 38px;
           border-radius: 50%;
-          border: 1px solid rgba(0, 0, 0, 0.2);
+          border: 1.5px solid rgba(0, 0, 0, 0.16);
+          background: rgba(255, 255, 255, 0.7);
           display: flex;
           align-items: center;
           justify-content: center;
+          color: #1e293b;
           transition: all 0.25s ease;
+        }
+
+        .scroll-explore:hover {
+          color: #111113;
         }
 
         .scroll-explore:hover .scroll-circle {
@@ -1250,151 +1415,48 @@ export default function IndianArmyProjectsPage() {
           transform: translateY(2px);
         }
 
-        /* Hero Right Visual Composition */
-        .hero-right {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
+        /* Responsive */
+        @media (max-width: 1024px) {
+          .hero-bg-blend {
+            width: 75%;
+          }
+          .hero-blend-left {
+            background: linear-gradient(
+              to right,
+              #f6f6f4 0%,
+              #f6f6f4 20%,
+              rgba(246, 246, 244, 0.94) 40%,
+              rgba(246, 246, 244, 0.5) 70%,
+              transparent 100%
+            );
+          }
         }
 
-        .hero-visual-wrapper {
-          position: relative;
-          width: 100%;
-          max-width: 580px;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-        }
-
-        .hero-radar-lines {
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 520px;
-          height: 520px;
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 1;
-          opacity: 0.45;
-        }
-
-        .hero-radar-lines::before,
-        .hero-radar-lines::after {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          border-radius: 50%;
-          border: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .hero-radar-lines::before {
-          width: 100%;
-          height: 100%;
-        }
-
-        .hero-radar-lines::after {
-          width: 70%;
-          height: 70%;
-        }
-
-        .hero-main-photo-card {
-          position: relative;
-          z-index: 3;
-          width: clamp(280px, 32vw, 390px);
-          height: clamp(380px, 44vw, 500px);
-          border-radius: 28px;
-          overflow: hidden;
-          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
-          background-color: #1a1c20;
-        }
-
-        .hero-script-card {
-          position: absolute;
-          left: clamp(-30px, -5vw, -50px);
-          top: 28%;
-          z-index: 5;
-          width: clamp(160px, 18vw, 210px);
-          height: clamp(110px, 14vw, 150px);
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
-          border: 2px solid rgba(255, 255, 255, 0.85);
-          transform: rotate(-3deg);
-          transition: all 0.3s ease;
-        }
-
-        .hero-script-card:hover {
-          transform: rotate(0deg) scale(1.04);
-        }
-
-        .hero-script-card-content {
-          position: absolute;
-          inset: 0;
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          color: #ffffff;
-          font-family: var(--font-script, 'Caveat', cursive, sans-serif);
-          font-size: 1.35rem;
-          line-height: 1.15;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
-          font-weight: 700;
-        }
-
-        .hero-side-stack {
-          position: absolute;
-          right: -10px;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 4;
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          width: 140px;
-          pointer-events: none;
-        }
-
-        .hero-side-labels {
-          font-size: 0.7rem;
-          font-weight: 800;
-          letter-spacing: 0.18em;
-          color: #555555;
-          line-height: 1.55;
-          text-transform: uppercase;
-        }
-
-        .hero-side-thumb {
-          position: relative;
-          width: 100px;
-          height: 75px;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-          border: 1px solid rgba(0, 0, 0, 0.08);
-          pointer-events: auto;
-        }
-
-        .hero-side-values {
-          font-size: 0.7rem;
-          font-weight: 800;
-          letter-spacing: 0.18em;
-          color: #333333;
-          line-height: 1.6;
-          text-transform: uppercase;
-        }
-
-        .hero-side-values .dot {
-          display: inline-block;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #de322d;
-          margin-top: 6px;
+        @media (max-width: 860px) {
+          .army-hero-section {
+            min-height: auto;
+            padding-top: 3rem;
+            padding-bottom: 3.5rem;
+          }
+          .hero-bg-blend {
+            width: 100%;
+            min-width: 0;
+            opacity: 0.38;
+          }
+          .hero-blend-left {
+            background: linear-gradient(
+              to right,
+              #f6f6f4 0%,
+              rgba(246, 246, 244, 0.92) 50%,
+              rgba(246, 246, 244, 0.7) 100%
+            );
+          }
+          .hero-left {
+            max-width: 100%;
+          }
+          .hero-title {
+            font-size: clamp(2.8rem, 10vw, 4.2rem);
+          }
         }
 
         /* ---------------- Stats Section ---------------- */

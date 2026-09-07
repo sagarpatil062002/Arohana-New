@@ -246,6 +246,167 @@ const TEAM = [
   },
 ];
 
+function FlipDigit({ digit }: { digit: string }) {
+  const [animating, setAnimating] = useState(false);
+  const prevDigit = useRef(digit);
+
+  useEffect(() => {
+    if (prevDigit.current !== digit) {
+      prevDigit.current = digit;
+      setAnimating(true);
+      const t = setTimeout(() => setAnimating(false), 240);
+      return () => clearTimeout(t);
+    }
+  }, [digit]);
+
+  return (
+    <span
+      className="flip-digit-wrapper"
+      style={{
+        display: 'inline-block',
+        fontVariantNumeric: 'tabular-nums',
+        lineHeight: 1,
+        perspective: '500px',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      <span
+        style={{
+          display: 'inline-block',
+          animation: animating ? 'cleanDigitFlip 0.24s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+          transformOrigin: '50% 50%',
+        }}
+      >
+        {digit}
+      </span>
+    </span>
+  );
+}
+
+function parseStat(val: any) {
+  const str = String(val || '').trim();
+  const match = str.match(/^(\d+)(.*)$/);
+  if (match) {
+    return { target: parseInt(match[1], 10), suffix: match[2] };
+  }
+  return { target: 0, suffix: str };
+}
+
+function FounderAnimatedStats({ stats }: { stats: Array<{ value: string; label: string }> }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [counts, setCounts] = useState<number[]>(() => stats.map(() => 0));
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const parsed = stats.map((s) => parseStat(s.value));
+    let hasRun = false;
+    const obj: Record<string, number> = {};
+    parsed.forEach((_, idx) => {
+      obj[`v${idx}`] = 0;
+    });
+
+    const startAnimation = () => {
+      if (hasRun) return;
+      hasRun = true;
+      const tweenTargets: Record<string, any> = {
+        duration: 2.2,
+        ease: 'power3.out',
+        onUpdate: () => {
+          setCounts(parsed.map((_, idx) => Math.round(obj[`v${idx}`] ?? 0)));
+        },
+      };
+      parsed.forEach((p, idx) => {
+        tweenTargets[`v${idx}`] = p.target;
+      });
+      gsap.to(obj, tweenTargets);
+    };
+
+    if (typeof IntersectionObserver !== 'undefined') {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            startAnimation();
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    } else {
+      startAnimation();
+    }
+  }, [stats]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${stats.length}, 1fr)`,
+        gap: 'clamp(1rem, 2.5vw, 2.5rem)',
+        paddingTop: 'clamp(1.25rem, 2vw, 1.75rem)',
+        borderTop: BORDER,
+        maxWidth: '560px',
+      }}
+    >
+      {stats.map((stat: any, i: number) => {
+        const v = counts[i] ?? 0;
+        const info = parseStat(stat.value);
+        const numStr = `${v}`;
+        const digits = numStr.split('');
+
+        return (
+          <div
+            key={i}
+            style={{
+              borderRight: i < stats.length - 1 ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
+              paddingRight: 'clamp(0.5rem, 1vw, 1rem)',
+            }}
+          >
+            <div
+              style={{
+                fontSize: 'clamp(1.9rem, 3vw, 2.8rem)',
+                fontWeight: 650,
+                letterSpacing: '-0.03em',
+                lineHeight: 1,
+                color: DARK,
+                display: 'inline-flex',
+                alignItems: 'baseline',
+              }}
+            >
+              <div style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+                {digits.map((d, dIdx) => (
+                  <FlipDigit key={dIdx} digit={d} />
+                ))}
+              </div>
+              {info.suffix && (
+                <span style={{ color: RED, fontWeight: 700, marginLeft: '2px', lineHeight: 1 }}>
+                  {info.suffix}
+                </span>
+              )}
+            </div>
+            <div
+              className="tag-mono"
+              style={{
+                fontSize: '0.62rem',
+                color: MUTED,
+                letterSpacing: '0.12em',
+                marginTop: '0.5rem',
+                lineHeight: 1.4,
+              }}
+            >
+              {stat.label.toUpperCase()}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function StudioPage() {
   const { content } = useCmsContent();
   const aboutCms = content.about || {};
@@ -497,51 +658,8 @@ export default function StudioPage() {
                 </Link>
               </div>
 
-              {/* Stats Section (3 columns with clean dividers) */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: 'clamp(1rem, 2.5vw, 2.5rem)',
-                  paddingTop: 'clamp(1.25rem, 2vw, 1.75rem)',
-                  borderTop: BORDER,
-                  maxWidth: '560px',
-                }}
-              >
-                {(heroData.stats || STATS).map((stat: any, i: number) => (
-                  <div
-                    key={i}
-                    style={{
-                      borderRight: i < STATS.length - 1 ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
-                      paddingRight: 'clamp(0.5rem, 1vw, 1rem)',
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 'clamp(1.9rem, 3vw, 2.8rem)',
-                        fontWeight: 650,
-                        letterSpacing: '-0.03em',
-                        lineHeight: 1,
-                        color: DARK,
-                      }}
-                    >
-                      {stat.value}
-                    </div>
-                    <div
-                      className="tag-mono"
-                      style={{
-                        fontSize: '0.62rem',
-                        color: MUTED,
-                        letterSpacing: '0.12em',
-                        marginTop: '0.5rem',
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {stat.label.toUpperCase()}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* Stats Section with Flipping Number Animation */}
+              <FounderAnimatedStats stats={heroData.stats || STATS} />
             </div>
 
             {/* Right Column: Founder Collage Artwork */}
@@ -1773,6 +1891,20 @@ export default function StudioPage() {
           grid-template-columns: repeat(2, 1fr);
           gap: clamp(1rem, 2vw, 1.5rem);
           margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+        }
+
+        @keyframes cleanDigitFlip {
+          0% {
+            transform: rotateX(70deg) translateY(-8%);
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 0.7;
+          }
+          100% {
+            transform: rotateX(0deg) translateY(0);
+            opacity: 1;
+          }
         }
       `}</style>
     </div>
