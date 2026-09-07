@@ -208,6 +208,117 @@ const CASE_STUDIES: CaseStudyItem[] = [
   },
 ];
 
+/* ─── ©26 Editorial Badge Component matching exact design reference ─── */
+function Circle26Badge({ isMobile = false }: { isMobile?: boolean }) {
+  return (
+    <div
+      className={`c26-badge ${isMobile ? 'c26-badge-mobile' : 'c26-badge-desktop'}`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: isMobile ? '8px' : 'clamp(12px, 1.2vw, 18px)',
+        userSelect: 'none',
+        flexShrink: 0,
+      }}
+      aria-label="Copyright 2026 Brands People Places Possibilities"
+    >
+      {/* ©26 Mark */}
+      <div
+        className="c26-mark"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: isMobile ? '3px' : 'clamp(4px, 0.35vw, 6px)',
+          color: '#A1A1AA',
+          lineHeight: 1,
+          flexShrink: 0,
+        }}
+      >
+        {/* Circle with c */}
+        <span
+          className="c26-c-ring"
+          style={{
+            width: isMobile ? '26px' : 'clamp(38px, 3.4vw, 48px)',
+            height: isMobile ? '26px' : 'clamp(38px, 3.4vw, 48px)',
+            borderRadius: '50%',
+            border: isMobile ? '2px solid #A1A1AA' : 'clamp(2.4px, 0.22vw, 3px) solid #A1A1AA',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxSizing: 'border-box',
+            flexShrink: 0,
+          }}
+          aria-hidden="true"
+        >
+          <span
+            className="c26-c-inner"
+            style={{
+              fontSize: isMobile ? '13px' : 'clamp(19px, 1.7vw, 24px)',
+              fontWeight: 600,
+              color: '#A1A1AA',
+              lineHeight: 1,
+              transform: 'translateY(-1px)',
+              textTransform: 'lowercase',
+              fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif)',
+            }}
+          >
+            c
+          </span>
+        </span>
+
+        {/* 26 Digits */}
+        <span
+          className="c26-digits"
+          style={{
+            fontSize: isMobile ? '26px' : 'clamp(38px, 3.4vw, 48px)',
+            lineHeight: 1,
+            fontWeight: 600,
+            letterSpacing: '-0.03em',
+            color: '#A1A1AA',
+            fontFamily: 'var(--font-display, var(--font-sans, sans-serif))',
+          }}
+        >
+          26
+        </span>
+      </div>
+
+      {/* Vertical Divider */}
+      <div
+        className="c26-divider"
+        style={{
+          width: '1px',
+          height: isMobile ? '38px' : 'clamp(46px, 4vw, 56px)',
+          backgroundColor: 'rgba(0, 0, 0, 0.15)',
+          flexShrink: 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 4 Stacked Words: BRANDS / PEOPLE / PLACES / POSSIBILITIES */}
+      <div
+        className="c26-words"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          color: '#7A7A82',
+          fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif)',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          fontSize: isMobile ? '7.5px' : 'clamp(9.5px, 0.72vw, 11px)',
+          letterSpacing: isMobile ? '0.14em' : '0.2em',
+          lineHeight: 1.5,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <span>BRANDS</span>
+        <span>PEOPLE</span>
+        <span>PLACES</span>
+        <span>POSSIBILITIES</span>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Bento Card Component matching exact editorial reference ─── */
 function WorkCaseCard({
   cs,
@@ -577,73 +688,99 @@ export default function WorkPage() {
             ═══════════════════════════════════════════════════════════════════ */}
         <section
           style={{
+            position: 'relative',
             paddingTop: 'clamp(4.5rem, 7vw, 7rem)',
             paddingBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
           }}
         >
+          {/* Top-right red indicator ring matching desktop reference */}
+          <div className="work-hero-top-dot" aria-hidden="true" />
+
+          {/* Desktop & Tablet Layout (> 860px) */}
           <div className="work-hero-grid">
-            {/* Left: Main Heading + Mobile Badge */}
+            {/* Left: Main Heading */}
             <div className="work-hero-left">
               <h1 className="work-hero-headline">
                 The
                 <br />
                 work is
                 <br />
-                the proof<span style={{ color: RED }}>.</span>
+                <span style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
+                  the proof
+                  <span
+                    className="hero-red-dot"
+                    style={{
+                      display: 'inline-block',
+                      width: 'clamp(9px, 0.85vw, 13px)',
+                      height: 'clamp(9px, 0.85vw, 13px)',
+                      borderRadius: '50%',
+                      backgroundColor: '#FF3838',
+                      marginLeft: 'clamp(4px, 0.35vw, 7px)',
+                      verticalAlign: 'baseline',
+                      transform: 'translateY(-0.06em)',
+                      flexShrink: 0,
+                    }}
+                    aria-hidden="true"
+                  />
+                </span>
               </h1>
-
-              {/* Mobile-only badge aligned side by side with title */}
-              <div className="work-hero-badge-mobile">
-                <div className="work-circle-26">&copy;26</div>
-              </div>
             </div>
 
             {/* Middle: Featured Case Studies Narrative */}
             <div className="work-hero-middle">
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '0.65rem',
-                }}
-              >
+              <div className="work-hero-eyebrow">
                 {workCms?.header?.eyebrow || 'FEATURED CASE STUDIES'}
               </div>
-              <p
-                style={{
-                  fontSize: 'clamp(0.92rem, 1.2vw, 1.12rem)',
-                  lineHeight: 1.6,
-                  color: BODY_TEXT,
-                  maxWidth: '440px',
-                  margin: 0,
-                }}
-              >
-                A selection of businesses and projects that show how Arohana brings strategy,
-                communications and execution across very different environments.
+              <p className="work-hero-desc">
+                {workCms?.header?.subtitle ||
+                  'A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.'}
               </p>
             </div>
 
-            {/* Right: Desktop Circle 26 Badge & Stats */}
+            {/* Right: Desktop Circle 26 Badge & 4 Words */}
             <div className="work-hero-badge-desktop">
-              <div className="work-circle-26">&copy;26</div>
+              <Circle26Badge />
+            </div>
+          </div>
 
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.62rem',
-                  letterSpacing: '0.16em',
-                  color: MUTED,
-                  lineHeight: 1.6,
-                }}
-              >
-                <div>06 FOCUS</div>
-                <div>PROFILES</div>
-                <div>STORIES</div>
-                <div>PRODUCED 2021 — 25</div>
+          {/* Mobile Layout (<= 860px) - Exact match to reference mockup */}
+          <div className="work-hero-mobile-layout">
+            <div className="work-hero-mobile-row">
+              <h1 className="work-hero-headline-mobile">
+                The work is
+                <br />
+                <span style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
+                  the proof
+                  <span
+                    className="hero-red-dot"
+                    style={{
+                      display: 'inline-block',
+                      width: '7px',
+                      height: '7px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FF3838',
+                      marginLeft: '3px',
+                      verticalAlign: 'baseline',
+                      transform: 'translateY(-0.06em)',
+                      flexShrink: 0,
+                    }}
+                    aria-hidden="true"
+                  />
+                </span>
+              </h1>
+              <div className="work-hero-badge-mobile">
+                <Circle26Badge isMobile />
               </div>
+            </div>
+
+            <div className="work-hero-mobile-narrative">
+              <div className="work-hero-eyebrow">
+                {workCms?.header?.eyebrow || 'FEATURED CASE STUDIES'}
+              </div>
+              <p className="work-hero-desc">
+                {workCms?.header?.subtitle ||
+                  'A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.'}
+              </p>
             </div>
           </div>
 
@@ -1224,35 +1361,159 @@ export default function WorkPage() {
       </div>
 
       <style jsx>{`
+        /* ── SECTION 1: HERO SECTION STYLES ── */
+        .work-hero-top-dot {
+          position: absolute;
+          top: clamp(0.75rem, 1.5vw, 1.6rem);
+          right: 0;
+          width: 13px;
+          height: 13px;
+          border-radius: 50%;
+          border: 3.2px solid #FF3838;
+          background-color: transparent;
+          box-sizing: border-box;
+        }
         .work-hero-grid {
           display: grid;
-          grid-template-columns: 1.2fr 1.3fr 1fr;
-          gap: clamp(2rem, 4vw, 4rem);
-          align-items: flex-start;
+          grid-template-columns: auto 1fr auto;
+          gap: clamp(2rem, 4vw, 5rem);
+          align-items: flex-end;
+          position: relative;
         }
-        .work-hero-badge-mobile {
-          display: none;
+        .work-hero-left {
+          display: flex;
+          flex-direction: column;
+        }
+        .work-hero-headline {
+          font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif));
+          font-size: clamp(4.4rem, 6.3vw, 6.8rem);
+          font-weight: 800;
+          line-height: 0.94;
+          letter-spacing: -0.04em;
+          color: #111113;
+          margin: 0;
+        }
+        .hero-red-dot {
+          color: #FF3838;
+          display: inline-block;
+          margin-left: 0.02em;
+        }
+        .work-hero-middle {
+          display: flex;
+          flex-direction: column;
+          padding-bottom: 0.35rem;
+        }
+        .work-hero-eyebrow {
+          font-family: var(--font-mono, monospace);
+          font-size: 0.72rem;
+          letter-spacing: 0.16em;
+          color: #FF3838;
+          font-weight: 700;
+          text-transform: uppercase;
+          margin-bottom: 0.65rem;
+        }
+        .work-hero-desc {
+          font-size: clamp(0.88rem, 1.05vw, 1rem);
+          line-height: 1.55;
+          color: #4A4A52;
+          max-width: 420px;
+          margin: 0;
         }
         .work-hero-badge-desktop {
           display: flex;
-          align-items: center;
-          gap: 1.25rem;
-          justify-self: flex-end;
-          padding-top: clamp(0.5rem, 1.5vw, 1.75rem);
+          align-items: flex-end;
+          padding-bottom: 0.35rem;
         }
-        .work-circle-26 {
-          width: clamp(64px, 6vw, 76px);
-          height: clamp(64px, 6vw, 76px);
+
+        /* ── ©26 EDITORIAL BADGE DESIGN ── */
+        .c26-badge {
+          display: inline-flex;
+          align-items: center;
+          user-select: none;
+        }
+        .c26-badge-desktop {
+          gap: clamp(0.75rem, 1.1vw, 1.25rem);
+        }
+        .c26-badge-mobile {
+          gap: 0.55rem;
+          flex-shrink: 0;
+        }
+        .c26-mark {
+          display: inline-flex;
+          align-items: center;
+          gap: clamp(3px, 0.35vw, 5px);
+          line-height: 1;
+          color: #A1A1AA;
+          font-weight: 550;
+        }
+        .c26-badge-desktop .c26-mark {
+          font-size: clamp(2.8rem, 3.8vw, 4.2rem);
+        }
+        .c26-badge-mobile .c26-mark {
+          font-size: clamp(1.85rem, 5.4vw, 2.35rem);
+        }
+        .c26-c-ring {
+          width: 0.9em;
+          height: 0.9em;
           border-radius: 50%;
-          border: 1.5px solid rgba(0, 0, 0, 0.22);
-          display: flex;
+          border: clamp(2.2px, 0.22vw, 3px) solid #A1A1AA;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          font-size: clamp(1.5rem, 2.2vw, 2rem);
-          fontWeight: 600;
-          letter-spacing: -0.03em;
-          color: #111113;
+          box-sizing: border-box;
           flex-shrink: 0;
+        }
+        .c26-badge-mobile .c26-c-ring {
+          border-width: 2px;
+        }
+        .c26-c-inner {
+          font-size: 0.56em;
+          font-weight: 600;
+          color: #A1A1AA;
+          line-height: 1;
+          transform: translateY(-0.04em);
+          text-transform: lowercase;
+          font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+        }
+        .c26-digits {
+          font-size: 1em;
+          line-height: 1;
+          font-weight: 550;
+          letter-spacing: -0.03em;
+          color: #A1A1AA;
+          font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif));
+        }
+        .c26-divider {
+          width: 1px;
+          background-color: rgba(0, 0, 0, 0.14);
+          flex-shrink: 0;
+        }
+        .c26-badge-desktop .c26-divider {
+          height: clamp(50px, 4.2vw, 62px);
+        }
+        .c26-badge-mobile .c26-divider {
+          height: clamp(38px, 10vw, 45px);
+        }
+        .c26-words {
+          display: flex;
+          flex-direction: column;
+          color: #7A7A82;
+          font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+        .c26-badge-desktop .c26-words {
+          font-size: clamp(0.6rem, 0.7vw, 0.68rem);
+          letter-spacing: 0.2em;
+          line-height: 1.55;
+        }
+        .c26-badge-mobile .c26-words {
+          font-size: clamp(0.44rem, 1.35vw, 0.5rem);
+          letter-spacing: 0.14em;
+          line-height: 1.45;
+        }
+        .work-hero-mobile-layout {
+          display: none;
         }
         .work-reel-filters-bar {
           display: flex;
@@ -1458,45 +1719,49 @@ export default function WorkPage() {
           box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
         }
 
-        /* ── MOBILE VIEWPORT OPTIMIZATIONS (Exact match to uploaded Image 1) ── */
-        @media (max-width: 768px) {
-          .work-hero-grid {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 1.25rem !important;
+        /* ── MOBILE VIEWPORT OPTIMIZATIONS (Exact match to reference mockup) ── */
+        @media (max-width: 860px) {
+          .work-hero-top-dot {
+            display: none !important;
           }
 
-          .work-hero-left {
+          .work-hero-grid {
+            display: none !important;
+          }
+
+          .work-hero-mobile-layout {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1.5rem !important;
+          }
+
+          .work-hero-mobile-row {
             display: flex !important;
             justify-content: space-between !important;
             align-items: flex-start !important;
+            gap: 0.75rem !important;
             width: 100% !important;
           }
 
-          .work-hero-headline {
-            font-size: clamp(2.4rem, 8vw, 3.2rem) !important;
-            line-height: 1.05 !important;
+          .work-hero-headline-mobile {
+            font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif)) !important;
+            font-size: clamp(2.2rem, 8.2vw, 3.1rem) !important;
+            font-weight: 800 !important;
+            line-height: 1.02 !important;
+            letter-spacing: -0.038em !important;
+            color: #111113 !important;
             margin: 0 !important;
           }
 
           .work-hero-badge-mobile {
             display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            align-items: flex-start !important;
+            padding-top: 0.35rem !important;
           }
 
-          .work-hero-badge-mobile .work-circle-26 {
-            width: 54px !important;
-            height: 54px !important;
-            font-size: 1.35rem !important;
-          }
-
-          .work-hero-badge-desktop {
-            display: none !important;
-          }
-
-          .work-hero-middle {
-            padding-top: 0.25rem !important;
+          .work-hero-mobile-narrative {
+            display: flex !important;
+            flex-direction: column !important;
           }
 
           .work-reel-filters-bar {

@@ -198,7 +198,11 @@ export default function SelectedWork() {
             {/* Title with red period */}
             <div className="sw-title-col">
               <h2 className="sw-title">
-                {activeTitle}
+                The
+                <br />
+                work is
+                <br />
+                the proof<span className="sw-dot-red">.</span>
               </h2>
             </div>
 
@@ -209,11 +213,19 @@ export default function SelectedWork() {
               </p>
 
               <div className="sw-meta-right-group">
-                <div className="sw-watermark-wrap">
-                  <span className="sw-watermark-num">&copy;26</span>
+                <div className="sw-watermark-wrap" aria-label="Copyright 2026 Brands People Places Possibilities">
+                  <div className="sw-c26-mark">
+                    <span className="sw-c26-ring" aria-hidden="true">
+                      <span className="sw-c26-inner">c</span>
+                    </span>
+                    <span className="sw-c26-digits">26</span>
+                  </div>
+                  <div className="sw-c26-divider" aria-hidden="true" />
                   <div className="sw-watermark-labels">
-                    <span>REAL BRANDS.</span>
-                    <span>REAL IMPACT.</span>
+                    <span>BRANDS</span>
+                    <span>PEOPLE</span>
+                    <span>PLACES</span>
+                    <span>POSSIBILITIES</span>
                   </div>
                 </div>
               </div>
@@ -579,22 +591,24 @@ export default function SelectedWork() {
         }
 
         .sw-title {
-          font-family: var(--font-display, sans-serif);
-          font-size: clamp(2.4rem, 4.5vw, 4.2rem);
-          line-height: 1.05;
-          letter-spacing: -0.035em;
+          font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif));
+          font-size: clamp(3.2rem, 5.2vw, 5.4rem);
+          line-height: 0.94;
+          letter-spacing: -0.04em;
           color: #111111;
           margin: 0;
-          font-weight: 400;
+          font-weight: 800;
         }
 
         .sw-title br + span,
         .sw-title :global(strong) {
-          font-weight: 700;
+          font-weight: 800;
         }
 
         .sw-dot-red {
-          color: #DE322D;
+          color: #FF3838;
+          display: inline-block;
+          margin-left: 0.02em;
         }
 
         .sw-meta-col {
@@ -626,29 +640,70 @@ export default function SelectedWork() {
         }
 
         .sw-watermark-wrap {
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: clamp(0.6rem, 1vw, 1rem);
+          flex-shrink: 0;
+          user-select: none;
+        }
+
+        .sw-c26-mark {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: clamp(2.4rem, 3.4vw, 3.5rem);
+          font-weight: 550;
+          color: #A1A1AA;
+          line-height: 1;
+        }
+
+        .sw-c26-ring {
+          width: 0.9em;
+          height: 0.9em;
+          border-radius: 50%;
+          border: clamp(2.2px, 0.22vw, 2.8px) solid #A1A1AA;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
           flex-shrink: 0;
         }
 
-        .sw-watermark-num {
-          font-size: clamp(2.8rem, 4vw, 3.5rem);
-          font-weight: 400;
-          color: #bcc4cf;
+        .sw-c26-inner {
+          font-size: 0.56em;
+          font-weight: 600;
+          color: #A1A1AA;
           line-height: 1;
-          letter-spacing: -0.04em;
+          transform: translateY(-0.04em);
+          text-transform: lowercase;
+          font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+        }
+
+        .sw-c26-digits {
+          font-size: 1em;
+          line-height: 1;
+          font-weight: 550;
+          letter-spacing: -0.03em;
+          color: #A1A1AA;
+          font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif));
+        }
+
+        .sw-c26-divider {
+          width: 1px;
+          height: clamp(48px, 4.2vw, 56px);
+          background-color: rgba(0, 0, 0, 0.14);
+          flex-shrink: 0;
         }
 
         .sw-watermark-labels {
           display: flex;
           flex-direction: column;
-          font-family: var(--font-mono, monospace);
-          font-size: 0.65rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          color: #88909c;
-          line-height: 1.35;
+          font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+          font-size: clamp(0.58rem, 0.68vw, 0.65rem);
+          font-weight: 600;
+          letter-spacing: 0.2em;
+          color: #7A7A82;
+          line-height: 1.55;
           text-transform: uppercase;
         }
 

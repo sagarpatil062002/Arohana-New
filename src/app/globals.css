@@ -3384,3 +3384,239 @@ html.arohana-is-loading #root-main-content {
 html.arohana-already-loaded #arohana-experience-loader {
   display: none !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   WORK PAGE HERO & ©26 BADGE DESIGN SYSTEM
+   ═══════════════════════════════════════════════════════════════════ */
+.work-hero-top-dot {
+  position: absolute;
+  top: clamp(0.75rem, 1.5vw, 1.6rem);
+  right: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 3.2px solid #FF3838;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
+.work-hero-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: clamp(2rem, 4vw, 5rem);
+  align-items: flex-end;
+  position: relative;
+}
+
+.work-hero-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.work-hero-headline {
+  font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif));
+  font-size: clamp(4.4rem, 6.3vw, 6.8rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  color: #111113;
+  margin: 0;
+}
+
+.hero-red-dot {
+  display: inline-block;
+  width: clamp(9px, 0.85vw, 13px);
+  height: clamp(9px, 0.85vw, 13px);
+  border-radius: 50%;
+  background-color: #FF3838;
+  margin-left: clamp(4px, 0.35vw, 7px);
+  vertical-align: baseline;
+  transform: translateY(-0.06em);
+  flex-shrink: 0;
+}
+
+.work-hero-middle {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0.35rem;
+}
+
+.work-hero-eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: #FF3838;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.work-hero-desc {
+  font-size: clamp(0.88rem, 1.05vw, 1rem);
+  line-height: 1.55;
+  color: #4A4A52;
+  max-width: 420px;
+  margin: 0;
+}
+
+.work-hero-badge-desktop {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.35rem;
+}
+
+/* ── ©26 EDITORIAL BADGE DESIGN ── */
+.c26-badge {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.c26-badge-desktop {
+  gap: clamp(10px, 1.1vw, 16px);
+}
+
+.c26-badge-mobile {
+  gap: 7px;
+}
+
+.c26-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(3px, 0.35vw, 5px);
+  line-height: 1;
+  color: #A1A1AA;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.c26-badge-desktop .c26-mark {
+  font-size: clamp(2.8rem, 3.8vw, 4.2rem);
+}
+
+.c26-badge-mobile .c26-mark {
+  font-size: 26px;
+}
+
+.c26-c-ring {
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: 50%;
+  border: clamp(2.2px, 0.22vw, 3px) solid #A1A1AA;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.c26-badge-mobile .c26-c-ring {
+  width: 26px;
+  height: 26px;
+  border-width: 2px;
+}
+
+.c26-c-inner {
+  font-size: 0.56em;
+  font-weight: 600;
+  color: #A1A1AA;
+  line-height: 1;
+  transform: translateY(-0.04em);
+  text-transform: lowercase;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+}
+
+.c26-digits {
+  font-size: 1em;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #A1A1AA;
+  font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif));
+}
+
+.c26-divider {
+  width: 1px;
+  background-color: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.c26-badge-desktop .c26-divider {
+  height: clamp(50px, 4.2vw, 62px);
+}
+
+.c26-badge-mobile .c26-divider {
+  height: 38px;
+}
+
+.c26-words {
+  display: flex;
+  flex-direction: column;
+  color: #7A7A82;
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.c26-badge-desktop .c26-words {
+  font-size: clamp(0.6rem, 0.72vw, 0.68rem);
+  letter-spacing: 0.2em;
+  line-height: 1.55;
+}
+
+.c26-badge-mobile .c26-words {
+  font-size: 7.5px;
+  letter-spacing: 0.14em;
+  line-height: 1.45;
+}
+
+.work-hero-mobile-layout {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .work-hero-top-dot {
+    display: none !important;
+  }
+
+  .work-hero-grid {
+    display: none !important;
+  }
+
+  .work-hero-mobile-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  .work-hero-mobile-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .work-hero-headline-mobile {
+    font-family: var(--font-display, var(--font-sans, -apple-system, BlinkMacSystemFont, sans-serif)) !important;
+    font-size: clamp(2rem, 7.5vw, 2.75rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.038em !important;
+    color: #111113 !important;
+    margin: 0 !important;
+  }
+
+  .work-hero-badge-mobile {
+    display: flex !important;
+    align-items: flex-start !important;
+    padding-top: 0.25rem !important;
+  }
+
+  .work-hero-mobile-narrative {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
