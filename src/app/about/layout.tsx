@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Ārohana | Madhura Hawal, Founder',
+  title: 'Studio — Ārohana | The Arohana Story',
   description:
-    'Meet Madhura Hawal, founder of Ārohana Consultancy. From hospitality and entrepreneurship to brand strategy, digital growth and complex on-ground projects.',
+    'The Arohana story — from hospitality roots to strategy, creativity and execution. Meet the founder and the team behind possibilities.',
 };
 
 export default function AboutLayout({

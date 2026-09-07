@@ -35,6 +35,7 @@ export default function Navbar() {
 
   const isTourin = pathname === '/tourin';
   const isArmyProjects = pathname === '/indian-army-projects' || pathname === '/army-projects';
+  // Studio/About page uses light editorial styling matching design
   const isDarkHero = false;
 
   return (
