@@ -5,9 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight,
+  ArrowDown,
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Play,
   Instagram,
   Compass,
@@ -559,39 +561,29 @@ export default function WorkPage() {
             ═══════════════════════════════════════════════════════════════════ */}
         <section
           style={{
-            paddingTop: 'clamp(5.5rem, 8vw, 7.5rem)',
-            paddingBottom: 'clamp(2rem, 3.5vw, 3rem)',
+            paddingTop: 'clamp(4.5rem, 7vw, 7rem)',
+            paddingBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
           }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
-              gap: 'clamp(2rem, 4vw, 4rem)',
-              alignItems: 'flex-start',
-            }}
-          >
-            {/* Left: Main Heading */}
-            <div>
-              <h1
-                style={{
-                  fontSize: 'clamp(3rem, 6.2vw, 6.2rem)',
-                  lineHeight: 1.02,
-                  letterSpacing: '-0.04em',
-                  fontWeight: 650,
-                  color: DARK,
-                }}
-              >
+          <div className="work-hero-grid">
+            {/* Left: Main Heading + Mobile Badge */}
+            <div className="work-hero-left">
+              <h1 className="work-hero-headline">
                 The
                 <br />
                 work is
                 <br />
                 the proof<span style={{ color: RED }}>.</span>
               </h1>
+
+              {/* Mobile-only badge aligned side by side with title */}
+              <div className="work-hero-badge-mobile">
+                <div className="work-circle-26">&copy;26</div>
+              </div>
             </div>
 
             {/* Middle: Featured Case Studies Narrative */}
-            <div style={{ paddingTop: 'clamp(0.5rem, 1.5vw, 1.75rem)' }}>
+            <div className="work-hero-middle">
               <div
                 className="tag-mono"
                 style={{
@@ -599,17 +591,18 @@ export default function WorkPage() {
                   letterSpacing: '0.2em',
                   color: RED,
                   fontWeight: 700,
-                  marginBottom: '0.75rem',
+                  marginBottom: '0.65rem',
                 }}
               >
                 FEATURED CASE STUDIES
               </div>
               <p
                 style={{
-                  fontSize: 'clamp(0.95rem, 1.25vw, 1.15rem)',
+                  fontSize: 'clamp(0.92rem, 1.2vw, 1.12rem)',
                   lineHeight: 1.6,
                   color: BODY_TEXT,
                   maxWidth: '440px',
+                  margin: 0,
                 }}
               >
                 A selection of businesses and projects that show how Arohana brings strategy,
@@ -617,35 +610,9 @@ export default function WorkPage() {
               </p>
             </div>
 
-            {/* Right: Circle 26 Badge & Stats */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1.25rem',
-                justifySelf: 'flex-end',
-                paddingTop: 'clamp(0.5rem, 1.5vw, 1.75rem)',
-              }}
-            >
-              {/* Large outlined circle 26 */}
-              <div
-                style={{
-                  width: 'clamp(64px, 6vw, 76px)',
-                  height: 'clamp(64px, 6vw, 76px)',
-                  borderRadius: '50%',
-                  border: '1.5px solid rgba(0, 0, 0, 0.22)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
-                  fontWeight: 600,
-                  letterSpacing: '-0.03em',
-                  color: DARK,
-                  flexShrink: 0,
-                }}
-              >
-                &copy;26
-              </div>
+            {/* Right: Desktop Circle 26 Badge & Stats */}
+            <div className="work-hero-badge-desktop">
+              <div className="work-circle-26">&copy;26</div>
 
               <div
                 className="tag-mono"
@@ -665,26 +632,9 @@ export default function WorkPage() {
           </div>
 
           {/* Reel Category Filters & Slider Controls */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: '1rem',
-              marginTop: 'clamp(2.5rem, 4vw, 3.5rem)',
-              paddingBottom: '1.25rem',
-            }}
-          >
+          <div className="work-reel-filters-bar">
             {/* Filter Pills */}
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}
-            >
+            <div className="work-reel-filters-scroll">
               {REEL_FILTERS.map((filter) => {
                 const isActive = selectedReelFilter === filter;
                 return (
@@ -692,18 +642,7 @@ export default function WorkPage() {
                     key={filter}
                     type="button"
                     onClick={() => setSelectedReelFilter(filter)}
-                    style={{
-                      padding: '0.45rem 1rem',
-                      borderRadius: '9999px',
-                      fontSize: '0.74rem',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      transition: 'all 0.25s ease',
-                      backgroundColor: isActive ? DARK : '#FFFFFF',
-                      color: isActive ? '#FFFFFF' : DARK,
-                      border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.1)',
-                      boxShadow: isActive ? '0 4px 12px rgba(0, 0, 0, 0.12)' : 'none',
-                    }}
+                    className={`work-filter-pill-btn ${isActive ? 'active' : ''}`}
                   >
                     {filter}
                   </button>
@@ -711,30 +650,13 @@ export default function WorkPage() {
               })}
             </div>
 
-            {/* Slider Navigation Arrows (Easy left/right controls as requested) */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            {/* Slider Navigation Arrows (Desktop / Compact) */}
+            <div className="work-reel-nav-arrows">
               <button
                 type="button"
                 aria-label="Scroll left"
                 onClick={() => scrollReels('left')}
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '50%',
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid rgba(0, 0, 0, 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#F2EFEB';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
-                }}
+                className="work-nav-arrow-btn"
               >
                 <ChevronLeft size={17} color={DARK} />
               </button>
@@ -743,27 +665,7 @@ export default function WorkPage() {
                 type="button"
                 aria-label="Scroll right"
                 onClick={() => scrollReels('right')}
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '50%',
-                  backgroundColor: DARK,
-                  border: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#2A2A30';
-                  e.currentTarget.style.transform = 'scale(1.04)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = DARK;
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
+                className="work-nav-arrow-btn work-nav-arrow-dark"
               >
                 <ChevronRight size={17} color="#FFFFFF" />
               </button>
@@ -975,6 +877,11 @@ export default function WorkPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Mobile bottom scroll indicator matching Phone 1 */}
+        <div className="work-reels-mobile-indicator">
+          <ArrowDown size={16} color={MUTED} />
         </div>
       </section>
 
@@ -1208,130 +1115,54 @@ export default function WorkPage() {
               </div>
             </div>
 
-            {/* Right Column: Directory Categories List with timeline nodes */}
-            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column' }}>
-              {/* Connecting vertical line */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '20px',
-                  bottom: '20px',
-                  left: '32px',
-                  width: '1px',
-                  backgroundColor: 'rgba(0, 0, 0, 0.12)',
-                  zIndex: 0,
-                }}
-                className="hide-on-mobile"
-              />
+            {/* Right Column: Directory Categories List with timeline nodes (Accordion on Mobile matching Phone 2) */}
+            <div className="work-directory-column">
+              {/* Connecting vertical line (Desktop only) */}
+              <div className="work-directory-line" />
 
               {DIRECTORY_CATEGORIES.map((cat, idx) => {
-                const isActive = activeDirectoryIndex === idx;
+                const isExpanded = activeDirectoryIndex === idx;
                 return (
                   <div
                     key={cat.num}
-                    style={{
-                      position: 'relative',
-                      zIndex: 1,
-                      paddingTop: 'clamp(1.5rem, 2vw, 2rem)',
-                      paddingBottom: 'clamp(1.5rem, 2vw, 2rem)',
-                      borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-                    }}
-                    onMouseEnter={() => setActiveDirectoryIndex(idx)}
+                    className={`work-directory-card ${isExpanded ? 'is-expanded' : ''}`}
+                    onClick={() => setActiveDirectoryIndex(isExpanded ? -1 : idx)}
                   >
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'clamp(50px, 6vw, 70px) minmax(0, 1fr)',
-                        gap: 'clamp(0.75rem, 1.5vw, 1.5rem)',
-                        alignItems: 'flex-start',
-                      }}
-                    >
-                      {/* Node Indicator */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <span
-                          className="tag-mono"
-                          style={{
-                            fontSize: '0.72rem',
-                            fontWeight: 700,
-                            color: isActive ? RED : MUTED,
-                          }}
-                        >
+                    {/* Header Row */}
+                    <div className="work-dir-row">
+                      <div className="work-dir-node-group">
+                        <span className={`tag-mono work-dir-num ${isExpanded ? 'active' : ''}`}>
                           {cat.num}
                         </span>
 
-                        <span
-                          style={{
-                            width: '10px',
-                            height: '10px',
-                            borderRadius: '50%',
-                            backgroundColor: isActive ? RED : '#ffffff',
-                            border: isActive ? `2px solid ${RED}` : '2px solid rgba(0, 0, 0, 0.25)',
-                            transition: 'all 0.25s ease',
-                          }}
-                          className="hide-on-mobile"
-                        />
+                        <span className={`work-dir-dot ${isExpanded ? 'active' : ''}`} />
+
+                        <div className="work-dir-title-box">
+                          <h3 className="work-dir-title">{cat.title}</h3>
+                          <div className="tag-mono work-dir-subtitle">{cat.subtitle}</div>
+                        </div>
                       </div>
 
-                      {/* Content Area */}
-                      <div>
-                        <div style={{ marginBottom: '0.85rem' }}>
-                          <h3
-                            style={{
-                              fontSize: 'clamp(1.25rem, 1.8vw, 1.55rem)',
-                              fontWeight: 650,
-                              letterSpacing: '-0.02em',
-                              color: DARK,
-                              marginBottom: '0.25rem',
-                            }}
-                          >
-                            {cat.title}
-                          </h3>
-                          <div
-                            className="tag-mono"
-                            style={{
-                              fontSize: '0.6rem',
-                              letterSpacing: '0.14em',
-                              color: MUTED,
-                            }}
-                          >
-                            {cat.subtitle}
-                          </div>
-                        </div>
+                      {/* Right Chevron for Mobile Accordion */}
+                      <span className="work-dir-toggle-icon">
+                        <ChevronRight size={17} className={`work-dir-chevron ${isExpanded ? 'rotated' : ''}`} />
+                      </span>
+                    </div>
 
-                        {/* Client links */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: '0.6rem 1.25rem',
-                            marginTop: '0.75rem',
-                          }}
-                        >
-                          {cat.clients.map((client) => (
-                            <Link
-                              key={client.name}
-                              href={client.href}
-                              style={{
-                                fontSize: '0.88rem',
-                                color: BODY_TEXT,
-                                textDecoration: 'none',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.35rem',
-                                transition: 'color 0.2s ease',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.color = RED;
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.color = BODY_TEXT;
-                              }}
-                            >
-                              <span>{client.name}</span>
-                              <ArrowUpRight size={13} color={MUTED} />
-                            </Link>
-                          ))}
-                        </div>
+                    {/* Client links (Always visible on desktop, expandable on mobile) */}
+                    <div className={`work-dir-clients-wrap ${isExpanded ? 'show' : ''}`}>
+                      <div className="work-dir-clients-grid">
+                        {cat.clients.map((client) => (
+                          <Link
+                            key={client.name}
+                            href={client.href}
+                            className="work-dir-client-item"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <span>{client.name}</span>
+                            <ArrowUpRight size={13} className="work-dir-client-arrow" />
+                          </Link>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -1339,32 +1170,8 @@ export default function WorkPage() {
               })}
 
               {/* Bottom Explore Button */}
-              <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'flex-end' }}>
-                <Link
-                  href="/contact"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    padding: '0.65rem 1.4rem',
-                    borderRadius: '9999px',
-                    border: '1px solid rgba(0, 0, 0, 0.15)',
-                    backgroundColor: '#FFFFFF',
-                    color: DARK,
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    textDecoration: 'none',
-                    transition: 'all 0.25s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = DARK;
-                    e.currentTarget.style.color = '#FFFFFF';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#FFFFFF';
-                    e.currentTarget.style.color = DARK;
-                  }}
-                >
+              <div className="work-directory-footer">
+                <Link href="/contact" className="work-dir-explore-btn">
                   <span>Explore the directory</span>
                   <ArrowUpRight size={14} />
                 </Link>
@@ -1374,76 +1181,376 @@ export default function WorkPage() {
         </section>
       </div>
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          SECTION 5: FOOTER
-          ═══════════════════════════════════════════════════════════════════ */}
-      <footer
-        style={{
-          borderTop: BORDER,
-          paddingTop: '2rem',
-          paddingBottom: '2.5rem',
-          backgroundColor: BG_PAGE,
-        }}
-      >
-        <div
-          className="padding-global"
-          style={{
-            maxWidth: '1440px',
-            margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '1.5rem',
-          }}
-        >
-          {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none' }}>
-            <Image
-              src="/images/arohana-logo.png"
-              alt="ĀROHANA"
-              width={105}
-              height={18}
-              style={{ height: '18px', width: 'auto' }}
-            />
-          </Link>
+      <style jsx>{`
+        .work-hero-grid {
+          display: grid;
+          grid-template-columns: 1.2fr 1.3fr 1fr;
+          gap: clamp(2rem, 4vw, 4rem);
+          align-items: flex-start;
+        }
+        .work-hero-badge-mobile {
+          display: none;
+        }
+        .work-hero-badge-desktop {
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+          justify-self: flex-end;
+          padding-top: clamp(0.5rem, 1.5vw, 1.75rem);
+        }
+        .work-circle-26 {
+          width: clamp(64px, 6vw, 76px);
+          height: clamp(64px, 6vw, 76px);
+          border-radius: 50%;
+          border: 1.5px solid rgba(0, 0, 0, 0.22);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: clamp(1.5rem, 2.2vw, 2rem);
+          fontWeight: 600;
+          letter-spacing: -0.03em;
+          color: #111113;
+          flex-shrink: 0;
+        }
+        .work-reel-filters-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          margin-top: clamp(2.5rem, 4vw, 3.5rem);
+          padding-bottom: 1.25rem;
+        }
+        .work-reel-filters-scroll {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          overflow-x: auto;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .work-reel-filters-scroll::-webkit-scrollbar {
+          display: none;
+        }
+        .work-filter-pill-btn {
+          padding: 0.45rem 1rem;
+          border-radius: 9999px;
+          font-size: 0.74rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          background-color: #FFFFFF;
+          color: #111113;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+        .work-filter-pill-btn.active {
+          background-color: #111113;
+          color: #FFFFFF;
+          border-color: #111113;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        .work-reel-nav-arrows {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+        }
+        .work-nav-arrow-btn {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background-color: #FFFFFF;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .work-nav-arrow-btn:hover {
+          background-color: #F2EFEB;
+        }
+        .work-nav-arrow-dark {
+          background-color: #111113;
+          border: none;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .work-nav-arrow-dark:hover {
+          background-color: #2A2A30;
+        }
+        .work-reels-mobile-indicator {
+          display: none;
+        }
 
-          {/* Nav Links */}
-          <nav style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'clamp(1rem, 2vw, 2rem)' }}>
-            {[
-              { label: 'HOME', href: '/' },
-              { label: 'STUDIO', href: '/about' },
-              { label: 'WORK', href: '/work', active: true },
-              { label: 'SERVICES', href: '/services' },
-              { label: 'TOURISM', href: '/tourin' },
-              { label: 'ARMY PROJECTS', href: '/indian-army-projects' },
-            ].map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="tag-mono"
-                style={{
-                  fontSize: '0.7rem',
-                  letterSpacing: '0.14em',
-                  color: link.active ? DARK : MUTED,
-                  fontWeight: link.active ? 700 : 500,
-                  textDecoration: 'none',
-                  position: 'relative',
-                  paddingBottom: '4px',
-                  borderBottom: link.active ? `2px solid ${RED}` : 'none',
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+        /* Directory Section */
+        .work-directory-column {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+        }
+        .work-directory-line {
+          position: absolute;
+          top: 20px;
+          bottom: 20px;
+          left: 32px;
+          width: 1px;
+          background-color: rgba(0, 0, 0, 0.12);
+          z-index: 0;
+        }
+        .work-directory-card {
+          position: relative;
+          z-index: 1;
+          padding: clamp(1.5rem, 2vw, 2rem) 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+          transition: all 0.25s ease;
+        }
+        .work-dir-row {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          align-items: flex-start;
+        }
+        .work-dir-node-group {
+          display: flex;
+          align-items: flex-start;
+          gap: 1.25rem;
+        }
+        .work-dir-num {
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #71717A;
+          width: 24px;
+          flex-shrink: 0;
+          padding-top: 3px;
+        }
+        .work-dir-num.active {
+          color: #DE322D;
+        }
+        .work-dir-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: #ffffff;
+          border: 2px solid rgba(0, 0, 0, 0.25);
+          flex-shrink: 0;
+          margin-top: 6px;
+          transition: all 0.25s ease;
+        }
+        .work-dir-dot.active {
+          background-color: #DE322D;
+          border-color: #DE322D;
+          box-shadow: 0 0 0 3px rgba(222, 50, 45, 0.2);
+        }
+        .work-dir-title-box {
+          flex: 1;
+        }
+        .work-dir-title {
+          font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+          font-weight: 650;
+          letter-spacing: -0.02em;
+          color: #111113;
+          margin-bottom: 0.25rem;
+        }
+        .work-dir-subtitle {
+          font-size: 0.6rem;
+          letter-spacing: 0.14em;
+          color: #71717A;
+        }
+        .work-dir-toggle-icon {
+          display: none;
+        }
+        .work-dir-clients-wrap {
+          margin-top: 0.85rem;
+          padding-left: 3.5rem;
+        }
+        .work-dir-clients-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.6rem 1.25rem;
+        }
+        .work-dir-client-item {
+          font-size: 0.88rem;
+          color: #4A4A52;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          transition: color 0.2s ease;
+        }
+        .work-dir-client-item:hover {
+          color: #DE322D;
+        }
+        .work-directory-footer {
+          margin-top: 2.5rem;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .work-dir-explore-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.65rem;
+          padding: 0.65rem 1.4rem;
+          border-radius: 9999px;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          background-color: #FFFFFF;
+          color: #111113;
+          font-size: 0.8rem;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.25s ease;
+        }
+        .work-dir-explore-btn:hover {
+          background-color: #111113;
+          color: #FFFFFF;
+        }
 
-          {/* Copyright */}
-          <div className="tag-mono" style={{ fontSize: '0.65rem', color: FAINT, letterSpacing: '0.1em' }}>
-            &copy; {new Date().getFullYear()} Arohana Consultancy
-          </div>
-        </div>
-      </footer>
+        /* ── MOBILE VIEWPORT OPTIMIZATIONS (Exact match to uploaded Image 1) ── */
+        @media (max-width: 768px) {
+          .work-hero-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1.25rem !important;
+          }
+
+          .work-hero-left {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: flex-start !important;
+            width: 100% !important;
+          }
+
+          .work-hero-headline {
+            font-size: clamp(2.4rem, 8vw, 3.2rem) !important;
+            line-height: 1.05 !important;
+            margin: 0 !important;
+          }
+
+          .work-hero-badge-mobile {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+
+          .work-hero-badge-mobile .work-circle-26 {
+            width: 54px !important;
+            height: 54px !important;
+            font-size: 1.35rem !important;
+          }
+
+          .work-hero-badge-desktop {
+            display: none !important;
+          }
+
+          .work-hero-middle {
+            padding-top: 0.25rem !important;
+          }
+
+          .work-reel-filters-bar {
+            margin-top: 1.5rem !important;
+            padding-bottom: 0.5rem !important;
+          }
+
+          .work-reel-filters-scroll {
+            width: 100% !important;
+            padding-bottom: 0.4rem !important;
+          }
+
+          .work-reel-nav-arrows {
+            display: none !important;
+          }
+
+          .work-reels-mobile-indicator {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-top: 1.25rem !important;
+          }
+
+          /* Accordion list matching Phone 2 mockup */
+          .work-directory-line {
+            display: none !important;
+          }
+
+          .work-directory-card {
+            border-radius: 14px !important;
+            padding: 1.15rem 1rem !important;
+            margin-bottom: 0.65rem !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            background-color: #FFFFFF !important;
+            cursor: pointer !important;
+          }
+
+          .work-directory-card.is-expanded {
+            border-color: rgba(222, 50, 45, 0.25) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
+          }
+
+          .work-dir-node-group {
+            gap: 0.65rem !important;
+          }
+
+          .work-dir-num {
+            width: 20px !important;
+            font-size: 0.72rem !important;
+          }
+
+          .work-dir-title {
+            font-size: 1.05rem !important;
+          }
+
+          .work-dir-subtitle {
+            margin-top: 0.2rem !important;
+          }
+
+          .work-dir-toggle-icon {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 28px !important;
+            height: 28px !important;
+            color: #71717A !important;
+          }
+
+          .work-dir-chevron {
+            transition: transform 0.25s ease !important;
+          }
+
+          .work-dir-chevron.rotated {
+            transform: rotate(90deg) !important;
+            color: #DE322D !important;
+          }
+
+          .work-dir-clients-wrap {
+            display: none !important;
+            padding-left: 0 !important;
+            margin-top: 1rem !important;
+            padding-top: 0.85rem !important;
+            border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+          }
+
+          .work-dir-clients-wrap.show {
+            display: block !important;
+          }
+
+          .work-dir-clients-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.5rem !important;
+          }
+
+          .work-dir-client-item {
+            display: flex !important;
+            justify-content: space-between !important;
+            padding: 0.35rem 0 !important;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.06) !important;
+            font-size: 0.86rem !important;
+          }
+
+          .work-directory-footer {
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -5,17 +5,23 @@ import Image from 'next/image';
 
 export default function ExperienceLoader() {
   const [progress, setProgress] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
     // Check if shown in this session already
-    const hasLoaded = sessionStorage.getItem('arohana_loaded');
-    if (hasLoaded) {
+    try {
+      const hasLoaded = sessionStorage.getItem('arohana_loaded');
+      if (hasLoaded) {
+        setIsVisible(false);
+        document.documentElement.classList.remove('arohana-is-loading');
+        document.documentElement.classList.add('arohana-already-loaded');
+        return;
+      }
+    } catch (e) {
+      setIsVisible(false);
       return;
     }
-
-    setIsVisible(true);
 
     let current = 0;
     const interval = setInterval(() => {
@@ -28,7 +34,11 @@ export default function ExperienceLoader() {
         clearInterval(interval);
         setTimeout(() => {
           setIsFading(true);
-          sessionStorage.setItem('arohana_loaded', 'true');
+          try {
+            sessionStorage.setItem('arohana_loaded', 'true');
+          } catch (e) {}
+          document.documentElement.classList.remove('arohana-is-loading');
+          document.documentElement.classList.add('arohana-already-loaded');
           setTimeout(() => {
             setIsVisible(false);
           }, 600);
@@ -45,6 +55,7 @@ export default function ExperienceLoader() {
 
   return (
     <div
+      id="arohana-experience-loader"
       style={{
         position: 'fixed',
         inset: 0,

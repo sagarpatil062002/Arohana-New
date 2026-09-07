@@ -78,6 +78,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Zero-FOUC rules for ExperienceLoader */
+html.arohana-is-loading body {
+  background-color: #08080A !important;
+}
+html.arohana-is-loading #root-main-content {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+html.arohana-already-loaded #arohana-experience-loader {
+  display: none !important;
+}
+
 /* Lenis smooth scrolling rules */
 html.lenis, html.lenis body {
   height: auto;
@@ -3333,4 +3346,44 @@ button, input, select, textarea {
     flex-direction: column;
     gap: 1.75rem;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EDITORIAL LIGHT FOOTER GRID (Tourin & All Pages)
+   ═══════════════════════════════════════════════════════════════════ */
+.tourin-footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.6fr 1.4fr 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+@media (max-width: 991px) {
+  .tourin-footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.5rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .tourin-footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRE-HYDRATION LOADER CONTROLS (Zero-FOUC)
+   ═══════════════════════════════════════════════════════════════════ */
+html.arohana-is-loading body {
+  background-color: #08080A !important;
+}
+
+html.arohana-is-loading #root-main-content {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.arohana-already-loaded #arohana-experience-loader {
+  display: none !important;
 }

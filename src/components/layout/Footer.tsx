@@ -1,230 +1,247 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
   const pathname = usePathname();
 
+  // For Tourin & Army Projects keep dedicated footer matching design
   if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects') {
     return null;
   }
+
+  const NAV_LINKS = [
+    { label: 'Studio', href: '/about' },
+    { label: 'Work', href: '/work' },
+    { label: 'Services', href: '/services' },
+    { label: 'Tourin', href: '/tourin' },
+    { label: 'Army Projects', href: '/indian-army-projects' },
+    { label: 'Contact', href: '/contact' },
+  ];
 
   return (
     <footer
       style={{
         backgroundColor: '#ffffff',
+        color: '#111111',
+        paddingTop: 'clamp(3.5rem, 5vw, 5rem)',
+        paddingBottom: 'clamp(2rem, 3vw, 2.5rem)',
         borderTop: '1px solid rgba(0, 0, 0, 0.08)',
-        paddingTop: '5rem',
-        paddingBottom: '2rem',
-        overflow: 'hidden',
-        position: 'relative',
       }}
     >
-      <div className="padding-global container-large">
-        {/* Main Footer Links & Newsletter Grid */}
+      <div
+        className="padding-global"
+        style={{ maxWidth: '1440px', margin: '0 auto' }}
+      >
+        {/* Main Footer Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))',
-            gap: 'clamp(2rem, 4vw, 3.5rem)',
+            gridTemplateColumns: '1.2fr 1.6fr 1.4fr 1fr',
+            gap: 'clamp(2rem, 4vw, 4rem)',
             paddingBottom: '3.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
           }}
+          className="tourin-footer-grid"
         >
-          {/* Column 1: Navigation */}
+          {/* Column 1: ĀROHANA Brand (with Logo instead of Tourin) */}
+          <div>
+            <Link href="/" style={{ display: 'inline-block', marginBottom: '0.65rem' }}>
+              <Image
+                src="/images/arohana-logo.png"
+                alt="ĀROHANA"
+                width={130}
+                height={22}
+                style={{ height: '22px', width: 'auto' }}
+              />
+            </Link>
+            <p
+              style={{
+                color: '#666666',
+                fontSize: '0.85rem',
+                lineHeight: 1.5,
+                margin: 0,
+                maxWidth: '240px',
+              }}
+            >
+              Business Thinking • Creative Communication • Execution across very different environments.
+            </p>
+          </div>
+
+          {/* Column 2: ĀROHANA Nav */}
           <div>
             <div
-              className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.25rem' }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                color: '#111111',
+                marginBottom: '0.85rem',
+              }}
             >
-              EXPLORE
+              ĀROHANA
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <Link href="/" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Home
-              </Link>
-              <Link href="/about" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Studio & Philosophy
-              </Link>
-              <Link href="/work" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Selected Work <span style={{ color: '#ff3b30', fontSize: '0.75rem' }}>(06)</span>
-              </Link>
-              <Link href="/services" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Services & Capabilities
-              </Link>
-              <Link href="/indian-army-projects" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Indian Army Special Projects
-              </Link>
-              <Link href="/tourin" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Tourin — Experiential Ladakh
-              </Link>
-              <Link href="/contact" style={{ color: '#111', fontSize: '0.95rem' }}>
-                Contact & Inquiries
-              </Link>
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '1.25rem',
+                fontSize: '0.85rem',
+              }}
+            >
+              {NAV_LINKS.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    style={{
+                      color: isActive ? '#DE322D' : '#555555',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                      fontWeight: isActive ? 600 : 400,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.color = isActive ? '#DE322D' : '#555555')
+                    }
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
-          {/* Column 2: Featured Case Studies */}
+          {/* Column 3: OFFICE */}
           <div>
             <div
               className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.25rem' }}
+              style={{
+                color: '#888888',
+                fontSize: '0.72rem',
+                letterSpacing: '0.1em',
+                marginBottom: '0.75rem',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+              }}
             >
-              SELECTED WORK
+              OFFICE
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <Link href="/work/raysons-group" style={{ color: '#555', fontSize: '0.9rem' }}>
-                Raysons Group — Multi-business Growth
-              </Link>
-              <Link href="/work/loom-crafts" style={{ color: '#555', fontSize: '0.9rem' }}>
-                Loom Crafts — Luxury Outdoor & Pre-fab
-              </Link>
-              <Link href="/work/picturetime" style={{ color: '#555', fontSize: '0.9rem' }}>
-                PictureTime — High Altitude Cinema
-              </Link>
-              <Link href="/work/she" style={{ color: '#555', fontSize: '0.9rem' }}>
-                SHE Project — Remote Community Initiative
-              </Link>
-              <Link href="/work/misu" style={{ color: '#555', fontSize: '0.9rem' }}>
-                Misu — Hospitality Brand Scaling
-              </Link>
-              <Link href="/work/rr-skins" style={{ color: '#555', fontSize: '0.9rem' }}>
-                RR Skins — Dermatological Education
-              </Link>
-            </div>
-          </div>
+            <div
+              style={{
+                color: '#555555',
+                fontSize: '0.825rem',
+                lineHeight: 1.6,
+              }}
+            >
+              <div style={{ color: '#111111', fontWeight: 600, marginBottom: '0.25rem' }}>
+                ĀROHANA Consultancy
+              </div>
+              <div>30, Goodwill Square, Aundh-Ravet BRTS Rd,</div>
+              <div style={{ marginBottom: '0.75rem' }}>
+                Near D Mart, Thergaon, Pune 411033, India.
+              </div>
 
-          {/* Column 3: Direct Contact */}
-          <div>
-            <div
-              className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.25rem' }}
-            >
-              DIRECT CONTACT
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <div style={{ fontSize: '0.8rem', color: '#888' }}>Direct Email</div>
                 <a
                   href="mailto:founder@byarohana.com"
                   style={{
-                    fontSize: '1rem',
-                    color: '#111',
-                    fontWeight: 500,
+                    color: '#111111',
                     textDecoration: 'none',
-                    wordBreak: 'break-all',
+                    display: 'block',
+                    marginBottom: '0.2rem',
+                    transition: 'color 0.2s ease',
                   }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#DE322D')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#111111')}
                 >
                   founder@byarohana.com
                 </a>
-              </div>
-              <div>
-                <div style={{ fontSize: '0.8rem', color: '#888' }}>Direct Phone</div>
                 <a
                   href="tel:+918380092241"
                   style={{
-                    fontSize: '1rem',
-                    color: '#111',
-                    fontWeight: 500,
+                    color: '#555555',
                     textDecoration: 'none',
+                    transition: 'color 0.2s ease',
                   }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#555555')}
                 >
                   +91 83800 92241
                 </a>
               </div>
-              <div style={{ marginTop: '0.25rem' }}>
-                <div style={{ fontSize: '0.8rem', color: '#888' }}>Presence</div>
-                <div style={{ fontSize: '0.9rem', color: '#333' }}>
-                  Goa · Kolhapur · Delhi · Ladakh
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Column 4: Newsletter / Inquiries */}
+          {/* Column 4: SOCIAL */}
           <div>
             <div
               className="tag-mono"
-              style={{ color: '#888888', marginBottom: '1.25rem' }}
-            >
-              COMMUNICATION
-            </div>
-            <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1.25rem', lineHeight: 1.5 }}>
-              Don't start with a service. Start with the business problem. We respond within 24 hours.
-            </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert('Thank you for connecting with Ārohana.');
+              style={{
+                color: '#888888',
+                fontSize: '0.72rem',
+                letterSpacing: '0.1em',
+                marginBottom: '0.75rem',
+                textTransform: 'uppercase',
+                fontWeight: 600,
               }}
-              style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}
             >
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                style={{
-                  flex: '1 1 180px',
-                  height: '46px',
-                  padding: '0 1rem',
-                  borderRadius: '9999px',
-                  border: '1px solid rgba(0, 0, 0, 0.12)',
-                  fontSize: '16px',
-                  backgroundColor: '#fafafa',
-                  outline: 'none',
-                  minWidth: '0',
-                }}
-              />
-              <button
-                type="submit"
-                style={{
-                  height: '46px',
-                  padding: '0 1.25rem',
-                  borderRadius: '9999px',
-                  backgroundColor: '#111',
-                  color: '#fff',
-                  fontSize: '0.85rem',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  whiteSpace: 'nowrap',
-                  flexShrink: 0,
-                }}
-              >
-                Connect <ArrowUpRight size={14} />
-              </button>
-            </form>
+              SOCIAL
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.45rem',
+                fontSize: '0.825rem',
+              }}
+            >
+              {[
+                { label: 'LinkedIn', href: 'https://linkedin.com' },
+                { label: 'Instagram', href: 'https://instagram.com/arohana.studio' },
+                { label: 'Behance', href: 'https://behance.net' },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: '#555555',
+                    textDecoration: 'none',
+                    transition: 'color 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#555555')}
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Metadata and Legal Row */}
+        {/* Bottom Copyright */}
         <div
           style={{
+            paddingTop: '1.75rem',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingTop: '1.75rem',
-            paddingBottom: '2rem',
-            fontSize: '0.8rem',
-            color: '#777',
             gap: '1rem',
+            color: '#777777',
+            fontSize: '0.75rem',
+            fontFamily: 'var(--font-mono, monospace)',
           }}
         >
-          <div>© {new Date().getFullYear()} Ārohana Consultancy. All rights reserved.</div>
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <span>Business Thinking</span>
-            <span>•</span>
-            <span>Creative Communication</span>
-            <span>•</span>
-            <span>Execution</span>
-          </div>
-          <div>Authentic Strategy & Brand Practice</div>
+          <div>© {new Date().getFullYear()} ĀROHANA Consultancy. All Rights Reserved.</div>
+          <div style={{ color: '#555555' }}>Pune • Ladakh • Pan-India Engagements</div>
+          <div style={{ color: '#777777' }}>Authentic Strategy & Brand Practice</div>
         </div>
       </div>
     </footer>

@@ -644,6 +644,7 @@ export default function StudioPage() {
 
           {/* Chapters Layout: Left Timeline Navigation + Right Story Card */}
           <div
+            className="chapters-layout-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
@@ -651,8 +652,8 @@ export default function StudioPage() {
               alignItems: 'start',
             }}
           >
-            {/* Left Column: Timeline Stepper */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* Left Column: Timeline Stepper (Desktop Only) */}
+            <div className="chapters-desktop-stepper" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
                 {/* Connecting hairline */}
                 <div
@@ -758,8 +759,45 @@ export default function StudioPage() {
               </div>
             </div>
 
+            {/* Mobile Horizontal Stepper (Visible strictly on mobile devices matching reference) */}
+            <div className="chapters-mobile-stepper">
+              <div className="chapters-mobile-track-wrap">
+                {/* Horizontal connecting hairline passing through nodes */}
+                <div className="chapters-mobile-line" />
+
+                <div className="chapters-mobile-nodes-grid">
+                  {CHAPTERS.map((ch, idx) => {
+                    const isActive = idx === activeChapterIndex;
+                    const shortTag = idx === 0 ? 'The Roots' : idx === 1 ? 'The Turning Point' : 'Expansion & Ladakh';
+                    const shortSub = idx === 0 ? 'Hospitality' : idx === 1 ? 'The Detour' : 'The Work Got Interesting';
+                    return (
+                      <button
+                        key={ch.number}
+                        type="button"
+                        onClick={() => setActiveChapterIndex(idx)}
+                        className={`chapters-mobile-node-btn ${isActive ? 'active' : ''}`}
+                      >
+                        {/* Node circle */}
+                        <div className={`chapters-mobile-dot ${isActive ? 'active' : ''}`} />
+
+                        {/* Number */}
+                        <span className="chapters-mobile-num">{ch.number}</span>
+
+                        {/* Tag */}
+                        <span className="chapters-mobile-tag">{shortTag}</span>
+
+                        {/* Subtitle */}
+                        <span className="chapters-mobile-sub">{shortSub}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
             {/* Right Column: Story Card */}
             <div
+              className="chapters-story-card"
               style={{
                 backgroundColor: BG_CARD,
                 borderRadius: '24px',
@@ -982,18 +1020,12 @@ export default function StudioPage() {
           </div>
 
           {/* Interactive Navigation Tabs (04 and 05) */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
-              gap: 'clamp(1rem, 2vw, 1.5rem)',
-              marginBottom: 'clamp(1.5rem, 2.5vw, 2.5rem)',
-            }}
-          >
+          <div className="standard-tabs-grid">
             {/* Tab 04 Button */}
             <button
               type="button"
               onClick={() => setActiveTab('04')}
+              className={`standard-tab-btn standard-tab-04 ${activeTab === '04' ? 'active' : ''}`}
               style={{
                 borderRadius: '18px',
                 padding: 'clamp(1.1rem, 2vw, 1.4rem) clamp(1.25rem, 2vw, 1.75rem)',
@@ -1018,9 +1050,9 @@ export default function StudioPage() {
               onMouseEnter={() => handlePillEnter('OUR PRACTICE')}
               onMouseLeave={handlePillLeave}
             >
-              <div>
+              <div className="standard-tab-content">
                 <div
-                  className="tag-mono"
+                  className="tag-mono standard-tab-tag"
                   style={{
                     fontSize: '0.65rem',
                     letterSpacing: '0.16em',
@@ -1030,11 +1062,12 @@ export default function StudioPage() {
                 >
                   04 — OUR PRACTICE
                 </div>
-                <div style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', fontWeight: 650, letterSpacing: '-0.015em' }}>
+                <div className="standard-tab-heading" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', fontWeight: 650, letterSpacing: '-0.015em' }}>
                   Where Ārohana stands today.
                 </div>
               </div>
               <span
+                className="standard-tab-arrow"
                 style={{
                   width: '36px',
                   height: '36px',
@@ -1054,6 +1087,7 @@ export default function StudioPage() {
             <button
               type="button"
               onClick={() => setActiveTab('05')}
+              className={`standard-tab-btn standard-tab-05 ${activeTab === '05' ? 'active' : ''}`}
               style={{
                 borderRadius: '18px',
                 padding: 'clamp(1.1rem, 2vw, 1.4rem) clamp(1.25rem, 2vw, 1.75rem)',
@@ -1078,9 +1112,9 @@ export default function StudioPage() {
               onMouseEnter={() => handlePillEnter('THE STANDARD')}
               onMouseLeave={handlePillLeave}
             >
-              <div>
+              <div className="standard-tab-content">
                 <div
-                  className="tag-mono"
+                  className="tag-mono standard-tab-tag"
                   style={{
                     fontSize: '0.65rem',
                     letterSpacing: '0.16em',
@@ -1090,11 +1124,12 @@ export default function StudioPage() {
                 >
                   05 — THE STANDARD
                 </div>
-                <div style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', fontWeight: 650, letterSpacing: '-0.015em' }}>
+                <div className="standard-tab-heading" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', fontWeight: 650, letterSpacing: '-0.015em' }}>
                   What we bring to every engagement.
                 </div>
               </div>
               <span
+                className="standard-tab-arrow"
                 style={{
                   width: '36px',
                   height: '36px',
@@ -1549,6 +1584,166 @@ export default function StudioPage() {
           </div>
         </section>
       </div>
+
+      <style jsx>{`
+        .chapters-mobile-stepper {
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .chapters-layout-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1.5rem !important;
+          }
+
+          .chapters-desktop-stepper {
+            display: none !important;
+          }
+
+          .chapters-mobile-stepper {
+            display: block !important;
+            width: 100% !important;
+            margin-bottom: 1.5rem !important;
+          }
+
+          .chapters-mobile-track-wrap {
+            position: relative;
+            width: 100%;
+            padding: 0.5rem 0 1rem 0;
+          }
+
+          .chapters-mobile-line {
+            position: absolute;
+            top: 15px;
+            left: 16.66%;
+            right: 16.66%;
+            height: 1.5px;
+            background-color: rgba(0, 0, 0, 0.12);
+            z-index: 0;
+          }
+
+          .chapters-mobile-nodes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+          }
+
+          .chapters-mobile-node-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+          }
+
+          .chapters-mobile-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 2px solid rgba(0, 0, 0, 0.25);
+            margin-bottom: 0.45rem;
+            transition: all 0.25s ease;
+          }
+
+          .chapters-mobile-dot.active {
+            background-color: #DE322D;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 3px rgba(222, 50, 45, 0.25);
+          }
+
+          .chapters-mobile-num {
+            font-family: var(--font-mono, monospace);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #71717A;
+            margin-bottom: 0.15rem;
+          }
+
+          .chapters-mobile-node-btn.active .chapters-mobile-num {
+            color: #DE322D;
+          }
+
+          .chapters-mobile-tag {
+            font-size: 0.74rem;
+            font-weight: 650;
+            color: #8E8E94;
+            line-height: 1.22;
+            margin-bottom: 0.15rem;
+          }
+
+          .chapters-mobile-node-btn.active .chapters-mobile-tag {
+            color: #111113;
+          }
+
+          .chapters-mobile-sub {
+            font-size: 0.64rem;
+            color: #A1A1AA;
+            line-height: 1.2;
+          }
+
+          .chapters-mobile-node-btn.active .chapters-mobile-sub {
+            color: #4A4A52;
+          }
+
+          .chapters-story-card {
+            padding: 1.6rem 1.25rem !important;
+            border-radius: 20px !important;
+          }
+
+          /* Horizontal 04 and 05 tabs for mobile */
+          .standard-tabs-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+            margin-bottom: 1.25rem !important;
+          }
+
+          .standard-tab-btn {
+            padding: 0.75rem 0.65rem !important;
+            border-radius: 14px !important;
+            gap: 0.4rem !important;
+          }
+
+          .standard-tab-tag {
+            font-size: 0.52rem !important;
+            margin-bottom: 0.2rem !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+          }
+
+          .standard-tab-heading {
+            font-size: clamp(0.72rem, 2.6vw, 0.85rem) !important;
+            line-height: 1.2 !important;
+          }
+
+          .standard-tab-arrow {
+            width: 26px !important;
+            height: 26px !important;
+            min-width: 26px !important;
+          }
+
+          .standard-tab-arrow svg {
+            width: 13px !important;
+            height: 13px !important;
+          }
+        }
+
+        .standard-tabs-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: clamp(1rem, 2vw, 1.5rem);
+          margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+        }
+      `}</style>
     </div>
   );
 }

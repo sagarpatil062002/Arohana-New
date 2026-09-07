@@ -38,13 +38,30 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (!sessionStorage.getItem('arohana_loaded')) {
+                  document.documentElement.classList.add('arohana-is-loading');
+                } else {
+                  document.documentElement.classList.add('arohana-already-loaded');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body>
         <ExperienceLoader />
-        <SmoothScroll>
-          <Navbar />
-          <main style={{ minHeight: '100vh', paddingTop: '76px' }}>{children}</main>
-          <Footer />
-        </SmoothScroll>
+        <div id="root-main-content">
+          <SmoothScroll>
+            <Navbar />
+            <main style={{ minHeight: '100vh', paddingTop: '76px' }}>{children}</main>
+            <Footer />
+          </SmoothScroll>
+        </div>
       </body>
     </html>
   );

@@ -181,6 +181,7 @@ export default function Hero() {
                 {/* Readability Contrast Overlay */}
                 {isDark ? (
                   <div
+                    className="hero-overlay hero-overlay-dark"
                     style={{
                       position: 'absolute',
                       inset: 0,
@@ -191,6 +192,7 @@ export default function Hero() {
                   />
                 ) : (
                   <div
+                    className="hero-overlay hero-overlay-light"
                     style={{
                       position: 'absolute',
                       inset: 0,
@@ -204,13 +206,14 @@ export default function Hero() {
             </AnimatePresence>
 
             {/* Top Spacer for Tab Notch Breathing Room */}
-            <div style={{ height: 'clamp(2rem, 3.5vw, 3.5rem)', position: 'relative', zIndex: 2 }} />
+            <div className="hero-top-spacer" style={{ height: 'clamp(2rem, 3.5vw, 3.5rem)', position: 'relative', zIndex: 2 }} />
 
             {/* Gesture-Aware Drag Container on Desktop & Mobile */}
             <motion.div
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.2}
+              className="hero-drag-wrapper"
               onDragEnd={(_, info) => {
                 if (info.offset.x < -35) {
                   nextSlide();
@@ -234,6 +237,7 @@ export default function Hero() {
             >
               {/* Left-Aligned Typography Area with Smooth Slide Transition */}
               <div
+                className="hero-typography-stage"
                 style={{
                   position: 'relative',
                   width: '100%',
@@ -288,6 +292,7 @@ export default function Hero() {
 
                     {/* Main Headline */}
                     <h1
+                      className="hero-headline"
                       style={{
                         fontFamily: 'var(--font-display)',
                         fontSize: 'clamp(2.7rem, 5.2vw, 5.6rem)',
@@ -317,6 +322,7 @@ export default function Hero() {
 
                     {/* Subtitle Statement */}
                     <p
+                      className="hero-subtitle"
                       style={{
                         fontSize: 'clamp(0.95rem, 1.25vw, 1.15rem)',
                         color: subtextColor,
@@ -333,14 +339,14 @@ export default function Hero() {
                     </p>
 
                     {/* CTA Buttons */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
+                    <div className="hero-cta-buttons" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
                       <Link
                         href={currentSlide.primaryCtaLink}
-                        className="button-editorial"
+                        className="button-editorial hero-primary-cta"
                         style={{
                           height: '50px',
                           padding: '0 1.85rem',
-                          backgroundColor: isDark ? '#DE322D' : '#0f172a',
+                          backgroundColor: '#111113',
                           color: '#ffffff',
                           borderRadius: '9999px',
                           display: 'inline-flex',
@@ -349,16 +355,17 @@ export default function Hero() {
                           fontSize: '0.9rem',
                           fontWeight: 600,
                           textDecoration: 'none',
-                          boxShadow: isDark
-                            ? '0 8px 24px rgba(222, 50, 45, 0.4)'
-                            : '0 8px 24px rgba(15, 23, 42, 0.2)',
+                          border: '1px solid rgba(255, 255, 255, 0.18)',
+                          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.28)',
                           transition: 'all 0.25s ease',
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.backgroundColor = '#222226';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.backgroundColor = '#111113';
                         }}
                       >
                         <span>{currentSlide.primaryCtaText}</span>
@@ -495,8 +502,8 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Slide Indicator Dots & Index */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              {/* Slide Indicator Dots, Index & Mobile Navigation Arrows */}
+              <div className="hero-slide-nav-wrap" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   {HERO_SLIDES.map((_, idx) => (
                     <button
@@ -532,17 +539,38 @@ export default function Hero() {
                 >
                   [ 0{currentIndex + 1} / 0{totalSlides} ]
                 </div>
+
+                {/* Mobile Navigation Arrows (Visible only on mobile devices) */}
+                <div className="hero-mobile-arrows">
+                  <button
+                    type="button"
+                    aria-label="Previous Slide"
+                    onClick={handleManualPrev}
+                    className="hero-mobile-arrow-btn"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next Slide"
+                    onClick={handleManualNext}
+                    className="hero-mobile-arrow-btn"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* ============================================================
-                FLANKING NAVIGATION ARROWS ON SIDES (AS SHOWN IN REFERENCE)
+                FLANKING NAVIGATION ARROWS ON SIDES (DESKTOP ONLY)
                 ============================================================ */}
             {/* Left Arrow Button */}
             <button
               type="button"
               aria-label="Previous Slide"
               onClick={handleManualPrev}
+              className="hero-side-arrow hero-prev-arrow"
               style={{
                 position: 'absolute',
                 left: '1.25rem',
@@ -587,6 +615,7 @@ export default function Hero() {
               type="button"
               aria-label="Next Slide"
               onClick={handleManualNext}
+              className="hero-side-arrow hero-next-arrow"
               style={{
                 position: 'absolute',
                 right: '1.25rem',
@@ -708,6 +737,10 @@ export default function Hero() {
             clip-path: url(#heroOrganicClip);
             -webkit-clip-path: url(#heroOrganicClip);
           }
+          .hero-mobile-arrows {
+            display: none;
+          }
+
           @media (max-width: 991px) {
             .hero-container {
               height: 640px;
@@ -733,11 +766,129 @@ export default function Hero() {
               display: none !important;
             }
           }
-          @media (max-width: 640px) {
+
+          @media (max-width: 768px) {
+            /* 1. HIDE FLANKING SIDE ARROWS THAT OVERLAPPED TEXT */
+            .hero-side-arrow {
+              display: none !important;
+            }
+
+            /* 2. SHOW COMPACT MOBILE NAVIGATION ARROWS IN BOTTOM BAR */
+            .hero-mobile-arrows {
+              display: flex !important;
+              align-items: center;
+              gap: 0.45rem;
+              margin-left: 0.25rem;
+            }
+
+            .hero-mobile-arrow-btn {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background: ${isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)'};
+              border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(15, 23, 42, 0.15)'};
+              color: ${textColor};
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: all 0.2s ease;
+            }
+
+            .hero-mobile-arrow-btn:active {
+              transform: scale(0.92);
+              background: #DE322D;
+              color: #ffffff;
+              border-color: #DE322D;
+            }
+
+            /* 3. HERO CONTAINER & INNER SPACING */
             .hero-container {
-              height: 580px;
-              min-height: 580px;
-              max-height: 580px;
+              height: auto !important;
+              min-height: 560px !important;
+              max-height: none !important;
+              border-radius: 20px !important;
+            }
+
+            .hero-top-spacer {
+              height: 1.25rem !important;
+            }
+
+            .hero-drag-wrapper {
+              padding: 1.25rem 1.25rem 1.75rem 1.25rem !important;
+              max-width: 100% !important;
+            }
+
+            .hero-typography-stage {
+              height: auto !important;
+              min-height: auto !important;
+              max-height: none !important;
+              padding-top: 0.5rem !important;
+              padding-bottom: 1rem !important;
+            }
+
+            /* 4. TYPOGRAPHY SCALING */
+            .hero-headline {
+              font-size: clamp(2.1rem, 7.6vw, 3rem) !important;
+              line-height: 1.08 !important;
+              margin-bottom: 0.9rem !important;
+            }
+
+            .hero-subtitle {
+              font-size: clamp(0.88rem, 3.3vw, 0.98rem) !important;
+              line-height: 1.48 !important;
+              margin-bottom: 1.35rem !important;
+              max-width: 100% !important;
+            }
+
+            /* 5. CTA BUTTONS ON MOBILE */
+            .hero-cta-buttons {
+              gap: 0.65rem !important;
+            }
+
+            .hero-cta-buttons :global(.hero-primary-cta),
+            .hero-cta-buttons :global(button) {
+              height: 46px !important;
+              padding: 0 1.35rem !important;
+              font-size: 0.86rem !important;
+            }
+
+            /* 6. BOTTOM BAR ON MOBILE */
+            .hero-bottom-bar {
+              flex-direction: row !important;
+              flex-wrap: wrap !important;
+              align-items: center !important;
+              justify-content: space-between !important;
+              padding: 0.85rem 1.15rem !important;
+              gap: 0.5rem !important;
+            }
+
+            .hero-stats-row,
+            .hero-bar-divider {
+              display: none !important;
+            }
+
+            .hero-slide-nav-wrap {
+              gap: 0.65rem !important;
+            }
+
+            /* 7. FULL READABILITY OVERLAYS ON MOBILE */
+            .hero-overlay-dark {
+              background: linear-gradient(180deg, rgba(7, 11, 20, 0.94) 0%, rgba(7, 11, 20, 0.78) 55%, rgba(7, 11, 20, 0.9) 100%) !important;
+            }
+
+            .hero-overlay-light {
+              background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.84) 55%, rgba(255, 255, 255, 0.92) 100%) !important;
+            }
+          }
+
+          @media (max-width: 480px) {
+            .hero-bottom-bar {
+              padding: 0.75rem 1rem !important;
+            }
+
+            .hero-headline {
+              font-size: 2.1rem !important;
             }
           }
         `}</style>

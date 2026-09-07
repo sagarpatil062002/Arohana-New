@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 
 export interface ProjectItem {
   id: string;
@@ -14,15 +14,6 @@ export interface ProjectItem {
   image: string;
   link: string;
 }
-
-const CATEGORIES = [
-  'All Projects',
-  'Hospitality & F&B',
-  'Lifestyle & Retail',
-  'Wellness & Healthcare',
-  'Construction & Infrastructure',
-  'Events & Experiences',
-];
 
 const PROJECTS: ProjectItem[] = [
   {
@@ -93,10 +84,8 @@ const PROJECTS: ProjectItem[] = [
 export default function SelectedWork() {
   // Center card initially on Abhijeet Magdum (index 3) to match reference layout
   const [currentIndex, setCurrentIndex] = useState(3);
-  const [selectedCategory, setSelectedCategory] = useState('All Projects');
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
   // Drag / Swipe state
   const [isDragging, setIsDragging] = useState(false);
@@ -514,37 +503,7 @@ export default function SelectedWork() {
             </div>
           </div>
 
-          {/* Dropdown Selector */}
-          <div className="sw-mobile-dropdown-wrap">
-            <button
-              type="button"
-              onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-              className="sw-dropdown-btn"
-            >
-              <span>{selectedCategory}</span>
-              <ChevronDown size={16} color="#888" />
-            </button>
-
-            {showCategoryDropdown && (
-              <div className="sw-dropdown-menu">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => {
-                      setSelectedCategory(cat);
-                      setShowCategoryDropdown(false);
-                    }}
-                    className={`sw-dropdown-item ${selectedCategory === cat ? 'is-selected' : ''}`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Full-width Black Pill Button */}
+          {/* Full-width Black Pill Button on Mobile */}
           <Link href="/work" className="sw-mobile-all-btn">
             <span>View All Case Studies</span>
             <ArrowUpRight size={16} />
@@ -552,28 +511,11 @@ export default function SelectedWork() {
         </div>
 
         {/* ================================================================= */}
-        {/* 4. DESKTOP CONTROLS ROW (Matching Reference Image Bottom)         */}
+        {/* 4. DESKTOP BOTTOM CONTROLS ROW                                    */}
         {/* ================================================================= */}
         <div className="sw-desktop-controls">
-          {/* Category filter pills */}
-          <div className="sw-pills-row">
-            {CATEGORIES.map((cat) => {
-              const isSelected = selectedCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`sw-pill-btn ${isSelected ? 'active-pill' : ''}`}
-                >
-                  {cat}
-                </button>
-              );
-            })}
-          </div>
-
           {/* Divider line & View All Case Studies link */}
-          <div className="sw-desktop-all-wrap">
+          <div className="sw-desktop-all-wrap" style={{ width: '100%' }}>
             <div className="sw-horizontal-divider" />
             <Link href="/work" className="sw-all-link">
               <span>View All Case Studies</span>

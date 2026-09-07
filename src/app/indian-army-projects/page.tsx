@@ -10,6 +10,7 @@ import {
   ArrowUpRight,
   Play,
   ArrowRight,
+  ArrowDown,
   ChevronRight,
   X,
 } from 'lucide-react';
@@ -70,7 +71,7 @@ export default function IndianArmyProjectsPage() {
 
             <a href="#projects-overview" className="scroll-explore">
               <span className="scroll-circle">
-                <ArrowRight size={14} />
+                <ArrowDown size={14} />
               </span>
               <span>Scroll to explore</span>
             </a>
@@ -293,14 +294,21 @@ export default function IndianArmyProjectsPage() {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setIsVideoModalOpen(true)}
-                  className="card-action-link"
-                >
-                  <span>View Project</span>
-                  <ArrowUpRight size={13} />
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+                  <Link href="/contact" className="card-action-link">
+                    <span>View Project</span>
+                    <ArrowUpRight size={13} />
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setIsVideoModalOpen(true)}
+                    className="card-action-link"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                  >
+                    <span>Watch Film</span>
+                    <Play size={11} fill="currentColor" style={{ marginLeft: '4px' }} />
+                  </button>
+                </div>
               </div>
 
               {/* Right Media Collage */}
@@ -2478,6 +2486,79 @@ export default function IndianArmyProjectsPage() {
         }
 
         @media (max-width: 768px) {
+          .hero-side-stack,
+          .hero-radar-lines {
+            display: none !important;
+          }
+          .hero-visual-wrapper {
+            justify-content: center !important;
+            max-width: 100% !important;
+          }
+          .hero-main-photo-card {
+            width: 100% !important;
+            max-width: 320px !important;
+            height: 400px !important;
+            margin: 0 auto !important;
+          }
+          .hero-script-card {
+            left: 0 !important;
+            bottom: 20px !important;
+            top: auto !important;
+          }
+          .hero-title {
+            font-size: clamp(2.6rem, 8vw, 3.6rem) !important;
+            margin-bottom: 1.25rem !important;
+          }
+          .hero-desc {
+            font-size: 1rem !important;
+            margin-bottom: 2rem !important;
+          }
+          .project-card {
+            padding: 1.5rem 1.15rem !important;
+            border-radius: 20px !important;
+          }
+          .card-meta-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.65rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+          .card-meta-right {
+            flex-wrap: wrap !important;
+            gap: 0.75rem !important;
+          }
+          .books-showcase-row {
+            overflow-x: auto !important;
+            justify-content: flex-start !important;
+            padding: 1rem 0.25rem !important;
+            scrollbar-width: none !important;
+            -webkit-overflow-scrolling: touch !important;
+          }
+          .books-showcase-row::-webkit-scrollbar {
+            display: none !important;
+          }
+          .book-3d-item {
+            flex-shrink: 0 !important;
+            width: 140px !important;
+          }
+          .card-2-bottom-row {
+            margin-top: 1.5rem !important;
+          }
+          .card-2-bottom-actions {
+            justify-content: flex-start !important;
+            margin-top: 1.25rem !important;
+          }
+          .open-spread-book {
+            flex-direction: column !important;
+          }
+          .open-spread-left {
+            width: 100% !important;
+            padding: 1.25rem !important;
+          }
+          .open-spread-right {
+            width: 100% !important;
+            height: 220px !important;
+          }
           .three-subsections-row {
             grid-template-columns: 1fr;
           }
@@ -2487,7 +2568,7 @@ export default function IndianArmyProjectsPage() {
           }
           .card-1-sub-photos {
             flex-direction: row;
-            height: 160px;
+            height: 140px;
           }
           .book-composition-wrapper {
             flex-direction: column;
