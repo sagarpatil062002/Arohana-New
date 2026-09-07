@@ -216,34 +216,6 @@ export default function SelectedWork() {
                     <span>REAL IMPACT.</span>
                   </div>
                 </div>
-
-                {/* Header Navigation Buttons (< >) matching reference image */}
-                <div className="sw-header-nav-btns">
-                  <button
-                    type="button"
-                    aria-label="Previous Project"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handlePrev();
-                    }}
-                    className="sw-hdr-nav-btn"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label="Next Project"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleNext();
-                    }}
-                    className="sw-hdr-nav-btn"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -1126,21 +1098,25 @@ export default function SelectedWork() {
         .sw-all-link {
           display: inline-flex;
           align-items: center;
-          gap: 0.4rem;
-          font-family: var(--font-mono, monospace);
-          font-size: 0.78rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          color: #111111;
+          gap: 0.55rem;
+          background-color: #000000;
+          color: #ffffff;
+          padding: 0.8rem 1.65rem;
+          border-radius: 9999px;
+          font-family: var(--font-display, sans-serif);
+          font-size: 0.86rem;
+          font-weight: 600;
           text-decoration: none;
-          text-transform: uppercase;
-          transition: color 0.2s ease, transform 0.2s ease;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
           flex-shrink: 0;
         }
 
         .sw-all-link:hover {
-          color: #DE322D;
-          transform: translateX(3px);
+          background-color: #222222;
+          color: #ffffff;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
         }
       `}</style>
     </section>

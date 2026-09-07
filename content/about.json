@@ -3,14 +3,23 @@
     "eyebrow": "ABOUT ĀROHANA",
     "headline": "I didn't plan to build Arohana.",
     "subheadline": "I built it because I kept seeing the same gap between what brands were being promised and what was actually happening on the ground.",
-    "introP1": "Ārohana was founded by Madhura Howal after years of running cafes, leading operations in high-turnover hospitality, and directing brand transformations across India and the UK.",
-    "introP2": "Today, we work across hospitality, real estate, healthcare, lifestyle, and defence institutions — bringing strategic clarity, high-production creative execution, and disciplined operational follow-through.",
-    "founderName": "Madhura Howal",
+    "introP1": "The road to Arohana was anything but straight. I built it\nafter spending years inside businesses - learning what\nmakes them work, what makes them struggle, and what\npeople see only after they become responsible for the\nwhole thing.",
+    "introP2": "Today, Arohana brings together that experience with strategy,\ncommunication, creativity and execution - for businesses that are\nserious about what they are building.",
+    "founderName": "Madhura Hawal",
     "founderTitle": "Founder & Strategic Director",
     "stats": [
-      { "value": "6+", "label": "Years of Experience" },
-      { "value": "50+", "label": "Brands Worked With" },
-      { "value": "5", "label": "Core Verticals" }
+      {
+        "value": "6+",
+        "label": "Years of Experience"
+      },
+      {
+        "value": "50+",
+        "label": "Brands Worked With"
+      },
+      {
+        "value": "5",
+        "label": "Core Verticals"
+      }
     ]
   },
   "chapters": [
@@ -55,7 +64,7 @@
     "members": [
       {
         "id": "madhura",
-        "name": "Madhura Howal",
+        "name": "Madhura Hawal",
         "role": "FOUNDER & STRATEGIC LEAD",
         "image": "/images/about/team-madhura.jpg"
       },

@@ -173,8 +173,16 @@ export default function InteractiveCTA() {
         <div className="interactive-cta-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
           <Link
             href={activeButtonLink}
-            className="button-editorial button-editorial-white"
-            style={{ height: '52px', padding: '0 2rem', fontSize: '0.95rem' }}
+            className="button-editorial button-editorial-dark"
+            style={{
+              height: '52px',
+              padding: '0 2rem',
+              fontSize: '0.95rem',
+              backgroundColor: '#000000',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+            }}
           >
             <div className="button-texts-slider">
               <span className="button-text-item">{activeButtonLabel}</span>

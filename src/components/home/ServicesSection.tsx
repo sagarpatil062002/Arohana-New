@@ -183,8 +183,15 @@ export default function ServicesSection() {
             <div className="services-header-cta-wrap" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexShrink: 0 }}>
               <Link
                 href="/services"
-                className="button-editorial button-editorial-primary"
-                style={{ height: '44px', padding: '0 1.5rem', whiteSpace: 'nowrap' }}
+                className="button-editorial button-editorial-dark"
+                style={{
+                  height: '44px',
+                  padding: '0 1.5rem',
+                  whiteSpace: 'nowrap',
+                  backgroundColor: '#000000',
+                  color: '#ffffff',
+                  border: '1px solid rgba(255, 255, 255, 0.22)',
+                }}
               >
                 <div className="button-texts-slider">
                   <span className="button-text-item">Explore Detailed Services</span>
@@ -354,13 +361,14 @@ export default function ServicesSection() {
                               gap: '0.85rem',
                               padding: '0.85rem 1.75rem',
                               borderRadius: '9999px',
-                              backgroundColor: '#ffffff',
-                              color: '#000000',
+                              backgroundColor: '#000000',
+                              color: '#ffffff',
+                              border: '1px solid rgba(255, 255, 255, 0.25)',
                               fontWeight: 600,
                               fontSize: '0.925rem',
                               letterSpacing: '-0.01em',
                               textDecoration: 'none',
-                              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
                               transition: 'transform 0.25s ease, background-color 0.25s ease',
                             }}
                           >
@@ -453,8 +461,14 @@ export default function ServicesSection() {
           >
             <Link
               href="/services"
-              className="button-editorial button-editorial-white"
-              style={{ height: '48px', padding: '0 2rem' }}
+              className="button-editorial button-editorial-dark"
+              style={{
+                height: '48px',
+                padding: '0 2rem',
+                backgroundColor: '#000000',
+                color: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
+              }}
             >
               <div className="button-texts-slider">
                 <span className="button-text-item">Explore our services</span>
@@ -481,9 +495,12 @@ export default function ServicesSection() {
             justify-content: space-between !important;
           }
           :global(.service-card-wrapper) {
-            position: relative !important;
-            top: auto !important;
-            padding-bottom: 2.5rem !important;
+            position: sticky !important;
+            top: 72px !important;
+            background-color: #000000 !important;
+            padding-top: 1.25rem !important;
+            padding-bottom: 4.5rem !important;
+            box-shadow: 0 -18px 36px rgba(0, 0, 0, 0.75);
           }
         }
       `}</style>

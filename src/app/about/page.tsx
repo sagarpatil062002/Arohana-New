@@ -186,7 +186,7 @@ const ENGAGEMENT_PILLARS = [
 const TEAM = [
   {
     id: 'madhura',
-    name: 'Madhura Howal',
+    name: 'Madhura Hawal',
     role: 'FOUNDER & STRATEGIC LEAD',
     image: '/images/about/team-madhura.jpg',
   },
@@ -256,7 +256,7 @@ export default function StudioPage() {
     subheadline: "I built it because I kept seeing the same gap between what brands were being promised and what was actually happening on the ground.",
     introP1: "The road to Arohana was anything but straight. I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people see only after they become responsible for the whole thing.",
     introP2: "Today, Arohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building.",
-    founderName: "Madhura Howal",
+    founderName: "Madhura Hawal",
     founderTitle: "Founder & Strategic Director",
     stats: STATS,
   };
@@ -566,7 +566,7 @@ export default function StudioPage() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-6px)';
-                  handlePillEnter('MADHURA HOWAL');
+                  handlePillEnter('MADHURA HAWAL');
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
@@ -575,7 +575,7 @@ export default function StudioPage() {
               >
                 <Image
                   src="/images/about/hero-founder-collage.png"
-                  alt="Madhura Howal — Founder & Strategic Lead, Ārohana Studio"
+                  alt="Madhura Hawal — Founder & Strategic Lead, Ārohana Studio"
                   fill
                   priority
                   style={{ objectFit: 'contain' }}

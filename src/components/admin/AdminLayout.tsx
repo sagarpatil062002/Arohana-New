@@ -25,6 +25,7 @@ import {
   Check,
 } from 'lucide-react';
 import PublishDialog from './PublishDialog';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { content, saveDraft } = useCmsContent();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
@@ -60,6 +62,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const handleLogout = async () => {
     await fetch('/api/auth/login', { method: 'DELETE' });
     router.push('/admin/login');
+  };
+
+  const handleTopSave = async () => {
+    const sec = pathname?.replace('/admin/', '').replace('/admin', '') || 'home';
+    if (sec && content[sec]) {
+      await saveDraft(sec, content[sec]);
+    }
+    triggerSaveNotification();
   };
 
   const triggerSaveNotification = () => {
@@ -265,7 +275,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button
               type="button"
-              onClick={triggerSaveNotification}
+              onClick={handleTopSave}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -282,7 +292,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               }}
             >
               <Save size={14} />
-              Save Draft
+              Save Changes
             </button>
 
             <button

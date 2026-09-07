@@ -610,19 +610,20 @@ export default function TourinSpotlight() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background-color: #ffffff;
-          color: #111114;
+          background-color: #000000;
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.22);
           font-size: 13px;
           font-weight: 700;
           padding: 12px 22px;
           border-radius: 999px;
           text-decoration: none;
           transition: all 0.25s ease;
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
         }
 
         .btn-primary-pill:hover {
-          background-color: #eaeaea;
+          background-color: #1f1f23;
           transform: translateY(-2px);
         }
 
@@ -630,7 +631,7 @@ export default function TourinSpotlight() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background-color: transparent;
+          background-color: #000000;
           color: #ffffff;
           font-size: 13px;
           font-weight: 600;
@@ -639,10 +640,11 @@ export default function TourinSpotlight() {
           border: 1px solid rgba(255, 255, 255, 0.22);
           text-decoration: none;
           transition: all 0.25s ease;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
         }
 
         .btn-secondary-pill:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: #1f1f23;
           border-color: rgba(255, 255, 255, 0.4);
           transform: translateY(-2px);
         }

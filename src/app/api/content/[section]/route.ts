@@ -28,17 +28,12 @@ export async function POST(
   try {
     const { section } = params;
     const body = await req.json();
-    const searchParams = req.nextUrl.searchParams;
-    const isDirectPublish = searchParams.get('publish') === 'true';
 
-    if (isDirectPublish) {
-      const written = writeContentFile(`${section}.json`, body.data);
-      return NextResponse.json({ success: written, section, published: true });
-    }
-
-    // Default: save as active draft
+    // Persist immediately to disk so changes are permanent across server restarts
+    const written = writeContentFile(`${section}.json`, body.data);
     saveSectionDraft(section, body.data);
-    return NextResponse.json({ success: true, section, draftSaved: true });
+
+    return NextResponse.json({ success: written, section, draftSaved: true, saved: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

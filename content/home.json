@@ -192,7 +192,7 @@
     "btnSecondaryText": "Explore Three Practice Areas",
     "btnSecondaryLink": "/services",
     "quote": "Sometimes what looks like a marketing problem isn't a marketing problem at all.",
-    "attribution": "MADHURA HOWAL · FOUNDER, ĀROHANA",
+    "attribution": "MADHURA HAWAL · FOUNDER, ĀROHANA",
     "triadWords": "IDEAS · BRANDS · PEOPLE · PROGRESS"
   },
   "selectedWork": {
@@ -281,8 +281,8 @@
     ]
   },
   "sectorsMontage": {
-    "eyebrow": "SECTORS & BUILT ENVIRONMENT",
-    "title": "Where we do our work.",
+    "eyebrow": "SECTOR DEPTH",
+    "title": "Where our experience sits.",
     "sectors": [
       {
         "id": "hospitality",
@@ -321,32 +321,32 @@
         "id": "lifestyle",
         "number": "04",
         "title": "Lifestyle & Consumer Brands",
-        "subtitle": "PACKAGED GOODS, D2C & SPECIALTY RETAIL",
-        "description": "Building sustainable customer affinity, packaging appeal, and online traction for modern retail brands.",
-        "cornerTag": "MODERN RETAIL & PACKAGING",
-        "bottomTag": "BRANDS THAT ENDURE",
+        "subtitle": "DISTINCTIVE VISUAL IDENTITY & COMMERCIAL MOMENTUM",
+        "description": "Building sustainable brand positioning, content velocity, digital storefronts, and paid acquisition systems for businesses that need a stronger market presence.",
+        "cornerTag": "DISTINCTIVE MODERN LIVING",
+        "bottomTag": "BRANDS FOR BRIGHTER TOMORROWS",
         "image": "/images/sectors/04-lifestyle.jpg",
         "link": "/work#lifestyle"
       },
       {
-        "id": "defence",
+        "id": "entertainment",
         "number": "05",
-        "title": "Institutional & Defence",
-        "subtitle": "CEREMONIAL DOCUMENTATION, COLD TERRAINS & ARCHIVES",
-        "description": "Verified production work with Indian Army formations, capturing historical archives and ceremonial precision.",
-        "cornerTag": "PROTOCOL & DISCIPLINE",
-        "bottomTag": "STORIES OF SERVICE",
-        "image": "/images/sectors/05-defence.jpg",
-        "link": "/indian-army-projects"
+        "title": "Entertainment & Media",
+        "subtitle": "CULTURAL EVENTS, DIGITAL DISTRIBUTION & ON-GROUND CONTENT",
+        "description": "Cinematic media production, festival campaigns, and on-ground digital coverage tailored to culturally engaged audiences.",
+        "cornerTag": "CINEMATIC CULTURAL STORIES",
+        "bottomTag": "STORIES THAT MOVE PEOPLE",
+        "image": "/images/sectors/05-entertainment.jpg",
+        "link": "/work#entertainment"
       },
       {
         "id": "travel",
         "number": "06",
-        "title": "Travel & Experiential",
-        "subtitle": "HIGH-ALTITUDE HIMALAYAN EXPEDITIONS & HOMESTAYS",
-        "description": "Curated journeys built on destination thinking, responsible presence, and authentic community connections.",
-        "cornerTag": "HIGH-ALTITUDE HORIZONS",
-        "bottomTag": "PLACES PEOPLE PURPOSE",
+        "title": "Travel & Tourism",
+        "subtitle": "EXPERIENTIAL HIGH-ALTITUDE JOURNEYS & CULTURAL ROOTS",
+        "description": "Thoughtfully planned travel experiences connecting travellers with genuine local cultures, heritage homestays, and remote landscapes.",
+        "cornerTag": "JOURNEYS THAT TRANSFORM",
+        "bottomTag": "JOURNEYS BEYOND BOUNDARIES",
         "image": "/images/sectors/06-travel.jpg",
         "link": "/tourin"
       }

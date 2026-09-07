@@ -93,6 +93,16 @@ const SECTORS: SectorItem[] = [
   },
 ];
 
+const getShortTitle = (title: string, id: string) => {
+  if (id === 'hospitality' || title.toLowerCase().includes('hospitality')) return 'Hospitality';
+  if (id === 'real-estate' || title.toLowerCase().includes('real estate')) return 'Real Estate';
+  if (id === 'healthcare' || title.toLowerCase().includes('healthcare')) return 'Healthcare';
+  if (id === 'lifestyle' || title.toLowerCase().includes('lifestyle')) return 'Lifestyle';
+  if (id === 'entertainment' || title.toLowerCase().includes('media') || title.toLowerCase().includes('entertainment')) return 'Media';
+  if (id === 'travel' || title.toLowerCase().includes('travel')) return 'Travel';
+  return title.split(' ')[0];
+};
+
 export default function SectorMontage() {
   const { content } = useCmsContent();
   const montageCms = content?.home?.sectorsMontage;
@@ -160,7 +170,7 @@ export default function SectorMontage() {
           <div className="experience-header-left">
             <span className="experience-eyebrow">{montageCms?.eyebrow || 'SECTOR DEPTH'}</span>
             <h2 className="experience-headline">
-              {montageCms?.title || 'Where our experience sits.'}
+              Where our experience sits<span className="headline-dot">.</span>
             </h2>
             <p className="experience-subheading">
               Cross-disciplinary capability deployed across 6 core commercial and
@@ -321,99 +331,135 @@ export default function SectorMontage() {
         {/* ============================================================
             MOBILE & TABLET VIEW (Compact Card + Thumbnail Selector)
             ============================================================ */}
+        {/* ============================================================
+            MOBILE & TABLET VIEW (Exact layout matching Reference Image 5)
+            ============================================================ */}
         <div className="mobile-showcase-wrap">
-          {/* Active Card on Mobile */}
+          {/* Active Big Sector Card */}
           <div className="mobile-active-card">
-            <div className="mobile-card-header">
-              <div className="sector-number-row">
-                <span className="sector-num">{activeSector.number}</span>
-                <span className="sector-dash" />
-              </div>
-              <div className="mobile-corner-tag">{activeSector.cornerTag}</div>
-            </div>
-
-            <h3 className="mobile-sector-title">{activeSector.title}</h3>
-            <p className="mobile-sector-subtitle">{activeSector.subtitle}</p>
-            <p className="mobile-sector-desc">{activeSector.description}</p>
-
-            <Link href={activeSector.link} className="explore-pill-btn">
-              <span className="explore-arrow-circle">
-                <ArrowRight size={13} strokeWidth={2.6} />
-              </span>
-              <span>Explore this sector</span>
-            </Link>
-
-            <div className="mobile-visual-box">
+            {/* Background Hero Photo with dark moody contrast vignette */}
+            <div className="mobile-card-bg-layer" aria-hidden="true">
               <Image
                 src={activeSector.image}
                 alt={activeSector.title}
                 fill
-                sizes="(max-width: 768px) 100vw, 500px"
-                className="mobile-hero-img"
+                priority
+                sizes="(max-width: 768px) 100vw, 550px"
+                className="mobile-card-bg-img"
               />
+              <div className="mobile-card-bg-gradient" />
             </div>
 
-            <div className="mobile-bottom-tag">{activeSector.bottomTag}</div>
+            {/* Foreground Content */}
+            <div className="mobile-card-content">
+              {/* Top Row: 01 —— and Stacked Corner Words */}
+              <div className="mobile-card-top-row">
+                <div className="mobile-sector-num-row">
+                  <span className="mobile-sector-num">{activeSector.number}</span>
+                  <span className="mobile-sector-dash" />
+                </div>
+
+                <div className="mobile-corner-stack-wrap">
+                  <div className="mobile-corner-words">
+                    {activeSector.cornerTag.split(' ').map((word, wIdx) => (
+                      <span key={wIdx} className="mobile-corner-word">{word}</span>
+                    ))}
+                  </div>
+                  <span className="mobile-corner-v-line" />
+                </div>
+              </div>
+
+              {/* Title, Subtitle, Divider, Description */}
+              <h3 className="mobile-sector-title">{activeSector.title}</h3>
+              <p className="mobile-sector-subtitle">{activeSector.subtitle}</p>
+              
+              <div className="mobile-card-divider" />
+
+              <p className="mobile-sector-desc">{activeSector.description}</p>
+
+              {/* CTA Explore Button with white circle arrow icon */}
+              <Link href={activeSector.link} className="mobile-explore-action-btn">
+                <span className="mobile-explore-arrow-circle">
+                  <ArrowRight size={13} strokeWidth={2.4} />
+                </span>
+                <span className="mobile-explore-btn-text">Explore this sector</span>
+              </Link>
+
+              {/* Lower breathing space for the hero image to show clearly */}
+              <div className="mobile-card-image-spacer" />
+
+              {/* Bottom Tag Row */}
+              <div className="mobile-card-bottom-row">
+                <span className="mobile-card-bottom-tag">{activeSector.bottomTag}</span>
+              </div>
+            </div>
           </div>
 
-          {/* Sector Thumbnails Row */}
+          {/* Sector Thumbnails Row (5 cards for other sectors matching Image 5) */}
           <div className="mobile-thumbnails-row">
-            {sectorsList.map((sec, idx) => (
-              <button
-                key={sec.id}
-                type="button"
-                onClick={() => onSelectIndex(idx)}
-                className={`mobile-thumb-btn ${idx === activeIndex ? 'thumb-active' : ''}`}
-                aria-label={`Select ${sec.title}`}
-              >
-                <div className="thumb-image-wrap">
-                  <Image
-                    src={sec.image}
-                    alt={sec.title}
-                    fill
-                    sizes="80px"
-                    className="thumb-img"
-                  />
-                  <div className="thumb-overlay" />
-                </div>
-                <div className="thumb-caption">
-                  <span className="thumb-num">{sec.number}</span>
-                  <span className="thumb-title">{sec.title.split(' ')[0]}</span>
-                </div>
-              </button>
-            ))}
+            {sectorsList
+              .filter((_, idx) => idx !== activeIndex)
+              .map((sec) => {
+                const targetIdx = sectorsList.findIndex((s) => s.id === sec.id);
+                return (
+                  <button
+                    key={sec.id}
+                    type="button"
+                    onClick={() => onSelectIndex(targetIdx)}
+                    className="mobile-thumb-card"
+                    aria-label={`Select ${sec.title}`}
+                  >
+                    <div className="thumb-card-header">
+                      <span className="thumb-card-num">{sec.number}</span>
+                      <span className="thumb-card-title">{getShortTitle(sec.title, sec.id)}</span>
+                    </div>
+                    <div className="thumb-card-photo-box">
+                      <Image
+                        src={sec.image}
+                        alt={sec.title}
+                        fill
+                        sizes="90px"
+                        className="thumb-card-photo"
+                      />
+                      <div className="thumb-card-photo-scrim" />
+                    </div>
+                  </button>
+                );
+              })}
           </div>
 
-          {/* Mobile Bottom Navigation Bar */}
-          <div className="mobile-nav-bar">
-            <div className="dashes-track">
-              {SECTORS.map((_, idx) => (
+          {/* Mobile Bottom Controls Bar: Left Pagination Indicators, Right Circle Arrows */}
+          <div className="mobile-bottom-controls-bar">
+            {/* Left: Pill Active Indicator + Grey Circles */}
+            <div className="mobile-dots-track">
+              {sectorsList.map((_, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => onSelectIndex(idx)}
-                  className={`dash-indicator ${idx === activeIndex ? 'active' : ''}`}
+                  className={`mobile-dot-btn ${idx === activeIndex ? 'mobile-dot-active' : ''}`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
             </div>
 
-            <div className="nav-arrows-group">
+            {/* Right: Round Navigation Buttons (< >) */}
+            <div className="mobile-arrows-row">
               <button
                 type="button"
                 onClick={onPrevClick}
-                className="nav-arrow-btn prev-btn"
+                className="mobile-nav-circle-btn"
                 aria-label="Previous sector"
               >
-                <ArrowLeft size={16} />
+                <ArrowLeft size={17} strokeWidth={2.2} />
               </button>
               <button
                 type="button"
                 onClick={onNextClick}
-                className="nav-arrow-btn next-btn"
+                className="mobile-nav-circle-btn"
                 aria-label="Next sector"
               >
-                <ArrowRight size={16} />
+                <ArrowRight size={17} strokeWidth={2.2} />
               </button>
             </div>
           </div>
@@ -696,20 +742,22 @@ export default function SectorMontage() {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          background-color: #ffffff;
-          color: #0c0c0e;
+          background-color: #000000;
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.22);
           font-size: 12.5px;
           font-weight: 700;
           letter-spacing: 0.02em;
           padding: 10px 18px 10px 14px;
           border-radius: 999px;
           text-decoration: none;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
           transition: all 0.25s ease;
           width: fit-content;
         }
 
         .explore-pill-btn:hover {
-          background-color: #ebebef;
+          background-color: #1f1f23;
           transform: translateY(-1px);
         }
 
@@ -717,8 +765,8 @@ export default function SectorMontage() {
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background-color: #111111;
-          color: #ffffff;
+          background-color: #ffffff;
+          color: #000000;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -888,152 +936,338 @@ export default function SectorMontage() {
           margin-bottom: 36px;
         }
 
+        /* ── Mobile Layout Matching Image 5 ── */
+        .mobile-showcase-wrap {
+          display: none;
+          flex-direction: column;
+          gap: 14px;
+          margin-bottom: 24px;
+        }
+
         .mobile-active-card {
-          background-color: #0f0f11;
-          color: #ffffff;
-          border-radius: 20px;
-          padding: 28px 24px 24px 24px;
+          position: relative;
+          border-radius: 24px;
+          overflow: hidden;
+          background-color: #0c0d12;
+          box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          min-height: 520px;
+        }
+
+        .mobile-card-bg-layer {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+        }
+
+        :global(.mobile-card-bg-img) {
+          object-fit: cover !important;
+          object-position: center 65% !important;
+        }
+
+        .mobile-card-bg-gradient {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(10, 11, 15, 0.98) 0%,
+            rgba(10, 11, 15, 0.92) 40%,
+            rgba(10, 11, 15, 0.22) 68%,
+            rgba(10, 11, 15, 0.94) 98%
+          );
+        }
+
+        .mobile-card-content {
+          position: relative;
+          z-index: 2;
+          padding: 24px 20px 18px 20px;
           display: flex;
           flex-direction: column;
         }
 
-        .mobile-card-header {
+        .mobile-card-top-row {
           display: flex;
           justify-content: space-between;
-          align-items: center;
-          margin-bottom: 16px;
-        }
-
-        .mobile-corner-tag {
-          font-size: 8.5px;
-          font-weight: 700;
-          letter-spacing: 0.15em;
-          color: rgba(255, 255, 255, 0.45);
-          text-transform: uppercase;
-        }
-
-        .mobile-sector-title {
-          font-size: 1.75rem;
-          font-weight: 800;
-          line-height: 1.15;
-          margin-bottom: 8px;
-        }
-
-        .mobile-sector-subtitle {
-          font-size: 9.5px;
-          font-weight: 700;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: #8c8c96;
+          align-items: flex-start;
           margin-bottom: 14px;
         }
 
-        .mobile-sector-desc {
-          font-size: 13.5px;
-          line-height: 1.55;
-          color: rgba(255, 255, 255, 0.72);
-          margin-bottom: 20px;
-        }
-
-        .mobile-visual-box {
-          position: relative;
-          width: 100%;
-          height: 220px;
-          border-radius: 14px;
-          overflow: hidden;
-          margin-top: 20px;
-          margin-bottom: 16px;
-        }
-
-        :global(.mobile-hero-img) {
-          object-fit: cover !important;
-        }
-
-        .mobile-bottom-tag {
-          font-size: 9px;
-          font-weight: 700;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: #6e6e78;
-          margin-top: 4px;
-        }
-
-        .mobile-thumbnails-row {
-          display: grid;
-          grid-template-columns: repeat(6, 1fr);
+        .mobile-sector-num-row {
+          display: flex;
+          align-items: center;
           gap: 8px;
         }
 
-        .mobile-thumb-btn {
-          border: none;
-          background: none;
-          padding: 0;
-          cursor: pointer;
+        .mobile-sector-num {
+          font-family: var(--font-mono, monospace);
+          font-size: 13px;
+          font-weight: 700;
+          color: #ffffff;
+        }
+
+        .mobile-sector-dash {
+          width: 22px;
+          height: 1.5px;
+          background-color: rgba(255, 255, 255, 0.5);
+          display: inline-block;
+        }
+
+        .mobile-corner-stack-wrap {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .mobile-corner-words {
           display: flex;
           flex-direction: column;
-          gap: 6px;
-          align-items: center;
-          opacity: 0.65;
-          transition: all 0.2s ease;
+          align-items: flex-end;
+          gap: 1px;
         }
 
-        .mobile-thumb-btn.thumb-active {
-          opacity: 1;
-          transform: translateY(-2px);
-        }
-
-        .thumb-image-wrap {
-          position: relative;
-          width: 100%;
-          height: 60px;
-          border-radius: 10px;
-          overflow: hidden;
-          border: 1.5px solid transparent;
-        }
-
-        .mobile-thumb-btn.thumb-active .thumb-image-wrap {
-          border-color: #8b1e1e;
-        }
-
-        :global(.thumb-img) {
-          object-fit: cover !important;
-        }
-
-        .thumb-overlay {
-          position: absolute;
-          inset: 0;
-          background-color: rgba(0, 0, 0, 0.25);
-        }
-
-        .thumb-caption {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+        .mobile-corner-word {
+          font-family: var(--font-mono, monospace);
+          font-size: 7.5px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.55);
           line-height: 1.15;
         }
 
-        .thumb-num {
-          font-size: 10px;
-          font-weight: 700;
-          color: #8b1e1e;
-          font-family: var(--font-mono, monospace);
+        .mobile-corner-v-line {
+          width: 1.5px;
+          height: 38px;
+          background-color: rgba(255, 255, 255, 0.3);
+          display: inline-block;
         }
 
-        .thumb-title {
-          font-size: 9px;
+        .mobile-sector-title {
+          font-family: var(--font-display, sans-serif);
+          font-size: clamp(1.85rem, 6.5vw, 2.35rem);
+          font-weight: 800;
+          line-height: 1.08;
+          color: #ffffff;
+          margin: 0 0 10px 0;
+          letter-spacing: -0.02em;
+        }
+
+        .mobile-sector-subtitle {
+          font-family: var(--font-mono, monospace);
+          font-size: 8.5px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: #9da3af;
+          margin: 0 0 12px 0;
+          line-height: 1.4;
+        }
+
+        .mobile-card-divider {
+          width: 28px;
+          height: 1.5px;
+          background-color: rgba(255, 255, 255, 0.45);
+          margin-bottom: 12px;
+        }
+
+        .mobile-sector-desc {
+          font-family: var(--font-body, sans-serif);
+          font-size: 13px;
+          line-height: 1.52;
+          color: rgba(255, 255, 255, 0.78);
+          margin: 0 0 18px 0;
+          max-width: 480px;
+        }
+
+        .mobile-explore-action-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          background-color: #000000;
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.22);
+          padding: 8px 16px 8px 12px;
+          border-radius: 9999px;
+          text-decoration: none;
+          width: fit-content;
+          margin-bottom: 8px;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+          transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .mobile-explore-action-btn:active {
+          transform: scale(0.96);
+          background-color: #1f1f23;
+        }
+
+        .mobile-explore-arrow-circle {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background-color: #ffffff;
+          color: #000000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+          transition: transform 0.2s ease;
+        }
+
+        .mobile-explore-btn-text {
+          font-family: var(--font-body, sans-serif);
+          font-size: 13px;
           font-weight: 600;
-          color: #333333;
+          color: #ffffff;
+          letter-spacing: 0.01em;
+        }
+
+        .mobile-card-image-spacer {
+          height: 115px;
+        }
+
+        .mobile-card-bottom-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: 10px;
+        }
+
+        .mobile-card-bottom-tag {
+          font-family: var(--font-mono, monospace);
+          font-size: 8.5px;
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ── Thumbnails Row (5 cards matching Image 5) ── */
+        .mobile-thumbnails-row {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 6px;
+          width: 100%;
+        }
+
+        .mobile-thumb-card {
+          background: linear-gradient(180deg, #1b1e25 0%, #12141a 100%);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 12px;
+          padding: 8px 5px 5px 5px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 106px;
+          cursor: pointer;
+          transition: transform 0.2s ease, border-color 0.2s ease;
+          box-sizing: border-box;
+          text-align: left;
+        }
+
+        .mobile-thumb-card:active {
+          transform: scale(0.96);
+          border-color: #DE322D;
+        }
+
+        .thumb-card-header {
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
+        }
+
+        .thumb-card-num {
+          font-family: var(--font-mono, monospace);
+          font-size: 10.5px;
+          font-weight: 800;
+          color: #ffffff;
+          line-height: 1.1;
+        }
+
+        .thumb-card-title {
+          font-family: var(--font-body, sans-serif);
+          font-size: 8.5px;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.85);
+          line-height: 1.15;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 48px;
         }
 
-        .mobile-nav-bar {
+        .thumb-card-photo-box {
+          position: relative;
+          width: 100%;
+          height: 48px;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+
+        :global(.thumb-card-photo) {
+          object-fit: cover !important;
+        }
+
+        .thumb-card-photo-scrim {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+        }
+
+        /* ── Mobile Bottom Controls Bar ── */
+        .mobile-bottom-controls-bar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-top: 8px;
+          padding: 6px 2px;
+        }
+
+        .mobile-dots-track {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .mobile-dot-btn {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: #cbd5e1;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          transition: all 0.25s ease;
+        }
+
+        .mobile-dot-btn.mobile-dot-active {
+          width: 22px;
+          height: 6px;
+          border-radius: 9999px;
+          background-color: #DE322D;
+        }
+
+        .mobile-arrows-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .mobile-nav-circle-btn {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          background-color: #ffffff;
+          border: 1px solid #e2e8f0;
+          color: #0f172a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+          transition: all 0.2s ease;
+        }
+
+        .mobile-nav-circle-btn:active {
+          transform: scale(0.93);
+          background-color: #f1f5f9;
         }
 
         /* ── Bottom Bar ── */
@@ -1153,18 +1387,17 @@ export default function SectorMontage() {
           }
 
           .experience-header-right {
-            width: 100%;
-            justify-content: space-between;
+            display: none !important;
           }
         }
 
         @media (max-width: 640px) {
           .experience-sits-section {
-            padding: 52px 18px 36px 18px;
+            padding: 44px 16px 32px 16px;
           }
 
           .experience-headline {
-            font-size: 2.2rem;
+            font-size: clamp(2rem, 8vw, 2.45rem);
           }
 
           .experience-bottom-bar {
@@ -1175,11 +1408,6 @@ export default function SectorMontage() {
 
           .bottom-scroll-group {
             display: none;
-          }
-
-          .mobile-thumbnails-row {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
           }
         }
       `}</style>

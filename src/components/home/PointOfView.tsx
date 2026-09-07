@@ -206,13 +206,6 @@ export default function PointOfView() {
                 </Link>
               </div>
             </div>
-
-            {/* Bottom-Right Page Numbers (01 ────── 03) */}
-            <div className="pov-page-indicator">
-              <span className="pov-page-current">01</span>
-              <span className="pov-page-dash" />
-              <span className="pov-page-total">03</span>
-            </div>
           </div>
         </div>
       </div>
@@ -299,7 +292,7 @@ export default function PointOfView() {
           margin: 0;
         }
 
-        /* ── Buttons ── */
+        /* ── Buttons (Black background & white text for both versions) ── */
         .pov-buttons-row {
           display: flex;
           align-items: center;
@@ -311,45 +304,50 @@ export default function PointOfView() {
           display: inline-flex;
           align-items: center;
           gap: 0.55rem;
-          background-color: #9e1f24;
+          background-color: #000000;
           color: #ffffff;
           padding: 0.8rem 1.65rem;
           border-radius: 9999px;
+          border: 1px solid #000000;
           font-family: var(--font-display, sans-serif);
           font-size: 0.88rem;
           font-weight: 600;
           text-decoration: none;
-          box-shadow: 0 4px 14px rgba(158, 31, 36, 0.25);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
           transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .pov-btn-primary:hover {
-          background-color: #ba252b;
+          background-color: #222222;
+          border-color: #222222;
+          color: #ffffff;
           transform: translateY(-2px);
-          box-shadow: 0 8px 22px rgba(158, 31, 36, 0.35);
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
         }
 
         .pov-btn-secondary {
           display: inline-flex;
           align-items: center;
           gap: 0.55rem;
-          background-color: #ffffff;
-          color: #0b1a33;
-          border: 1px solid rgba(0, 0, 0, 0.15);
+          background-color: #000000;
+          color: #ffffff;
+          border: 1px solid #000000;
           padding: 0.8rem 1.65rem;
           border-radius: 9999px;
           font-family: var(--font-display, sans-serif);
           font-size: 0.88rem;
           font-weight: 600;
           text-decoration: none;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
           transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .pov-btn-secondary:hover {
-          border-color: #0b1a33;
+          background-color: #222222;
+          border-color: #222222;
+          color: #ffffff;
           transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
         }
 
         /* ── Right Column ── */

@@ -956,19 +956,40 @@ export default function IndianArmySpotlight() {
           .army-header-row {
             flex-direction: column;
             margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 5;
           }
           .army-header-left {
             flex: 1;
             max-width: 100%;
           }
+          /* Eliminate the clashing SVG trapezoid & overlapping duplicate text on mobile/tablet */
+          .army-hero-svg {
+            display: none !important;
+          }
           .army-hero-right-panel {
             width: 100%;
-            height: 380px;
-            opacity: 0.55;
+            height: 440px;
+            opacity: 0.38;
+            left: 0;
+            right: 0;
+          }
+          .army-hero-img-clip {
+            clip-path: none !important;
+            -webkit-clip-path: none !important;
+          }
+          .army-hero-vignette {
+            background: linear-gradient(180deg, rgba(7, 8, 12, 0.35) 0%, rgba(7, 8, 12, 0.8) 60%, #07080c 100%),
+                        linear-gradient(90deg, rgba(7, 8, 12, 0.85) 0%, rgba(7, 8, 12, 0.3) 50%, rgba(7, 8, 12, 0.85) 100%) !important;
+          }
+          .army-headline {
+            font-size: clamp(2rem, 5.8vw, 2.85rem) !important;
+            line-height: 1.12 !important;
+            margin-bottom: 1rem !important;
           }
           .army-metrics-grid {
             grid-template-columns: repeat(2, 1fr);
-            row-gap: 2.5rem;
+            row-gap: 2rem;
           }
         }
 
@@ -978,13 +999,35 @@ export default function IndianArmySpotlight() {
             height: 38px;
           }
           .army-metrics-grid {
-            grid-template-columns: 1fr;
-            row-gap: 2rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+          }
+          .army-metric-number {
+            font-size: 1.35rem;
+          }
+          .army-metric-label {
+            font-size: 0.78rem;
           }
           .army-hero-right-panel {
             width: 100%;
-            height: 320px;
-            opacity: 0.45;
+            height: 380px;
+            opacity: 0.35;
+          }
+          .army-headline {
+            font-size: clamp(1.85rem, 7.5vw, 2.35rem) !important;
+            line-height: 1.12 !important;
+          }
+          .army-description {
+            font-size: 0.92rem !important;
+            line-height: 1.55 !important;
+          }
+          .army-card-wrapper {
+            width: 250px;
+            height: 350px;
+          }
+          .card-active {
+            width: 275px;
+            height: 390px;
           }
         }
       `}</style>

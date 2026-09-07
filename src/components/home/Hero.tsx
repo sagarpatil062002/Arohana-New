@@ -192,9 +192,10 @@ export default function Hero() {
                   priority
                   quality={95}
                   sizes="100vw"
+                  className="hero-background-image"
                   style={{
                     objectFit: 'cover',
-                    objectPosition: 'center 46%',
+                    objectPosition: currentSlide.id === 'slide-01' ? 'right 42%' : 'center 46%',
                   }}
                 />
 
@@ -358,7 +359,7 @@ export default function Hero() {
                       {currentSlide.subtitle}
                     </p>
 
-                    {/* CTA Buttons */}
+                    {/* CTA Buttons - Both black bg and white text */}
                     <div className="hero-cta-buttons" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
                       <Link
                         href={currentSlide.primaryCtaLink}
@@ -366,7 +367,7 @@ export default function Hero() {
                         style={{
                           height: '50px',
                           padding: '0 1.85rem',
-                          backgroundColor: '#111113',
+                          backgroundColor: '#000000',
                           color: '#ffffff',
                           borderRadius: '9999px',
                           display: 'inline-flex',
@@ -375,17 +376,17 @@ export default function Hero() {
                           fontSize: '0.9rem',
                           fontWeight: 600,
                           textDecoration: 'none',
-                          border: '1px solid rgba(255, 255, 255, 0.18)',
-                          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.28)',
+                          border: '1px solid rgba(255, 255, 255, 0.22)',
+                          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
                           transition: 'all 0.25s ease',
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.backgroundColor = '#222226';
+                          e.currentTarget.style.backgroundColor = '#1f1f23';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.backgroundColor = '#111113';
+                          e.currentTarget.style.backgroundColor = '#000000';
                         }}
                       >
                         <span>{currentSlide.primaryCtaText}</span>
@@ -398,11 +399,9 @@ export default function Hero() {
                         style={{
                           height: '50px',
                           padding: '0 1.65rem',
-                          backgroundColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.85)',
-                          backdropFilter: 'blur(10px)',
-                          WebkitBackdropFilter: 'blur(10px)',
-                          color: textColor,
-                          border: isDark ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid rgba(15, 23, 42, 0.15)',
+                          backgroundColor: '#000000',
+                          color: '#ffffff',
+                          border: '1px solid rgba(255, 255, 255, 0.22)',
                           borderRadius: '9999px',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -410,15 +409,17 @@ export default function Hero() {
                           cursor: 'pointer',
                           fontSize: '0.9rem',
                           fontWeight: 600,
-                          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.05)',
+                          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
                           transition: 'all 0.25s ease',
                         }}
-                        className="button-editorial"
+                        className="button-editorial hero-secondary-cta"
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.backgroundColor = '#1f1f23';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.backgroundColor = '#000000';
                         }}
                       >
                         <div
@@ -426,13 +427,13 @@ export default function Hero() {
                             width: '24px',
                             height: '24px',
                             borderRadius: '50%',
-                            border: `1.5px solid ${textColor}`,
+                            border: '1.5px solid #ffffff',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                           }}
                         >
-                          <Play size={10} fill={textColor} stroke="currentColor" style={{ marginLeft: '1.5px' }} />
+                          <Play size={10} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '1.5px' }} />
                         </div>
                         <span>Watch Showreel</span>
                       </button>
@@ -805,9 +806,9 @@ export default function Hero() {
               width: 32px;
               height: 32px;
               border-radius: 50%;
-              background: ${isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)'};
-              border: 1px solid ${isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(15, 23, 42, 0.15)'};
-              color: ${textColor};
+              background: #000000;
+              border: 1px solid rgba(255, 255, 255, 0.22);
+              color: #ffffff;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -822,55 +823,67 @@ export default function Hero() {
               border-color: #DE322D;
             }
 
-            /* 3. HERO CONTAINER & INNER SPACING */
+            /* 3. HERO CONTAINER & INNER SPACING - FIXED HEIGHT ON MOBILE TO PREVENT PAGE JUMPING */
             .hero-container {
-              height: auto !important;
-              min-height: 560px !important;
-              max-height: none !important;
+              height: 600px !important;
+              min-height: 600px !important;
+              max-height: 600px !important;
               border-radius: 20px !important;
+              overflow: hidden !important;
             }
 
             .hero-top-spacer {
-              height: 1.25rem !important;
+              height: 2.25rem !important;
             }
 
             .hero-drag-wrapper {
-              padding: 1.25rem 1.25rem 1.75rem 1.25rem !important;
+              padding: 0.5rem 1.35rem 1rem 1.35rem !important;
               max-width: 100% !important;
+              flex: 1 !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: flex-start !important;
             }
 
             .hero-typography-stage {
-              height: auto !important;
-              min-height: auto !important;
-              max-height: none !important;
-              padding-top: 0.5rem !important;
-              padding-bottom: 1rem !important;
+              height: 380px !important;
+              min-height: 380px !important;
+              max-height: 380px !important;
+              padding-top: 0.25rem !important;
+              padding-bottom: 0.5rem !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: flex-start !important;
+              overflow: visible !important;
             }
 
             /* 4. TYPOGRAPHY SCALING */
             .hero-headline {
-              font-size: clamp(2.1rem, 7.6vw, 3rem) !important;
+              font-size: clamp(2rem, 7.2vw, 2.75rem) !important;
               line-height: 1.08 !important;
-              margin-bottom: 0.9rem !important;
+              margin-bottom: 0.85rem !important;
             }
 
             .hero-subtitle {
-              font-size: clamp(0.88rem, 3.3vw, 0.98rem) !important;
+              font-size: clamp(0.86rem, 3.2vw, 0.95rem) !important;
               line-height: 1.48 !important;
-              margin-bottom: 1.35rem !important;
+              margin-bottom: 1.25rem !important;
               max-width: 100% !important;
             }
 
-            /* 5. CTA BUTTONS ON MOBILE */
+            /* 5. CTA BUTTONS ON MOBILE - Strictly Black Background and White Text */
             .hero-cta-buttons {
               gap: 0.65rem !important;
             }
 
             .hero-cta-buttons :global(.hero-primary-cta),
-            .hero-cta-buttons :global(button) {
+            .hero-cta-buttons :global(.hero-secondary-cta) {
               height: 46px !important;
               padding: 0 1.35rem !important;
-              font-size: 0.86rem !important;
+              font-size: 0.84rem !important;
+              background-color: #000000 !important;
+              color: #ffffff !important;
+              border: 1px solid rgba(255, 255, 255, 0.22) !important;
             }
 
             /* 6. BOTTOM BAR ON MOBILE */
@@ -894,21 +907,33 @@ export default function Hero() {
 
             /* 7. FULL READABILITY OVERLAYS ON MOBILE */
             .hero-overlay-dark {
-              background: linear-gradient(180deg, rgba(7, 11, 20, 0.94) 0%, rgba(7, 11, 20, 0.78) 55%, rgba(7, 11, 20, 0.9) 100%) !important;
+              background: linear-gradient(180deg, rgba(7, 11, 20, 0.88) 0%, rgba(7, 11, 20, 0.65) 55%, rgba(7, 11, 20, 0.85) 100%) !important;
             }
 
             .hero-overlay-light {
-              background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.84) 55%, rgba(255, 255, 255, 0.92) 100%) !important;
+              background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.72) 55%, rgba(255, 255, 255, 0.88) 100%) !important;
             }
           }
 
           @media (max-width: 480px) {
+            .hero-container {
+              height: 590px !important;
+              min-height: 590px !important;
+              max-height: 590px !important;
+            }
+
+            .hero-typography-stage {
+              height: 375px !important;
+              min-height: 375px !important;
+              max-height: 375px !important;
+            }
+
             .hero-bottom-bar {
               padding: 0.75rem 1rem !important;
             }
 
             .hero-headline {
-              font-size: 2.1rem !important;
+              font-size: clamp(2rem, 7.5vw, 2.45rem) !important;
             }
           }
         `}</style>
