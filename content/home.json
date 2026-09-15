@@ -7,70 +7,70 @@
       "type": "hero"
     },
     {
-      "id": "brands",
-      "name": "02: Selected Brands & Organisations Marquee",
-      "visible": true,
-      "type": "brands"
-    },
-    {
-      "id": "impact",
-      "name": "03: Real-World Execution Impact Counters",
-      "visible": true,
-      "type": "stats"
-    },
-    {
       "id": "army",
-      "name": "04: Indian Army Projects 3D Spotlight",
+      "name": "02: Indian Army Projects 3D Spotlight",
       "visible": true,
       "type": "spotlight"
     },
     {
       "id": "pov",
-      "name": "05: Editorial Intro / A Point of View",
+      "name": "03: Editorial Intro / A Point of View",
       "visible": true,
       "type": "philosophy"
     },
     {
       "id": "work",
-      "name": "06: Selected Work Showcase (3D Coverflow)",
+      "name": "04: Selected Work Showcase (3D Coverflow)",
       "visible": true,
       "type": "showcase"
     },
     {
       "id": "services",
-      "name": "07: Practice Areas / Deep Black Services",
+      "name": "05: Business Capabilities / Practice Areas",
       "visible": true,
       "type": "services"
     },
     {
-      "id": "montage",
-      "name": "08: Sectors & Built Environment Montage",
+      "id": "brands",
+      "name": "06: Selected Brands & Organisations",
       "visible": true,
+      "type": "brands"
+    },
+    {
+      "id": "cta",
+      "name": "07: Signature Mouse-Trail Interactive CTA",
+      "visible": true,
+      "type": "cta"
+    },
+    {
+      "id": "impact",
+      "name": "Impact Counters (Integrated into Capabilities)",
+      "visible": false,
+      "type": "stats"
+    },
+    {
+      "id": "montage",
+      "name": "Sectors & Built Environment Montage",
+      "visible": false,
       "type": "montage"
     },
     {
       "id": "tourin",
-      "name": "09: Tourin Experiential Travel Feature",
-      "visible": true,
+      "name": "Tourin Experiential Travel Feature",
+      "visible": false,
       "type": "spotlight"
-    },
-    {
-      "id": "cta",
-      "name": "10: Signature Mouse-Trail Interactive CTA",
-      "visible": true,
-      "type": "cta"
     }
   ],
   "hero": {
-    "badge": "BRAND STRATEGY · EXECUTION · CULTURE",
-    "headline": "Ideas\ninto\nImpact.",
-    "subheadline": "We build brands, businesses and experiences across very different environments.",
+    "badge": "STRATEGY · COMMUNICATION · EXECUTION",
+    "headline": "We build brands,\nbusinesses &\nexperiences.",
+    "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
     "ctaLabel": "Explore Our Work",
     "ctaLink": "/work",
     "secondaryCtaLabel": "Watch Showreel",
     "secondaryCtaLink": "/services",
     "videoUrl": "/videos/hero-montage.mp4",
-    "posterImage": "/images/home/Hero Image Home Page.png"
+    "posterImage": "/images/home/hero-poster.jpg"
   },
   "brands": {
     "eyebrow": "SELECTED PARTNERS & ORGANISATIONS",
@@ -80,6 +80,7 @@
         "id": "raysons",
         "name": "Raysons Group",
         "monogram": "RG",
+        "logo": "/images/partners/raysons.svg",
         "badgeBg": "#0066B3",
         "badgeColor": "#ffffff",
         "link": "/work/raysons-group"
@@ -88,6 +89,7 @@
         "id": "picturetime",
         "name": "PictureTime",
         "monogram": "PT",
+        "logo": "/images/partners/picturetime.svg",
         "badgeBg": "linear-gradient(135deg, #E50914 0%, #831010 100%)",
         "badgeColor": "#ffffff",
         "link": "/work/picturetime"
@@ -96,6 +98,7 @@
         "id": "khau-gully",
         "name": "Khau Gully",
         "monogram": "KG",
+        "logo": "/images/partners/khaugully.svg",
         "badgeBg": "#E65100",
         "badgeColor": "#ffffff",
         "link": "/work"
@@ -112,6 +115,7 @@
         "id": "she-project",
         "name": "SHE Project",
         "monogram": "SHE",
+        "logo": "/images/partners/she.svg",
         "badgeBg": "linear-gradient(135deg, #DE322D 0%, #B22222 100%)",
         "badgeColor": "#ffffff",
         "link": "/work"
@@ -120,6 +124,7 @@
         "id": "dtk",
         "name": "DTK",
         "monogram": "DTK",
+        "logo": "/images/partners/dtk.svg",
         "badgeBg": "#1B4F72",
         "badgeColor": "#ffffff",
         "link": "/work"
@@ -128,6 +133,7 @@
         "id": "misu",
         "name": "Misu",
         "monogram": "MISU",
+        "logo": "/images/partners/misu.svg",
         "badgeBg": "#881337",
         "badgeColor": "#ffffff",
         "link": "/work"

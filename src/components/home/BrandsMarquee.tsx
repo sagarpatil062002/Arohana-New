@@ -3,17 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
-interface BrandItem {
+export interface BrandItem {
   id: string;
   name: string;
   monogram: string;
   logo?: string;
-  badgeBg: string;
-  badgeColor: string;
-  link: string;
+  link?: string;
 }
 
 const PARTNER_BRANDS: BrandItem[] = [
@@ -21,387 +18,264 @@ const PARTNER_BRANDS: BrandItem[] = [
     id: 'raysons',
     name: 'Raysons Group',
     monogram: 'RG',
-    badgeBg: '#0066B3',
-    badgeColor: '#ffffff',
+    logo: '/images/partners/raysons.svg',
     link: '/work/raysons-group',
   },
   {
     id: 'picturetime',
     name: 'PictureTime',
     monogram: 'PT',
-    badgeBg: 'linear-gradient(135deg, #E50914 0%, #831010 100%)',
-    badgeColor: '#ffffff',
+    logo: '/images/partners/picturetime.svg',
     link: '/work/picturetime',
   },
   {
-    id: 'khau-gully',
-    name: 'Khau Gully',
-    monogram: 'KG',
-    badgeBg: '#E65100',
-    badgeColor: '#ffffff',
-    link: '/work',
-  },
-  {
-    id: 'tranquil-studio',
-    name: 'Tranquil Studio',
-    monogram: 'TS',
-    badgeBg: '#2E4053',
-    badgeColor: '#ffffff',
+    id: 'misu',
+    name: 'MISU Pan-Asian',
+    monogram: 'MISU',
+    logo: '/images/partners/misu.svg',
     link: '/work',
   },
   {
     id: 'she-project',
     name: 'SHE Project',
     monogram: 'SHE',
-    badgeBg: 'linear-gradient(135deg, #DE322D 0%, #B22222 100%)',
-    badgeColor: '#ffffff',
+    logo: '/images/partners/she.svg',
     link: '/work',
   },
   {
     id: 'dtk',
     name: 'DTK',
     monogram: 'DTK',
-    badgeBg: '#1A2E40',
-    badgeColor: '#ffffff',
+    logo: '/images/partners/dtk.svg',
     link: '/work',
   },
   {
-    id: 'tourin',
-    name: 'Tourin',
-    monogram: 'TRN',
-    badgeBg: 'linear-gradient(135deg, #0B3C5D 0%, #1D2731 100%)',
-    badgeColor: '#ffffff',
-    link: '/tourin',
+    id: 'khau-gully',
+    name: 'Khau Gully',
+    monogram: 'KG',
+    logo: '/images/partners/khaugully.svg',
+    link: '/work',
   },
   {
     id: 'vital-wellness',
     name: 'Vital Wellness',
     monogram: 'VW',
-    badgeBg: 'linear-gradient(135deg, #6A38EB 0%, #9B51E0 100%)',
-    badgeColor: '#ffffff',
+    logo: '/images/partners/vitalwellness.svg',
     link: '/work',
   },
   {
     id: 'residency-club',
-    name: 'Residency Club Kolhapur',
+    name: 'Residency Club',
     monogram: 'RC',
-    badgeBg: '#1B4D3E',
-    badgeColor: '#E6CA65',
+    logo: '/images/partners/residencyclub.svg',
     link: '/work',
   },
   {
     id: 'blu-resorts',
     name: 'blu Resorts',
-    monogram: 'blu',
-    badgeBg: 'linear-gradient(135deg, #00A3E0 0%, #0072CE 100%)',
-    badgeColor: '#ffffff',
+    monogram: 'BLU',
+    link: '/work',
+  },
+  {
+    id: 'tranquil-studio',
+    name: 'Tranquil Studio',
+    monogram: 'TS',
     link: '/work',
   },
   {
     id: 'amgoc',
     name: 'AMGOC',
     monogram: 'AMG',
-    badgeBg: '#F36F21',
-    badgeColor: '#ffffff',
     link: '/work',
   },
   {
     id: 'fraganta',
     name: 'Fraganta',
     monogram: 'FG',
-    badgeBg: '#D4AF37',
-    badgeColor: '#ffffff',
     link: '/work',
   },
   {
     id: 'spice-goa',
     name: 'Spice Goa',
     monogram: 'SG',
-    badgeBg: '#C41E3A',
-    badgeColor: '#ffffff',
-    link: '/work',
-  },
-  {
-    id: 'babies-world',
-    name: 'Babies World',
-    monogram: 'BW',
-    badgeBg: 'linear-gradient(135deg, #E0218A 0%, #00C7B7 100%)',
-    badgeColor: '#ffffff',
     link: '/work',
   },
   {
     id: 'shelkhang',
     name: 'Shelkhang',
     monogram: 'SK',
-    badgeBg: '#2B547E',
-    badgeColor: '#ffffff',
-    link: '/tourin',
-  },
-  {
-    id: 'misu',
-    name: 'MISU Pan-Asian',
-    monogram: 'MISU',
-    badgeBg: '#1c1c1e',
-    badgeColor: '#ffffff',
     link: '/work',
   },
 ];
 
 export default function BrandsMarquee() {
   const [isPaused, setIsPaused] = useState(false);
-
   const { content } = useCmsContent();
   const brandsCms = content?.home?.brands;
-  const activeEyebrow = brandsCms?.eyebrow || 'TRUSTED BY';
-  const activeHeading = brandsCms?.heading || "Brands and organisations we've worked with.";
-  const activeBrands = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
+  const activeEyebrow = brandsCms?.eyebrow || 'SELECTED PARTNERS & ORGANISATIONS';
+  const activeHeading = brandsCms?.heading && !brandsCms.heading.includes('forward-thinking')
+    ? brandsCms.heading
+    : 'Trusted by businesses & institutions';
+  const activeBrands: BrandItem[] = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
 
-  // Duplicate items for a seamless infinite loop
+  // Seamless loop by duplicating items
   const marqueeItems = [...activeBrands, ...activeBrands];
 
   return (
     <section
       id="trusted-by"
-      className="section-light trusted-by-section"
+      className="section-light brands-bottom-section"
       style={{
-        paddingTop: 'clamp(3.5rem, 5vw, 5.5rem)',
-        paddingBottom: 'clamp(3.5rem, 5vw, 5.5rem)',
+        paddingTop: 'clamp(3rem, 4.5vw, 4.5rem)',
+        paddingBottom: 'clamp(3rem, 4.5vw, 4.5rem)',
+        borderTop: '1px solid rgba(0, 0, 0, 0.08)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-        backgroundColor: '#ffffff',
+        backgroundColor: '#fafaf9',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      <div className="padding-global container-large">
-        {/* ============================================================
-            SPLIT LAYOUT: Left Column (~42%) + Right Column (~58%)
-            ============================================================ */}
-        <div className="trusted-split-grid">
-          {/* LEFT COLUMN: Title, Tag, Paragraph & CTA Link */}
-          <div className="trusted-left-col">
-            {/* Tag / Eyebrow: TRUSTED BY */}
-            <div
-              className="tag-mono"
+      <div className="padding-global container-large" style={{ marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <div
+            className="tag-mono"
+            style={{
+              color: '#DE322D',
+              marginBottom: '0.5rem',
+              fontSize: '0.76rem',
+              letterSpacing: '0.14em',
+              fontWeight: 700,
+            }}
+          >
+            {activeEyebrow}
+          </div>
+          <h3
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(1.45rem, 2.2vw, 1.95rem)',
+              fontWeight: 600,
+              letterSpacing: '-0.025em',
+              color: '#18181b',
+              margin: 0,
+            }}
+          >
+            {activeHeading}
+          </h3>
+        </div>
+      </div>
+
+      {/* Smooth Marquee Track able to take actual brand logos clearly */}
+      <div
+        className="brands-marquee-outer"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        style={{
+          position: 'relative',
+          width: '100%',
+          overflow: 'hidden',
+          padding: '0.75rem 0',
+        }}
+      >
+        <div className="marquee-edge-fade marquee-edge-left" />
+        <div className="marquee-edge-fade marquee-edge-right" />
+
+        <div className={`brands-marquee-track ${isPaused ? 'paused' : ''}`}>
+          {marqueeItems.map((brand, idx) => (
+            <Link
+              key={`${brand.id}-${idx}`}
+              href={brand.link || '/work'}
+              className="brand-card-item"
               style={{
-                color: '#DE322D',
-                marginBottom: '0.85rem',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.45rem',
-                fontSize: '0.82rem',
-                letterSpacing: '0.14em',
-                fontWeight: 700,
+                justifyContent: 'center',
+                padding: brand.logo ? '0.65rem 1.6rem' : '0.65rem 1.35rem',
+                backgroundColor: '#ffffff',
+                border: '1px solid rgba(0, 0, 0, 0.09)',
+                borderRadius: '9999px',
+                textDecoration: 'none',
+                flexShrink: 0,
+                minHeight: '52px',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              <span
-                style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  backgroundColor: '#DE322D',
-                }}
-              />
-              {activeEyebrow}
-            </div>
-
-            {/* Heading */}
-            <h2
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.1rem, 3.6vw, 3.4rem)',
-                lineHeight: 1.1,
-                fontWeight: 500,
-                letterSpacing: '-0.035em',
-                color: '#111111',
-                margin: 0,
-                marginBottom: '1rem',
-              }}
-            >
-              {activeHeading}
-            </h2>
-
-            {/* Descriptive Paragraph */}
-            <p
-              style={{
-                fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)',
-                color: '#555555',
-                lineHeight: 1.6,
-                margin: 0,
-                marginBottom: '1.75rem',
-                maxWidth: '480px',
-              }}
-            >
-              From industry leaders to ambitious startups, we collaborate with partners who believe in
-              building what&apos;s next.
-            </p>
-
-            {/* View All Partners Link */}
-            <div>
-              <Link
-                href="/work"
-                className="button-editorial button-editorial-dark"
-                style={{
-                  height: '46px',
-                  padding: '0 1.65rem',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.55rem',
-                  textDecoration: 'none',
-                }}
-              >
-                <span>View All Partners</span>
-                <ArrowRight size={15} />
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN: Single-line Horizontally Scrolling Logo Marquee */}
-          <div
-            className="trusted-right-col"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {/* Edge Gradients for Soft Visual Fade */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                width: 'clamp(30px, 5vw, 60px)',
-                background: 'linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
-                zIndex: 10,
-                pointerEvents: 'none',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                right: 0,
-                width: 'clamp(30px, 5vw, 60px)',
-                background: 'linear-gradient(270deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%)',
-                zIndex: 10,
-                pointerEvents: 'none',
-              }}
-            />
-
-            {/* Single Marquee Track (Right to Left) with Square Logo Cards */}
-            <div
-              className="trusted-marquee-track track-single"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1.15rem',
-                width: 'max-content',
-                animation: 'splitMarqueeRightToLeft 32s linear infinite',
-                animationPlayState: isPaused ? 'paused' : 'running',
-                willChange: 'transform',
-                padding: '0.6rem 0',
-              }}
-            >
-              {marqueeItems.map((brand, idx) => (
-                <Link
-                  key={`${brand.id}-${idx}`}
-                  href={brand.link}
-                  title={brand.name}
-                  aria-label={brand.name}
-                  className="brand-square-card"
+              {brand.logo ? (
+                /* Actual brand logo displayed clearly */
+                <div
+                  className="brand-logo-container"
                   style={{
-                    width: '92px',
-                    height: '92px',
-                    borderRadius: '8px',
-                    backgroundColor: '#ffffff',
-                    border: '1px solid rgba(0, 0, 0, 0.08)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    textDecoration: 'none',
-                    flexShrink: 0,
-                    transition: 'all 0.25s ease',
-                    cursor: 'pointer',
+                    height: '32px',
                   }}
                 >
-                  {/* Square Logo Mark - Logo Image if present, else Monogram */}
-                  <div
-                    className="brand-logo-mark"
+                  <Image
+                    src={brand.logo}
+                    alt={brand.name}
+                    width={150}
+                    height={36}
                     style={{
-                      width: '54px',
-                      height: '54px',
-                      borderRadius: '6px',
-                      background: brand.badgeBg || '#111113',
-                      color: brand.badgeColor || '#ffffff',
+                      maxHeight: '30px',
+                      width: 'auto',
+                      objectFit: 'contain',
+                      display: 'block',
+                    }}
+                  />
+                </div>
+              ) : (
+                /* Sleek fallback monogram badge + brand name */
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div
+                    style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      backgroundColor: '#18181b',
+                      color: '#ffffff',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontFamily: 'var(--font-display)',
+                      fontSize: '0.68rem',
                       fontWeight: 700,
-                      fontSize:
-                        (brand.monogram || '').length > 3
-                          ? '0.78rem'
-                          : (brand.monogram || '').length === 3
-                          ? '0.9rem'
-                          : '1.05rem',
                       letterSpacing: '0.04em',
-                      boxShadow: '0 3px 8px rgba(0, 0, 0, 0.1)',
-                      transition: 'transform 0.25s ease',
-                      position: 'relative',
-                      overflow: 'hidden',
                     }}
                   >
-                    {brand.logo ? (
-                      <Image
-                        src={brand.logo}
-                        alt={brand.name || 'Brand logo'}
-                        fill
-                        sizes="54px"
-                        style={{ objectFit: 'contain', padding: '6px' }}
-                      />
-                    ) : (
-                      brand.monogram
-                    )}
+                    {brand.monogram}
                   </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+                  <span
+                    style={{
+                      fontSize: '0.86rem',
+                      fontWeight: 600,
+                      color: '#27272a',
+                      letterSpacing: '-0.01em',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {brand.name}
+                  </span>
+                </div>
+              )}
+            </Link>
+          ))}
         </div>
       </div>
 
       <style jsx>{`
-        .trusted-split-grid {
-          display: grid;
-          grid-template-columns: 42% 58%;
-          align-items: center;
-          gap: clamp(2rem, 4vw, 4rem);
-        }
-
-        .trusted-left-col {
+        .brands-marquee-track {
           display: flex;
-          flex-direction: column;
-          justifyContent: center;
+          align-items: center;
+          gap: 1.25rem;
+          width: max-content;
+          animation: marqueeScroll 40s linear infinite;
         }
 
-        .trusted-right-col {
-          position: relative;
-          overflow: hidden;
-          width: 100%;
-          padding: 0.5rem 0;
+        .brands-marquee-track.paused {
+          animation-play-state: paused;
         }
 
-        .brand-square-card:hover {
-          transform: translateY(-3px);
-          border-color: #DE322D !important;
-          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08) !important;
-        }
-
-        .brand-square-card:hover .brand-logo-mark {
-          transform: scale(1.08);
-        }
-
-        @keyframes splitMarqueeRightToLeft {
+        @keyframes marqueeScroll {
           0% {
             transform: translateX(0%);
           }
@@ -410,19 +284,38 @@ export default function BrandsMarquee() {
           }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          .trusted-marquee-track {
-            animation: none !important;
-          }
+        .brand-card-item:hover {
+          transform: translateY(-2px);
+          border-color: rgba(0, 0, 0, 0.22) !important;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
         }
 
-        @media (max-width: 991px) {
-          .trusted-split-grid {
-            grid-template-columns: 1fr !important;
-            gap: 2.5rem !important;
+        .marquee-edge-fade {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 90px;
+          z-index: 10;
+          pointer-events: none;
+        }
+
+        .marquee-edge-left {
+          left: 0;
+          background: linear-gradient(90deg, #fafaf9 0%, rgba(250, 250, 249, 0) 100%);
+        }
+
+        .marquee-edge-right {
+          right: 0;
+          background: linear-gradient(270deg, #fafaf9 0%, rgba(250, 250, 249, 0) 100%);
+        }
+
+        @media (max-width: 768px) {
+          .marquee-edge-fade {
+            width: 45px;
           }
-          .trusted-left-col {
-            max-width: 680px;
+          .brands-marquee-track {
+            gap: 0.85rem;
+            animation-duration: 30s;
           }
         }
       `}</style>

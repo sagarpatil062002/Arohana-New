@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
+  <circle cx="18" cy="20" r="12" stroke="#18181b" stroke-width="2"/>
+  <path d="M14 20C14 16.5 18 14 18 14C18 14 22 16.5 22 20C22 23.5 18 26 18 26C18 26 14 23.5 14 20Z" fill="#18181b"/>
+  <text x="38" y="24" fill="#18181b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="0.08em">SHE PROJECT</text>
+  <text x="38" y="32" fill="#71717a" font-family="system-ui, -apple-system, sans-serif" font-size="7" font-weight="600" letter-spacing="0.14em">FOUNDATION</text>
+</svg>

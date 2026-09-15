@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
+  <path d="M12 8H26C29.3137 8 32 10.6863 32 14C32 17.3137 29.3137 20 26 20H18V32H12V8Z" fill="#18181b"/>
+  <path d="M22 20L29.5 32H36.5L28 20H22Z" fill="#18181b"/>
+  <text x="44" y="24" fill="#18181b" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="0.08em">RAYSONS</text>
+  <text x="44" y="32" fill="#71717a" font-family="system-ui, -apple-system, sans-serif" font-size="7.5" font-weight="600" letter-spacing="0.18em">GROUP</text>
+</svg>

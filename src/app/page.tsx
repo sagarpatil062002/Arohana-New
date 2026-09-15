@@ -46,14 +46,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <BrandsMarquee />
-      <RealWorldImpact />
       <IndianArmySpotlight />
       <PointOfView />
       <SelectedWork />
       <ServicesSection />
-      <SectorMontage />
-      <TourinSpotlight />
+      <BrandsMarquee />
       <InteractiveCTA />
     </>
   );

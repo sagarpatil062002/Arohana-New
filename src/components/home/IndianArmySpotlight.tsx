@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, Mountain, ShieldCheck, Video, Landmark } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
 interface ArmyCard {
@@ -14,9 +14,8 @@ interface ArmyCard {
   image: string;
 }
 
-// Exactly ordered matching the reference image layout:
+// Exactly ordered layout:
 // Far Left: 04, Mid Left: 02, Center (Active): 01, Mid Right: 03, Far Right: 05
-// All images are dedicated authentic Indian Army photographs from /images/army/
 const ARMY_PROJECT_CARDS: ArmyCard[] = [
   {
     id: 'army-ceremonies',
@@ -93,13 +92,13 @@ export default function IndianArmySpotlight() {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
-  // Autoplay automatically every 2.8 seconds
+  // Autoplay automatically every 3.2 seconds
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (!isDragging) {
       timerRef.current = setInterval(() => {
         nextSlide();
-      }, 2800);
+      }, 3200);
     }
   }, [isDragging, nextSlide]);
 
@@ -187,12 +186,11 @@ export default function IndianArmySpotlight() {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* ============================================================
-          UNIFIED HERO RIGHT PANEL: Image + Slant Line + Framed Box
-          Fitted perfectly to the slant line where the background image starts
+          UNIFIED HERO RIGHT PANEL: Background Soldier + Framed Box (Clean Borders)
           ============================================================ */}
       <div className="army-hero-right-panel">
         <div className="army-hero-canvas">
-          {/* Background Indian Army Soldier clipped along the slant line */}
+          {/* Background Indian Army Soldier with collinear slant clip */}
           <div className="army-hero-img-clip">
             <Image
               src="/images/army/army-hero.jpg"
@@ -203,7 +201,7 @@ export default function IndianArmySpotlight() {
               style={{
                 objectFit: 'cover',
                 objectPosition: 'top right',
-                opacity: 0.78,
+                opacity: 0.72,
                 filter: 'contrast(1.15) brightness(0.95)',
               }}
             />
@@ -211,41 +209,30 @@ export default function IndianArmySpotlight() {
             <div className="army-hero-vignette" />
           </div>
 
-          {/* Slant Line & Trapezoid Box SVG - 100% collinear with the image clip */}
+          {/* Clean Box SVG with all typography restored, NO RED borders or red lines */}
           <svg
             className="army-hero-svg"
             viewBox="0 0 850 500"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
-            {/* Upper slant line continuing from top edge to the box */}
-            <line
-              x1="40"
-              y1="0"
-              x2="66.65"
-              y2="65"
-              stroke="#DE322D"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-
-            {/* Tactical radar arc accent above the box */}
+            {/* Subtle radar arc accent */}
             <path
               d="M 90,65 A 70 45 0 0 1 210,65"
-              stroke="rgba(222, 50, 45, 0.45)"
-              strokeWidth="1.5"
+              stroke="rgba(255, 255, 255, 0.15)"
+              strokeWidth="1"
               strokeDasharray="40 25"
               fill="none"
             />
 
-            {/* Trapezoid Box Polygon: left edge is identical to the slant line where image starts */}
+            {/* Trapezoid Box Polygon - Clean subtle border without red stroke */}
             <polygon
               points="66.65,65 356.65,65 356.65,195 120,195"
-              fill="rgba(7, 8, 12, 0.92)"
-              stroke="#DE322D"
-              strokeWidth="3"
+              fill="rgba(7, 8, 12, 0.94)"
+              stroke="rgba(255, 255, 255, 0.18)"
+              strokeWidth="1.5"
               strokeLinejoin="miter"
-              filter="drop-shadow(0 0 18px rgba(222, 50, 45, 0.35))"
+              filter="drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6))"
             />
 
             {/* Title Text Inside Box */}
@@ -285,56 +272,6 @@ export default function IndianArmySpotlight() {
             >
               PROJECTS
             </text>
-
-            {/* Values Stack Below the Box */}
-            <text
-              x="352"
-              y="226"
-              fill="rgba(255,255,255,0.45)"
-              fontFamily="var(--font-mono, monospace)"
-              fontSize="10"
-              fontWeight="600"
-              textAnchor="end"
-              letterSpacing="0.26em"
-            >
-              PEOPLE
-            </text>
-            <text
-              x="352"
-              y="244"
-              fill="rgba(255,255,255,0.45)"
-              fontFamily="var(--font-mono, monospace)"
-              fontSize="10"
-              fontWeight="600"
-              textAnchor="end"
-              letterSpacing="0.26em"
-            >
-              PURPOSE
-            </text>
-            <text
-              x="352"
-              y="262"
-              fill="rgba(255,255,255,0.45)"
-              fontFamily="var(--font-mono, monospace)"
-              fontSize="10"
-              fontWeight="600"
-              textAnchor="end"
-              letterSpacing="0.26em"
-            >
-              POSSIBILITIES
-            </text>
-            <text
-              x="352"
-              y="280"
-              fill="rgba(255,255,255,0.45)"
-              fontFamily="var(--font-mono, monospace)"
-              fontSize="10"
-              fontWeight="600"
-              textAnchor="end"
-              letterSpacing="0.26em"
-            >
-              BEYOND
-            </text>
           </svg>
         </div>
       </div>
@@ -344,7 +281,6 @@ export default function IndianArmySpotlight() {
             TOP HEADER ROW: Left Content
             ============================================================ */}
         <div className="army-header-row">
-          {/* Left Column: Eyebrow, Main Headline, Paragraph, Beyond Boundaries */}
           <div className="army-header-left">
             <div className="army-eyebrow-row">
               <span className="army-eyebrow-text">{armyCms?.eyebrow || 'PROOF OF WORK'}</span>
@@ -359,15 +295,15 @@ export default function IndianArmySpotlight() {
               {armyCms?.description || "From remote-community health initiatives in high-altitude Ladakh to official investiture ceremony films for the Indian Army, Ārohana has worked on projects where the environment, audience and institutional responsibility demanded an entirely different level of preparation and discipline."}
             </p>
 
+            {/* Beyond Boundaries - Clean without red underline stroke */}
             <div className="army-script-badge">
               <span className="army-script-text">Beyond Boundaries</span>
-              <span className="army-script-stroke" />
             </div>
           </div>
         </div>
 
         {/* ============================================================
-            3D CURVED CAROUSEL (5 VISIBLE CARDS WITH ACTIVE RED BORDER)
+            3D CURVED CAROUSEL (5 CARDS WITH CLEAN SLEEK HIGHLIGHT)
             ============================================================ */}
         <div
           className="army-carousel-container"
@@ -410,7 +346,6 @@ export default function IndianArmySpotlight() {
           <div className="army-carousel-viewport">
             <div className="army-cards-stage">
               {cards.map((item, index) => {
-                // Calculate position offset relative to activeIndex (-2, -1, 0, 1, 2)
                 let offset = (index - activeIndex + total) % total;
                 if (offset > total / 2) {
                   offset -= total;
@@ -421,7 +356,6 @@ export default function IndianArmySpotlight() {
 
                 const isActive = offset === 0;
 
-                // 3D Perspective Parameters
                 let translateX = 0;
                 let translateZ = 0;
                 let rotateY = 0;
@@ -482,7 +416,6 @@ export default function IndianArmySpotlight() {
                     }}
                   >
                     <div className={`army-card-inner ${isActive ? 'inner-active' : ''}`}>
-                      {/* Background Project Image - Dedicated Army Image */}
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -495,16 +428,13 @@ export default function IndianArmySpotlight() {
                         }}
                       />
 
-                      {/* Card Gradient Overlay */}
                       <div className="army-card-overlay" />
 
-                      {/* Card Top Tag: 01 ─── */}
                       <div className="army-card-tag">
                         <span className="army-card-tag-num">{item.index}</span>
                         <span className="army-card-tag-line" />
                       </div>
 
-                      {/* Card Bottom Content */}
                       <div className="army-card-content">
                         <span className="army-card-category">{item.category}</span>
                         <h4 className="army-card-title">{item.title}</h4>
@@ -517,69 +447,9 @@ export default function IndianArmySpotlight() {
             </div>
           </div>
         </div>
-
-        {/* Divider with Red Dash Accent */}
-        <div className="army-divider-wrapper">
-          <div className="army-divider-line" />
-          <div className="army-divider-red-dash" />
-        </div>
-
-        {/* ============================================================
-            BOTTOM METRICS ROW: 4 Columns with Icons Matching Reference
-            ============================================================ */}
-        <div className="army-metrics-grid">
-          {/* Metric 1 */}
-          <div className="army-metric-item">
-            <div className="army-metric-icon-box">
-              <Mountain size={20} color="#ffffff" />
-            </div>
-            <div className="army-metric-number">14,000+ FT</div>
-            <div className="army-metric-label">
-              High-Altitude Logistics<br />
-              in Eastern Ladakh
-            </div>
-          </div>
-
-          {/* Metric 2 */}
-          <div className="army-metric-item">
-            <div className="army-metric-icon-box">
-              <ShieldCheck size={20} color="#ffffff" />
-            </div>
-            <div className="army-metric-number">100%</div>
-            <div className="army-metric-label">
-              Protocol Security &amp;<br />
-              Institutional Clearance
-            </div>
-          </div>
-
-          {/* Metric 3 */}
-          <div className="army-metric-item">
-            <div className="army-metric-icon-box">
-              <Video size={20} color="#ffffff" />
-            </div>
-            <div className="army-metric-number">MULTI-CAM</div>
-            <div className="army-metric-label">
-              Ceremonial Filming &amp;<br />
-              4K Master Sound
-            </div>
-          </div>
-
-          {/* Metric 4 */}
-          <div className="army-metric-item">
-            <div className="army-metric-icon-box">
-              <Landmark size={20} color="#ffffff" />
-            </div>
-            <div className="army-metric-number">HQ THEATRE</div>
-            <div className="army-metric-label">
-              Western Command &amp;<br />
-              14 Corps Headquarters
-            </div>
-          </div>
-        </div>
       </div>
 
       <style jsx>{`
-        /* ── Unified Hero Right Panel: Background Image + Slant Line + Box ── */
         .army-hero-right-panel {
           position: absolute;
           top: 0;
@@ -600,7 +470,6 @@ export default function IndianArmySpotlight() {
         .army-hero-img-clip {
           position: absolute;
           inset: 0;
-          /* Slant cut: matches viewBox 0 0 850 500 collinear slope (40/850=4.70588%, 245/850=28.8235%) */
           clip-path: polygon(4.70588% 0%, 100% 0%, 100% 100%, 28.8235% 100%);
           -webkit-clip-path: polygon(4.70588% 0%, 100% 0%, 100% 100%, 28.8235% 100%);
         }
@@ -653,7 +522,7 @@ export default function IndianArmySpotlight() {
         .army-eyebrow-dash {
           width: 38px;
           height: 1.5px;
-          background-color: #DE322D;
+          background-color: rgba(255, 255, 255, 0.35);
           display: inline-block;
         }
 
@@ -665,10 +534,6 @@ export default function IndianArmySpotlight() {
           line-height: 1.08;
           color: #ffffff;
           margin: 0 0 1.25rem 0;
-        }
-
-        .army-red-dot {
-          color: #DE322D;
         }
 
         .army-description {
@@ -690,27 +555,16 @@ export default function IndianArmySpotlight() {
           font-family: 'Caveat', cursive, sans-serif;
           font-weight: 700;
           font-size: 2.1rem;
-          color: rgba(255, 255, 255, 0.65);
+          color: rgba(255, 255, 255, 0.8);
           letter-spacing: 0.03em;
-          transform: rotate(-4deg);
+          transform: rotate(-3deg);
           line-height: 1;
-        }
-
-        .army-script-stroke {
-          width: 72px;
-          height: 3px;
-          background-color: #DE322D;
-          border-radius: 9999px;
-          margin-top: 2px;
-          margin-left: 8px;
-          transform: rotate(-2deg);
         }
 
         /* ── 3D Carousel Stage ── */
         .army-carousel-container {
           position: relative;
           width: 100%;
-          margin-bottom: clamp(3rem, 5vw, 4.5rem);
           user-select: none;
         }
 
@@ -762,9 +616,10 @@ export default function IndianArmySpotlight() {
           transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
+        /* Sleek highlight border without heavy red border or red glow */
         .inner-active {
-          border: 2px solid #DE322D !important;
-          box-shadow: 0 0 35px rgba(222, 50, 45, 0.45), 0 25px 60px rgba(0, 0, 0, 0.9) !important;
+          border: 1px solid rgba(255, 255, 255, 0.45) !important;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 25px rgba(255, 255, 255, 0.08) !important;
         }
 
         .army-card-overlay {
@@ -815,7 +670,7 @@ export default function IndianArmySpotlight() {
         }
 
         .army-card-category {
-          color: #DE322D;
+          color: rgba(255, 255, 255, 0.75);
           font-family: var(--font-mono, monospace);
           font-size: 0.68rem;
           font-weight: 700;
@@ -848,8 +703,8 @@ export default function IndianArmySpotlight() {
           top: 50%;
           transform: translateY(-50%);
           z-index: 120;
-          width: 46px;
-          height: 46px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -875,80 +730,15 @@ export default function IndianArmySpotlight() {
         .army-nav-right {
           right: 0;
           background-color: rgba(14, 16, 22, 0.75);
-          border: 1px solid #DE322D;
-          color: #DE322D;
+          border: 1px solid rgba(255, 255, 255, 0.22);
+          color: #ffffff;
           backdrop-filter: blur(8px);
         }
 
         .army-nav-right:hover {
-          background-color: #DE322D;
-          color: #ffffff;
-          box-shadow: 0 0 20px rgba(222, 50, 45, 0.6);
+          background-color: rgba(255, 255, 255, 0.15);
+          border-color: #ffffff;
           transform: translateY(-50%) scale(1.08);
-        }
-
-        /* ── Divider ── */
-        .army-divider-wrapper {
-          position: relative;
-          width: 100%;
-          margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
-        }
-
-        .army-divider-line {
-          width: 100%;
-          height: 1px;
-          background-color: rgba(255, 255, 255, 0.12);
-        }
-
-        .army-divider-red-dash {
-          position: absolute;
-          right: 30px;
-          top: -1px;
-          width: 60px;
-          height: 2px;
-          background-color: #DE322D;
-        }
-
-        /* ── Metrics Grid ── */
-        .army-metrics-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: clamp(1.5rem, 3vw, 3rem);
-        }
-
-        .army-metric-item {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .army-metric-icon-box {
-          width: 44px;
-          height: 44px;
-          border-radius: 10px;
-          background-color: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 1.15rem;
-        }
-
-        .army-metric-number {
-          font-family: var(--font-display, sans-serif);
-          font-size: clamp(1.45rem, 2.2vw, 1.85rem);
-          font-weight: 700;
-          color: #ffffff;
-          letter-spacing: -0.02em;
-          margin-bottom: 0.45rem;
-          line-height: 1.15;
-        }
-
-        .army-metric-label {
-          font-family: var(--font-body, sans-serif);
-          font-size: clamp(0.8rem, 1.05vw, 0.9rem);
-          color: rgba(255, 255, 255, 0.65);
-          line-height: 1.45;
         }
 
         /* ── Responsive Rules ── */
@@ -963,7 +753,6 @@ export default function IndianArmySpotlight() {
             flex: 1;
             max-width: 100%;
           }
-          /* Eliminate the clashing SVG trapezoid & overlapping duplicate text on mobile/tablet */
           .army-hero-svg {
             display: none !important;
           }
@@ -987,26 +776,12 @@ export default function IndianArmySpotlight() {
             line-height: 1.12 !important;
             margin-bottom: 1rem !important;
           }
-          .army-metrics-grid {
-            grid-template-columns: repeat(2, 1fr);
-            row-gap: 2rem;
-          }
         }
 
         @media (max-width: 640px) {
           .army-nav-btn {
             width: 38px;
             height: 38px;
-          }
-          .army-metrics-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
-          }
-          .army-metric-number {
-            font-size: 1.35rem;
-          }
-          .army-metric-label {
-            font-size: 0.78rem;
           }
           .army-hero-right-panel {
             width: 100%;
