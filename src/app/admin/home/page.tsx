@@ -93,17 +93,17 @@ export default function AdminHomePage() {
   };
 
   const sectionTabs = [
-    { id: 'hero', label: '01 Hero Section', icon: Sparkles },
-    { id: 'brands', label: '02 Brands Marquee', icon: Layers },
-    { id: 'impact', label: '03 Impact Counters', icon: Sliders },
-    { id: 'army', label: '04 Army Spotlight', icon: Shield },
-    { id: 'pov', label: '05 Point of View', icon: Quote },
-    { id: 'work', label: '06 Selected Work', icon: Briefcase },
-    { id: 'services', label: '07 Services Pillar', icon: FileText },
-    { id: 'montage', label: '08 Sectors Montage', icon: LayoutGrid },
-    { id: 'tourin', label: '09 Tourin Travel', icon: Compass },
-    { id: 'cta', label: '10 Signature CTA', icon: Send },
-    { id: 'order', label: 'Order & Visibility', icon: GripVertical },
+    { id: 'hero', label: '01 Hero Section', icon: Sparkles, isLive: true },
+    { id: 'army', label: '02 Army Spotlight', icon: Shield, isLive: true },
+    { id: 'pov', label: '03 Point of View', icon: Quote, isLive: true },
+    { id: 'work', label: '04 Selected Work', icon: Briefcase, isLive: true },
+    { id: 'services', label: '05 Capabilities & Numbers', icon: FileText, isLive: true },
+    { id: 'brands', label: '06 Brands Marquee', icon: Layers, isLive: true },
+    { id: 'cta', label: '07 Signature CTA', icon: Send, isLive: true },
+    { id: 'order', label: 'Order & Visibility', icon: GripVertical, isLive: true },
+    { id: 'impact', label: 'Archive: Impact', icon: Sliders, isLive: false },
+    { id: 'montage', label: 'Archive: Montage', icon: LayoutGrid, isLive: false },
+    { id: 'tourin', label: 'Archive: Tourin', icon: Compass, isLive: false },
   ];
 
   return (
@@ -136,12 +136,12 @@ export default function AdminHomePage() {
               <h2 style={{ fontSize: '1.1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
                 Homepage Section Editor
               </h2>
-              <span style={{ fontSize: '0.72rem', backgroundColor: '#F4F4F5', padding: '2px 8px', borderRadius: '6px', color: '#71717A', fontWeight: 600 }}>
-                10 Sections
+              <span style={{ fontSize: '0.72rem', backgroundColor: '#ECFDF5', padding: '2px 8px', borderRadius: '6px', color: '#047857', fontWeight: 600 }}>
+                7 Live Sections
               </span>
             </div>
             <div style={{ fontSize: '0.75rem', color: '#71717A', marginTop: '0.15rem' }}>
-              Select any section to edit its copy, images and links in real-time.
+              Select any section to edit copy, sharp metric numbers, images, and brand logos in real-time.
             </div>
           </div>
           <button
@@ -194,8 +194,16 @@ export default function AdminHomePage() {
                   padding: '0.45rem 0.85rem',
                   borderRadius: '9999px',
                   border: isActive ? '1px solid #111113' : '1px solid rgba(0, 0, 0, 0.08)',
-                  backgroundColor: isActive ? '#111113' : '#F8F8FA',
-                  color: isActive ? '#FFFFFF' : '#52525B',
+                  backgroundColor: isActive
+                    ? '#111113'
+                    : tab.isLive === false
+                    ? '#F4F4F5'
+                    : '#F8F8FA',
+                  color: isActive
+                    ? '#FFFFFF'
+                    : tab.isLive === false
+                    ? '#A1A1AA'
+                    : '#52525B',
                   fontSize: '0.76rem',
                   fontWeight: isActive ? 600 : 500,
                   cursor: 'pointer',
@@ -203,7 +211,7 @@ export default function AdminHomePage() {
                   transition: 'all 0.2s ease',
                 }}
               >
-                <Icon size={13} color={isActive ? '#FFFFFF' : '#71717A'} />
+                <Icon size={13} color={isActive ? '#FFFFFF' : tab.isLive === false ? '#A1A1AA' : '#71717A'} />
                 {tab.label}
               </button>
             );
@@ -357,16 +365,21 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 02: SELECTED BRANDS & MARQUEE
+              SECTION 06: SELECTED BRANDS & ORGANISATIONS MARQUEE
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'brands' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Selected Brands &amp; Organisations Marquee
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    06 Selected Brands &amp; Organisations Marquee
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Live Flow
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Configure client badges, names, monogram pills, and target destination links.
+                  Configure client logos, names, fallback monograms, and links. Positioned right above the Signature CTA.
                 </p>
               </div>
 
@@ -769,16 +782,21 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 04: INDIAN ARMY SPOTLIGHT
+              SECTION 02: INDIAN ARMY SPOTLIGHT
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'army' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Indian Army Projects 3D Perspective Spotlight
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    02 Indian Army Projects Spotlight
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Live Flow
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Showcase of defence briefs, authentic imagery and verified credentials.
+                  Showcase of defence briefs, authentic imagery and verified credentials in clean editorial presentation.
                 </p>
               </div>
 
@@ -910,14 +928,19 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 05: EDITORIAL INTRO & POINT OF VIEW
+              SECTION 03: EDITORIAL INTRO & POINT OF VIEW
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'pov' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Editorial Intro &amp; A Point of View
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    03 Editorial Intro &amp; A Point of View
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Live Flow
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
                   The foundational philosophy, founder portrait collage, and business-first perspective.
                 </p>
@@ -1048,14 +1071,19 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 06: SELECTED WORK SHOWCASE
+              SECTION 04: SELECTED WORK SHOWCASE
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'work' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Selected Work 3D Coverflow Showcase
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    04 Selected Work 3D Coverflow Showcase
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Live Flow
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
                   The work is the proof: featured case study cards displayed on the homepage.
                 </p>
@@ -1189,26 +1217,32 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 07: SERVICES / PRACTICE AREAS
+              SECTION 05: CAPABILITIES & SHARP NUMBERS
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'services' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Practice Areas &amp; Deep Black Services
-                </h3>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  The 3 core pillars displayed on the deep black homepage section.
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    05 Capabilities &amp; Sharp Metric Numbers
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Live Flow
+                  </span>
+                </div>
+                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.25rem 0 0 0' }}>
+                  &ldquo;Three distinct capabilities. One strategic spine.&rdquo; &bull; Controls capabilities headline, 4 sharp flipping metric numbers, and practice areas.
                 </p>
               </div>
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW
+                  SECTION EYEBROW
                 </label>
                 <input
                   type="text"
                   value={homeData.services?.eyebrow || ''}
+                  placeholder="e.g. CAPABILITIES & PRACTICE AREAS"
                   onChange={(e) => updateField(['services', 'eyebrow'], e.target.value)}
                   style={inputStyle}
                 />
@@ -1216,11 +1250,12 @@ export default function AdminHomePage() {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  HEADLINE
+                  SECTION HEADLINE
                 </label>
                 <input
                   type="text"
                   value={homeData.services?.title || ''}
+                  placeholder="Three distinct capabilities. One strategic spine."
                   onChange={(e) => updateField(['services', 'title'], e.target.value)}
                   style={inputStyle}
                 />
@@ -1228,16 +1263,146 @@ export default function AdminHomePage() {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  DESCRIPTION
+                  SECTION INTRO COPY
                 </label>
                 <textarea
                   rows={2}
                   value={homeData.services?.description || ''}
+                  placeholder="Ārohana combines commercial thinking, sector experience and creative execution..."
                   onChange={(e) => updateField(['services', 'description'], e.target.value)}
                   style={inputStyle}
                 />
               </div>
 
+              {/* ─── 4 SHARP FLIPPING METRIC NUMBERS ─── */}
+              <div style={{ padding: '1.1rem', backgroundColor: '#F8F8FA', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+                  <div>
+                    <h4 style={{ fontSize: '0.88rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      Sharp Flipping Metric Numbers (4 Stats)
+                    </h4>
+                    <span style={{ fontSize: '0.72rem', color: '#71717A' }}>
+                      Live 3D flipping linear numerals animated every time the section scrolls into view.
+                    </span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {(homeData.impactStats?.counters || [
+                    { id: 'commercial', target: 25, suffix: '+', title: 'Commercial Engagements', desc: 'Hospitality, enterprise & consumer brands' },
+                    { id: 'sectors', target: 6, twoDigits: true, title: 'Industry Sectors', desc: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence' },
+                    { id: 'cases', target: 8, twoDigits: true, title: 'Featured Case Studies', desc: 'Multi-entity retainers and technical production' },
+                    { id: 'expeditions', target: 15, suffix: '+', title: 'Himalayan Expeditions', desc: 'Curated mountain journeys and border initiatives' },
+                  ]).map((cnt: any, idx: number) => (
+                    <div
+                      key={cnt.id || idx}
+                      style={{
+                        padding: '0.85rem',
+                        borderRadius: '8px',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid rgba(0,0,0,0.08)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                      }}
+                    >
+                      <div style={{ display: 'grid', gridTemplateColumns: '85px 65px 120px 1fr', gap: '0.5rem', alignItems: 'center' }}>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            TARGET
+                          </span>
+                          <input
+                            type="number"
+                            value={cnt.target ?? 0}
+                            onChange={(e) => {
+                              const counters = [...(homeData.impactStats?.counters || [])];
+                              counters[idx] = { ...counters[idx], target: parseInt(e.target.value) || 0 };
+                              updateField(['impactStats', 'counters'], counters);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                          />
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            SUFFIX
+                          </span>
+                          <input
+                            type="text"
+                            value={cnt.suffix || ''}
+                            placeholder="+"
+                            onChange={(e) => {
+                              const counters = [...(homeData.impactStats?.counters || [])];
+                              counters[idx] = { ...counters[idx], suffix: e.target.value };
+                              updateField(['impactStats', 'counters'], counters);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                          />
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            FORMATTING
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const counters = [...(homeData.impactStats?.counters || [])];
+                              counters[idx] = { ...counters[idx], twoDigits: !counters[idx].twoDigits };
+                              updateField(['impactStats', 'counters'], counters);
+                            }}
+                            style={{
+                              ...inputStyle,
+                              padding: '0.35rem 0.55rem',
+                              textAlign: 'center',
+                              cursor: 'pointer',
+                              backgroundColor: cnt.twoDigits ? '#111113' : '#F4F4F5',
+                              color: cnt.twoDigits ? '#FFFFFF' : '#71717A',
+                              fontWeight: 600,
+                              fontSize: '0.74rem',
+                            }}
+                          >
+                            {cnt.twoDigits ? '0X (e.g. 06)' : 'Standard'}
+                          </button>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                            METRIC TITLE
+                          </span>
+                          <input
+                            type="text"
+                            value={cnt.title || cnt.label || ''}
+                            placeholder="e.g. Commercial Engagements"
+                            onChange={(e) => {
+                              const counters = [...(homeData.impactStats?.counters || [])];
+                              counters[idx] = { ...counters[idx], title: e.target.value, label: e.target.value };
+                              updateField(['impactStats', 'counters'], counters);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                          SUBTITLE / CONTEXT DETAIL
+                        </span>
+                        <input
+                          type="text"
+                          value={cnt.desc || cnt.detail || ''}
+                          placeholder="e.g. Hospitality, enterprise & consumer brands"
+                          onChange={(e) => {
+                            const counters = [...(homeData.impactStats?.counters || [])];
+                            counters[idx] = { ...counters[idx], desc: e.target.value, detail: e.target.value };
+                            updateField(['impactStats', 'counters'], counters);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── 3 PRACTICE PILLARS ─── */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
                   PRACTICE PILLARS ({homeData.services?.items?.length || 0})
@@ -1293,6 +1458,24 @@ export default function AdminHomePage() {
                           onChange={(e) => {
                             const updated = [...homeData.services.items];
                             updated[idx] = { ...updated[idx], description: e.target.value };
+                            updateField(['services', 'items'], updated);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                        />
+                      </div>
+
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Tags (comma-separated pills)</span>
+                        <input
+                          type="text"
+                          value={Array.isArray(srv.tags) ? srv.tags.join(', ') : (srv.tags || '')}
+                          placeholder="e.g. Brand Strategy, Creative Direction, Platforms"
+                          onChange={(e) => {
+                            const updated = [...homeData.services.items];
+                            updated[idx] = {
+                              ...updated[idx],
+                              tags: e.target.value.split(',').map((t: string) => t.trim()).filter(Boolean),
+                            };
                             updateField(['services', 'items'], updated);
                           }}
                           style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}

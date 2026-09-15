@@ -129,43 +129,66 @@ export default function ServicesSection() {
   const { content } = useCmsContent();
   const srvCms = content?.home?.services;
   const activeEyebrow = srvCms?.eyebrow || 'CAPABILITIES & PRACTICE AREAS';
-  const activeTitle = 'Three distinct capabilities. One strategic spine.';
+  const activeTitle = srvCms?.title || 'Three distinct capabilities. One strategic spine.';
   const activeDesc = srvCms?.description && srvCms.description.length < 200
     ? srvCms.description
     : 'Ārohana combines commercial thinking, sector experience and creative execution to build brands and operational systems across environments.';
 
+  // Dynamic stats from CMS: checks home.services.stats or home.impactStats.counters or fallback to SHARP_STATS
+  const statsList: StatData[] = (srvCms?.stats || content?.home?.impactStats?.counters || SHARP_STATS).map((s: any, i: number) => ({
+    id: s.id || `stat-${i}`,
+    target: typeof s.target === 'number' ? s.target : (parseInt(s.target, 10) || SHARP_STATS[i]?.target || 0),
+    suffix: s.suffix ?? SHARP_STATS[i]?.suffix ?? '',
+    twoDigits: s.twoDigits ?? SHARP_STATS[i]?.twoDigits ?? false,
+    label: s.label || s.title || SHARP_STATS[i]?.label || '',
+    detail: s.detail || s.desc || SHARP_STATS[i]?.detail || '',
+  }));
+
+  const capabilitiesList: CapabilityItemData[] = (srvCms?.items && srvCms.items.length > 0)
+    ? srvCms.items.map((item: any, i: number) => ({
+        title: item.title || CAPABILITIES_DATA[i]?.title || '',
+        tags: Array.isArray(item.tags)
+          ? item.tags
+          : (typeof item.tags === 'string' ? item.tags.split(',').map((t: string) => t.trim()) : CAPABILITIES_DATA[i]?.tags || []),
+        image: item.image || CAPABILITIES_DATA[i]?.image || '',
+        alt: item.title || CAPABILITIES_DATA[i]?.alt || '',
+        description: item.description || CAPABILITIES_DATA[i]?.description || '',
+        href: item.href || CAPABILITIES_DATA[i]?.href || '/services',
+      }))
+    : CAPABILITIES_DATA;
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const statsGridRef = useRef<HTMLDivElement>(null);
-  const [counts, setCounts] = useState<number[]>([0, 0, 0, 0]);
+  const [counts, setCounts] = useState<number[]>(() => statsList.map(() => 0));
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
   const animateCounters = useCallback(() => {
     if (tweenRef.current) tweenRef.current.kill();
-    const obj = { v0: 0, v1: 0, v2: 0, v3: 0 };
-    setCounts([0, 0, 0, 0]);
+    const targets = statsList.map((s) => s.target);
+    const obj: Record<string, number> = {};
+    targets.forEach((_, idx) => {
+      obj[`v${idx}`] = 0;
+    });
+    setCounts(new Array(targets.length).fill(0));
 
-    tweenRef.current = gsap.to(obj, {
-      v0: SHARP_STATS[0].target,
-      v1: SHARP_STATS[1].target,
-      v2: SHARP_STATS[2].target,
-      v3: SHARP_STATS[3].target,
+    const toVars: Record<string, any> = {
       duration: 1.6,
       ease: 'power2.out',
       onUpdate: () => {
-        setCounts([
-          Math.round(obj.v0),
-          Math.round(obj.v1),
-          Math.round(obj.v2),
-          Math.round(obj.v3),
-        ]);
+        setCounts(targets.map((_, idx) => Math.round(obj[`v${idx}`] || 0)));
       },
+    };
+    targets.forEach((target, idx) => {
+      toVars[`v${idx}`] = target;
     });
-  }, []);
+
+    tweenRef.current = gsap.to(obj, toVars);
+  }, [statsList]);
 
   const resetCounters = useCallback(() => {
     if (tweenRef.current) tweenRef.current.kill();
-    setCounts([0, 0, 0, 0]);
-  }, []);
+    setCounts(new Array(statsList.length).fill(0));
+  }, [statsList.length]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -302,7 +325,7 @@ export default function ServicesSection() {
               Razor-sharp linear typography, no rounded bubbly numerals
               ============================================================ */}
           <div ref={statsGridRef} className="sharp-stats-grid">
-            {SHARP_STATS.map((stat, idx) => {
+            {statsList.map((stat, idx) => {
               const countVal = counts[idx] ?? 0;
               const formattedNum = stat.twoDigits && countVal < 10 ? `0${countVal}` : `${countVal}`;
               const digits = formattedNum.split('');
@@ -336,8 +359,8 @@ export default function ServicesSection() {
               marginTop: 'clamp(2.5rem, 4vw, 4rem)',
             }}
           >
-            {CAPABILITIES_DATA.map((service, index) => {
-              const isLast = index === CAPABILITIES_DATA.length - 1;
+            {capabilitiesList.map((service, index) => {
+              const isLast = index === capabilitiesList.length - 1;
 
               return (
                 <div
