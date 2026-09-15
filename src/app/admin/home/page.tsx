@@ -655,16 +655,21 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 03: REAL-WORLD IMPACT COUNTERS
+              ARCHIVE: REAL-WORLD IMPACT COUNTERS
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'impact' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Real-World Execution Flip Counters
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    Impact Counters (Archived Standalone / Integrated in Capabilities)
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Archived Standalone
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Custom numeric roll-up counters animated on scroll.
+                  These 4 counters are now active directly inside Section 05 (Capabilities &amp; Numbers). Editing them here or in Section 05 updates them.
                 </p>
               </div>
 
@@ -1527,16 +1532,21 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 08: SECTORS & BUILT ENVIRONMENT MONTAGE
+              ARCHIVE: SECTORS & BUILT ENVIRONMENT MONTAGE
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'montage' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Sectors &amp; Built Environment Montage
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    Sectors &amp; Built Environment Montage (Archived)
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Archived Section
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  6 core sectors: Hospitality, Real Estate, Healthcare, Lifestyle, Defence, Travel.
+                  6 core sectors: Hospitality, Real Estate, Healthcare, Lifestyle, Defence, Travel. Re-enable anytime via Order &amp; Visibility.
                 </p>
               </div>
 
@@ -1683,16 +1693,21 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 09: TOURIN SPOTLIGHT
+              ARCHIVE: TOURIN SPOTLIGHT
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'tourin' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Tourin Experiential Travel Feature
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    Tourin Experiential Travel Feature (Archived)
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Archived Section
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Himalayan travel venture spotlight, trekking, homestays and bespoke expeditions.
+                  Himalayan travel venture spotlight, trekking, homestays and bespoke expeditions. Re-enable anytime via Order &amp; Visibility.
                 </p>
               </div>
 
@@ -1834,14 +1849,19 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 10: INTERACTIVE SIGNATURE CTA
+              SECTION 07: INTERACTIVE SIGNATURE CTA
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'cta' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Signature Mouse-Trail Interactive CTA
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    07 Signature Mouse-Trail Interactive CTA
+                  </h3>
+                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                    Live Flow
+                  </span>
+                </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
                   The large dark closing CTA with cursor-following interactive cards.
                 </p>
