@@ -43,7 +43,7 @@
 
   --font-display: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Roboto Mono VF', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-sans: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
@@ -133,7 +133,7 @@ p {
 }
 
 .font-mono {
-  font-family: var(--font-display) !important;
+  font-family: var(--font-mono) !important;
 }
 
 .tag-mono {

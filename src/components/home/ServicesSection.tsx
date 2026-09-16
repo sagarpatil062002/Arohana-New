@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
@@ -88,6 +88,7 @@ const SHARP_STATS: StatData[] = [
 ];
 
 // Sharp 3D Flipping Digit Component
+// Sharp 3D Flipping Digit Component with crisp mechanical timing
 function SharpFlipDigit({ digit }: { digit: string }) {
   const [animating, setAnimating] = useState(false);
   const prevDigit = useRef(digit);
@@ -96,7 +97,7 @@ function SharpFlipDigit({ digit }: { digit: string }) {
     if (prevDigit.current !== digit) {
       prevDigit.current = digit;
       setAnimating(true);
-      const t = setTimeout(() => setAnimating(false), 240);
+      const t = setTimeout(() => setAnimating(false), 140);
       return () => clearTimeout(t);
     }
   }, [digit]);
@@ -106,7 +107,9 @@ function SharpFlipDigit({ digit }: { digit: string }) {
       className="sharp-digit-wrapper"
       style={{
         display: 'inline-block',
-        fontVariantNumeric: 'tabular-nums',
+        minWidth: '0.62em',
+        textAlign: 'center',
+        fontVariantNumeric: 'tabular-nums lining-nums',
         lineHeight: 1,
         perspective: '400px',
         transformStyle: 'preserve-3d',
@@ -115,7 +118,7 @@ function SharpFlipDigit({ digit }: { digit: string }) {
       <span
         style={{
           display: 'inline-block',
-          animation: animating ? 'sharpDigitFlip 0.24s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+          animation: animating ? 'sharpDigitFlip 0.14s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           transformOrigin: '50% 50%',
         }}
       >
@@ -134,15 +137,19 @@ export default function ServicesSection() {
     ? srvCms.description
     : 'Ārohana combines commercial thinking, sector experience and creative execution to build brands and operational systems across environments.';
 
-  // Dynamic stats from CMS: checks home.services.stats or home.impactStats.counters or fallback to SHARP_STATS
-  const statsList: StatData[] = (srvCms?.stats || content?.home?.impactStats?.counters || SHARP_STATS).map((s: any, i: number) => ({
-    id: s.id || `stat-${i}`,
-    target: typeof s.target === 'number' ? s.target : (parseInt(s.target, 10) || SHARP_STATS[i]?.target || 0),
-    suffix: s.suffix ?? SHARP_STATS[i]?.suffix ?? '',
-    twoDigits: s.twoDigits ?? SHARP_STATS[i]?.twoDigits ?? false,
-    label: s.label || s.title || SHARP_STATS[i]?.label || '',
-    detail: s.detail || s.desc || SHARP_STATS[i]?.detail || '',
-  }));
+  // Dynamic stats from CMS: memoized so references stay stable and prevent animation cancellation
+  const statsList: StatData[] = useMemo(() => {
+    const raw = srvCms?.stats || content?.home?.impactStats?.counters;
+    const source = (raw && Array.isArray(raw) && raw.length > 0) ? raw : SHARP_STATS;
+    return source.map((s: any, i: number) => ({
+      id: s.id || `stat-${i}`,
+      target: typeof s.target === 'number' ? s.target : (parseInt(s.target, 10) || SHARP_STATS[i]?.target || 0),
+      suffix: s.suffix ?? SHARP_STATS[i]?.suffix ?? '',
+      twoDigits: s.twoDigits ?? SHARP_STATS[i]?.twoDigits ?? false,
+      label: s.label || s.title || SHARP_STATS[i]?.label || '',
+      detail: s.detail || s.desc || SHARP_STATS[i]?.detail || '',
+    }));
+  }, [srvCms?.stats, content?.home?.impactStats?.counters]);
 
   const capabilitiesList: CapabilityItemData[] = (srvCms?.items && srvCms.items.length > 0)
     ? srvCms.items.map((item: any, i: number) => ({
@@ -162,18 +169,25 @@ export default function ServicesSection() {
   const [counts, setCounts] = useState<number[]>(() => statsList.map(() => 0));
   const tweenRef = useRef<gsap.core.Tween | null>(null);
 
+  // Store latest statsList in ref so animation callbacks have stable identities
+  const statsListRef = useRef(statsList);
+  useEffect(() => {
+    statsListRef.current = statsList;
+  }, [statsList]);
+
   const animateCounters = useCallback(() => {
     if (tweenRef.current) tweenRef.current.kill();
-    const targets = statsList.map((s) => s.target);
+    const currentList = statsListRef.current;
+    const targets = currentList.map((s) => s.target);
     const obj: Record<string, number> = {};
     targets.forEach((_, idx) => {
       obj[`v${idx}`] = 0;
     });
     setCounts(new Array(targets.length).fill(0));
 
-    const toVars: Record<string, any> = {
-      duration: 1.6,
-      ease: 'power2.out',
+    const toVars: gsap.TweenVars = {
+      duration: 1.8,
+      ease: 'power3.out',
       onUpdate: () => {
         setCounts(targets.map((_, idx) => Math.round(obj[`v${idx}`] || 0)));
       },
@@ -183,12 +197,12 @@ export default function ServicesSection() {
     });
 
     tweenRef.current = gsap.to(obj, toVars);
-  }, [statsList]);
+  }, []);
 
   const resetCounters = useCallback(() => {
     if (tweenRef.current) tweenRef.current.kill();
-    setCounts(new Array(statsList.length).fill(0));
-  }, [statsList.length]);
+    setCounts(new Array(statsListRef.current.length).fill(0));
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -227,7 +241,10 @@ export default function ServicesSection() {
       }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      if (tweenRef.current) tweenRef.current.kill();
+      ctx.revert();
+    };
   }, [animateCounters, resetCounters]);
 
   return (
@@ -557,19 +574,33 @@ export default function ServicesSection() {
         .sharp-stat-num-row {
           display: inline-flex;
           align-items: baseline;
-          font-family: var(--font-mono, monospace);
-          font-size: clamp(2.4rem, 3.6vw, 3.8rem);
-          font-weight: 600;
+          font-family: 'Roboto Mono VF', 'Inter VF', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+          font-size: clamp(2.6rem, 4vw, 4.2rem);
+          font-weight: 550;
           letter-spacing: -0.04em;
           color: #ffffff;
           line-height: 1;
           margin-bottom: 0.65rem;
           font-feature-settings: 'tnum' 1, 'zero' 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          text-rendering: geometricPrecision;
+        }
+
+        :global(.sharp-digit-wrapper) {
+          display: inline-block;
+          min-width: 0.62em;
+          text-align: center;
+          font-variant-numeric: tabular-nums lining-nums;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
 
         .sharp-stat-suffix {
           color: #DE322D;
-          font-weight: 600;
+          font-family: 'Roboto Mono VF', 'Inter VF', ui-monospace, monospace !important;
+          font-weight: 550;
+          font-size: 0.88em;
           margin-left: 2px;
           line-height: 1;
         }
@@ -596,13 +627,13 @@ export default function ServicesSection() {
             transform: rotateX(0deg);
             opacity: 1;
           }
-          45% {
-            transform: rotateX(-85deg);
-            opacity: 0.2;
+          40% {
+            transform: rotateX(-65deg);
+            opacity: 0.6;
           }
-          55% {
-            transform: rotateX(85deg);
-            opacity: 0.2;
+          60% {
+            transform: rotateX(65deg);
+            opacity: 0.6;
           }
           100% {
             transform: rotateX(0deg);
