@@ -92,7 +92,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
             gap: '1.25rem',
             padding: 'clamp(1.25rem, 3vw, 2rem)',
             backgroundColor: '#ffffff',
-            borderRadius: '20px',
+            borderRadius: '6px',
             border: '1px solid rgba(0, 0, 0, 0.08)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)',
             marginBottom: 'clamp(2.5rem, 5vw, 4rem)',
@@ -133,7 +133,8 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
               position: 'relative',
               width: '100%',
               aspectRatio: '16/9',
-              borderRadius: 'clamp(18px, 3vw, 36px)',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
               overflow: 'hidden',
               backgroundColor: '#eaeaea',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
@@ -174,7 +175,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <div
             style={{
               backgroundColor: '#ffffff',
-              borderRadius: '24px',
+              borderRadius: '6px',
               padding: 'clamp(1.5rem, 3.5vw, 3rem)',
               border: '1px solid rgba(0, 0, 0, 0.08)',
             }}
@@ -198,7 +199,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <div
             style={{
               backgroundColor: '#ffffff',
-              borderRadius: '24px',
+              borderRadius: '6px',
               padding: 'clamp(1.5rem, 3.5vw, 3rem)',
               border: '1px solid rgba(0, 0, 0, 0.08)',
             }}
@@ -222,7 +223,8 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         {/* Strategic Thinking / Approach */}
         <div
           style={{
-            borderRadius: 'clamp(20px, 3.5vw, 28px)',
+            borderRadius: '6px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             backgroundColor: '#0c0c0e',
             color: '#ffffff',
             padding: 'clamp(1.75rem, 4.5vw, 4.5rem)',
@@ -292,7 +294,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
                 key={idx}
                 style={{
                   padding: 'clamp(1.5rem, 3.5vw, 2.5rem)',
-                  borderRadius: '24px',
+                  borderRadius: '6px',
                   backgroundColor: '#ffffff',
                   border: '1px solid rgba(0, 0, 0, 0.08)',
                   display: 'flex',
@@ -356,7 +358,8 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
                       position: 'relative',
                       width: '100%',
                       aspectRatio: '16/11',
-                      borderRadius: '20px',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0, 0, 0, 0.08)',
                       overflow: 'hidden',
                       backgroundColor: '#e6e6e4',
                       boxShadow: '0 8px 24px rgba(0, 0, 0, 0.05)',
@@ -390,7 +393,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
           <div
             style={{
               padding: 'clamp(1.75rem, 4vw, 3rem)',
-              borderRadius: '24px',
+              borderRadius: '6px',
               backgroundColor: '#ffffff',
               border: '1px solid rgba(0, 0, 0, 0.08)',
               marginBottom: 'clamp(3rem, 5vw, 5rem)',
@@ -451,7 +454,8 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
         <div
           style={{
             padding: 'clamp(2rem, 4.5vw, 4rem) clamp(1.25rem, 3.5vw, 4rem)',
-            borderRadius: '28px',
+            borderRadius: '6px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             backgroundColor: '#0c0c0e',
             color: '#ffffff',
             display: 'flex',
@@ -487,7 +491,7 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
               padding: '0 1.65rem',
               backgroundColor: '#000000',
               color: '#ffffff',
-              borderRadius: '9999px',
+              borderRadius: '4px',
               border: '1px solid rgba(255, 255, 255, 0.22)',
               boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
               display: 'inline-flex',

@@ -191,12 +191,12 @@ export default function BrandsMarquee() {
                 justifyContent: 'center',
                 padding: brand.logo ? '0.65rem 1.6rem' : '0.65rem 1.35rem',
                 backgroundColor: '#ffffff',
-                border: '1px solid rgba(0, 0, 0, 0.09)',
-                borderRadius: '9999px',
+                border: '1px solid rgba(0, 0, 0, 0.08)',
+                borderRadius: '4px',
                 textDecoration: 'none',
                 flexShrink: 0,
                 minHeight: '52px',
-                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
                 transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
@@ -231,7 +231,8 @@ export default function BrandsMarquee() {
                     style={{
                       width: '28px',
                       height: '28px',
-                      borderRadius: '50%',
+                      borderRadius: '3px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
                       backgroundColor: '#18181b',
                       color: '#ffffff',
                       display: 'flex',

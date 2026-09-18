@@ -60,7 +60,7 @@ export default function InteractiveCTA() {
         card.style.top = `${currentY - 60}px`;
         card.style.width = '180px';
         card.style.height = '120px';
-        card.style.borderRadius = '16px';
+        card.style.borderRadius = '6px';
         card.style.overflow = 'hidden';
         card.style.boxShadow = '0 16px 40px rgba(0,0,0,0.5)';
         card.style.border = '1px solid rgba(255,255,255,0.2)';
@@ -200,7 +200,7 @@ export default function InteractiveCTA() {
               justifyContent: 'center',
               height: '52px',
               padding: '0 1.5rem',
-              borderRadius: '9999px',
+              borderRadius: '4px',
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
               color: '#ffffff',
               fontSize: '0.925rem',

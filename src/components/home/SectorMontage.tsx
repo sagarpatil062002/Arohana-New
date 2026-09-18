@@ -583,7 +583,7 @@ export default function SectorMontage() {
         .dash-indicator {
           width: 18px;
           height: 3px;
-          border-radius: 999px;
+          border-radius: 2px;
           background-color: #d8d8dc;
           border: none;
           padding: 0;
@@ -664,7 +664,8 @@ export default function SectorMontage() {
         }
 
         .accordion-card {
-          border-radius: 24px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           position: relative;
           overflow: hidden;
           transition: all 0.65s cubic-bezier(0.16, 1, 0.3, 1);
@@ -749,7 +750,7 @@ export default function SectorMontage() {
           font-weight: 700;
           letter-spacing: 0.02em;
           padding: 10px 18px 10px 14px;
-          border-radius: 999px;
+          border-radius: 4px;
           text-decoration: none;
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
           transition: all 0.25s ease;
@@ -946,7 +947,7 @@ export default function SectorMontage() {
 
         .mobile-active-card {
           position: relative;
-          border-radius: 24px;
+          border-radius: 6px;
           overflow: hidden;
           background-color: #0c0d12;
           box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
@@ -1087,7 +1088,7 @@ export default function SectorMontage() {
           color: #ffffff;
           border: 1px solid rgba(255, 255, 255, 0.22);
           padding: 8px 16px 8px 12px;
-          border-radius: 9999px;
+          border-radius: 4px;
           text-decoration: none;
           width: fit-content;
           margin-bottom: 8px;
@@ -1240,7 +1241,7 @@ export default function SectorMontage() {
         .mobile-dot-btn.mobile-dot-active {
           width: 22px;
           height: 6px;
-          border-radius: 9999px;
+          border-radius: 2px;
           background-color: #DE322D;
         }
 
@@ -1253,7 +1254,7 @@ export default function SectorMontage() {
         .mobile-nav-circle-btn {
           width: 44px;
           height: 44px;
-          border-radius: 50%;
+          border-radius: 4px;
           background-color: #ffffff;
           border: 1px solid #e2e8f0;
           color: #0f172a;

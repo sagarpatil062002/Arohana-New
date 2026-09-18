@@ -337,8 +337,8 @@ function WorkCaseCard({
     <div
       style={{
         backgroundColor: '#FFFFFF',
-        borderRadius: '24px',
-        border: isHovered ? '1px solid rgba(0, 0, 0, 0.14)' : '1px solid rgba(0, 0, 0, 0.07)',
+        borderRadius: '6px',
+        border: isHovered ? '1px solid rgba(0, 0, 0, 0.14)' : '1px solid rgba(0, 0, 0, 0.08)',
         overflow: 'hidden',
         boxShadow: isHovered
           ? '0 16px 36px -6px rgba(0, 0, 0, 0.08)'
@@ -446,10 +446,10 @@ function WorkCaseCard({
                 fontSize: '0.68rem',
                 fontWeight: 500,
                 padding: '0.28rem 0.65rem',
-                borderRadius: '9999px',
+                borderRadius: '3px',
                 backgroundColor: '#F4F4F5',
                 color: '#52525B',
-                border: '1px solid rgba(0, 0, 0, 0.03)',
+                border: '1px solid rgba(0, 0, 0, 0.06)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -860,7 +860,8 @@ export default function WorkPage() {
                 position: 'relative',
                 flex: '0 0 clamp(230px, 20vw, 270px)',
                 aspectRatio: '9 / 16',
-                borderRadius: '18px',
+                borderRadius: '6px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
                 overflow: 'hidden',
                 backgroundColor: '#1B1B1E',
                 boxShadow: '0 14px 30px -8px rgba(0, 0, 0, 0.22)',
@@ -1005,7 +1006,7 @@ export default function WorkPage() {
                     backgroundColor: 'rgba(255, 255, 255, 0.15)',
                     backdropFilter: 'blur(12px)',
                     border: '1px solid rgba(255, 255, 255, 0.25)',
-                    borderRadius: '9999px',
+                    borderRadius: '4px',
                     color: '#ffffff',
                     fontSize: '0.76rem',
                     fontWeight: 600,
@@ -1089,7 +1090,7 @@ export default function WorkPage() {
                         onClick={() => setSelectedCaseFilter(f)}
                         style={{
                           padding: '0.42rem 0.95rem',
-                          borderRadius: '9999px',
+                          borderRadius: '4px',
                           fontSize: '0.74rem',
                           fontWeight: 500,
                           cursor: 'pointer',
@@ -1537,7 +1538,7 @@ export default function WorkPage() {
         }
         .work-filter-pill-btn {
           padding: 0.45rem 1rem;
-          border-radius: 9999px;
+          border-radius: 4px;
           font-size: 0.74rem;
           font-weight: 500;
           cursor: pointer;
@@ -1700,8 +1701,8 @@ export default function WorkPage() {
           align-items: center;
           gap: 0.55rem;
           padding: 0.8rem 1.65rem;
-          border-radius: 9999px;
-          border: 1px solid #000000;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.16);
           background-color: #000000;
           color: #FFFFFF;
           font-family: var(--font-display, sans-serif);

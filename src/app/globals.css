@@ -55,8 +55,23 @@
   --font-sans: 'BDO Grotesk VF', -apple-system, BlinkMacSystemFont, sans-serif;
 
   --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
-  --radius-hero: 32px;
-  --radius-card: 24px;
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-hero: 6px;
+  --radius-card: 6px;
+  --radius-modal: 6px;
+  --radius-button: 4px;
+  --radius-input: 4px;
+  --radius-badge: 3px;
+  --radius-dropdown: 4px;
+  --radius-pill: 4px;
+
+  --border-hairline-dark: 1px solid rgba(255, 255, 255, 0.1);
+  --border-hairline-light: 1px solid rgba(0, 0, 0, 0.08);
+  --shadow-ambient-dark: 0 8px 24px -4px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-ambient-light: 0 8px 24px -4px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
 }
 
 * {
@@ -302,7 +317,7 @@ input, select, textarea {
   transition: background-color 0.6s var(--ease-editorial), color 0.6s var(--ease-editorial);
 }
 
-/* Editorial Button matching Black Pill with White Text and Arrow */
+/* Editorial Button with Crisp Micro-Radius (3px-4px) and Hairline Edge */
 .button-editorial {
   display: inline-flex;
   align-items: center;
@@ -310,7 +325,7 @@ input, select, textarea {
   gap: 0.55rem;
   height: 48px;
   padding: 0 1.65rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-button, 4px) !important;
   background-color: #000000;
   color: #ffffff;
   font-family: var(--font-display, var(--font-body), sans-serif);
@@ -318,14 +333,14 @@ input, select, textarea {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid #000000;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .button-editorial:hover {
   background-color: #222222;
-  border-color: #222222;
+  border-color: rgba(255, 255, 255, 0.28) !important;
   color: #ffffff;
   transform: translateY(-2px);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
@@ -334,16 +349,17 @@ input, select, textarea {
 .button-editorial-dark,
 .button-editorial-white,
 .button-editorial-primary {
+  border-radius: var(--radius-button, 4px) !important;
   background-color: #000000 !important;
   color: #ffffff !important;
-  border: 1px solid #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
 
 .button-editorial-dark:hover,
 .button-editorial-white:hover,
 .button-editorial-primary:hover {
   background-color: #222222 !important;
-  border-color: #222222 !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
@@ -776,9 +792,9 @@ button, input, select, textarea {
   font-size: 0.88rem;
   font-weight: 600;
   padding: 0.8rem 1.65rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-button, 4px) !important;
   text-decoration: none;
-  border: 1px solid #000000;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -786,7 +802,7 @@ button, input, select, textarea {
 .tourin-primary-pill:hover,
 .tourin-secondary-pill:hover {
   background-color: #222226;
-  border-color: #222222;
+  border-color: rgba(255, 255, 255, 0.28) !important;
   color: #ffffff;
   transform: translateY(-2px);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
@@ -808,7 +824,7 @@ button, input, select, textarea {
 .tourin-scroll-circle-btn {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: 4px;
   border: 1.5px solid #d4d4d8;
   color: #444448;
   display: flex;
@@ -842,7 +858,8 @@ button, input, select, textarea {
   position: relative;
   width: 100%;
   min-height: 540px;
-  border-radius: 28px;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.25);
 }
@@ -987,7 +1004,8 @@ button, input, select, textarea {
   position: relative;
   width: 100%;
   height: 180px;
-  border-radius: 20px;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.22);
 }
@@ -1120,7 +1138,7 @@ button, input, select, textarea {
   color: #6b7280;
   padding: 2px 8px;
   border: 1px solid #d1d5db;
-  border-radius: 9999px;
+  border-radius: var(--radius-badge, 3px);
   display: inline-block;
 }
 .timeline-dot-red {
@@ -1231,7 +1249,8 @@ button, input, select, textarea {
 }
 .genesis-img-card {
   position: relative;
-  border-radius: 14px;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   background-color: #e5e7eb;
@@ -1426,7 +1445,8 @@ button, input, select, textarea {
   position: relative;
   width: 100%;
   height: 270px;
-  border-radius: 12px;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
   background-color: #e5e7eb;
@@ -1546,7 +1566,8 @@ button, input, select, textarea {
   position: relative;
   width: 100%;
   height: 380px;
-  border-radius: 16px;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.08);
   background-color: #1a1a1a;
@@ -1602,7 +1623,8 @@ button, input, select, textarea {
   position: relative;
   width: 100%;
   height: 240px;
-  border-radius: 12px;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
   background-color: #e5e7eb;
@@ -2602,7 +2624,7 @@ button, input, select, textarea {
   margin-top: 2.5rem;
   height: 54px;
   padding: 0 2rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-button, 4px);
   border: 1px solid rgba(255, 255, 255, 0.75);
   background: transparent;
   color: #ffffff;
@@ -3639,4 +3661,77 @@ html.arohana-already-loaded #arohana-experience-loader {
     display: flex !important;
     flex-direction: column !important;
   }
+}
+
+/* =========================================================================
+   GLOBAL EDITORIAL MICRO-RADIUS & HAIRLINE SYSTEM
+   Enforces consistent 4px-6px for containers/cards/modals and 3px-4px for interactive/badges
+   ========================================================================= */
+
+/* Hero Containers, Cards, and Modal Dialogs: crisp 4px to 6px */
+.hero-container,
+.army-card-inner,
+.sw-card-box,
+.stat-callout-card,
+.tourin-hero-card,
+.accordion-card,
+.mobile-active-card,
+.proof-card,
+.pov-portrait-frame,
+.pov-founder-badge,
+.santorini-feature-card,
+.lake-thumbnail-card,
+.dest-card,
+.exp-card,
+.traveller-photo-card,
+.genesis-img-card,
+.sw-dropdown-menu,
+.showreel-modal-dialog {
+  border-radius: var(--radius-card, 6px) !important;
+}
+
+/* Buttons, Text Inputs, Dropdowns, Badges: sharp, slightly softened 3px to 4px */
+.button-editorial,
+.button-editorial-dark,
+.button-editorial-white,
+.button-editorial-primary,
+.rwi-pill-button,
+.sw-pill-btn,
+.sw-dropdown-btn,
+.sw-mobile-all-btn,
+.sw-all-link,
+.tourin-primary-pill,
+.tourin-secondary-pill,
+.explore-pill-btn,
+.btn-primary-pill,
+.btn-secondary-pill,
+.mobile-action-pill,
+.work-dir-explore-btn,
+.work-filter-pill-btn,
+.svc-cta-btn,
+.desktop-header-cta,
+.hero-primary-cta,
+.hero-secondary-cta {
+  border-radius: var(--radius-button, 4px) !important;
+}
+
+/* Form Inputs & Selects */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  border-radius: var(--radius-input, 4px) !important;
+}
+
+/* Badges & Filter Tags: 3px */
+.proof-year-badge,
+.card-category-badge,
+.timeline-num-badge,
+.army-mobile-badge-box,
+.bridge-pill {
+  border-radius: var(--radius-badge, 3px) !important;
 }

@@ -466,7 +466,7 @@ export default function ServicesSection() {
                             key={tag}
                             style={{
                               padding: '0.4rem 0.85rem',
-                              borderRadius: '9999px',
+                              borderRadius: '3px',
                               backgroundColor: '#16181e',
                               color: '#a1a1aa',
                               fontSize: '0.8rem',
@@ -491,9 +491,10 @@ export default function ServicesSection() {
                               alignItems: 'center',
                               gap: '0.65rem',
                               padding: '0.85rem 1.75rem',
-                              borderRadius: '9999px',
+                              borderRadius: '4px',
                               backgroundColor: '#ffffff',
                               color: '#000000',
+                              border: '1px solid rgba(0, 0, 0, 0.12)',
                               fontWeight: 600,
                               fontSize: '0.9rem',
                               letterSpacing: '-0.01em',
@@ -523,7 +524,7 @@ export default function ServicesSection() {
                         position: 'relative',
                         width: '100%',
                         height: 'clamp(280px, 34vw, 400px)',
-                        borderRadius: 'clamp(1rem, 2vw, 1.5rem)',
+                        borderRadius: '6px',
                         overflow: 'hidden',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
                       }}

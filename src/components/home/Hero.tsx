@@ -66,8 +66,9 @@ export default function Hero() {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              borderRadius: 'clamp(16px, 2vw, 24px)',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.14)',
+              borderRadius: '6px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.18)',
               overflow: 'hidden',
               userSelect: 'none',
             }}
@@ -218,7 +219,7 @@ export default function Hero() {
                       padding: '0 1.85rem',
                       backgroundColor: '#000000',
                       color: '#ffffff',
-                      borderRadius: '9999px',
+                      borderRadius: '4px',
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.65rem',
@@ -251,7 +252,7 @@ export default function Hero() {
                       backgroundColor: '#000000',
                       color: '#ffffff',
                       border: '1px solid rgba(255, 255, 255, 0.22)',
-                      borderRadius: '9999px',
+                      borderRadius: '4px',
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.65rem',
@@ -309,16 +310,18 @@ export default function Hero() {
             }}
             onClick={() => setShowShowreel(false)}
           >
-            <div
+              <div
+              className="showreel-modal-dialog"
               style={{
                 position: 'relative',
                 width: '100%',
                 maxWidth: '960px',
                 aspectRatio: '16/9',
                 backgroundColor: '#000000',
-                borderRadius: '16px',
+                borderRadius: '6px',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
                 overflow: 'hidden',
-                boxShadow: '0 25px 80px rgba(0, 0, 0, 0.6)',
+                boxShadow: '0 25px 80px rgba(0, 0, 0, 0.75)',
               }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -331,12 +334,12 @@ export default function Hero() {
                   top: '1rem',
                   right: '1rem',
                   zIndex: 10,
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '4px',
                   backgroundColor: 'rgba(255, 255, 255, 0.2)',
                   backdropFilter: 'blur(8px)',
-                  border: 'none',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
@@ -379,7 +382,7 @@ export default function Hero() {
             .hero-container {
               height: 540px !important;
               min-height: 540px !important;
-              border-radius: 16px !important;
+              border-radius: 6px !important;
             }
 
             .hero-content-wrapper {

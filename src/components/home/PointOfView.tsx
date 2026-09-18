@@ -307,8 +307,8 @@ export default function PointOfView() {
           background-color: #000000;
           color: #ffffff;
           padding: 0.8rem 1.65rem;
-          border-radius: 9999px;
-          border: 1px solid #000000;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.16);
           font-family: var(--font-display, sans-serif);
           font-size: 0.88rem;
           font-weight: 600;
@@ -319,7 +319,7 @@ export default function PointOfView() {
 
         .pov-btn-primary:hover {
           background-color: #222222;
-          border-color: #222222;
+          border-color: rgba(255, 255, 255, 0.3);
           color: #ffffff;
           transform: translateY(-2px);
           box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
@@ -331,9 +331,9 @@ export default function PointOfView() {
           gap: 0.55rem;
           background-color: #000000;
           color: #ffffff;
-          border: 1px solid #000000;
+          border: 1px solid rgba(255, 255, 255, 0.16);
           padding: 0.8rem 1.65rem;
-          border-radius: 9999px;
+          border-radius: 4px;
           font-family: var(--font-display, sans-serif);
           font-size: 0.88rem;
           font-weight: 600;
@@ -453,7 +453,8 @@ export default function PointOfView() {
           z-index: 2;
           width: clamp(270px, 32vw, 350px);
           height: clamp(340px, 40vw, 440px);
-          border-radius: 30px;
+          border-radius: 6px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           overflow: hidden;
           box-shadow: 0 24px 60px rgba(0, 0, 0, 0.14);
           background-color: #e5e5e5;
@@ -467,10 +468,10 @@ export default function PointOfView() {
           right: -18px;
           z-index: 10;
           background-color: #ffffff;
-          border-radius: 20px;
+          border-radius: 6px;
           padding: 1.25rem 1.6rem;
           box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-          border: 1px solid rgba(0, 0, 0, 0.06);
+          border: 1px solid rgba(0, 0, 0, 0.08);
           max-width: 250px;
         }
 

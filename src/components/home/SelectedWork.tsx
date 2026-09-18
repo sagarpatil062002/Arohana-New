@@ -829,7 +829,7 @@ export default function SelectedWork() {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 18px;
+          border-radius: 6px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -1022,7 +1022,7 @@ export default function SelectedWork() {
           padding: 0.85rem 1.2rem;
           background: #ffffff;
           border: 1px solid rgba(0, 0, 0, 0.12);
-          border-radius: 9999px;
+          border-radius: 4px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -1039,7 +1039,7 @@ export default function SelectedWork() {
           right: 0;
           background: #ffffff;
           border: 1px solid rgba(0, 0, 0, 0.12);
-          border-radius: 16px;
+          border-radius: 6px;
           box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
           padding: 0.5rem;
           z-index: 50;
@@ -1053,7 +1053,7 @@ export default function SelectedWork() {
           text-align: left;
           background: transparent;
           border: none;
-          border-radius: 8px;
+          border-radius: 3px;
           font-size: 0.85rem;
           color: #444444;
           cursor: pointer;
@@ -1076,7 +1076,8 @@ export default function SelectedWork() {
           padding: 0.95rem;
           background: #111216;
           color: #ffffff;
-          border-radius: 9999px;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
           text-decoration: none;
           font-size: 0.88rem;
           font-weight: 600;
@@ -1111,7 +1112,7 @@ export default function SelectedWork() {
 
         .sw-pill-btn {
           padding: 0.45rem 1rem;
-          border-radius: 9999px;
+          border-radius: 3px;
           font-size: 0.8rem;
           font-weight: 500;
           cursor: pointer;
@@ -1157,7 +1158,8 @@ export default function SelectedWork() {
           background-color: #000000;
           color: #ffffff;
           padding: 0.8rem 1.65rem;
-          border-radius: 9999px;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.16);
           font-family: var(--font-display, sans-serif);
           font-size: 0.86rem;
           font-weight: 600;

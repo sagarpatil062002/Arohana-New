@@ -613,10 +613,10 @@ export default function CircularImageTrack() {
             className="circular-track-spotlight-card"
             style={{
               backgroundColor: '#fafafa',
-              borderRadius: '20px',
+              borderRadius: '6px',
               padding: 'clamp(1.5rem, 2.2vw, 2rem)',
-              border: '1px solid rgba(0, 0, 0, 0.07)',
-              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.03)',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
               transition: 'all 0.3s ease',
             }}
           >
@@ -681,7 +681,9 @@ export default function CircularImageTrack() {
                 backgroundColor: '#111111',
                 color: '#ffffff',
                 padding: '0.65rem 1.25rem',
-                borderRadius: '9999px',
+                borderRadius: '4px',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
                 textDecoration: 'none',
                 fontSize: '0.825rem',
                 fontWeight: 500,
@@ -743,8 +745,9 @@ export default function CircularImageTrack() {
                 backgroundColor: '#111111',
                 color: '#ffffff',
                 padding: '0.45rem 0.85rem',
-                borderRadius: '9999px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.18)',
+                borderRadius: '4px',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.45rem',

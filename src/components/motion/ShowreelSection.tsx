@@ -231,10 +231,11 @@ export default function ShowreelSection({
                 position: 'relative',
                 width: '100%',
                 height: '100%',
-                borderRadius: 'clamp(20px, 3vw, 36px)',
+                borderRadius: '6px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
                 overflow: 'hidden',
                 backgroundColor: '#0c0c0e',
-                boxShadow: '0 24px 60px rgba(0, 0, 0, 0.15)',
+                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.25)',
               }}
             >
               {items.map((item, idx) => {
@@ -278,9 +279,10 @@ export default function ShowreelSection({
                         position: 'absolute',
                         bottom: '1.5rem',
                         left: '1.5rem',
-                        padding: '0.45rem 1rem',
-                        borderRadius: '9999px',
-                        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                        padding: '0.35rem 0.85rem',
+                        borderRadius: '3px',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
                         backdropFilter: 'blur(8px)',
                         color: '#ffffff',
                         fontSize: '0.75rem',
@@ -415,7 +417,8 @@ export default function ShowreelSection({
                   position: 'relative',
                   width: '100%',
                   aspectRatio: '16/10',
-                  borderRadius: '20px',
+                  borderRadius: '6px',
+                  border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
                   overflow: 'hidden',
                 }}
               >

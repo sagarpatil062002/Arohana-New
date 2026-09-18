@@ -155,7 +155,7 @@ export default function ContactPage() {
               <div
                 style={{
                   padding: 'clamp(1.5rem, 3.5vw, 2.5rem)',
-                  borderRadius: 'clamp(18px, 3vw, 24px)',
+                  borderRadius: '6px',
                   backgroundColor: '#ffffff',
                   border: '1px solid rgba(0, 0, 0, 0.08)',
                   boxShadow: '0 8px 30px rgba(0, 0, 0, 0.03)',
@@ -293,7 +293,8 @@ export default function ContactPage() {
               <div
                 style={{
                   padding: 'clamp(1.5rem, 3.5vw, 2.5rem)',
-                  borderRadius: 'clamp(18px, 3vw, 24px)',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   backgroundColor: '#0c0c0e',
                   color: '#ffffff',
                   boxShadow: '0 15px 40px rgba(0, 0, 0, 0.25)',
@@ -338,7 +339,7 @@ export default function ContactPage() {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.5rem',
-                      borderRadius: '9999px',
+                      borderRadius: '4px',
                       fontSize: '0.85rem',
                       fontWeight: 550,
                       textDecoration: 'none',
@@ -357,7 +358,7 @@ export default function ContactPage() {
             className="contact-card-anim"
             style={{
               padding: 'clamp(1.5rem, 3.5vw, 3.5rem)',
-              borderRadius: 'clamp(20px, 3vw, 28px)',
+              borderRadius: '6px',
               backgroundColor: '#ffffff',
               border: '1px solid rgba(0, 0, 0, 0.08)',
               boxShadow: '0 12px 40px rgba(0, 0, 0, 0.04)',
@@ -395,10 +396,10 @@ export default function ContactPage() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    borderRadius: '9999px',
+                    borderRadius: '4px',
                     backgroundColor: '#000000',
                     color: '#ffffff',
-                    border: '1px solid #000000',
+                    border: '1px solid rgba(255, 255, 255, 0.16)',
                     fontWeight: 550,
                     cursor: 'pointer'
                   }}
@@ -432,7 +433,7 @@ export default function ContactPage() {
                     style={{
                       width: '100%',
                       height: '50px',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
                       padding: '0 1.25rem',
                       fontSize: '1rem',
@@ -466,7 +467,7 @@ export default function ContactPage() {
                     style={{
                       width: '100%',
                       height: '50px',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
                       padding: '0 1.25rem',
                       fontSize: '1rem',
@@ -499,7 +500,7 @@ export default function ContactPage() {
                     style={{
                       width: '100%',
                       height: '50px',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
                       padding: '0 1.25rem',
                       fontSize: '1rem',
@@ -529,7 +530,7 @@ export default function ContactPage() {
                     style={{
                       width: '100%',
                       height: '50px',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
                       padding: '0 1.25rem',
                       fontSize: '1rem',
@@ -559,7 +560,7 @@ export default function ContactPage() {
                     style={{
                       width: '100%',
                       height: '50px',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
                       padding: '0 1.25rem',
                       fontSize: '1rem',
@@ -598,7 +599,7 @@ export default function ContactPage() {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     style={{
                       width: '100%',
-                      borderRadius: '12px',
+                      borderRadius: '4px',
                       border: '1px solid rgba(0, 0, 0, 0.12)',
                       padding: '1rem 1.25rem',
                       fontSize: '1rem',
@@ -618,10 +619,10 @@ export default function ContactPage() {
                     padding: '0 2rem',
                     width: '100%',
                     justifyContent: 'center',
-                    borderRadius: '9999px',
+                    borderRadius: '4px',
                     backgroundColor: '#000000',
                     color: '#ffffff',
-                    border: '1px solid #000000',
+                    border: '1px solid rgba(255, 255, 255, 0.16)',
                     gap: '0.6rem',
                     fontWeight: 550
                   }}

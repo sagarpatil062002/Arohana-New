@@ -504,7 +504,7 @@ export default function TheWorkIsTheProof({
           align-items: center;
           justify-content: center;
           padding: 3px 10px;
-          border-radius: 9999px;
+          border-radius: 3px;
           border: 1px solid rgba(0, 0, 0, 0.15);
           background-color: rgba(255, 255, 255, 0.8);
           font-family: var(--font-mono, monospace);
@@ -604,7 +604,8 @@ export default function TheWorkIsTheProof({
         /* Individual Card */
         .proof-card {
           height: 420px;
-          border-radius: 20px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
           overflow: hidden;
           position: relative;
           box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
@@ -656,7 +657,8 @@ export default function TheWorkIsTheProof({
           letter-spacing: 0.08em;
           text-transform: uppercase;
           padding: 3px 10px;
-          border-radius: 9999px;
+          border-radius: 3px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
           background-color: rgba(255, 255, 255, 0.14);
           color: rgba(255, 255, 255, 0.85);
           backdrop-filter: blur(4px);
@@ -750,7 +752,7 @@ export default function TheWorkIsTheProof({
         .proof-dot-btn {
           width: 8px;
           height: 8px;
-          border-radius: 9999px;
+          border-radius: 2px;
           background-color: rgba(0, 0, 0, 0.2);
           border: none;
           cursor: pointer;

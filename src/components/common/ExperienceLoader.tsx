@@ -221,7 +221,7 @@ export default function ExperienceLoader() {
             backgroundColor: 'rgba(255, 255, 255, 0.1)',
             position: 'relative',
             overflow: 'hidden',
-            borderRadius: '9999px',
+            borderRadius: '2px',
           }}
         >
           <div

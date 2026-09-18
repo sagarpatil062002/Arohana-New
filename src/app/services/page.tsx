@@ -309,7 +309,8 @@ export default function ServicesPage() {
                   position: 'relative',
                   width: '100%',
                   aspectRatio: '16 / 9',
-                  borderRadius: '14px',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
                   overflow: 'hidden',
                   boxShadow: '0 12px 32px -8px rgba(0, 0, 0, 0.08)',
                 }}
@@ -504,7 +505,7 @@ export default function ServicesPage() {
                   width: '92%',
                   height: '92%',
                   border: '1px solid rgba(255, 255, 255, 0.12)',
-                  borderRadius: '18px',
+                  borderRadius: '6px',
                   pointerEvents: 'none',
                   zIndex: 1,
                 }}
@@ -528,7 +529,8 @@ export default function ServicesPage() {
                   zIndex: 2,
                   width: '100%',
                   aspectRatio: '16 / 10',
-                  borderRadius: '16px',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   overflow: 'hidden',
                   boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
                 }}
@@ -616,7 +618,8 @@ export default function ServicesPage() {
                   position: 'relative',
                   width: '100%',
                   aspectRatio: '16 / 9',
-                  borderRadius: '14px',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
                   overflow: 'hidden',
                   boxShadow: '0 12px 32px -8px rgba(0, 0, 0, 0.08)',
                 }}
@@ -1085,7 +1088,7 @@ export default function ServicesPage() {
                   backgroundColor: '#000000',
                   color: '#ffffff',
                   border: '1px solid rgba(255, 255, 255, 0.22)',
-                  borderRadius: '9999px',
+                  borderRadius: '4px',
                   fontSize: '0.88rem',
                   fontWeight: 600,
                   textDecoration: 'none',

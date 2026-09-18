@@ -543,7 +543,8 @@ export default function StudioPage() {
           opacity: 0,
           backgroundColor: '#111113',
           color: '#ffffff',
-          borderRadius: '9999px',
+          borderRadius: '4px',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
           padding: '0.55rem 1.15rem',
           display: 'flex',
           alignItems: 'center',
@@ -638,7 +639,8 @@ export default function StudioPage() {
                     padding: '0 1.85rem',
                     backgroundColor: DARK,
                     color: '#ffffff',
-                    borderRadius: '9999px',
+                    borderRadius: '4px',
+                    border: '1px solid rgba(255, 255, 255, 0.16)',
                     fontSize: '0.9rem',
                     fontWeight: 600,
                     textDecoration: 'none',
@@ -949,7 +951,7 @@ export default function StudioPage() {
               className="chapters-story-card"
               style={{
                 backgroundColor: BG_CARD,
-                borderRadius: '24px',
+                borderRadius: '6px',
                 border: BORDER,
                 padding: 'clamp(1.75rem, 3.5vw, 3.25rem)',
                 boxShadow: '0 20px 45px -12px rgba(0, 0, 0, 0.06)',
@@ -1176,7 +1178,7 @@ export default function StudioPage() {
               onClick={() => setActiveTab('04')}
               className={`standard-tab-btn standard-tab-04 ${activeTab === '04' ? 'active' : ''}`}
               style={{
-                borderRadius: '18px',
+                borderRadius: '4px',
                 padding: 'clamp(1.1rem, 2vw, 1.4rem) clamp(1.25rem, 2vw, 1.75rem)',
                 display: 'flex',
                 alignItems: 'center',
@@ -1238,7 +1240,7 @@ export default function StudioPage() {
               onClick={() => setActiveTab('05')}
               className={`standard-tab-btn standard-tab-05 ${activeTab === '05' ? 'active' : ''}`}
               style={{
-                borderRadius: '18px',
+                borderRadius: '4px',
                 padding: 'clamp(1.1rem, 2vw, 1.4rem) clamp(1.25rem, 2vw, 1.75rem)',
                 display: 'flex',
                 alignItems: 'center',
@@ -1282,7 +1284,7 @@ export default function StudioPage() {
                 style={{
                   width: '36px',
                   height: '36px',
-                  borderRadius: '50%',
+                  borderRadius: '4px',
                   backgroundColor: activeTab === '05' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.05)',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1299,7 +1301,7 @@ export default function StudioPage() {
           <div
             style={{
               backgroundColor: BG_CARD,
-              borderRadius: '24px',
+              borderRadius: '6px',
               border: BORDER,
               padding: 'clamp(1.75rem, 3.5vw, 3.5rem)',
               boxShadow: '0 20px 45px -12px rgba(0, 0, 0, 0.06)',
@@ -1500,7 +1502,7 @@ export default function StudioPage() {
                 key={member.id}
                 style={{
                   backgroundColor: BG_CARD,
-                  borderRadius: '18px',
+                  borderRadius: '6px',
                   border: BORDER,
                   overflow: 'hidden',
                   boxShadow: '0 8px 24px -6px rgba(0, 0, 0, 0.04)',
@@ -1583,7 +1585,8 @@ export default function StudioPage() {
           <div
             style={{
               backgroundColor: '#111113',
-              borderRadius: '26px',
+              borderRadius: '6px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
               color: '#ffffff',
               padding: 'clamp(2.5rem, 5vw, 5rem)',
               position: 'relative',
@@ -1665,7 +1668,7 @@ export default function StudioPage() {
                     padding: '0 1.85rem',
                     backgroundColor: '#000000',
                     color: '#ffffff',
-                    borderRadius: '9999px',
+                    borderRadius: '4px',
                     fontSize: '0.9rem',
                     fontWeight: 600,
                     textDecoration: 'none',
@@ -1696,7 +1699,7 @@ export default function StudioPage() {
                     padding: '0 1.85rem',
                     backgroundColor: '#111113',
                     color: '#ffffff',
-                    borderRadius: '9999px',
+                    borderRadius: '4px',
                     fontSize: '0.9rem',
                     fontWeight: 600,
                     textDecoration: 'none',
@@ -1847,7 +1850,7 @@ export default function StudioPage() {
 
           .chapters-story-card {
             padding: 1.6rem 1.25rem !important;
-            border-radius: 20px !important;
+            border-radius: 6px !important;
           }
 
           /* Horizontal 04 and 05 tabs for mobile */
@@ -1860,7 +1863,7 @@ export default function StudioPage() {
 
           .standard-tab-btn {
             padding: 0.75rem 0.65rem !important;
-            border-radius: 14px !important;
+            border-radius: 4px !important;
             gap: 0.4rem !important;
           }
 

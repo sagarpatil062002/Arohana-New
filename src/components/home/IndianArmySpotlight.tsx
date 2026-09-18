@@ -619,7 +619,7 @@ export default function IndianArmySpotlight() {
           position: relative;
           width: 100%;
           height: 100%;
-          border-radius: 20px;
+          border-radius: 6px;
           overflow: hidden;
           background-color: #111319;
           border: 1px solid rgba(255, 255, 255, 0.12);
@@ -716,9 +716,9 @@ export default function IndianArmySpotlight() {
           top: 50%;
           transform: translateY(-50%);
           z-index: 120;
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
+          width: 42px;
+          height: 42px;
+          border-radius: 4px;
           display: flex;
           align-items: center;
           justify-content: center;

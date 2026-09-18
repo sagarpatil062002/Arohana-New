@@ -311,7 +311,8 @@ export default function TourinSpotlight() {
           position: relative;
           width: 100%;
           min-height: 620px;
-          border-radius: 36px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           background-color: #121316;
           overflow: hidden;
           box-shadow: 0 28px 60px -15px rgba(0, 0, 0, 0.35);
@@ -373,7 +374,7 @@ export default function TourinSpotlight() {
 
         .bridge-pill {
           padding: 8px 18px;
-          border-radius: 999px;
+          border-radius: 3px;
           font-size: 11px;
           font-weight: 800;
           letter-spacing: 0.16em;
@@ -574,7 +575,7 @@ export default function TourinSpotlight() {
         .stat-callout-card {
           background-color: rgba(255, 255, 255, 0.04);
           border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 18px;
+          border-radius: 6px;
           padding: 18px 24px;
           display: flex;
           align-items: center;
@@ -616,7 +617,7 @@ export default function TourinSpotlight() {
           font-size: 13px;
           font-weight: 700;
           padding: 12px 22px;
-          border-radius: 999px;
+          border-radius: 4px;
           text-decoration: none;
           transition: all 0.25s ease;
           box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
@@ -636,7 +637,7 @@ export default function TourinSpotlight() {
           font-size: 13px;
           font-weight: 600;
           padding: 12px 22px;
-          border-radius: 999px;
+          border-radius: 4px;
           border: 1px solid rgba(255, 255, 255, 0.22);
           text-decoration: none;
           transition: all 0.25s ease;
@@ -692,7 +693,7 @@ export default function TourinSpotlight() {
           position: relative;
           width: 96px;
           height: 64px;
-          border-radius: 14px;
+          border-radius: 4px;
           overflow: hidden;
           border: 2px solid transparent;
           background: none;
@@ -820,7 +821,7 @@ export default function TourinSpotlight() {
 
           .tourin-hero-card {
             flex-direction: column;
-            border-radius: 28px;
+            border-radius: 6px;
             min-height: auto;
           }
 

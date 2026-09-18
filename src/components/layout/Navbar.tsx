@@ -232,7 +232,7 @@ export default function Navbar() {
                 padding: '0 1.5rem',
                 backgroundColor: '#111111',
                 color: '#ffffff',
-                borderRadius: '9999px',
+                borderRadius: '4px',
                 display: 'none',
                 alignItems: 'center',
                 gap: '0.55rem',
@@ -240,6 +240,7 @@ export default function Navbar() {
                 fontWeight: 600,
                 textDecoration: 'none',
                 transition: 'all 0.25s ease',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
                 boxShadow: '0 4px 14px rgba(0, 0, 0, 0.16)',
               }}
               onMouseEnter={(e) => {
@@ -263,7 +264,7 @@ export default function Navbar() {
                 padding: '0 1.45rem',
                 backgroundColor: '#000000',
                 color: '#ffffff',
-                borderRadius: '9999px',
+                borderRadius: '4px',
                 display: 'none',
                 alignItems: 'center',
                 gap: '0.55rem',
@@ -271,7 +272,7 @@ export default function Navbar() {
                 fontWeight: 600,
                 textDecoration: 'none',
                 transition: 'all 0.25s ease',
-                border: '1px solid #000000',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
                 boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
               }}
               onMouseEnter={(e) => {
@@ -403,8 +404,8 @@ export default function Navbar() {
                 justifyContent: 'center',
                 backgroundColor: '#000000',
                 color: '#ffffff',
-                border: '1px solid #000000',
-                borderRadius: '9999px',
+                border: '1px solid rgba(255, 255, 255, 0.16)',
+                borderRadius: '4px',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.55rem',

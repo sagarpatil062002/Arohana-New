@@ -395,8 +395,8 @@ export default function RealWorldImpact() {
           background-color: #000000;
           color: #ffffff;
           padding: 0.75rem 1.65rem;
-          border-radius: 9999px;
-          border: 1px solid #000000;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.16);
           font-family: var(--font-display, sans-serif);
           font-size: 0.88rem;
           font-weight: 550;

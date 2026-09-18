@@ -917,7 +917,7 @@ export default function IndianArmyProjectsPage() {
                     </Link>
                   </div>
                   {p.image && (
-                    <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '12px', overflow: 'hidden' }}>
+                    <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '6px', border: '1px solid rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>
                       <Image src={p.image} alt={p.title} fill sizes="450px" style={{ objectFit: 'cover' }} />
                     </div>
                   )}
@@ -1250,7 +1250,7 @@ export default function IndianArmyProjectsPage() {
           align-items: center;
           gap: 0.45rem;
           padding: 0.35rem 0.85rem;
-          border-radius: 9999px;
+          border-radius: 3px;
           background-color: rgba(255, 255, 255, 0.9);
           border: 1px solid rgba(0, 0, 0, 0.1);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -1359,7 +1359,7 @@ export default function IndianArmyProjectsPage() {
           align-items: center;
           gap: 0.6rem;
           padding: 0.85rem 1.85rem;
-          border-radius: 9999px;
+          border-radius: 4px;
           background-color: #111113;
           color: #ffffff;
           font-size: 0.88rem;
@@ -1568,7 +1568,7 @@ export default function IndianArmyProjectsPage() {
         .integrity-banner {
           background: #ffffff;
           border: 1px solid rgba(0, 0, 0, 0.08);
-          border-radius: 16px;
+          border-radius: 6px;
           padding: 1.1rem 1.75rem;
           display: flex;
           align-items: center;
@@ -1625,7 +1625,7 @@ export default function IndianArmyProjectsPage() {
         .filter-pill {
           height: 42px;
           padding: 0 1.25rem;
-          border-radius: 9999px;
+          border-radius: 4px;
           border: 1px solid rgba(0, 0, 0, 0.12);
           background-color: #ffffff;
           color: #444444;
@@ -1669,7 +1669,7 @@ export default function IndianArmyProjectsPage() {
         }
 
         .project-card {
-          border-radius: 28px;
+          border-radius: 6px;
           overflow: hidden;
           transition: all 0.3s ease;
           position: relative;
@@ -1704,7 +1704,7 @@ export default function IndianArmyProjectsPage() {
           letter-spacing: 0.1em;
           text-transform: uppercase;
           padding: 5px 12px;
-          border-radius: 9999px;
+          border-radius: 3px;
         }
 
         .card-meta-right {
@@ -1751,7 +1751,7 @@ export default function IndianArmyProjectsPage() {
           color: #ffffff;
           background: #000000;
           border: 1px solid #000000;
-          border-radius: 9999px;
+          border-radius: 4px;
           padding: 0.75rem 1.6rem;
           margin-top: 1.25rem;
           cursor: pointer;
@@ -1776,7 +1776,7 @@ export default function IndianArmyProjectsPage() {
 
         .subsection-box {
           padding: 1.25rem;
-          border-radius: 16px;
+          border-radius: 4px;
           display: flex;
           flex-direction: column;
           gap: 0.5rem;
@@ -1862,7 +1862,8 @@ export default function IndianArmyProjectsPage() {
 
         .card-1-video-thumb {
           position: relative;
-          border-radius: 16px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           overflow: hidden;
           background: #18181a;
           box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
@@ -1930,7 +1931,8 @@ export default function IndianArmyProjectsPage() {
         .sub-photo-item {
           position: relative;
           flex: 1;
-          border-radius: 16px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           overflow: hidden;
           background: #111111;
           box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
@@ -1946,7 +1948,7 @@ export default function IndianArmyProjectsPage() {
           font-size: 0.72rem;
           font-weight: 700;
           padding: 3px 8px;
-          border-radius: 9999px;
+          border-radius: 3px;
         }
 
         /* ---------------- CARD 2: DARK ---------------- */
@@ -2006,7 +2008,8 @@ export default function IndianArmyProjectsPage() {
 
         .card-2-video-preview {
           position: relative;
-          border-radius: 16px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           overflow: hidden;
           aspect-ratio: 16/9;
           box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
@@ -2022,7 +2025,7 @@ export default function IndianArmyProjectsPage() {
           color: rgba(255, 255, 255, 0.85);
           background: rgba(0, 0, 0, 0.6);
           padding: 4px 10px;
-          border-radius: 9999px;
+          border-radius: 3px;
         }
 
         /* 3D Publication Books Shelf */
@@ -2097,7 +2100,7 @@ export default function IndianArmyProjectsPage() {
         .btn-dark-pill {
           height: 44px;
           padding: 0 1.6rem;
-          border-radius: 9999px;
+          border-radius: 4px;
           background: #000000;
           border: 1px solid rgba(255, 255, 255, 0.2);
           color: #ffffff;
@@ -2445,7 +2448,8 @@ export default function IndianArmyProjectsPage() {
 
         .closing-banner-card {
           position: relative;
-          border-radius: 28px;
+          border-radius: 6px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           overflow: hidden;
           min-height: clamp(360px, 42vw, 480px);
           display: flex;
@@ -2511,7 +2515,7 @@ export default function IndianArmyProjectsPage() {
           background-color: #000000;
           color: #ffffff;
           padding: 0.85rem 1.85rem;
-          border-radius: 9999px;
+          border-radius: 4px;
           border: 1px solid rgba(255, 255, 255, 0.25);
           font-size: 0.88rem;
           font-weight: 550;
@@ -2654,7 +2658,7 @@ export default function IndianArmyProjectsPage() {
         .modal-dialog {
           background: #000000;
           border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 24px;
+          border-radius: 6px;
           width: 100%;
           max-width: 900px;
           overflow: hidden;
@@ -2668,7 +2672,7 @@ export default function IndianArmyProjectsPage() {
           right: 16px;
           width: 36px;
           height: 36px;
-          border-radius: 50%;
+          border-radius: 4px;
           background: rgba(255, 255, 255, 0.15);
           color: #ffffff;
           display: flex;
@@ -2754,7 +2758,7 @@ export default function IndianArmyProjectsPage() {
           }
           .project-card {
             padding: 1.5rem 1.15rem !important;
-            border-radius: 20px !important;
+            border-radius: 6px !important;
           }
           .card-meta-bar {
             flex-direction: column !important;
