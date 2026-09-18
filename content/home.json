@@ -159,7 +159,7 @@
         "target": 25,
         "suffix": "+",
         "title": "Commercial Engagements",
-        "desc": "Direct partnerships across hospitality, enterprise & consumer brands."
+        "desc": ""
       },
       {
         "id": "sectors",
@@ -167,7 +167,7 @@
         "target": 6,
         "twoDigits": true,
         "title": "Industry Sectors",
-        "desc": "Hospitality, Real Estate, Healthcare, Media, Travel & Defence."
+        "desc": ""
       },
       {
         "id": "cases",
@@ -175,7 +175,7 @@
         "target": 8,
         "twoDigits": true,
         "title": "Featured Case Studies",
-        "desc": "In-depth multi-entity execution, retainers and technical production."
+        "desc": ""
       },
       {
         "id": "expeditions",
@@ -183,7 +183,7 @@
         "target": 15,
         "suffix": "+",
         "title": "Himalayan Expeditions",
-        "desc": "Curated high-altitude journeys and community homestay initiatives."
+        "desc": ""
       }
     ]
   },

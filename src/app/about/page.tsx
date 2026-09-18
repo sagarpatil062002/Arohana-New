@@ -345,13 +345,15 @@ function FounderAnimatedStats({ stats }: { stats: Array<{ value: string; label: 
   return (
     <div
       ref={containerRef}
+      className="founder-stats-grid"
       style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${stats.length}, 1fr)`,
         gap: 'clamp(1rem, 2.5vw, 2.5rem)',
         paddingTop: 'clamp(1.25rem, 2vw, 1.75rem)',
         borderTop: BORDER,
-        maxWidth: '560px',
+        maxWidth: '680px',
+        width: '100%',
       }}
     >
       {stats.map((stat: any, i: number) => {
@@ -371,7 +373,7 @@ function FounderAnimatedStats({ stats }: { stats: Array<{ value: string; label: 
             <div
               style={{
                 fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-                fontSize: 'clamp(1.9rem, 3vw, 2.8rem)',
+                fontSize: 'clamp(2.8rem, 4.4vw, 4.2rem)',
                 fontWeight: 650,
                 letterSpacing: '-0.03em',
                 lineHeight: 1,
@@ -1897,6 +1899,13 @@ export default function StudioPage() {
           grid-template-columns: repeat(2, 1fr);
           gap: clamp(1rem, 2vw, 1.5rem);
           margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
+        }
+
+        @media (max-width: 640px) {
+          .founder-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1.5rem 1rem !important;
+          }
         }
 
         @keyframes cleanDigitFlip {

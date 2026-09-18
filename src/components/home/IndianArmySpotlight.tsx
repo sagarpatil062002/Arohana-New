@@ -517,6 +517,9 @@ export default function IndianArmySpotlight() {
         }
 
         .army-header-left {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
           flex: 0 0 clamp(340px, 44vw, 620px);
           max-width: 620px;
         }
@@ -529,13 +532,15 @@ export default function IndianArmySpotlight() {
         .army-eyebrow-row {
           display: inline-flex;
           align-items: center;
+          flex-wrap: wrap;
           gap: 0.75rem;
           margin-bottom: 0.85rem;
+          max-width: 100%;
         }
 
         .army-eyebrow-text {
           font-family: inherit !important;
-          font-size: 0.75rem;
+          font-size: clamp(0.7rem, 1.4vw, 0.75rem);
           font-weight: 700;
           letter-spacing: 0.12em;
           color: rgba(255, 255, 255, 0.9);
@@ -763,16 +768,21 @@ export default function IndianArmySpotlight() {
             z-index: 5;
           }
           .army-header-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             flex: 1;
             max-width: 100%;
           }
           .army-mobile-badge-box {
             display: inline-flex;
             align-items: center;
+            width: fit-content;
+            max-width: 100%;
             padding: 0.55rem 1.15rem;
-            margin-bottom: 1.25rem;
-            background: rgba(14, 16, 24, 0.92);
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.15rem;
+            background: rgba(14, 16, 24, 0.94);
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
             border-left: 3px solid #ffffff;
             border-radius: 4px;
             backdrop-filter: blur(10px);
@@ -821,6 +831,14 @@ export default function IndianArmySpotlight() {
         }
 
         @media (max-width: 640px) {
+          .army-mobile-badge-box {
+            padding: 0.45rem 0.9rem !important;
+            margin-bottom: 0.85rem !important;
+          }
+          .army-eyebrow-row {
+            margin-bottom: 0.75rem !important;
+            gap: 0.5rem !important;
+          }
           .army-nav-btn {
             width: 40px;
             height: 40px;

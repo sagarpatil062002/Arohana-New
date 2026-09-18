@@ -280,12 +280,6 @@ export default function RealWorldImpact() {
 
                 {/* Title */}
                 <h3 className="rwi-stat-title">{item.title}</h3>
-
-                {/* Bottom Accent Dash */}
-                <div className="rwi-stat-underline" />
-
-                {/* Description */}
-                <p className="rwi-stat-desc">{item.desc}</p>
               </div>
             );
           })}
@@ -495,7 +489,7 @@ export default function RealWorldImpact() {
         /* ── Clean Flipping Numbers (NO BOXES) ── */
         .rwi-stat-number {
           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-          font-size: clamp(3.6rem, 5.8vw, 5.6rem);
+          font-size: clamp(4.8rem, 7.5vw, 7.2rem);
           font-weight: 700;
           line-height: 1;
           letter-spacing: -0.04em;

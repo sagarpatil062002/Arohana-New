@@ -358,7 +358,6 @@ export default function ServicesSection() {
                     {stat.suffix && <span className="sharp-stat-suffix">{stat.suffix}</span>}
                   </div>
                   <div className="sharp-stat-label">{stat.label}</div>
-                  <div className="sharp-stat-detail">{stat.detail}</div>
                 </div>
               );
             })}
@@ -578,12 +577,12 @@ export default function ServicesSection() {
           display: inline-flex;
           align-items: baseline;
           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-          font-size: clamp(2.6rem, 4vw, 4.2rem);
+          font-size: clamp(3.8rem, 5.8vw, 6rem);
           font-weight: 600;
           letter-spacing: -0.04em;
           color: #ffffff;
           line-height: 1;
-          margin-bottom: 0.65rem;
+          margin-bottom: 0.5rem;
           font-feature-settings: 'tnum' 1, 'zero' 1;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -611,11 +610,11 @@ export default function ServicesSection() {
 
         .sharp-stat-label {
           font-family: var(--font-display, sans-serif);
-          font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+          font-size: clamp(1rem, 1.25vw, 1.16rem);
           font-weight: 600;
           color: #f4f4f5;
-          margin-bottom: 0.35rem;
-          line-height: 1.3;
+          margin-top: 0.25rem;
+          line-height: 1.35;
           letter-spacing: -0.01em;
         }
 
