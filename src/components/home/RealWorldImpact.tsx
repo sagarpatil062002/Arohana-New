@@ -71,6 +71,7 @@ function FlipDigit({ digit }: { digit: string }) {
       className="flip-digit-wrapper"
       style={{
         display: 'inline-block',
+        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontVariantNumeric: 'tabular-nums',
         lineHeight: 1,
         perspective: '500px',
@@ -80,6 +81,7 @@ function FlipDigit({ digit }: { digit: string }) {
       <span
         style={{
           display: 'inline-block',
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
           animation: animating ? 'cleanDigitFlip 0.24s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           transformOrigin: '50% 50%',
         }}
@@ -492,7 +494,7 @@ export default function RealWorldImpact() {
 
         /* ── Clean Flipping Numbers (NO BOXES) ── */
         .rwi-stat-number {
-          font-family: var(--font-display, sans-serif);
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
           font-size: clamp(3.6rem, 5.8vw, 5.6rem);
           font-weight: 700;
           line-height: 1;
@@ -507,9 +509,11 @@ export default function RealWorldImpact() {
         .rwi-flip-digits-row {
           display: inline-flex;
           align-items: baseline;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
         }
 
         .rwi-num-plus {
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
           color: #DE322D;
           font-weight: 700;
           margin-left: 2px;

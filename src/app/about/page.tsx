@@ -264,6 +264,7 @@ function FlipDigit({ digit }: { digit: string }) {
       className="flip-digit-wrapper"
       style={{
         display: 'inline-block',
+        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontVariantNumeric: 'tabular-nums',
         lineHeight: 1,
         perspective: '500px',
@@ -273,6 +274,7 @@ function FlipDigit({ digit }: { digit: string }) {
       <span
         style={{
           display: 'inline-block',
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
           animation: animating ? 'cleanDigitFlip 0.24s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           transformOrigin: '50% 50%',
         }}
@@ -368,6 +370,7 @@ function FounderAnimatedStats({ stats }: { stats: Array<{ value: string; label: 
           >
             <div
               style={{
+                fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
                 fontSize: 'clamp(1.9rem, 3vw, 2.8rem)',
                 fontWeight: 650,
                 letterSpacing: '-0.03em',
@@ -377,13 +380,13 @@ function FounderAnimatedStats({ stats }: { stats: Array<{ value: string; label: 
                 alignItems: 'baseline',
               }}
             >
-              <div style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'baseline', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
                 {digits.map((d, dIdx) => (
                   <FlipDigit key={dIdx} digit={d} />
                 ))}
               </div>
               {info.suffix && (
-                <span style={{ color: RED, fontWeight: 700, marginLeft: '2px', lineHeight: 1 }}>
+                <span style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", color: RED, fontWeight: 700, marginLeft: '2px', lineHeight: 1 }}>
                   {info.suffix}
                 </span>
               )}

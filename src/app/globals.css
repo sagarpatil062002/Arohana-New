@@ -1,8 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @font-face {
   font-family: 'BDO Grotesk VF';
   src: url('/fonts/684089e8aa49652cc95dee56_BDOGrotesk-VF.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/68408a5271e2c68f863aea5e_InterVariable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -577,7 +585,7 @@ button, input, select, textarea {
 }
 
 .rwi-number {
-  font-family: var(--font-display) !important;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size: clamp(3.2rem, 5.5vw, 5.8rem);
   font-weight: 500;
   line-height: 0.95;
@@ -591,12 +599,24 @@ button, input, select, textarea {
 }
 
 .rwi-suffix {
-  font-family: var(--font-display) !important;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size: 0.5em;
   font-weight: 600;
   color: #DE322D;
   letter-spacing: 0;
   line-height: 1;
+}
+
+/* Flipping numbers — Helvetica typography */
+.flip-digit-wrapper,
+.flip-digit-wrapper *,
+.sharp-digit-wrapper,
+.sharp-digit-wrapper *,
+.rwi-stat-number,
+.rwi-stat-number *,
+.sharp-stat-num-row,
+.sharp-stat-num-row * {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
 .rwi-text {

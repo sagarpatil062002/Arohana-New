@@ -109,6 +109,7 @@ function SharpFlipDigit({ digit }: { digit: string }) {
         display: 'inline-block',
         minWidth: '0.62em',
         textAlign: 'center',
+        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontVariantNumeric: 'tabular-nums lining-nums',
         lineHeight: 1,
         perspective: '400px',
@@ -118,6 +119,7 @@ function SharpFlipDigit({ digit }: { digit: string }) {
       <span
         style={{
           display: 'inline-block',
+          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
           animation: animating ? 'sharpDigitFlip 0.14s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
           transformOrigin: '50% 50%',
         }}
@@ -574,9 +576,9 @@ export default function ServicesSection() {
         .sharp-stat-num-row {
           display: inline-flex;
           align-items: baseline;
-          font-family: 'Roboto Mono VF', 'Inter VF', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
           font-size: clamp(2.6rem, 4vw, 4.2rem);
-          font-weight: 550;
+          font-weight: 600;
           letter-spacing: -0.04em;
           color: #ffffff;
           line-height: 1;
@@ -591,6 +593,7 @@ export default function ServicesSection() {
           display: inline-block;
           min-width: 0.62em;
           text-align: center;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
           font-variant-numeric: tabular-nums lining-nums;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -598,8 +601,8 @@ export default function ServicesSection() {
 
         .sharp-stat-suffix {
           color: #DE322D;
-          font-family: 'Roboto Mono VF', 'Inter VF', ui-monospace, monospace !important;
-          font-weight: 550;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+          font-weight: 600;
           font-size: 0.88em;
           margin-left: 2px;
           line-height: 1;

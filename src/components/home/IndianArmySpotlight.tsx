@@ -239,36 +239,36 @@ export default function IndianArmySpotlight() {
             <text
               x="332"
               y="104"
+              className="army-svg-title"
               fill="#ffffff"
-              fontFamily="var(--font-display, sans-serif)"
               fontSize="24"
               fontWeight="800"
               textAnchor="end"
-              letterSpacing="0.05em"
+              letterSpacing="0.04em"
             >
               INDIAN
             </text>
             <text
               x="332"
               y="136"
+              className="army-svg-title"
               fill="#ffffff"
-              fontFamily="var(--font-display, sans-serif)"
               fontSize="24"
               fontWeight="800"
               textAnchor="end"
-              letterSpacing="0.05em"
+              letterSpacing="0.04em"
             >
               ARMY
             </text>
             <text
               x="332"
               y="168"
+              className="army-svg-title"
               fill="#ffffff"
-              fontFamily="var(--font-display, sans-serif)"
               fontSize="24"
               fontWeight="800"
               textAnchor="end"
-              letterSpacing="0.05em"
+              letterSpacing="0.04em"
             >
               PROJECTS
             </text>
@@ -282,23 +282,23 @@ export default function IndianArmySpotlight() {
             ============================================================ */}
         <div className="army-header-row">
           <div className="army-header-left">
+            {/* Mobile / Tablet Box for INDIAN ARMY PROJECTS (Visible on <= 991px) */}
+            <div className="army-mobile-badge-box" aria-label="Indian Army Projects">
+              <span className="army-mobile-badge-text">INDIAN ARMY PROJECTS</span>
+            </div>
+
             <div className="army-eyebrow-row">
-              <span className="army-eyebrow-text">{armyCms?.eyebrow || 'PROOF OF WORK'}</span>
+              <span className="army-eyebrow-text">{armyCms?.eyebrow || 'DEFENCE & INSTITUTIONAL PRODUCTION'}</span>
               <span className="army-eyebrow-dash" />
             </div>
 
             <h2 className="army-headline">
-              {armyCms?.title || "Work that doesn't fit a standard agency box"}
+              {armyCms?.title || "Documenting service under demanding conditions."}
             </h2>
 
             <p className="army-description">
-              {armyCms?.description || "From remote-community health initiatives in high-altitude Ladakh to official investiture ceremony films for the Indian Army, Ārohana has worked on projects where the environment, audience and institutional responsibility demanded an entirely different level of preparation and discipline."}
+              {armyCms?.description || "On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations."}
             </p>
-
-            {/* Beyond Boundaries - Clean without red underline stroke */}
-            <div className="army-script-badge">
-              <span className="army-script-text">Beyond Boundaries</span>
-            </div>
           </div>
         </div>
 
@@ -450,6 +450,16 @@ export default function IndianArmySpotlight() {
       </div>
 
       <style jsx>{`
+        .army-spotlight-section {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif !important;
+        }
+
+        .army-spotlight-section *,
+        .army-spotlight-section *::before,
+        .army-spotlight-section *::after {
+          font-family: inherit !important;
+        }
+
         .army-hero-right-panel {
           position: absolute;
           top: 0;
@@ -490,6 +500,14 @@ export default function IndianArmySpotlight() {
           pointer-events: none;
         }
 
+        .army-svg-title,
+        .army-hero-svg text {
+          font-family: inherit !important;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+
         /* ── Header Row ── */
         .army-header-row {
           display: flex;
@@ -503,6 +521,11 @@ export default function IndianArmySpotlight() {
           max-width: 620px;
         }
 
+        /* ── Mobile Badge: INDIAN ARMY PROJECTS ── */
+        .army-mobile-badge-box {
+          display: none;
+        }
+
         .army-eyebrow-row {
           display: inline-flex;
           align-items: center;
@@ -511,10 +534,10 @@ export default function IndianArmySpotlight() {
         }
 
         .army-eyebrow-text {
-          font-family: var(--font-mono, monospace);
+          font-family: inherit !important;
           font-size: 0.75rem;
           font-weight: 700;
-          letter-spacing: 0.16em;
+          letter-spacing: 0.12em;
           color: rgba(255, 255, 255, 0.9);
           text-transform: uppercase;
         }
@@ -527,38 +550,26 @@ export default function IndianArmySpotlight() {
         }
 
         .army-headline {
-          font-family: var(--font-display, sans-serif);
+          font-family: inherit !important;
           font-size: clamp(2.3rem, 4.8vw, 3.8rem);
           font-weight: 700;
-          letter-spacing: -0.03em;
+          letter-spacing: -0.035em;
+          text-transform: none;
           line-height: 1.08;
           color: #ffffff;
           margin: 0 0 1.25rem 0;
         }
 
         .army-description {
-          font-family: var(--font-body, sans-serif);
+          font-family: inherit !important;
           font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+          font-weight: 400;
+          letter-spacing: 0;
+          text-transform: none;
           line-height: 1.65;
           color: rgba(255, 255, 255, 0.7);
-          margin: 0 0 1.6rem 0;
+          margin: 0;
           max-width: 600px;
-        }
-
-        .army-script-badge {
-          display: inline-flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .army-script-text {
-          font-family: 'Caveat', cursive, sans-serif;
-          font-weight: 700;
-          font-size: 2.1rem;
-          color: rgba(255, 255, 255, 0.8);
-          letter-spacing: 0.03em;
-          transform: rotate(-3deg);
-          line-height: 1;
         }
 
         /* ── 3D Carousel Stage ── */
@@ -645,9 +656,10 @@ export default function IndianArmySpotlight() {
         }
 
         .army-card-tag-num {
-          font-family: var(--font-mono, monospace);
+          font-family: inherit !important;
           font-size: 0.78rem;
           font-weight: 700;
+          letter-spacing: 0.04em;
           color: rgba(255, 255, 255, 0.9);
         }
 
@@ -671,7 +683,7 @@ export default function IndianArmySpotlight() {
 
         .army-card-category {
           color: rgba(255, 255, 255, 0.75);
-          font-family: var(--font-mono, monospace);
+          font-family: inherit !important;
           font-size: 0.68rem;
           font-weight: 700;
           letter-spacing: 0.12em;
@@ -680,18 +692,19 @@ export default function IndianArmySpotlight() {
         }
 
         .army-card-title {
-          font-family: var(--font-display, sans-serif);
+          font-family: inherit !important;
           font-size: clamp(1.2rem, 1.8vw, 1.5rem);
           font-weight: 700;
+          letter-spacing: -0.02em;
           line-height: 1.18;
           color: #ffffff;
           margin: 0 0 0.35rem 0;
         }
 
         .army-card-location {
-          font-family: var(--font-mono, monospace);
+          font-family: inherit !important;
           font-size: 0.65rem;
-          font-weight: 600;
+          font-weight: 500;
           letter-spacing: 0.08em;
           color: rgba(255, 255, 255, 0.6);
           text-transform: uppercase;
@@ -745,7 +758,7 @@ export default function IndianArmySpotlight() {
         @media (max-width: 991px) {
           .army-header-row {
             flex-direction: column;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2.25rem;
             position: relative;
             z-index: 5;
           }
@@ -753,13 +766,35 @@ export default function IndianArmySpotlight() {
             flex: 1;
             max-width: 100%;
           }
+          .army-mobile-badge-box {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.55rem 1.15rem;
+            margin-bottom: 1.25rem;
+            background: rgba(14, 16, 24, 0.92);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-left: 3px solid #ffffff;
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+          }
+          .army-mobile-badge-text {
+            font-family: inherit !important;
+            font-size: clamp(0.85rem, 2.6vw, 1rem);
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #ffffff;
+            line-height: 1.2;
+          }
           .army-hero-svg {
             display: none !important;
           }
           .army-hero-right-panel {
             width: 100%;
-            height: 440px;
-            opacity: 0.38;
+            height: 380px;
+            opacity: 0.32;
             left: 0;
             right: 0;
           }
@@ -776,17 +811,31 @@ export default function IndianArmySpotlight() {
             line-height: 1.12 !important;
             margin-bottom: 1rem !important;
           }
+          .army-description {
+            font-size: 0.95rem !important;
+            line-height: 1.58 !important;
+          }
+          .army-carousel-viewport {
+            height: clamp(380px, 92vw, 460px);
+          }
         }
 
         @media (max-width: 640px) {
           .army-nav-btn {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
+            z-index: 130;
+          }
+          .army-nav-left {
+            left: 0.25rem;
+          }
+          .army-nav-right {
+            right: 0.25rem;
           }
           .army-hero-right-panel {
             width: 100%;
-            height: 380px;
-            opacity: 0.35;
+            height: 320px;
+            opacity: 0.28;
           }
           .army-headline {
             font-size: clamp(1.85rem, 7.5vw, 2.35rem) !important;
@@ -796,13 +845,27 @@ export default function IndianArmySpotlight() {
             font-size: 0.92rem !important;
             line-height: 1.55 !important;
           }
+          .army-carousel-viewport {
+            height: clamp(360px, 105vw, 420px);
+          }
           .army-card-wrapper {
-            width: 250px;
-            height: 350px;
+            width: clamp(210px, 66vw, 245px);
+            height: clamp(300px, 94vw, 350px);
           }
           .card-active {
-            width: 275px;
-            height: 390px;
+            width: clamp(235px, 74vw, 275px);
+            height: clamp(335px, 105vw, 390px);
+          }
+        }
+
+        @media (max-width: 380px) {
+          .army-card-wrapper {
+            width: 205px;
+            height: 295px;
+          }
+          .card-active {
+            width: 230px;
+            height: 330px;
           }
         }
       `}</style>
