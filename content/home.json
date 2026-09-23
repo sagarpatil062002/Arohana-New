@@ -254,7 +254,7 @@
   "selectedWork": {
     "eyebrow": "SELECTED WORK SHOWCASE",
     "title": "The work is the proof.",
-    "subtitle": "Swipe or drag to explore selected engagements across sectors.",
+    "subtitle": "",
     "ctaText": "View All Case Studies",
     "ctaLink": "/work",
     "projects": [

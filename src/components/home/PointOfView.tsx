@@ -110,34 +110,14 @@ export default function PointOfView() {
               <p>{activeParagraph2}</p>
             </div>
 
-            {/* CTA Buttons Row */}
-            <div className="pov-buttons-row">
-              <Link href={activeBtnPrimaryLink} className="pov-btn-primary">
-                <span>{activeBtnPrimaryText}</span>
-                <ArrowRight size={15} />
-              </Link>
 
-              <Link href={activeBtnSecondaryLink} className="pov-btn-secondary">
-                <span>{activeBtnSecondaryText}</span>
-                <ArrowRight size={15} />
-              </Link>
-            </div>
           </div>
 
           {/* ============================================================
               RIGHT COLUMN: Layered Architectural Shapes, Portrait, Founder Badge
               ============================================================ */}
           <div ref={rightRef} className="pov-right-col">
-            {/* Center-Top Typographic Element (IDEAS ── BRANDS PEOPLE PROGRESS) */}
-            <div className="pov-triad-element">
-              <div className="pov-triad-row">
-                <span className="pov-triad-word">IDEAS</span>
-                <span className="pov-triad-rule" />
-              </div>
-              <span className="pov-triad-word">BRANDS</span>
-              <span className="pov-triad-word">PEOPLE</span>
-              <span className="pov-triad-word">PROGRESS</span>
-            </div>
+
 
             {/* Visual Composition Container */}
             <div className="pov-composition-box">

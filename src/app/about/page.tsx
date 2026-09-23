@@ -10,18 +10,6 @@ import {
   ArrowUpRight,
   ChevronLeft,
   ChevronRight,
-  Utensils,
-  Building2,
-  HeartPulse,
-  Sparkles,
-  ShieldCheck,
-  Calendar,
-  BarChart3,
-  Quote,
-  Layers,
-  Award,
-  Compass,
-  CheckCircle2,
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -105,312 +93,67 @@ const CHAPTERS: ChapterData[] = [
   },
 ];
 
-const DISCIPLINES = [
-  {
-    icon: Utensils,
-    title: 'Hospitality & F&B',
-    category: 'EXPERIENCE AND GROWTH',
-    description: 'From independent restaurants to large hospitality brands.',
-  },
-  {
-    icon: Building2,
-    title: 'Real Estate & Infrastructure',
-    category: 'SPACES FOR TOMORROW',
-    description: 'Positioning, digital presence and campaign execution for real estate and lifestyle projects.',
-  },
-  {
-    icon: HeartPulse,
-    title: 'Healthcare & Wellness',
-    category: 'PURPOSE LED COMMUNICATION',
-    description: 'Strategy and communication for healthcare practices and wellness brands.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Consumer & Lifestyle',
-    category: 'BRANDS PEOPLE LOVE',
-    description: 'Digital content and campaign execution for consumer and lifestyle businesses.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Institutional & Defence',
-    category: 'CRITICAL MISSIONS & COMMUNITIES',
-    description: 'Work with Indian Army and institutional projects in high-altitude and sensitive environments.',
-  },
-  {
-    icon: Calendar,
-    title: 'Events & Experiences',
-    category: 'IDEAS INTO IMPACT',
-    description: 'From brand launches to on-ground experiences across sectors.',
-  },
-];
 
-const ENGAGEMENT_PILLARS = [
-  {
-    icon: Compass,
-    title: 'Commercial & Strategic Clarity',
-    category: 'FIRST PRINCIPLES',
-    description: 'Diagnosing core business mechanics, revenue drivers, and target audiences before creating a single asset.',
-  },
-  {
-    icon: Layers,
-    title: 'Full-Funnel Brand Systems',
-    category: 'IDENTITY & NARRATIVE',
-    description: 'Positioning, messaging hierarchies, and cohesive design languages built to command industry authority.',
-  },
-  {
-    icon: Sparkles,
-    title: 'High-Impact Creative Production',
-    category: 'CONTENT & CAMPAIGNS',
-    description: 'Multi-platform film, photography, editorial copy, and social narratives executed to perfection.',
-  },
-  {
-    icon: CheckCircle2,
-    title: 'Disciplined Operational Execution',
-    category: 'SYSTEMS & CADENCE',
-    description: 'Relentless project coordination, clear timelines, and dedicated weekly momentum with senior leadership.',
-  },
-  {
-    icon: Award,
-    title: 'Institutional & Defence Standard',
-    category: 'RIGOR & COMPLIANCE',
-    description: 'Battle-tested rigor born from working in Ladakh and sensitive high-altitude institutional assignments.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Measured Business Outcomes',
-    category: 'ACCOUNTABILITY',
-    description: 'Focusing squarely on brand equity, footfalls, revenue growth, and stakeholder trust.',
-  },
-];
 
-const TEAM = [
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  image: string;
+  bio: string;
+}
+
+const TEAM: TeamMember[] = [
   {
-    id: 'madhura',
-    name: 'Madhura Hawal',
-    role: 'FOUNDER & STRATEGIC LEAD',
-    image: '/images/about/team-madhura.jpg',
+    id: 'abijitha',
+    name: 'Abijitha',
+    role: 'CREATIVE AND BRAND LEAD',
+    image: '/images/about/team-abijitha.jpg',
+    bio: 'Abijitha is a Brand Marketing Professional who’s with Arohana as Creative and Brand Lead. She enjoys the space where strategy and creativity meets. Curious by nature, she believes the best work comes from looking at things differently. When she’s not working, she’s usually running, exploring, overthinking, or signing up for her next questionable athletic adventure.',
   },
   {
-    id: 'aditya',
-    name: 'Aditya Kulkarni',
-    role: 'CREATIVE DIRECTOR',
-    image: '/images/about/team-aditya.jpg',
+    id: 'jagruti',
+    name: 'Jagruti',
+    role: 'VIDEO EDITOR',
+    image: '/images/about/team-jagruti.jpg',
+    bio: 'With a natural eye for aesthetics and a passion for storytelling, I bring ideas to life through visual content and video editing. My approach combines creativity with attention to detail, ensuring that every piece of content feels purposeful, engaging, and well-crafted. I enjoy exploring new creative tools, experimenting with fresh ideas, and continuously refining my skills. Adaptable and committed to quality, I strive to create work that not only looks good but also communicates effectively and leaves a lasting impression.',
   },
   {
-    id: 'tanvi',
-    name: 'Tanvi Sardesai, SA',
-    role: 'BRAND STRATEGY & COMMUNICATION',
+    id: 'jeena',
+    name: 'Jeena',
+    role: 'SOCIAL MEDIA STRATEGIST',
+    image: '/images/about/team-jeena.jpg',
+    bio: 'Been in this industry for 4+ years, worked across multiple industries and somewhere along the way, I now look at billboards, ads, Instagram posts and campaigns through a completely different lens. Now I’m like - why? What was the thought process behind it? What was the reason behind it? Why did it work? (Which means I have a crazy amount of screenshots, leading to some serious storage issues.) Can I complain, though? Not really. It is what it is! I love playing with fun ideas for campaigns, exploring different niches and bringing creativity into everything I do. I also love sharing funny stickers in the group chat. (I’m a little funny too.)',
+  },
+  {
+    id: 'sarika-jain',
+    name: 'Sarika Jain',
+    role: 'GRAPHIC DESIGNER',
     image: '/images/about/team-tanvi.jpg',
+    bio: 'With 5+ years of experience, I’ve had the opportunity to work across multiple industries and explore a wide range of creative styles. I love experimenting with fresh ideas, discovering new niches and bringing creativity into everything I do. The designer in me is always searching for inspiration—whether it’s in an advertisement, an Instagram post or something astounding. Every new idea helps me grow, learn and look at design from a different perspective. Most days, I’m either racing against a deadline or working on something the team needed “yesterday”—but I genuinely enjoy the energy of it all. I’m a happy-go-lucky person who believes that a positive attitude, a curious mind and a little bit of humor can make the creative process even better.',
   },
   {
-    id: 'arjun',
-    name: 'Arjun Patel',
-    role: 'LEAD PRODUCER / MEDIA & FILM DIRECTOR',
-    image: '/images/about/team-arjun.jpg',
-  },
-  {
-    id: 'radha',
-    name: 'Radha Sharma',
-    role: 'CLIENT SUCCESS MANAGER & OPERATIONS',
-    image: '/images/about/team-radha.jpg',
-  },
-  {
-    id: 'prathamesh',
-    name: 'Prathamesh Shirole',
-    role: 'BRAND & DIGITAL STRATEGIST',
-    image: '/images/about/team-prathamesh.jpg',
-  },
-  {
-    id: 'riya',
-    name: 'Riya Naik',
-    role: 'CONTENT & SOCIAL MEDIA',
+    id: 'shagun-lakhotia',
+    name: 'Shagun Lakhotia',
+    role: 'GRAPHIC DESIGNER',
     image: '/images/about/team-riya.jpg',
+    bio: 'A creative and detail-oriented designer with a strong interest in graphic designing, interaction design, and visual communication. I enjoy turning ideas into meaningful and engaging digital experiences, while paying close attention to both aesthetics and usability. I’m always keen to learn new tools, explore different design approaches, and improve my skills through new creative challenges. I value thoughtful design, adaptability, and creating work that is visually appealing, user-focused, and effective.',
   },
   {
-    id: 'siddhant',
-    name: 'Siddhant More',
-    role: 'DESIGN & VISUAL COMMUNICATION',
-    image: '/images/about/team-siddhant.jpg',
+    id: 'neha-mehta',
+    name: 'Neha Mehta',
+    role: 'SOCIAL MEDIA STRATEGIST',
+    image: '/images/about/team-radha.jpg',
+    bio: 'Neha is a Digital Marketing Executive with two years of experience in this industry, currently working as a Social Media Strategist at Arohana Consultancy. Her expertise includes social media strategy, content planning, performance marketing, and digital brand building. At Arohana, she has had the opportunity to work with brands across different industries, gaining diverse experience in understanding audiences, developing communication strategies, and creating digital campaigns that align with each brand’s goals.',
   },
   {
-    id: 'omkar',
-    name: 'Omkar Jadhav',
-    role: 'PROJECT COORDINATOR',
-    image: '/images/about/team-omkar.jpg',
-  },
-  {
-    id: 'sanjiv',
-    name: 'Sanjiv Patil',
-    role: 'BUSINESS DEVELOPMENT',
-    image: '/images/about/team-sanjiv.jpg',
+    id: 'farhan-shaikh',
+    name: 'Farhan Shaikh',
+    role: 'SR. VIDEO EDITOR',
+    image: '/images/about/team-farhan.jpg',
+    bio: 'A creative and detail-oriented professional with a strong interest in visual content, video editing, and digital media. I enjoy turning ideas into engaging visuals and polished content, with a focus on quality, creativity, and clear communication. I’m always keen to learn new tools and techniques, improve my skills, and take on creative challenges. I value consistency, adaptability, and delivering work that is both visually appealing and effective.',
   },
 ];
-
-function FlipDigit({ digit }: { digit: string }) {
-  const [animating, setAnimating] = useState(false);
-  const prevDigit = useRef(digit);
-
-  useEffect(() => {
-    if (prevDigit.current !== digit) {
-      prevDigit.current = digit;
-      setAnimating(true);
-      const t = setTimeout(() => setAnimating(false), 240);
-      return () => clearTimeout(t);
-    }
-  }, [digit]);
-
-  return (
-    <span
-      className="flip-digit-wrapper"
-      style={{
-        display: 'inline-block',
-        fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-        fontVariantNumeric: 'tabular-nums',
-        lineHeight: 1,
-        perspective: '500px',
-        transformStyle: 'preserve-3d',
-      }}
-    >
-      <span
-        style={{
-          display: 'inline-block',
-          fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-          animation: animating ? 'cleanDigitFlip 0.24s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
-          transformOrigin: '50% 50%',
-        }}
-      >
-        {digit}
-      </span>
-    </span>
-  );
-}
-
-function parseStat(val: any) {
-  const str = String(val || '').trim();
-  const match = str.match(/^(\d+)(.*)$/);
-  if (match) {
-    return { target: parseInt(match[1], 10), suffix: match[2] };
-  }
-  return { target: 0, suffix: str };
-}
-
-function FounderAnimatedStats({ stats }: { stats: Array<{ value: string; label: string }> }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [counts, setCounts] = useState<number[]>(() => stats.map(() => 0));
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const parsed = stats.map((s) => parseStat(s.value));
-    let hasRun = false;
-    const obj: Record<string, number> = {};
-    parsed.forEach((_, idx) => {
-      obj[`v${idx}`] = 0;
-    });
-
-    const startAnimation = () => {
-      if (hasRun) return;
-      hasRun = true;
-      const tweenTargets: Record<string, any> = {
-        duration: 2.2,
-        ease: 'power3.out',
-        onUpdate: () => {
-          setCounts(parsed.map((_, idx) => Math.round(obj[`v${idx}`] ?? 0)));
-        },
-      };
-      parsed.forEach((p, idx) => {
-        tweenTargets[`v${idx}`] = p.target;
-      });
-      gsap.to(obj, tweenTargets);
-    };
-
-    if (typeof IntersectionObserver !== 'undefined') {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0]?.isIntersecting) {
-            startAnimation();
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(el);
-      return () => observer.disconnect();
-    } else {
-      startAnimation();
-    }
-  }, [stats]);
-
-  return (
-    <div
-      ref={containerRef}
-      className="founder-stats-grid"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${stats.length}, 1fr)`,
-        gap: 'clamp(1rem, 2.5vw, 2.5rem)',
-        paddingTop: 'clamp(1.25rem, 2vw, 1.75rem)',
-        borderTop: BORDER,
-        maxWidth: '680px',
-        width: '100%',
-      }}
-    >
-      {stats.map((stat: any, i: number) => {
-        const v = counts[i] ?? 0;
-        const info = parseStat(stat.value);
-        const numStr = `${v}`;
-        const digits = numStr.split('');
-
-        return (
-          <div
-            key={i}
-            style={{
-              borderRight: i < stats.length - 1 ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
-              paddingRight: 'clamp(0.5rem, 1vw, 1rem)',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
-                fontSize: 'clamp(2.8rem, 4.4vw, 4.2rem)',
-                fontWeight: 650,
-                letterSpacing: '-0.03em',
-                lineHeight: 1,
-                color: DARK,
-                display: 'inline-flex',
-                alignItems: 'baseline',
-              }}
-            >
-              <div style={{ display: 'inline-flex', alignItems: 'baseline', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-                {digits.map((d, dIdx) => (
-                  <FlipDigit key={dIdx} digit={d} />
-                ))}
-              </div>
-              {info.suffix && (
-                <span style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", color: RED, fontWeight: 700, marginLeft: '2px', lineHeight: 1 }}>
-                  {info.suffix}
-                </span>
-              )}
-            </div>
-            <div
-              className="tag-mono"
-              style={{
-                fontSize: '0.62rem',
-                color: MUTED,
-                letterSpacing: '0.12em',
-                marginTop: '0.5rem',
-                lineHeight: 1.4,
-              }}
-            >
-              {stat.label.toUpperCase()}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 export default function StudioPage() {
   const { content } = useCmsContent();
@@ -455,8 +198,7 @@ export default function StudioPage() {
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const activeChapter = chaptersData[activeChapterIndex] || chaptersData[0];
 
-  // Interactive Standard Tab State ('04' = Where Arohana stands today, '05' = What we bring)
-  const [activeTab, setActiveTab] = useState<'04' | '05'>('04');
+
 
   /* Cursor follower */
   useEffect(() => {
@@ -576,14 +318,7 @@ export default function StudioPage() {
             justifyContent: 'space-between',
           }}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
-            }}
-          >
+          <div className="hero-story-grid">
             {/* Left Column: Headline, Narrative, CTA, Stats */}
             <div>
               {/* Eyebrow label */}
@@ -664,9 +399,6 @@ export default function StudioPage() {
                   <ArrowRight size={16} color="#ffffff" />
                 </Link>
               </div>
-
-              {/* Stats Section with Flipping Number Animation */}
-              <FounderAnimatedStats stats={heroData.stats || STATS} />
             </div>
 
             {/* Right Column: Founder Collage Artwork */}
@@ -710,42 +442,7 @@ export default function StudioPage() {
             </div>
           </div>
 
-          {/* Hero Bottom Bar */}
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: '1rem',
-              paddingTop: 'clamp(1.5rem, 2.5vw, 2rem)',
-              borderTop: BORDER,
-              marginTop: 'clamp(2rem, 3.5vw, 3rem)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <span
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  borderRadius: '50%',
-                  border: '1.5px solid rgba(0, 0, 0, 0.2)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <ArrowDown size={13} color={RED} />
-              </span>
-              <span className="tag-mono" style={{ fontSize: '0.64rem', color: MUTED, letterSpacing: '0.18em', fontWeight: 600 }}>
-                SCROLL — THE STORY
-              </span>
-            </div>
 
-            <div className="tag-mono hide-on-mobile" style={{ fontSize: '0.64rem', color: FAINT, letterSpacing: '0.18em' }}>
-              DIFFICULT ADAPTATION OF OPERATIONS & CLIENT TRAINING
-            </div>
-          </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════════
@@ -795,16 +492,8 @@ export default function StudioPage() {
             </p>
           </div>
 
-          {/* Chapters Layout: Left Timeline Navigation + Right Story Card */}
-          <div
-            className="chapters-layout-grid"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
-              gap: 'clamp(2rem, 4vw, 4rem)',
-              alignItems: 'start',
-            }}
-          >
+          {/* Chapters Layout: Left Timeline Navigation + Right Story Card (Strictly parallel 2-column) */}
+          <div className="chapters-layout-grid">
             {/* Left Column: Timeline Stepper (Desktop Only) */}
             <div className="chapters-desktop-stepper" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
@@ -891,25 +580,7 @@ export default function StudioPage() {
                 })}
               </div>
 
-              {/* Subtle bottom scroll cue */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1rem' }}>
-                <span
-                  style={{
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '50%',
-                    border: '1px solid rgba(0, 0, 0, 0.18)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ArrowDown size={11} color={RED} />
-                </span>
-                <span className="tag-mono" style={{ fontSize: '0.6rem', color: FAINT, letterSpacing: '0.18em' }}>
-                  SCROLL — THE STORY
-                </span>
-              </div>
+
             </div>
 
             {/* Mobile Horizontal Stepper (Visible strictly on mobile devices matching reference) */}
@@ -993,14 +664,8 @@ export default function StudioPage() {
                 </p>
               </div>
 
-              {/* Two Column Narrative */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-                  gap: 'clamp(1.25rem, 2vw, 2rem)',
-                }}
-              >
+              {/* Two Column Narrative (Parallel side-by-side) */}
+              <div className="chapters-narrative-grid">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
                   {activeChapter.leftText.split('\n\n').map((p, i) => (
                     <p key={i} style={{ fontSize: '0.92rem', lineHeight: 1.7, color: BODY_TEXT }}>
@@ -1112,330 +777,7 @@ export default function StudioPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════════════
-            SECTION 4: FROM EXPERIENCE TO A STANDARD
-            ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          id="story-standard"
-          style={{
-            paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
-            paddingBottom: 'clamp(4rem, 7vw, 6.5rem)',
-            borderTop: BORDER,
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-              gap: 'clamp(1.5rem, 3vw, 3rem)',
-              alignItems: 'flex-end',
-              marginBottom: 'clamp(2.5rem, 4vw, 3.5rem)',
-            }}
-          >
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '0.85rem',
-                }}
-              >
-                AROHANA TODAY
-              </div>
-              <h2
-                style={{
-                  fontSize: 'clamp(2.2rem, 4.4vw, 4.4rem)',
-                  fontWeight: 600,
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.05,
-                  color: DARK,
-                }}
-              >
-                From experience
-                <br />
-                to a standard<span style={{ color: RED }}>.</span>
-              </h2>
-            </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              <p style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.12rem)', lineHeight: 1.6, color: BODY_TEXT }}>
-                Two final chapters that define where Arohana stands today — our practice and the standard
-                we bring to every engagement.
-              </p>
-              <div className="tag-mono" style={{ fontSize: '0.64rem', color: FAINT, letterSpacing: '0.18em' }}>
-                6 SECTORS / 50+ ENGAGEMENTS / CORE PURPOSE
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Navigation Tabs (04 and 05) */}
-          <div className="standard-tabs-grid">
-            {/* Tab 04 Button */}
-            <button
-              type="button"
-              onClick={() => setActiveTab('04')}
-              className={`standard-tab-btn standard-tab-04 ${activeTab === '04' ? 'active' : ''}`}
-              style={{
-                borderRadius: '4px',
-                padding: 'clamp(1.1rem, 2vw, 1.4rem) clamp(1.25rem, 2vw, 1.75rem)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '1rem',
-                border: activeTab === '04' ? 'none' : '1px solid rgba(0, 0, 0, 0.09)',
-                background:
-                  activeTab === '04'
-                    ? 'linear-gradient(135deg, #DE322D 0%, #B81F1A 100%)'
-                    : '#FFFFFF',
-                color: activeTab === '04' ? '#FFFFFF' : DARK,
-                cursor: 'pointer',
-                textAlign: 'left',
-                boxShadow:
-                  activeTab === '04'
-                    ? '0 12px 30px rgba(222, 50, 45, 0.28)'
-                    : '0 4px 14px rgba(0, 0, 0, 0.03)',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={() => handlePillEnter('OUR PRACTICE')}
-              onMouseLeave={handlePillLeave}
-            >
-              <div className="standard-tab-content">
-                <div
-                  className="tag-mono standard-tab-tag"
-                  style={{
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.16em',
-                    color: activeTab === '04' ? 'rgba(255, 255, 255, 0.8)' : MUTED,
-                    marginBottom: '0.35rem',
-                  }}
-                >
-                  04 — OUR PRACTICE
-                </div>
-                <div className="standard-tab-heading" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', fontWeight: 650, letterSpacing: '-0.015em' }}>
-                  Where Ārohana stands today.
-                </div>
-              </div>
-              <span
-                className="standard-tab-arrow"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '50%',
-                  backgroundColor: activeTab === '04' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.05)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <ArrowRight size={16} color={activeTab === '04' ? '#ffffff' : DARK} />
-              </span>
-            </button>
-
-            {/* Tab 05 Button */}
-            <button
-              type="button"
-              onClick={() => setActiveTab('05')}
-              className={`standard-tab-btn standard-tab-05 ${activeTab === '05' ? 'active' : ''}`}
-              style={{
-                borderRadius: '4px',
-                padding: 'clamp(1.1rem, 2vw, 1.4rem) clamp(1.25rem, 2vw, 1.75rem)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '1rem',
-                border: activeTab === '05' ? 'none' : '1px solid rgba(0, 0, 0, 0.09)',
-                background:
-                  activeTab === '05'
-                    ? 'linear-gradient(135deg, #DE322D 0%, #B81F1A 100%)'
-                    : '#FFFFFF',
-                color: activeTab === '05' ? '#FFFFFF' : DARK,
-                cursor: 'pointer',
-                textAlign: 'left',
-                boxShadow:
-                  activeTab === '05'
-                    ? '0 12px 30px rgba(222, 50, 45, 0.28)'
-                    : '0 4px 14px rgba(0, 0, 0, 0.03)',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={() => handlePillEnter('THE STANDARD')}
-              onMouseLeave={handlePillLeave}
-            >
-              <div className="standard-tab-content">
-                <div
-                  className="tag-mono standard-tab-tag"
-                  style={{
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.16em',
-                    color: activeTab === '05' ? 'rgba(255, 255, 255, 0.8)' : MUTED,
-                    marginBottom: '0.35rem',
-                  }}
-                >
-                  05 — THE STANDARD
-                </div>
-                <div className="standard-tab-heading" style={{ fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', fontWeight: 650, letterSpacing: '-0.015em' }}>
-                  What we bring to every engagement.
-                </div>
-              </div>
-              <span
-                className="standard-tab-arrow"
-                style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '4px',
-                  backgroundColor: activeTab === '05' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.05)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <ArrowRight size={16} color={activeTab === '05' ? '#ffffff' : DARK} />
-              </span>
-            </button>
-          </div>
-
-          {/* Unified Content Card */}
-          <div
-            style={{
-              backgroundColor: BG_CARD,
-              borderRadius: '6px',
-              border: BORDER,
-              padding: 'clamp(1.75rem, 3.5vw, 3.5rem)',
-              boxShadow: '0 20px 45px -12px rgba(0, 0, 0, 0.06)',
-            }}
-          >
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-                gap: 'clamp(2.5rem, 5vw, 4.5rem)',
-                alignItems: 'start',
-              }}
-            >
-              {/* Left Column: Summary & Statement */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <h3
-                  style={{
-                    fontSize: 'clamp(1.8rem, 3.2vw, 2.9rem)',
-                    fontWeight: 650,
-                    letterSpacing: '-0.03em',
-                    lineHeight: 1.1,
-                    color: DARK,
-                  }}
-                >
-                  {activeTab === '04' ? 'Where Ārohana stands today' : 'What we bring to every engagement'}
-                  <span style={{ color: RED }}>.</span>
-                </h3>
-
-                <p style={{ fontSize: 'clamp(0.95rem, 1.15vw, 1.06rem)', lineHeight: 1.7, color: BODY_TEXT }}>
-                  {activeTab === '04'
-                    ? 'What remains constant is the standard: clear thinking, sector-aware strategy, strong creative work and disciplined execution — brought together to make the business more visible, more relevant and more valuable to the people it is trying to reach.'
-                    : 'We do not believe in superficial layers. Every strategy is built from the inside out — starting with commercial realities, operating margins, competitive positioning, and consumer psychology.'}
-                </p>
-
-                <p style={{ fontSize: 'clamp(0.92rem, 1.1vw, 1.02rem)', lineHeight: 1.7, color: MUTED }}>
-                  {activeTab === '04'
-                    ? 'Today, Ārohana sits at the intersection of brand thinking, business understanding and execution.'
-                    : 'Our methodology fuses senior strategic advisory with dedicated in-house production pods, guaranteeing that big ideas convert directly into tangible market advantage.'}
-                </p>
-
-                <div
-                  className="tag-mono"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.18em',
-                    color: RED,
-                    fontWeight: 700,
-                    marginTop: '1.5rem',
-                  }}
-                >
-                  <span style={{ width: '18px', height: '2px', backgroundColor: RED, display: 'inline-block' }} />
-                  {activeTab === '04' ? 'MORE THAN MARKETING' : 'DISCIPLINED EXECUTION'}
-                </div>
-              </div>
-
-              {/* Right Column: 6 Disciplines / Pillars */}
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {(activeTab === '04' ? DISCIPLINES : ENGAGEMENT_PILLARS).map((item, idx) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.title}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'auto minmax(0, 1fr)',
-                        alignItems: 'flex-start',
-                        gap: 'clamp(0.85rem, 1.5vw, 1.5rem)',
-                        padding: 'clamp(0.95rem, 1.4vw, 1.25rem) 0',
-                        borderTop: idx > 0 ? '1px solid rgba(0, 0, 0, 0.06)' : 'none',
-                        transition: 'all 0.25s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateX(6px)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateX(0)';
-                      }}
-                    >
-                      {/* Icon circle */}
-                      <div
-                        style={{
-                          width: '38px',
-                          height: '38px',
-                          borderRadius: '50%',
-                          backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          marginTop: '2px',
-                        }}
-                      >
-                        <Icon size={18} color={RED} />
-                      </div>
-
-                      <div>
-                        <div
-                          className="tag-mono"
-                          style={{
-                            fontSize: '0.58rem',
-                            letterSpacing: '0.16em',
-                            color: MUTED,
-                            marginBottom: '0.2rem',
-                          }}
-                        >
-                          {item.category}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)',
-                            fontWeight: 650,
-                            letterSpacing: '-0.01em',
-                            color: DARK,
-                            marginBottom: '0.25rem',
-                          }}
-                        >
-                          {item.title}
-                        </div>
-                        <div style={{ fontSize: '0.84rem', lineHeight: 1.5, color: BODY_TEXT }}>
-                          {item.description}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 5: OUR TEAM ("People behind possibilities.")
@@ -1451,55 +793,45 @@ export default function StudioPage() {
           {/* Header */}
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-              gap: 'clamp(1.5rem, 3vw, 3rem)',
-              alignItems: 'flex-end',
+              display: 'flex',
+              flexDirection: 'column',
               marginBottom: 'clamp(2.5rem, 4vw, 3.75rem)',
             }}
           >
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '0.85rem',
-                }}
-              >
-                {teamData.eyebrow}
-              </div>
-              <h2
-                style={{
-                  fontSize: 'clamp(2.2rem, 4.4vw, 4.4rem)',
-                  fontWeight: 600,
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.05,
-                  color: DARK,
-                }}
-              >
-                {teamData.title}
-              </h2>
+            <div
+              className="tag-mono"
+              style={{
+                fontSize: '0.68rem',
+                letterSpacing: '0.2em',
+                color: RED,
+                fontWeight: 700,
+                marginBottom: '0.85rem',
+              }}
+            >
+              {teamData.eyebrow}
             </div>
-
-            <div>
-              <p style={{ fontSize: 'clamp(0.95rem, 1.2vw, 1.12rem)', lineHeight: 1.6, color: BODY_TEXT }}>
-                {teamData.subtitle}
-              </p>
-            </div>
+            <h2
+              style={{
+                fontSize: 'clamp(2.2rem, 4.4vw, 4.4rem)',
+                fontWeight: 600,
+                letterSpacing: '-0.035em',
+                lineHeight: 1.05,
+                color: DARK,
+              }}
+            >
+              {teamData.title}
+            </h2>
           </div>
 
-          {/* 10 Team Members in a 5x2 grid */}
+          {/* 7 Team Members in a Responsive Grid with Bios */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 230px), 1fr))',
-              gap: 'clamp(1rem, 1.6vw, 1.75rem)',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+              gap: 'clamp(1.25rem, 2vw, 2.25rem)',
             }}
           >
-            {(teamData.members || TEAM).map((member: any) => (
+            {TEAM.map((member) => (
               <div
                 key={member.id}
                 style={{
@@ -1530,7 +862,7 @@ export default function StudioPage() {
                   style={{
                     position: 'relative',
                     width: '100%',
-                    aspectRatio: '1 / 1.15',
+                    aspectRatio: '1 / 1.12',
                     backgroundColor: '#EBEBEB',
                   }}
                 >
@@ -1538,16 +870,16 @@ export default function StudioPage() {
                     src={member.image}
                     alt={member.name}
                     fill
-                    sizes="(max-width: 768px) 50vw, 230px"
+                    sizes="(max-width: 768px) 100vw, 360px"
                     style={{ objectFit: 'cover', objectPosition: 'top' }}
                   />
                 </div>
 
-                {/* Caption below photo */}
-                <div style={{ padding: '1rem 1.15rem 1.25rem' }}>
+                {/* Caption & Bio below photo */}
+                <div style={{ padding: '1.25rem 1.35rem 1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <div
                     style={{
-                      fontSize: '0.98rem',
+                      fontSize: '1.05rem',
                       fontWeight: 650,
                       letterSpacing: '-0.015em',
                       color: DARK,
@@ -1559,15 +891,27 @@ export default function StudioPage() {
                   <div
                     className="tag-mono"
                     style={{
-                      fontSize: '0.62rem',
+                      fontSize: '0.64rem',
                       letterSpacing: '0.12em',
-                      color: MUTED,
+                      color: RED,
+                      fontWeight: 700,
                       marginTop: '0.35rem',
                       lineHeight: 1.35,
                     }}
                   >
                     {member.role}
                   </div>
+                  <p
+                    style={{
+                      fontSize: '0.82rem',
+                      lineHeight: 1.6,
+                      color: BODY_TEXT,
+                      marginTop: '0.85rem',
+                      marginBottom: 0,
+                    }}
+                  >
+                    {member.bio}
+                  </p>
                 </div>
               </div>
             ))}
@@ -1743,11 +1087,35 @@ export default function StudioPage() {
       </div>
 
       <style jsx>{`
+        .hero-story-grid {
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: clamp(2.5rem, 5vw, 5rem);
+          align-items: center;
+        }
+
+        .chapters-layout-grid {
+          display: grid;
+          grid-template-columns: 320px 1fr;
+          gap: clamp(2rem, 4vw, 4rem);
+          align-items: start;
+        }
+
+        .chapters-narrative-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: clamp(1.25rem, 2vw, 2rem);
+        }
+
         .chapters-mobile-stepper {
           display: none;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 860px) {
+          .hero-story-grid {
+            grid-template-columns: 1fr !important;
+          }
+
           .chapters-layout-grid {
             display: flex !important;
             flex-direction: column !important;
@@ -1763,6 +1131,13 @@ export default function StudioPage() {
             width: 100% !important;
             margin-bottom: 1.5rem !important;
           }
+        }
+
+        @media (max-width: 640px) {
+          .chapters-narrative-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
 
           .chapters-mobile-track-wrap {
             position: relative;

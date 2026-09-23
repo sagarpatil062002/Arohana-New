@@ -209,12 +209,7 @@ export default function IndianArmyProjectsPage() {
                 <ArrowRight size={15} />
               </a>
 
-              <a href="#projects-overview" className="scroll-explore">
-                <span className="scroll-circle">
-                  <ArrowDown size={14} />
-                </span>
-                <span>{hero.scrollLabel || 'Scroll to explore'}</span>
-              </a>
+
             </div>
           </div>
         </div>
@@ -312,26 +307,7 @@ export default function IndianArmyProjectsPage() {
                   {p1.description}
                 </p>
 
-                <div className="three-subsections-row">
-                  <div className="subsection-box">
-                    <span className="subsection-title highlight">Scope of Work</span>
-                    <p className="subsection-desc">
-                      {p1.scopeOfWork}
-                    </p>
-                  </div>
-                  <div className="subsection-box">
-                    <span className="subsection-title">Creative Approach</span>
-                    <p className="subsection-desc">
-                      {p1.creativeApproach}
-                    </p>
-                  </div>
-                  <div className="subsection-box">
-                    <span className="subsection-title">Production Discipline</span>
-                    <p className="subsection-desc">
-                      {p1.productionDiscipline}
-                    </p>
-                  </div>
-                </div>
+
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                   <Link href="/contact" className="card-action-link">
@@ -518,26 +494,7 @@ export default function IndianArmyProjectsPage() {
 
             {/* Bottom Row: 3 Sub-sections & Action Buttons */}
             <div className="card-2-bottom-row">
-              <div className="three-subsections-row" style={{ marginTop: 0 }}>
-                <div className="subsection-box">
-                  <span className="subsection-title">Scope of Work</span>
-                  <p className="subsection-desc">
-                    {p2.scopeOfWork}
-                  </p>
-                </div>
-                <div className="subsection-box">
-                  <span className="subsection-title">Creative Approach</span>
-                  <p className="subsection-desc">
-                    {p2.creativeApproach}
-                  </p>
-                </div>
-                <div className="subsection-box">
-                  <span className="subsection-title">Production Discipline</span>
-                  <p className="subsection-desc">
-                    {p2.productionDiscipline}
-                  </p>
-                </div>
-              </div>
+
 
               <div className="card-2-bottom-actions">
                 <Link href="/contact" className="btn-dark-pill">
@@ -600,30 +557,7 @@ export default function IndianArmyProjectsPage() {
                   {p3.description}
                 </p>
 
-                {/* Vertical Stepper Timeline (Matching Reference Layout) */}
-                <div className="vertical-stepper">
-                  <div className="stepper-item">
-                    <div className="stepper-node" />
-                    <div className="stepper-title">Scope of Work</div>
-                    <p className="stepper-desc">
-                      {p3.scopeOfWork}
-                    </p>
-                  </div>
-                  <div className="stepper-item">
-                    <div className="stepper-node" />
-                    <div className="stepper-title">Creative Approach</div>
-                    <p className="stepper-desc">
-                      {p3.creativeApproach}
-                    </p>
-                  </div>
-                  <div className="stepper-item">
-                    <div className="stepper-node" />
-                    <div className="stepper-title">Production Discipline</div>
-                    <p className="stepper-desc">
-                      {p3.productionDiscipline}
-                    </p>
-                  </div>
-                </div>
+
 
                 <Link href="/contact" className="card-action-link">
                   <span>View Project</span>
@@ -778,26 +712,7 @@ export default function IndianArmyProjectsPage() {
                   {p4.description}
                 </p>
 
-                <div className="three-subsections-row">
-                  <div className="subsection-box">
-                    <span className="subsection-title">Scope of Work</span>
-                    <p className="subsection-desc">
-                      {p4.scopeOfWork}
-                    </p>
-                  </div>
-                  <div className="subsection-box">
-                    <span className="subsection-title">Creative Approach</span>
-                    <p className="subsection-desc">
-                      {p4.creativeApproach}
-                    </p>
-                  </div>
-                  <div className="subsection-box">
-                    <span className="subsection-title">Production Discipline</span>
-                    <p className="subsection-desc">
-                      {p4.productionDiscipline}
-                    </p>
-                  </div>
-                </div>
+
 
                 <Link href="/contact" className="card-action-link">
                   <span>View Project</span>

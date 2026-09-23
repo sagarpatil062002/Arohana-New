@@ -206,30 +206,7 @@ export default function SelectedWork() {
               </h2>
             </div>
 
-            {/* Description & ©26 Badge & Manual < > buttons */}
-            <div className="sw-meta-col">
-              <p className="sw-description">
-                {activeSubtitle}
-              </p>
-
-              <div className="sw-meta-right-group">
-                <div className="sw-watermark-wrap" aria-label="Copyright 2026 Brands People Places Possibilities">
-                  <div className="sw-c26-mark">
-                    <span className="sw-c26-ring" aria-hidden="true">
-                      <span className="sw-c26-inner">c</span>
-                    </span>
-                    <span className="sw-c26-digits">26</span>
-                  </div>
-                  <div className="sw-c26-divider" aria-hidden="true" />
-                  <div className="sw-watermark-labels">
-                    <span>BRANDS</span>
-                    <span>PEOPLE</span>
-                    <span>PLACES</span>
-                    <span>POSSIBILITIES</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Description & ©26 Badge removed as requested */}
           </div>
         </div>
 

@@ -420,13 +420,7 @@ export default function TourinPage() {
                 </Link>
               </div>
 
-              {/* Bottom Left Scroll Indicator */}
-              <div className="tourin-bottom-scroll">
-                <a href="#the-genesis" className="tourin-scroll-circle-btn" aria-label="Scroll to explore">
-                  <ArrowDown size={14} strokeWidth={2.2} />
-                </a>
-                <span className="tourin-scroll-label">SCROLL TO EXPLORE</span>
-              </div>
+
             </div>
 
             {/* ── CENTER COLUMN: Main Feature Card (Santorini Sunset with Cursive Overlay) ── */}
@@ -454,41 +448,7 @@ export default function TourinPage() {
 
             {/* ── RIGHT COLUMN: Editorial Timeline & Lower Turquoise Lake Card ── */}
             <div className="tourin-col-right">
-              {/* Upper Timeline & Statement */}
-              <div className="tourin-right-upper">
-                {/* Hairline timeline with 4 dots */}
-                <div className="timeline-track-wrap">
-                  <div className="timeline-hairline" />
-                  <div className="timeline-items-list">
-                    <div className="timeline-item">
-                      <span className="timeline-dot dot-red" />
-                      <span className="timeline-label">PEOPLE</span>
-                    </div>
-                    <div className="timeline-item">
-                      <span className="timeline-dot" />
-                      <span className="timeline-label">PLACES</span>
-                    </div>
-                    <div className="timeline-item">
-                      <span className="timeline-dot" />
-                      <span className="timeline-label">STORIES</span>
-                    </div>
-                    <div className="timeline-item">
-                      <span className="timeline-dot" />
-                      <span className="timeline-label">ALWAYS</span>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Statement with left border */}
-                <div className="destination-statement-block">
-                  <span className="statement-line" />
-                  <div className="statement-words">
-                    <span>MORE</span>
-                    <span>THAN JUST</span>
-                    <span>A DESTINATION.</span>
-                  </div>
-                </div>
-              </div>
 
               {/* Lower Thumbnail Card: Pristine Turquoise Lake */}
               <div className="tourin-right-lower">
@@ -615,65 +575,7 @@ export default function TourinPage() {
               </div>
             </div>
 
-            {/* ── SUBTLE HORIZONTAL DIVIDER ── */}
-            <div className="genesis-divider-wrap">
-              <div className="genesis-divider-spacer" />
-              <div className="genesis-divider-line" />
-            </div>
 
-            {/* ── ROW 2: 02 • OUR PHILOSOPHY ── */}
-            <div className="genesis-row philosophy-row">
-              {/* Timeline Indicator Column */}
-              <div className="genesis-timeline-col">
-                <div className="timeline-badge-wrap">
-                  <span className="timeline-num-badge">02</span>
-                  <span className="timeline-dot-open" />
-                </div>
-                <div className="timeline-connector-line-bottom" />
-              </div>
-
-              {/* Row 2 Content Grid: Left Philosophy Text + Right Quote Block */}
-              <div className="genesis-row-content">
-                <div className="genesis-text-col">
-                  <div className="genesis-tag">
-                    <span className="tag-red-bullet">•</span>
-                    <span>{philosophy.tag || 'OUR PHILOSOPHY'}</span>
-                  </div>
-
-                  <h2 className="genesis-heading">
-                    {philosophy.heading || 'What we believe.'}
-                  </h2>
-
-                  <div className="genesis-paragraphs">
-                    <p>
-                      {philosophy.p1}
-                    </p>
-                    <p>
-                      {philosophy.p2}
-                    </p>
-                    <p>
-                      {philosophy.p3}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right Side: The Stylized Quote Block */}
-                <div className="genesis-quote-col">
-                  {/* Decorative faint concentric watermark ring */}
-                  <div className="quote-watermark-ring" />
-
-                  <div className="quote-mark">“</div>
-
-                  <blockquote className="quote-statement" style={{ whiteSpace: 'pre-line' }}>
-                    {philosophy.quote || 'A GOOD JOURNEY IS NOT ABOUT HOW MUCH YOU CAN FIT INTO IT.'}
-                  </blockquote>
-
-                  <p className="quote-attribution">
-                    It is about what you have time to notice.
-                  </p>
-                </div>
-              </div>
-            </div>
 
           </div>
         </div>
@@ -774,13 +676,14 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-           04 — SECTION: 04 • THE TRAVELLER — Who is Tourin for?
+           UNIFIED MASTER SECTION: PHILOSOPHY, TRAVELLER & EXPERIENCE
+           Combined into ONE seamless section as requested
       ================================================================ */}
       <section
-        id="the-traveller"
+        id="what-we-believe"
         style={{
-          paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
-          paddingBottom: 'clamp(4rem, 7vw, 6.5rem)',
+          paddingTop: 'clamp(4.5rem, 7vw, 6.5rem)',
+          paddingBottom: 'clamp(4.5rem, 7vw, 6.5rem)',
           backgroundColor: '#fafafb',
           borderBottom: '1px solid rgba(0,0,0,0.06)',
         }}
@@ -789,29 +692,77 @@ export default function TourinPage() {
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          <div className="tourin-section-row">
-            {/* Timeline Col */}
-            <div className="genesis-timeline-col">
-              <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">04</span>
-                <span className="timeline-dot-red" />
+          {/* 1. MASTER HEADER & PHILOSOPHY */}
+          <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
+            <div className="genesis-tag">
+              <span className="tag-red-bullet">•</span>
+              <span>{philosophy.tag || 'OUR PHILOSOPHY & APPROACH'}</span>
+            </div>
+            <h2 className="genesis-heading">
+              {philosophy.heading || 'What we believe.'}
+            </h2>
+          </div>
+
+          {/* Core Philosophy Narrative & Quote Grid */}
+          <div
+            className="genesis-row-content"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+              gap: 'clamp(2rem, 4vw, 4.5rem)',
+              alignItems: 'center',
+              marginBottom: 'clamp(3rem, 5vw, 4.5rem)',
+            }}
+          >
+            <div className="genesis-text-col">
+              <div className="genesis-paragraphs">
+                <p>{philosophy.p1}</p>
+                <p>{philosophy.p2}</p>
+                <p>{philosophy.p3}</p>
               </div>
-              <div className="timeline-connector-line" />
             </div>
 
-            {/* Content */}
-            <div className="tourin-section-inner">
-              {/* Left: Traveller list */}
+            {/* The Stylized Quote Block */}
+            <div className="genesis-quote-col">
+              <div className="quote-watermark-ring" />
+              <div className="quote-mark">“</div>
+              <blockquote className="quote-statement" style={{ whiteSpace: 'pre-line' }}>
+                {philosophy.quote || 'TRAVEL SHOULD NOT MERELY FILL YOUR CALENDAR; IT SHOULD RESHAPE HOW YOU OBSERVE THE EARTH.'}
+              </blockquote>
+              <p className="quote-attribution">
+                It is about what you have time to notice.
+              </p>
+            </div>
+          </div>
+
+          {/* 2. THE TRAVELLER (Who Tourin is for) */}
+          <div
+            style={{
+              paddingTop: 'clamp(2.5rem, 4vw, 3.5rem)',
+              borderTop: '1px solid rgba(0,0,0,0.06)',
+              marginBottom: 'clamp(3rem, 5vw, 4.5rem)',
+            }}
+          >
+            <div style={{ marginBottom: '1.5rem' }}>
+              <span className="tag-mono" style={{ fontSize: '0.68rem', color: '#DE322D', fontWeight: 700, letterSpacing: '0.14em' }}>
+                WHO THIS IS FOR
+              </span>
+              <h3 style={{ fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', fontWeight: 650, letterSpacing: '-0.02em', color: '#111113', marginTop: '0.35rem' }}>
+                Travel designed for those who value depth over checklists.
+              </h3>
+            </div>
+
+            <div
+              className="tourin-section-inner"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+                gap: 'clamp(2rem, 4vw, 4.5rem)',
+                alignItems: 'center',
+              }}
+            >
+              {/* Left: Traveller criteria list */}
               <div className="tourin-section-left">
-                <div className="genesis-tag">
-                  <span className="tag-red-bullet">•</span>
-                  <span>THE TRAVELLER</span>
-                </div>
-
-                <h2 className="tourin-section-heading">
-                  Who is Tourin for?
-                </h2>
-
                 <div className="traveller-list">
                   {travellerItems.map((item, idx) => {
                     const isActive = idx === activeTravellerIndex;
@@ -829,7 +780,7 @@ export default function TourinPage() {
                 </div>
               </div>
 
-              {/* Right: Hero Photo with cursive overlay text */}
+              {/* Right: Atmospheric Photo with script overlay */}
               <div className="traveller-photo-wrap">
                 <div className="traveller-photo-card">
                   <Image
@@ -840,7 +791,6 @@ export default function TourinPage() {
                     className="object-cover traveller-photo-img"
                   />
                   <div className="traveller-photo-overlay" />
-                  {/* Cursive italic brand statement overlay */}
                   <div className="traveller-cursive-block">
                     <span>Curious</span>
                     <span>Thoughtful</span>
@@ -851,81 +801,50 @@ export default function TourinPage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ================================================================
-           05 — SECTION: 05 • THE EXPERIENCE — More than just a trip.
-      ================================================================ */}
-      <section
-        id="the-experience"
-        style={{
-          paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
-          paddingBottom: 'clamp(4rem, 7vw, 6.5rem)',
-          backgroundColor: '#fafafb',
-          borderBottom: '1px solid rgba(0,0,0,0.06)',
-        }}
-      >
-        <div
-          className="padding-global"
-          style={{ maxWidth: '1440px', margin: '0 auto' }}
-        >
-          <div className="tourin-section-row">
-            {/* Timeline Col */}
-            <div className="genesis-timeline-col">
-              <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">05</span>
-                <span className="timeline-dot-red" />
-              </div>
+          {/* 3. THE 5 PILLARS (More than just a trip) */}
+          <div
+            style={{
+              paddingTop: 'clamp(2.5rem, 4vw, 3.5rem)',
+              borderTop: '1px solid rgba(0,0,0,0.06)',
+            }}
+          >
+            <div style={{ marginBottom: '1.75rem' }}>
+              <span className="tag-mono" style={{ fontSize: '0.68rem', color: '#DE322D', fontWeight: 700, letterSpacing: '0.14em' }}>
+                THE EXPERIENCE PILLARS
+              </span>
+              <h3 style={{ fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', fontWeight: 650, letterSpacing: '-0.02em', color: '#111113', marginTop: '0.35rem', marginBottom: '0.5rem' }}>
+                More than just a trip — every detail chosen with purpose.
+              </h3>
+              <p style={{ maxWidth: '640px', color: '#555558', fontSize: '0.96rem', lineHeight: 1.65 }}>
+                Tourin&apos;s journeys bring together carefully chosen stays, local experiences, food, culture, landscapes and practical planning that makes travel work. Each element should have a reason to be there.
+              </p>
             </div>
 
-            {/* Content */}
-            <div className="tourin-section-inner">
-              {/* Left: Text + CTA */}
-              <div className="tourin-section-left">
-                <div className="genesis-tag">
-                  <span className="tag-red-bullet">•</span>
-                  <span>THE EXPERIENCE</span>
-                </div>
-
-                <h2 className="tourin-section-heading">
-                  More than just a trip.
-                </h2>
-
-                <div className="tourin-section-body">
-                  <p>
-                    Tourin&apos;s journeys bring together carefully chosen stays, local experiences, food,
-                    culture, landscapes and the practical planning that makes travel work.
-                  </p>
-                  <p>
-                    Each element should have a reason to be there.
-                  </p>
-                </div>
-
-                <Link href="/tourin#curated-journeys" className="genesis-story-link" style={{ marginTop: '2rem' }}>
-                  <span>OUR APPROACH</span>
-                  <ArrowUpRight size={15} strokeWidth={2.4} />
-                </Link>
-              </div>
-
-              {/* Right: 5 experience category image cards */}
-              <div className="exp-grid">
-                {experiencePillars.map((pillar) => (
-                  <div key={pillar.label} className="exp-card-wrap">
-                    <div className="exp-card">
-                      <Image
-                        src={pillar.image}
-                        alt={pillar.alt}
-                        fill
-                        sizes="(max-width: 768px) 40vw, (max-width: 1200px) 18vw, 200px"
-                        className="object-cover exp-card-img"
-                      />
-                      <div className="exp-card-overlay" />
-                    </div>
-                    <span className="exp-card-label">{pillar.label}</span>
+            {/* 5 experience category image cards */}
+            <div className="exp-grid">
+              {experiencePillars.map((pillar) => (
+                <div key={pillar.label} className="exp-card-wrap">
+                  <div className="exp-card">
+                    <Image
+                      src={pillar.image}
+                      alt={pillar.alt}
+                      fill
+                      sizes="(max-width: 768px) 40vw, (max-width: 1200px) 18vw, 200px"
+                      className="object-cover exp-card-img"
+                    />
+                    <div className="exp-card-overlay" />
                   </div>
-                ))}
-              </div>
+                  <span className="exp-card-label">{pillar.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'flex-start' }}>
+              <Link href="#curated-journeys" className="genesis-story-link">
+                <span>EXPLORE CURATED JOURNEYS</span>
+                <ArrowRight size={15} strokeWidth={2.4} />
+              </Link>
             </div>
           </div>
         </div>

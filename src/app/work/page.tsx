@@ -726,21 +726,6 @@ export default function WorkPage() {
               </h1>
             </div>
 
-            {/* Middle: Featured Case Studies Narrative */}
-            <div className="work-hero-middle">
-              <div className="work-hero-eyebrow">
-                {workCms?.header?.eyebrow || 'FEATURED CASE STUDIES'}
-              </div>
-              <p className="work-hero-desc">
-                {workCms?.header?.subtitle ||
-                  'A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.'}
-              </p>
-            </div>
-
-            {/* Right: Desktop Circle 26 Badge & 4 Words */}
-            <div className="work-hero-badge-desktop">
-              <Circle26Badge />
-            </div>
           </div>
 
           {/* Mobile Layout (<= 860px) - Exact match to reference mockup */}
@@ -768,19 +753,6 @@ export default function WorkPage() {
                   />
                 </span>
               </h1>
-              <div className="work-hero-badge-mobile">
-                <Circle26Badge isMobile />
-              </div>
-            </div>
-
-            <div className="work-hero-mobile-narrative">
-              <div className="work-hero-eyebrow">
-                {workCms?.header?.eyebrow || 'FEATURED CASE STUDIES'}
-              </div>
-              <p className="work-hero-desc">
-                {workCms?.header?.subtitle ||
-                  'A selection of businesses and projects that show how Ārohana thinks, creates and executes across very different environments.'}
-              </p>
             </div>
           </div>
 
@@ -1142,33 +1114,7 @@ export default function WorkPage() {
                     imageAspect="16 / 8.5"
                   />
 
-                  {/* Red Accent Dash + Editorial Statement below SHE */}
-                  <div style={{ marginTop: 'clamp(1.5rem, 2.5vw, 2.25rem)', paddingLeft: '0.25rem' }}>
-                    <div
-                      style={{
-                        width: '26px',
-                        height: '2px',
-                        backgroundColor: RED,
-                        borderRadius: '2px',
-                        marginBottom: '0.85rem',
-                      }}
-                    />
-                    <div
-                      style={{
-                        fontSize: 'clamp(1.2rem, 1.45vw, 1.4rem)',
-                        lineHeight: 1.22,
-                        color: '#8E8E93',
-                        fontWeight: 400,
-                        letterSpacing: '-0.015em',
-                      }}
-                    >
-                      Different
-                      <br />
-                      environments.
-                      <br />
-                      Same purpose.
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -1275,46 +1221,111 @@ export default function WorkPage() {
               </div>
             </div>
 
-            {/* Right Column: Directory Categories List with timeline nodes (Accordion on Mobile matching Phone 2) */}
-            <div className="work-directory-column">
-              {/* Connecting vertical line (Desktop only) */}
-              <div className="work-directory-line" />
-
-              {((workCms?.directoryCategories && workCms.directoryCategories.length > 0)
-                ? workCms.directoryCategories
-                : DIRECTORY_CATEGORIES
-              ).map((cat: any, idx: number) => {
-                const isExpanded = activeDirectoryIndex === idx;
-                return (
+            {/* Right Column: Responsive Placeholder Cards Grid for Each Sector */}
+            <div className="work-directory-column" style={{ width: '100%' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+                  gap: '1.25rem',
+                }}
+              >
+                {((workCms?.directoryCategories && workCms.directoryCategories.length > 0)
+                  ? workCms.directoryCategories
+                  : DIRECTORY_CATEGORIES
+                ).map((cat: any) => (
                   <div
-                    key={cat.num || idx}
-                    className={`work-directory-card ${isExpanded ? 'is-expanded' : ''}`}
-                    onClick={() => setActiveDirectoryIndex(isExpanded ? -1 : idx)}
+                    key={cat.num}
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0, 0, 0, 0.08)',
+                      padding: '1.75rem 1.6rem 1.6rem',
+                      boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.boxShadow = '0 16px 36px -6px rgba(0, 0, 0, 0.08)';
+                      e.currentTarget.style.borderColor = 'rgba(222, 50, 45, 0.35)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 4px 18px rgba(0, 0, 0, 0.03)';
+                      e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)';
+                    }}
                   >
-                    {/* Header Row */}
-                    <div className="work-dir-row">
-                      <div className="work-dir-node-group">
-                        <span className={`tag-mono work-dir-num ${isExpanded ? 'active' : ''}`}>
+                    <div>
+                      {/* Top Row: Index Badge & Subtitle */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '0.85rem',
+                        }}
+                      >
+                        <span
+                          className="tag-mono"
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 700,
+                            letterSpacing: '0.12em',
+                            color: RED,
+                          }}
+                        >
                           {cat.num}
                         </span>
-
-                        <span className={`work-dir-dot ${isExpanded ? 'active' : ''}`} />
-
-                        <div className="work-dir-title-box">
-                          <h3 className="work-dir-title">{cat.title}</h3>
-                          <div className="tag-mono work-dir-subtitle">{cat.subtitle}</div>
-                        </div>
+                        <span
+                          className="tag-mono"
+                          style={{
+                            fontSize: '0.58rem',
+                            letterSpacing: '0.14em',
+                            color: MUTED,
+                            textTransform: 'uppercase',
+                          }}
+                        >
+                          SECTOR
+                        </span>
                       </div>
 
-                      {/* Right Chevron for Mobile Accordion */}
-                      <span className="work-dir-toggle-icon">
-                        <ChevronRight size={17} className={`work-dir-chevron ${isExpanded ? 'rotated' : ''}`} />
-                      </span>
-                    </div>
+                      {/* Sector Title & Subtitle */}
+                      <h3
+                        style={{
+                          fontSize: '1.2rem',
+                          fontWeight: 650,
+                          letterSpacing: '-0.02em',
+                          color: DARK,
+                          margin: 0,
+                          lineHeight: 1.25,
+                        }}
+                      >
+                        {cat.title}
+                      </h3>
+                      <div
+                        className="tag-mono"
+                        style={{
+                          fontSize: '0.62rem',
+                          letterSpacing: '0.14em',
+                          color: MUTED,
+                          marginTop: '0.35rem',
+                          marginBottom: '1.25rem',
+                        }}
+                      >
+                        {cat.subtitle}
+                      </div>
 
-                    {/* Client links (Always visible on desktop, expandable on mobile) */}
-                    <div className={`work-dir-clients-wrap ${isExpanded ? 'show' : ''}`}>
-                      <div className="work-dir-clients-grid">
+                      {/* Clients Pill Tags */}
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '0.4rem',
+                        }}
+                      >
                         {cat.clients.map((client: any) => {
                           const hasDetailPage = Boolean(
                             client.href &&
@@ -1327,32 +1338,77 @@ export default function WorkPage() {
                             <Link
                               key={client.name}
                               href={client.href}
-                              className="work-dir-client-item"
-                              onClick={(e) => e.stopPropagation()}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                                fontSize: '0.72rem',
+                                fontWeight: 500,
+                                padding: '0.32rem 0.65rem',
+                                borderRadius: '4px',
+                                backgroundColor: '#F4F4F6',
+                                color: DARK,
+                                textDecoration: 'none',
+                                transition: 'all 0.2s ease',
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#111113';
+                                e.currentTarget.style.color = '#ffffff';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#F4F4F6';
+                                e.currentTarget.style.color = DARK;
+                              }}
                             >
                               <span>{client.name}</span>
-                              <ArrowUpRight size={13} className="work-dir-client-arrow" />
+                              <ArrowUpRight size={11} />
                             </Link>
                           ) : (
                             <span
                               key={client.name}
-                              className="work-dir-client-item work-dir-client-static"
-                              onClick={(e) => e.stopPropagation()}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                fontSize: '0.72rem',
+                                fontWeight: 450,
+                                padding: '0.32rem 0.65rem',
+                                borderRadius: '4px',
+                                backgroundColor: '#FAFAFA',
+                                border: '1px solid rgba(0, 0, 0, 0.06)',
+                                color: '#52525B',
+                              }}
                             >
-                              <span>{client.name}</span>
+                              {client.name}
                             </span>
                           );
                         })}
                       </div>
                     </div>
+
+                    {/* Bottom Indicator */}
+                    <div
+                      style={{
+                        paddingTop: '1.25rem',
+                        marginTop: '1.25rem',
+                        borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span className="tag-mono" style={{ fontSize: '0.62rem', color: FAINT }}>
+                        {cat.clients.length} {cat.clients.length === 1 ? 'ENGAGEMENT' : 'ENGAGEMENTS'}
+                      </span>
+                      <ArrowRight size={13} color={MUTED} />
+                    </div>
                   </div>
-                );
-              })}
+                ))}
+              </div>
 
               {/* Bottom Explore Button */}
-              <div className="work-directory-footer">
+              <div className="work-directory-footer" style={{ marginTop: '2.5rem' }}>
                 <Link href={workCms?.directoryHeader?.ctaHref || '/contact'} className="work-dir-explore-btn">
-                  <span>{workCms?.directoryHeader?.ctaText || 'Explore the directory'}</span>
+                  <span>{workCms?.directoryHeader?.ctaText || 'Start an engagement with us'}</span>
                   <ArrowRight size={16} color="#ffffff" />
                 </Link>
               </div>
@@ -1375,9 +1431,7 @@ export default function WorkPage() {
           box-sizing: border-box;
         }
         .work-hero-grid {
-          display: grid;
-          grid-template-columns: auto 1fr auto;
-          gap: clamp(2rem, 4vw, 5rem);
+          display: flex;
           align-items: flex-end;
           position: relative;
         }
