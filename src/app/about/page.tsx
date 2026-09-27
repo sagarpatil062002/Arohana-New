@@ -1555,6 +1555,7 @@ export default function StudioPage() {
           }
         }
 
+        @media (max-width: 860px) {
           .chapters-mobile-track-wrap {
             position: relative;
             width: 100%;

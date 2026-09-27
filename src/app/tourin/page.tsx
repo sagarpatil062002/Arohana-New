@@ -364,6 +364,7 @@ export default function TourinPage() {
       {/* Interactive Cursor Follower Pill */}
       <div
         ref={hoverPillRef}
+        className="tourin-cursor-pill"
         style={{
           position: 'fixed',
           top: 0,
@@ -556,6 +557,7 @@ export default function TourinPage() {
               <div className="genesis-row-content">
                 <div className="genesis-text-col">
                   <div className="genesis-tag">
+                    <span className="timeline-mobile-badge">01</span>
                     <span className="tag-red-bullet">•</span>
                     <span>{genesis.tag || 'THE GENESIS'}</span>
                   </div>
@@ -655,18 +657,11 @@ export default function TourinPage() {
             </div>
 
             {/* Content: Left text + Right destination cards grid */}
-            <div
-              className="tourin-section-inner"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'minmax(280px, 1fr) 1.5fr',
-                gap: 'clamp(2rem, 4vw, 4rem)',
-                alignItems: 'start',
-              }}
-            >
+            <div className="tourin-section-inner dest-section-inner">
               {/* Left Text */}
               <div className="tourin-section-left">
                 <div className="genesis-tag">
+                  <span className="timeline-mobile-badge">02</span>
                   <span className="tag-red-bullet">•</span>
                   <span>{destination.tag || 'THE DESTINATION'}</span>
                 </div>
@@ -717,13 +712,7 @@ export default function TourinPage() {
 
               {/* Right: Destination Cards Grid (Ladakh + Adding More Places Coming Soon) */}
               <div style={{ width: '100%' }}>
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-                    gap: '1.25rem',
-                  }}
-                >
+                <div className="dest-cards-grid">
                   {(showAllPlaces ? destinationPlaces : destinationPlaces.slice(0, 2)).map((place: any) => (
                     <div key={place.id} className="dest-card-wrap">
                       <div
@@ -880,6 +869,7 @@ export default function TourinPage() {
               {/* 1. MASTER HEADER & PHILOSOPHY */}
               <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
                 <div className="genesis-tag">
+                  <span className="timeline-mobile-badge">03</span>
                   <span className="tag-red-bullet">•</span>
                   <span>{philosophy.tag || 'OUR PHILOSOPHY & APPROACH'}</span>
                 </div>
@@ -937,15 +927,7 @@ export default function TourinPage() {
               </h3>
             </div>
 
-            <div
-              className="tourin-section-inner"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
-                gap: 'clamp(2rem, 4vw, 4.5rem)',
-                alignItems: 'center',
-              }}
-            >
+            <div className="tourin-section-inner traveller-section-inner">
               {/* Left: Traveller criteria list */}
               <div className="tourin-section-left">
                 <div className="traveller-list">
@@ -1154,19 +1136,11 @@ export default function TourinPage() {
             </div>
 
             {/* Content */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'minmax(280px, 1fr) 1.4fr',
-                gap: 'clamp(2rem, 4vw, 4rem)',
-                alignItems: 'start',
-                flex: 1,
-              }}
-              className="proof-content-grid"
-            >
+            <div className="proof-content-grid">
               {/* Left: Text */}
               <div>
                 <div className="genesis-tag">
+                  <span className="timeline-mobile-badge">04</span>
                   <span className="tag-red-bullet">•</span>
                   <span>{journeysTaken.tag || 'PROOF THAT IT WORKS'}</span>
                 </div>
@@ -1209,14 +1183,8 @@ export default function TourinPage() {
                 </div>
               </div>
 
-              {/* Right: 3-Column Photo Grid (2 rows x 3 columns) */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: '0.65rem',
-                }}
-              >
+              {/* Right: 3-Column Photo Grid (responsive 2-col on mobile) */}
+              <div className="proof-photo-grid">
                 {proofCollage.map((item, idx) => (
                   <div
                     key={idx}
@@ -1291,6 +1259,7 @@ export default function TourinPage() {
               >
                 <div>
                   <div className="genesis-tag">
+                    <span className="timeline-mobile-badge">05</span>
                     <span className="tag-red-bullet">•</span>
                     <span>CURATED JOURNEYS</span>
                   </div>
@@ -1388,11 +1357,6 @@ export default function TourinPage() {
               {/* Curated Journeys: 1 Active Journey + Adding More Places Coming Soon Card */}
               <div
                 ref={journeysScrollRef}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
-                  gap: '1.75rem',
-                }}
                 className="curated-cards-grid"
               >
                 {/* 1. The Single Curated Journey */}
@@ -1747,34 +1711,13 @@ export default function TourinPage() {
           }}
         >
           {/* Top Location Tabs */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'clamp(1.25rem, 3vw, 2.5rem)',
-              marginBottom: '2rem',
-              fontFamily: 'var(--font-mono)',
-              fontSize: '0.72rem',
-              letterSpacing: '0.12em',
-              color: 'rgba(255, 255, 255, 0.75)',
-              textTransform: 'uppercase',
-              fontWeight: 500,
-            }}
-          >
+          <div className="cta-location-tabs">
             <span>LADAKH</span>
             <span>NORTH INDIA</span>
             <span>MORE PLACES WORTH KNOWING</span>
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '3rem',
-            }}
-          >
+          <div className="cta-content-row">
             {/* Left Headline & Buttons */}
             <div style={{ maxWidth: '580px' }}>
               <h2
@@ -1801,14 +1744,7 @@ export default function TourinPage() {
                 Explore our journeys.
               </p>
 
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  flexWrap: 'wrap',
-                }}
-              >
+              <div className="cta-action-buttons">
                 <a
                   href="#curated-journeys"
                   style={{
@@ -1874,21 +1810,7 @@ export default function TourinPage() {
             </div>
 
             {/* Right: Handwritten Script text */}
-            <div
-              style={{
-                fontFamily: "'Caveat', cursive",
-                fontSize: 'clamp(2.6rem, 4.5vw, 3.8rem)',
-                lineHeight: 1.05,
-                color: 'rgba(255, 255, 255, 0.88)',
-                transform: 'rotate(-5deg)',
-                textAlign: 'right',
-                fontWeight: 700,
-                letterSpacing: '0.02em',
-                textShadow: '0 2px 14px rgba(0,0,0,0.3)',
-                userSelect: 'none',
-                paddingRight: '1rem',
-              }}
-            >
+            <div className="cta-script-text">
               <div>Same</div>
               <div>World</div>
               <div>Different</div>
@@ -1915,16 +1837,7 @@ export default function TourinPage() {
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
           {/* Main Footer Grid */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1.2fr 1.6fr 1.4fr 1fr',
-              gap: 'clamp(2rem, 4vw, 4rem)',
-              paddingBottom: '3.5rem',
-              borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
-            }}
-            className="tourin-footer-grid"
-          >
+          <div className="tourin-footer-grid">
             {/* Column 1: TOURIN Brand */}
             <div>
               <div
@@ -2106,19 +2019,7 @@ export default function TourinPage() {
           </div>
 
           {/* Bottom Copyright */}
-          <div
-            style={{
-              paddingTop: '1.75rem',
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '1rem',
-              color: '#777777',
-              fontSize: '0.75rem',
-              fontFamily: 'var(--font-mono)',
-            }}
-          >
+          <div className="tourin-footer-bottom">
             <div>© 2025 ĀROHANA Consultancy. All Rights Reserved.</div>
             <div style={{ color: '#555555' }}>Pune • Ladakh • Pan-India Engagements</div>
             <div style={{ color: '#777777' }}>Tourin | Experiential Travel & Journeys</div>
@@ -2131,37 +2032,12 @@ export default function TourinPage() {
       ================================================================ */}
       {activeJourney && (
         <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1000,
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 'clamp(1rem, 3vw, 2.5rem)',
-          }}
+          className="tourin-modal-backdrop"
           onClick={() => setActiveJourney(null)}
         >
           <div
+            className="tourin-modal-box"
             onClick={(e) => e.stopPropagation()}
-            style={{
-              position: 'relative',
-              width: '100%',
-              maxWidth: '820px',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              padding: 'clamp(1.5rem, 4vw, 3rem)',
-              boxShadow: '0 24px 80px rgba(0, 0, 0, 0.3)',
-            }}
           >
             <button
               onClick={() => setActiveJourney(null)}
@@ -2294,6 +2170,7 @@ export default function TourinPage() {
             </div>
 
             <div
+              className="tourin-modal-footer"
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -2334,26 +2211,6 @@ export default function TourinPage() {
           </div>
         </div>
       )}
-
-      {/* Responsive media query adjustments */}
-      <style jsx>{`
-        @media (max-width: 991px) {
-          .curated-cards-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .tourin-footer-grid {
-            grid-template-columns: 1fr 1fr !important;
-          }
-          .proof-content-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-        @media (max-width: 640px) {
-          .tourin-footer-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }

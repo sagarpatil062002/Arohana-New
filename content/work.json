@@ -56,6 +56,91 @@
   ],
   "caseStudies": [
     {
+      "subtitle": "One relationship. Three very different businesses.",
+      "heroImage": "/uploads/1790518947373-raysonslogo.webp",
+      "heroImageCaption": "Neora Deck rooftop hospitality & on-ground execution — the origin of Ārohana’s partnership with Raysons Group.",
+      "sector": "Hospitality, Real Estate & Industrial Casting",
+      "snapshot": {
+        "location": "Kolhapur & Western Maharashtra",
+        "engagementType": "Relationship-Led Multi-Entity Partnership",
+        "duration": "Ongoing Retainers + Specialised Production Project",
+        "coreCapabilities": [
+          "Content Strategy & Planning",
+          "Full-Scope Social Media Management",
+          "Architectural & Lifestyle Shoots",
+          "Technical Scripting & Video Direction",
+          "Corporate Presentation Film"
+        ]
+      },
+      "situation": [
+        "Ārohana’s relationship with Raysons Group began with Neora Deck, the group’s hospitality business.",
+        "What started there grew into a broader engagement with the group’s real-estate business, where we manage the complete social-media presence — from strategy and content planning to shoots, scripting, design, editing and publishing.",
+        "The third assignment was different again: a corporate film for the group’s casting business, created for prospective clients."
+      ],
+      "realChallenge": [
+        "The value of the relationship is not a single campaign. It is the confidence to bring the same strategic and creative partner into businesses with completely different audiences and communication needs.",
+        "The story is not ‘one client, one brief’. It is a relationship that expanded across three very different businesses within the Raysons Group, demonstrating trust, range and long-term execution without making unsupported claims."
+      ],
+      "thinking": [
+        "Lead with the relationship story, not a generic service list.",
+        "Different businesses require different communication approaches — Neora Deck demanded vibrant experiential lifestyle content, Raysons Real Estate required credibility, architecture and development quality, while the Casting vertical required a focused corporate industrial film.",
+        "Maintain strategy-led execution across all touchpoints rather than forcing every business into the same generic social-media template."
+      ],
+      "work": [
+        {
+          "title": "Neora Deck (Hospitality)",
+          "description": "For Neora Deck, Ārohana handles the complete social-media function — content calendar, concepts, creative direction, shoots, scripting, graphic design, video editing, posting and ongoing communication.",
+          "bullets": [
+            "Content calendar & monthly concepts",
+            "Creative direction & live shoots",
+            "Scripting & graphic design",
+            "Video editing & community publishing"
+          ]
+        },
+        {
+          "title": "Raysons Real Estate",
+          "description": "The real-estate brief required a different communication language built around projects, credibility, architecture, development and business quality. Ārohana manages the complete social-media process: strategy, calendars, concepts, shoots, scripts, design, editing and publishing.",
+          "bullets": [
+            "Complete social-media process & strategy",
+            "Architectural & development site shoots",
+            "Professional representation for target property buyers",
+            "Consistent digital presence across milestones"
+          ]
+        },
+        {
+          "title": "Raysons Casting (Industrial Film)",
+          "description": "A focused, high-production corporate film designed to present the casting vertical’s capabilities, infrastructure and quality standards to prospective clients.",
+          "bullets": [
+            "Concept & technical scripting",
+            "On-ground industrial cinematography",
+            "Professional voiceover & audio mastering",
+            "Precision editing & color grade"
+          ]
+        }
+      ],
+      "gallery": [
+        {
+          "image": "/uploads/1790518964024-raysons1.jpg",
+          "caption": "Neora Deck: Sunset dining aesthetic & architectural geometry",
+          "alt": "Neora Deck Kolhapur"
+        },
+        {
+          "image": "/uploads/1790518970031-raysons2.jpg",
+          "caption": "Raysons Real Estate: Premium residential project showcase",
+          "alt": "Raysons Real Estate"
+        },
+        {
+          "image": "/uploads/1790518977249-raysons.3jpg.jpg",
+          "caption": "Raysons Casting: High-precision engineering cinematography",
+          "alt": "Raysons Casting"
+        }
+      ],
+      "proof": {
+        "verifiedText": "Expanded across three distinct commercial verticals over 18+ months with zero agency churn, delivering high-retention social content, project launches, and commercial film assets.",
+        "metricsNote": "3 Verticals • 100% Retainer Retention • 45+ Production Assets Delivered"
+      },
+      "closingQuote": "Long-term client relationships aren’t built on presentations. They are built on delivering quality consistently across completely different business realities.",
+      "closingText": "Have a multi-entity or diversified business challenge? Let’s talk.",
       "id": "raysons-group",
       "num": "01",
       "slug": "raysons-group",
@@ -68,14 +153,14 @@
         "Hospitality",
         "Brand Strategy"
       ],
-      "image": "/uploads/1790493255876-sharada-exotica-nagala-park.webp",
+      "image": "/uploads/1790518934406-raysonslogo.webp",
       "published": true,
       "featured": true,
       "year": "2024 — Present"
     },
     {
       "subtitle": "Strategic brand communication and luxury visual direction across contemporary architecture and high-end living.",
-      "heroImage": "/images/case-studies/loom/loom-hero.jpg",
+      "heroImage": "/uploads/1790517317971-loomcrafts-hero.jpg",
       "heroImageCaption": "",
       "sector": "Architecture & Living",
       "snapshot": {
@@ -92,27 +177,17 @@
       "work": [],
       "gallery": [
         {
-          "image": "/uploads/1790510325714-saveclip.app-767268679-18111362180074670-2619111724991034875-n.jpg",
-          "caption": "Production Asset Caption",
-          "alt": "Loom Crafts"
-        },
-        {
-          "image": "/uploads/1790510345121-saveclip.app-768615357-18111362150074670-564991585947582552-n.jpg",
-          "caption": "Production Asset Caption",
-          "alt": "Loom Crafts"
-        },
-        {
-          "image": "/uploads/1790510352031-saveclip.app-772792357-18111362132074670-551563829676862215-n.jpg",
-          "caption": "Production Asset Caption",
-          "alt": "Loom Crafts"
-        },
-        {
-          "image": "/uploads/1790510364282-saveclip.app-775871629-18112144196074670-7650007278374473102-n.jpg",
-          "caption": "Production Asset Caption",
-          "alt": "Loom Crafts"
-        },
-        {
           "image": "/uploads/1790510371487-saveclip.app-779200914-18112144223074670-6707268318767954884-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        },
+        {
+          "image": "/uploads/1790517384968-saveclip.app-777023813-18112144214074670-2529229158853679223-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        },
+        {
+          "image": "/uploads/1790517412468-saveclip.app-775941849-18112144205074670-3910853429921122765-n.jpg",
           "caption": "Production Asset Caption",
           "alt": "Loom Crafts"
         }
@@ -141,6 +216,45 @@
       "year": "2023 — 2024"
     },
     {
+      "subtitle": "Digital brand systems, cinematic storytelling, and cultural event production on-ground.",
+      "heroImage": "/uploads/1790517840476-picture-time-hero.png",
+      "heroImageCaption": "",
+      "sector": "Entertainment",
+      "snapshot": {
+        "location": "",
+        "engagementType": "",
+        "duration": "",
+        "coreCapabilities": []
+      },
+      "situation": [
+        "Digital brand systems, cinematic storytelling, and cultural event production on-ground."
+      ],
+      "realChallenge": [],
+      "thinking": [],
+      "work": [],
+      "gallery": [
+        {
+          "image": "/uploads/1790517852949-picturetime.1jpg.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "PictureTime"
+        },
+        {
+          "image": "/uploads/1790517864531-picturetime2.jpg.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "PictureTime"
+        },
+        {
+          "image": "/uploads/1790517896817-picturetime.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "PictureTime"
+        }
+      ],
+      "proof": {
+        "verifiedText": "",
+        "metricsNote": ""
+      },
+      "closingQuote": "",
+      "closingText": "",
       "id": "picturetime",
       "num": "03",
       "slug": "picturetime",
@@ -153,7 +267,7 @@
         "Events",
         "Content Production"
       ],
-      "image": "/images/case-studies/picturetime/picturetime-hero.jpg",
+      "image": "/uploads/1790517819970-picture-time-hero.png",
       "published": true,
       "featured": true,
       "year": "2024"
@@ -195,6 +309,50 @@
       "year": "2022 — Present"
     },
     {
+      "subtitle": "Healthcare communication, clinical brand systems, and patient education built on trust.",
+      "heroImage": "/images/case-studies/rrskins/rrskins-hero.jpg",
+      "heroImageCaption": "",
+      "sector": "Healthcare",
+      "snapshot": {
+        "location": "",
+        "engagementType": "",
+        "duration": "",
+        "coreCapabilities": []
+      },
+      "situation": [
+        "Healthcare communication, clinical brand systems, and patient education built on trust."
+      ],
+      "realChallenge": [],
+      "thinking": [],
+      "work": [],
+      "gallery": [
+        {
+          "image": "/uploads/1790518446224-rrskins1.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "RR Skins"
+        },
+        {
+          "image": "/uploads/1790518453806-rrskin2.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "RR Skins"
+        },
+        {
+          "image": "/uploads/1790518461764-rrskins3.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "RR Skins"
+        },
+        {
+          "image": "/uploads/1790518484610-saveclip.app-759348934-1614244810269746-217923987201805645-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "RR Skins"
+        }
+      ],
+      "proof": {
+        "verifiedText": "",
+        "metricsNote": ""
+      },
+      "closingQuote": "",
+      "closingText": "",
       "id": "rr-skins",
       "num": "06",
       "slug": "rr-skins",
@@ -207,7 +365,7 @@
         "Brand Strategy",
         "Content"
       ],
-      "image": "/images/case-studies/rrskins/rrskins-hero.jpg",
+      "image": "/uploads/1790518423080-rrskin2.jpg",
       "published": true,
       "featured": true,
       "year": "2023 — Present"
