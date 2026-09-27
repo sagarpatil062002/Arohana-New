@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import { readContentFile, writeContentFile } from '@/lib/cms/content-manager';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();

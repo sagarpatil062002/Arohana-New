@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCmsContent } from '@/lib/cms/content-context';
@@ -9,11 +9,9 @@ import {
   MapPin,
   Calendar,
   ArrowUpRight,
-  Play,
   ArrowRight,
   ArrowDown,
   ChevronRight,
-  X,
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -39,14 +37,16 @@ export default function IndianArmyProjectsPage() {
     description: 'On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations and institutional headquarters.',
     scrollLabel: 'Scroll to explore',
   };
-  const statsList = armyCms.stats || [
-    { value: '14,000+ FT', label: 'Ladakh High-Altitude Operations' },
-    { value: 'FEB 2026', label: 'Western Command Investiture' },
-    { value: '06 ASSIGNMENTS', label: 'Verified Institutional Briefs' },
-    { value: '100%', label: 'Protocol Clearance & Security' },
-  ];
   const disclaimerText = armyCms.disclaimer || 'Institutional Integrity: All presented Indian Army project materials represent verified shoot direction, post-production and communication assignments executed under authorized institutional protocols. No confidential operational details are disclosed.';
   const projectsList = armyCms.projects || [];
+  const closingBanner = armyCms.closingBanner || {
+    eyebrow: 'PEOPLE · PLACES · SACRIFICE · A STRONGER TOMORROW',
+    heading: 'Documenting\na stronger tomorrow',
+    description: 'Whether covering an investiture, archiving veteran history, or filming at 16,000 feet, Ārohana brings reverence, discipline, and visual depth to institutional defence communication.',
+    buttonText: "Let's Discuss a Project",
+    buttonUrl: '/contact',
+    image: '/images/army/symbolic-army-terrain.jpg',
+  };
 
   const p1 = projectsList.find((p: any) => p.id === 'western-command-investiture') || projectsList[0] || {
     id: 'western-command-investiture',
@@ -61,6 +61,10 @@ export default function IndianArmyProjectsPage() {
     creativeApproach: 'Restrained, dignified visual pacing tailored to military protocol and ceremonial integrity.',
     productionDiscipline: 'Tight turnaround master post-production with multi-track sound engineering and high-definition mastering.',
     image: '/images/army/western-command-1.jpg',
+    sidePhotos: [
+      '/images/army/western-command-official.jpg',
+      '/images/army/western-command-2.jpg',
+    ],
     category: 'western-command',
     published: true,
   };
@@ -73,11 +77,16 @@ export default function IndianArmyProjectsPage() {
     date: '2023 – Present',
     title: 'Communication & Production',
     subtitle: 'High-altitude visual communication, films and archival design.',
-    description: 'Ārohana has undertaken communication, design and video-production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.',
-    scopeOfWork: 'Institutional communications campaign, internal and public-facing visual communication, and video production.',
+    description: 'Ārohana has undertaken communication, design and visual production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.',
+    scopeOfWork: 'Institutional communications campaign, internal and public-facing visual communication, and photo documentation.',
     creativeApproach: 'Authentic high-altitude cinematography paired with authoritative scripting and professional narration.',
     productionDiscipline: 'Field filming in sub-zero and remote mountain environments requiring specialised equipment and acclimatised crews.',
-    image: '/images/army/14corps-2.jpg',
+    image: '/images/army/14corps-hall-of-fame.jpg',
+    sidePhotos: [
+      '/images/army/adgpi-firstvillages.jpg',
+      '/images/army/14corps-ladakh-ops.jpg',
+      '/images/army/firefury-changthang-health.jpg',
+    ],
     category: '14-corps',
     published: true,
   };
@@ -90,11 +99,17 @@ export default function IndianArmyProjectsPage() {
     date: 'Multi-Year Engagements',
     title: 'Corps-Level Communication & Publications',
     subtitle: 'XIV Corps communication, publications and community initiatives.',
-    description: 'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, video and community-facing initiatives.',
-    scopeOfWork: 'Spans historical commemorative literature, community welfare communication, and social video production.',
+    description: 'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, photo documentation and community-facing initiatives.',
+    scopeOfWork: 'Spans historical commemorative literature, community welfare communication, and visual documentation.',
     creativeApproach: 'Balancing historical gravitas with contemporary digital readability across diverse audiences.',
     productionDiscipline: 'Seamless integration between on-ground research, military history curation, and modern typography.',
-    image: '/images/army/fire-fury-1.jpg',
+    image: '/images/army/firefury-corps-hq.jpg',
+    sidePhotos: [
+      '/images/army/fire-fury-1.jpg',
+      '/images/army/firefury-kargil-memorial.jpg',
+      '/images/army/wangchuk-army-friendship.jpg',
+      '/images/army/firefury-veterans.jpg',
+    ],
     category: '14-corps',
     published: true,
   };
@@ -112,21 +127,16 @@ export default function IndianArmyProjectsPage() {
     creativeApproach: 'Subtle, dignified layout allowing historical accounts and veteran testimonies to stand out with gravitas.',
     productionDiscipline: 'High-specification tactile print finishing, custom clothbound styling, and museum-grade archival reproduction.',
     image: '/images/army/rezang-la-1.jpg',
+    sidePhotos: [
+      '/images/army/rezangla-tribute.jpg',
+      '/images/army/rezang-la-2.jpg',
+    ],
     category: 'border-initiatives',
     published: true,
   };
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSpreadPage, setActiveSpreadPage] = useState('01');
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsVideoModalOpen(false);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
 
   const currentSpread = SPREAD_PAGES.find((p) => p.id === activeSpreadPage) || SPREAD_PAGES[0];
 
@@ -215,21 +225,6 @@ export default function IndianArmyProjectsPage() {
         </div>
       </section>
 
-      {/* ==========================================================================
-          2. STATS SECTION (4 Columns with Clean Vertical Dividers)
-          ========================================================================== */}
-      <section className="stats-section" id="projects-overview">
-        <div className="army-container">
-          <div className="stats-grid">
-            {statsList.map((st: any, idx: number) => (
-              <div key={idx} className="stat-card">
-                <div className="stat-number">{st.value}</div>
-                <div className="stat-label">{st.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ==========================================================================
           3. INSTITUTIONAL INTEGRITY STATEMENT
@@ -314,27 +309,15 @@ export default function IndianArmyProjectsPage() {
                     <span>View Project</span>
                     <ArrowRight size={14} />
                   </Link>
-                  <button
-                    type="button"
-                    onClick={() => setIsVideoModalOpen(true)}
-                    className="card-action-link"
-                  >
-                    <span>Watch Film</span>
-                    <Play size={12} fill="currentColor" style={{ marginLeft: '2px' }} />
-                  </button>
                 </div>
               </div>
 
               {/* Right Media Collage */}
               <div className="card-1-media-group">
-                {/* Big Video Card */}
+                {/* Main Photo Card */}
                 <div
-                  className="card-1-video-thumb"
-                  onClick={() => setIsVideoModalOpen(true)}
-                  style={{ cursor: 'pointer' }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Play ${p1.title} video`}
+                  className="card-1-main-photo"
+                  style={{ position: 'relative', overflow: 'hidden' }}
                 >
                   <Image
                     src={p1.image || '/images/army/western-command-1.jpg'}
@@ -343,12 +326,9 @@ export default function IndianArmyProjectsPage() {
                     sizes="(max-width: 768px) 100vw, 450px"
                     style={{ objectFit: 'cover' }}
                   />
-                  <div className="play-btn-circle">
-                    <Play size={18} fill="#111111" />
-                  </div>
-                  <div className="video-bottom-caption">
-                    <span className="v-label">Watch Project Film</span>
-                    <span className="v-time">02:14</span>
+                  <div className="photo-bottom-caption">
+                    <span className="p-label">{p1.title}</span>
+                    <span className="p-tag">Ceremonial Protocol &amp; Honours</span>
                   </div>
                 </div>
 
@@ -356,8 +336,8 @@ export default function IndianArmyProjectsPage() {
                 <div className="card-1-sub-photos">
                   <div className="sub-photo-item">
                     <Image
-                      src="/images/army/western-command-2.jpg"
-                      alt="Parade March Contingent"
+                      src={p1.sidePhotos?.[0] || '/images/army/western-command-1.jpg'}
+                      alt="Western Command Investiture Ceremony"
                       fill
                       sizes="220px"
                       style={{ objectFit: 'cover' }}
@@ -365,8 +345,8 @@ export default function IndianArmyProjectsPage() {
                   </div>
                   <div className="sub-photo-item">
                     <Image
-                      src="/images/army/symbolic-army-terrain.jpg"
-                      alt="Military Medals Close-up"
+                      src={p1.sidePhotos?.[1] || '/images/army/western-command-2.jpg'}
+                      alt="Parade March Contingent"
                       fill
                       sizes="220px"
                       style={{ objectFit: 'cover' }}
@@ -415,26 +395,19 @@ export default function IndianArmyProjectsPage() {
                   {p2.description}
                 </p>
 
-                {/* Mini Video Preview */}
+                {/* Visual Communication Featured Image */}
                 <div
-                  className="card-2-video-preview"
-                  onClick={() => setIsVideoModalOpen(true)}
-                  style={{ cursor: 'pointer' }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Watch ${p2.title} film`}
+                  className="card-2-photo-preview"
+                  style={{ position: 'relative', overflow: 'hidden' }}
                 >
                   <Image
-                    src={p2.image || '/images/army/14corps-2.jpg'}
+                    src={p2.image || '/images/army/14corps-hall-of-fame.jpg'}
                     alt={p2.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 400px"
                     style={{ objectFit: 'cover' }}
                   />
-                  <div className="play-btn-circle small">
-                    <Play size={14} fill="#111111" />
-                  </div>
-                  <div className="card-2-video-caption">High-Altitude Stories</div>
+                  <div className="card-2-photo-caption">14 Corps Field Documentation</div>
                 </div>
               </div>
 
@@ -442,40 +415,40 @@ export default function IndianArmyProjectsPage() {
               <div className="books-showcase-row">
                 <div className="book-3d-item">
                   <Image
-                    src="/images/army/69armoured-1.jpg"
-                    alt="Courage Lives Higher"
+                    src={p2.sidePhotos?.[0] || '/images/army/adgpi-firstvillages.jpg'}
+                    alt="First Villages Community Initiative"
                     fill
                     sizes="180px"
                     style={{ objectFit: 'cover' }}
                   />
                   <div className="book-spine-lighting" />
                   <div className="book-overlay-title">
-                    COURAGE
+                    FIRST
                     <br />
-                    LIVES HIGHER
+                    VILLAGES
                   </div>
                 </div>
 
                 <div className="book-3d-item featured">
                   <Image
-                    src="/images/army/army-hero.jpg"
-                    alt="Guardians of the North"
+                    src={p2.sidePhotos?.[1] || '/images/army/firefury-changthang-health.jpg'}
+                    alt="SHE Ladakh Outreach"
                     fill
                     sizes="200px"
                     style={{ objectFit: 'cover' }}
                   />
                   <div className="book-spine-lighting" />
                   <div className="book-overlay-title">
-                    GUARDIANS
+                    NARI
                     <br />
-                    OF THE NORTH
+                    SHAKTI
                   </div>
                 </div>
 
                 <div className="book-3d-item">
                   <Image
-                    src="/images/army/14corps-1.jpg"
-                    alt="People Terrains Stories"
+                    src={p2.sidePhotos?.[2] || '/images/army/adgpi-she-thumb-2.jpg'}
+                    alt="Women Empowerment Ladakh"
                     fill
                     sizes="180px"
                     style={{ objectFit: 'cover' }}
@@ -559,10 +532,12 @@ export default function IndianArmyProjectsPage() {
 
 
 
-                <Link href="/contact" className="card-action-link">
-                  <span>View Project</span>
-                  <ArrowRight size={14} />
-                </Link>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                  <Link href="/contact" className="card-action-link">
+                    <span>View Project</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
 
               {/* Right Side: Open Book & Spread Thumbnails */}
@@ -571,7 +546,7 @@ export default function IndianArmyProjectsPage() {
                   {/* Standing Book */}
                   <div className="standing-fury-book">
                     <Image
-                      src="/images/army/fire-fury-1.jpg"
+                      src={p3.sidePhotos?.[0] || p3.image || '/images/army/fire-fury-1.jpg'}
                       alt="Fire and Fury XIV Corps Volume"
                       fill
                       sizes="180px"
@@ -714,10 +689,12 @@ export default function IndianArmyProjectsPage() {
 
 
 
-                <Link href="/contact" className="card-action-link">
-                  <span>View Project</span>
-                  <ArrowRight size={14} />
-                </Link>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                  <Link href="/contact" className="card-action-link">
+                    <span>View Project</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
               </div>
 
               {/* Right Side: Hardbound Book + Archival Photos + Script Quote */}
@@ -737,20 +714,20 @@ export default function IndianArmyProjectsPage() {
                 <div className="rezang-archival-column">
                   <div className="archival-photo-card">
                     <Image
-                      src="/images/army/rezang-la-2.jpg"
-                      alt="1962 Battlefield Archival"
+                      src={p4.sidePhotos?.[0] || '/images/army/rezangla-tribute.jpg'}
+                      alt="Major Shaitan Singh PVC Family Tribute"
                       fill
                       sizes="130px"
-                      style={{ objectFit: 'cover', filter: 'grayscale(0.7) contrast(1.1)' }}
+                      style={{ objectFit: 'cover' }}
                     />
                   </div>
                   <div className="archival-photo-card">
                     <Image
-                      src="/images/army/symbolic-army-terrain.jpg"
-                      alt="Rezang La Sector"
+                      src={p4.sidePhotos?.[1] || '/images/army/rezang-la-2.jpg'}
+                      alt="1962 Battlefield Archival"
                       fill
                       sizes="130px"
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: 'cover', filter: 'grayscale(0.7) contrast(1.1)' }}
                     />
                   </div>
                 </div>
@@ -843,320 +820,6 @@ export default function IndianArmyProjectsPage() {
       </main>
 
       {/* ==========================================================================
-          5B. VERIFIED MILITARY BROADCASTS, MEDIA & DOCUMENTARIES
-          ========================================================================== */}
-      <section className="army-container" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
-        <div style={{ marginBottom: '2.5rem' }}>
-          <div className="hero-eyebrow" style={{ marginBottom: '0.75rem' }}>
-            <span className="eyebrow-badge">
-              <Shield size={12} className="shield-icon" />
-              <span>OFFICIAL BROADCASTS &amp; CITATIONS</span>
-            </span>
-            <span className="eyebrow-dot" />
-            <span className="eyebrow-sub">DEFENCE MEDIA EVIDENCE</span>
-          </div>
-          <h2
-            style={{
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 500,
-              letterSpacing: '-0.03em',
-              color: '#111',
-              marginBottom: '0.75rem',
-            }}
-          >
-            Verified Broadcasts, Documentaries &amp; Citations
-          </h2>
-          <p style={{ color: '#555', maxWidth: '780px', fontSize: '1rem', lineHeight: 1.6 }}>
-            Official media releases, documentary broadcasts, and social dispatches issued by the Indian Army (ADGPI), Fire &amp; Fury Corps (14 Corps), and regional leadership highlighting Ārohana’s field productions.
-          </p>
-        </div>
-
-        {/* Featured Video Player: Operation Sadbhavana Documentary */}
-        <div
-          style={{
-            backgroundColor: '#0c0c0e',
-            borderRadius: '8px',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            overflow: 'hidden',
-            boxShadow: '0 12px 36px rgba(0, 0, 0, 0.15)',
-            marginBottom: '2.5rem',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
-          }}
-        >
-          <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', minHeight: '300px', backgroundColor: '#000' }}>
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/Ki6c7vRhbtA"
-              title="Indian Army Operation Sadbhavana Documentary"
-              style={{ width: '100%', height: '100%', border: 0 }}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: '#fff' }}>
-            <div className="tag-mono" style={{ color: '#ff3b30', fontSize: '0.75rem', marginBottom: '0.65rem' }}>
-              FEATURED DOCUMENTARY FILM
-            </div>
-            <h3 style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)', fontWeight: 500, lineHeight: 1.25, marginBottom: '1rem', color: '#fff' }}>
-              Operation Sadbhavana — Sustainable Health &amp; Hygiene in Remote Ladakh
-            </h3>
-            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-              Field-produced documentary showcasing community workshops, reusable menstrual health distribution, and village outreach conducted in partnership with the Indian Army across 8 border settlements.
-            </p>
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              <a
-                href="https://youtu.be/Ki6c7vRhbtA?si=EyZ7o6lAxOc1rXmf"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  backgroundColor: '#ff3b30',
-                  color: '#fff',
-                  padding: '0.65rem 1.25rem',
-                  borderRadius: '4px',
-                  fontWeight: 600,
-                  fontSize: '0.85rem',
-                  textDecoration: 'none',
-                }}
-              >
-                <Play size={14} fill="#fff" /> Watch on YouTube
-              </a>
-              <span style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'var(--font-mono)' }}>
-                Official Clearance &bull; 14 Corps Sadbhavana
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Official Dispatches & Citations Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-            gap: '1.25rem',
-          }}
-        >
-          {/* Card: ADGPI Official 1 */}
-          <a
-            href="https://x.com/adgpi/status/1898172481665667373?s=20"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span className="tag-mono" style={{ color: '#0066cc', fontSize: '0.7rem', fontWeight: 600 }}>
-                  ADGPI INDIAN ARMY
-                </span>
-                <ArrowUpRight size={14} color="#666" />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
-                Official Ceremonial Coverage
-              </h4>
-              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
-                Official military announcement and photographic release via @adgpi.
-              </p>
-            </div>
-            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
-              View Dispatch on X &rarr;
-            </div>
-          </a>
-
-          {/* Card: ADGPI Official 2 */}
-          <a
-            href="https://x.com/adgpi/status/1871757564112752765?s=20"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span className="tag-mono" style={{ color: '#0066cc', fontSize: '0.7rem', fontWeight: 600 }}>
-                  ADGPI INDIAN ARMY
-                </span>
-                <ArrowUpRight size={14} color="#666" />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
-                Defence Theatre Operations
-              </h4>
-              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
-                Official headquarters communication and high-altitude visual documentation.
-              </p>
-            </div>
-            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
-              View Dispatch on X &rarr;
-            </div>
-          </a>
-
-          {/* Card: Fire & Fury Corps 1 */}
-          <a
-            href="https://x.com/firefurycorps/status/1879478273392197982?s=20"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span className="tag-mono" style={{ color: '#d97706', fontSize: '0.7rem', fontWeight: 600 }}>
-                  FIRE &amp; FURY CORPS (14 CORPS)
-                </span>
-                <ArrowUpRight size={14} color="#666" />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
-                Ladakh Sector Initiatives
-              </h4>
-              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
-                Field communication and community engagement across eastern Ladakh border areas.
-              </p>
-            </div>
-            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
-              View Dispatch on X &rarr;
-            </div>
-          </a>
-
-          {/* Card: Fire & Fury Corps 2 */}
-          <a
-            href="https://x.com/firefurycorps/status/1933746811455381927?s=20"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span className="tag-mono" style={{ color: '#d97706', fontSize: '0.7rem', fontWeight: 600 }}>
-                  FIRE &amp; FURY CORPS (14 CORPS)
-                </span>
-                <ArrowUpRight size={14} color="#666" />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
-                High-Altitude Milestone
-              </h4>
-              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
-                Commemorative release covering tactical achievements in alpine desert environments.
-              </p>
-            </div>
-            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
-              View Dispatch on X &rarr;
-            </div>
-          </a>
-
-          {/* Card: Sonam Wangchuk Ladakh Citation */}
-          <a
-            href="https://x.com/Wangchuk66/status/1952406276731715848?s=20"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span className="tag-mono" style={{ color: '#059669', fontSize: '0.7rem', fontWeight: 600 }}>
-                  REGIONAL COMMUNITY CITATION
-                </span>
-                <ArrowUpRight size={14} color="#666" />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
-                Sonam Wangchuk &bull; Ladakh Community
-              </h4>
-              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
-                Public commentary and regional acknowledgement of environmental &amp; community initiatives.
-              </p>
-            </div>
-            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
-              View Citation on X &rarr;
-            </div>
-          </a>
-
-          {/* Card: Official Instagram Field Reel */}
-          <a
-            href="https://www.instagram.com/reel/C4Qdu0uRnnB/?igsh=a3UydmJ4NGNvbDU="
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              padding: '1.5rem',
-              backgroundColor: '#ffffff',
-              borderRadius: '6px',
-              border: '1px solid rgba(0, 0, 0, 0.08)',
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <span className="tag-mono" style={{ color: '#e1306c', fontSize: '0.7rem', fontWeight: 600 }}>
-                  INSTAGRAM FIELD REEL
-                </span>
-                <ArrowUpRight size={14} color="#666" />
-              </div>
-              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
-                Border Village Outreach Reel
-              </h4>
-              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
-                On-ground video footage from Sadbhavana workshops in high-altitude Ladakhi villages.
-              </p>
-            </div>
-            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
-              Watch Reel on Instagram &rarr;
-            </div>
-          </a>
-        </div>
-      </section>
-
-      {/* ==========================================================================
           6. FULL-WIDTH PANORAMIC BANNER (Soldiers Silhouette Sunset Horizon)
           ========================================================================== */}
       <section className="army-container closing-banner-section" id="closing-panoramic-banner">
@@ -1164,7 +827,7 @@ export default function IndianArmyProjectsPage() {
           {/* Background Panoramic Photo */}
           <div className="closing-banner-bg">
             <Image
-              src="/images/army/symbolic-army-terrain.jpg"
+              src={closingBanner.image || '/images/army/symbolic-army-terrain.jpg'}
               alt="Soldiers on Himalayan Mountain Patrol at Dusk"
               fill
               quality={95}
@@ -1181,17 +844,16 @@ export default function IndianArmyProjectsPage() {
 
           {/* Left Text & CTA */}
           <div className="closing-banner-content">
-            <div className="banner-eyebrow">PEOPLE · PLACES · SACRIFICE · A STRONGER TOMORROW</div>
-            <h2 className="banner-heading">
-              Documenting
-              <br />a stronger tomorrow
+            <div className="banner-eyebrow">{closingBanner.eyebrow}</div>
+            <h2 className="banner-heading" style={{ whiteSpace: 'pre-line' }}>
+              {closingBanner.heading}
             </h2>
             <p className="banner-subhead">
-              Trusted by our armed forces. Crafted with responsibility.
+              {closingBanner.description}
             </p>
 
-            <Link href="/contact" className="banner-btn">
-              <span>Let&apos;s Discuss a Project</span>
+            <Link href={closingBanner.buttonUrl || '/contact'} className="banner-btn">
+              <span>{closingBanner.buttonText || "Let's Discuss a Project"}</span>
               <ArrowRight size={15} />
             </Link>
           </div>
@@ -1319,33 +981,7 @@ export default function IndianArmyProjectsPage() {
       </footer>
 
       {/* ==========================================================================
-          8. MODAL FOR VIDEO PLAYBACK
-          ========================================================================== */}
-      {isVideoModalOpen && (
-        <div
-          className="video-modal active"
-          onClick={() => setIsVideoModalOpen(false)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              className="modal-close-btn"
-              onClick={() => setIsVideoModalOpen(false)}
-              aria-label="Close Modal"
-            >
-              <X size={20} />
-            </button>
-            <div className="modal-video-container">
-              <video controls autoPlay src="/videos/hero-montage.mp4" style={{ width: '100%', height: '100%' }} />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ==========================================================================
-          9. SCOPED COMPONENT STYLES MATCHING THE REFERENCE IMAGE EXACTLY
+          8. SCOPED COMPONENT STYLES MATCHING THE REFERENCE IMAGE EXACTLY
           ========================================================================== */}
       <style jsx>{`
         .army-page-wrapper {
@@ -2089,6 +1725,7 @@ export default function IndianArmyProjectsPage() {
           min-height: 380px;
         }
 
+        .card-1-main-photo,
         .card-1-video-thumb {
           position: relative;
           border-radius: 6px;
@@ -2096,36 +1733,10 @@ export default function IndianArmyProjectsPage() {
           overflow: hidden;
           background: #18181a;
           box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+          min-height: 280px;
         }
 
-        .play-btn-circle {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 52px;
-          height: 52px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.88);
-          backdrop-filter: blur(8px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-          transition: all 0.25s ease;
-          color: #111111;
-        }
-
-        .play-btn-circle.small {
-          width: 42px;
-          height: 42px;
-        }
-
-        .card-1-video-thumb:hover .play-btn-circle {
-          transform: translate(-50%, -50%) scale(1.1);
-          background: #ffffff;
-        }
-
+        .photo-bottom-caption,
         .video-bottom-caption {
           position: absolute;
           bottom: 0;
@@ -2137,17 +1748,23 @@ export default function IndianArmyProjectsPage() {
           display: flex;
           flex-direction: column;
           gap: 2px;
+          z-index: 2;
         }
 
+        .photo-bottom-caption .p-label,
         .video-bottom-caption .v-label {
-          font-size: 0.78rem;
+          font-size: 0.82rem;
           font-weight: 600;
+          letter-spacing: 0.02em;
         }
 
+        .photo-bottom-caption .p-tag,
         .video-bottom-caption .v-time {
-          font-size: 0.7rem;
-          color: rgba(255, 255, 255, 0.7);
+          font-size: 0.72rem;
+          color: rgba(255, 255, 255, 0.75);
           font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
 
         .card-1-sub-photos {
@@ -2235,6 +1852,7 @@ export default function IndianArmyProjectsPage() {
           margin-bottom: 2.5rem;
         }
 
+        .card-2-photo-preview,
         .card-2-video-preview {
           position: relative;
           border-radius: 6px;
@@ -2245,16 +1863,19 @@ export default function IndianArmyProjectsPage() {
           margin-top: 1.5rem;
         }
 
+        .card-2-photo-caption,
         .card-2-video-caption {
           position: absolute;
           bottom: 12px;
           right: 16px;
           font-size: 0.75rem;
           font-weight: 500;
-          color: rgba(255, 255, 255, 0.85);
-          background: rgba(0, 0, 0, 0.6);
-          padding: 4px 10px;
-          border-radius: 3px;
+          color: rgba(255, 255, 255, 0.9);
+          background: rgba(0, 0, 0, 0.65);
+          padding: 5px 12px;
+          border-radius: 4px;
+          backdrop-filter: blur(6px);
+          z-index: 2;
         }
 
         /* 3D Publication Books Shelf */
@@ -2865,66 +2486,7 @@ export default function IndianArmyProjectsPage() {
           color: #777777;
         }
 
-        /* ---------------- VIDEO MODAL ---------------- */
-        .video-modal {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.88);
-          backdrop-filter: blur(12px);
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2rem;
-          animation: fadeIn 0.3s ease;
-        }
 
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        .modal-dialog {
-          background: #000000;
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 6px;
-          width: 100%;
-          max-width: 900px;
-          overflow: hidden;
-          box-shadow: 0 24px 70px rgba(0, 0, 0, 0.8);
-          position: relative;
-        }
-
-        .modal-close-btn {
-          position: absolute;
-          top: 16px;
-          right: 16px;
-          width: 36px;
-          height: 36px;
-          border-radius: 4px;
-          background: rgba(255, 255, 255, 0.15);
-          color: #ffffff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: none;
-          z-index: 10;
-          cursor: pointer;
-          transition: background 0.2s ease;
-        }
-
-        .modal-close-btn:hover {
-          background: rgba(255, 255, 255, 0.3);
-        }
-
-        .modal-video-container {
-          width: 100%;
-          aspect-ratio: 16/9;
-          background: #0a0a0a;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
 
         /* ---------------- RESPONSIVE MEDIA QUERIES ---------------- */
         @media (max-width: 1100px) {

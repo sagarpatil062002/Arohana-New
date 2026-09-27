@@ -845,8 +845,11 @@ export default function WorkPage() {
           }}
         >
           {filteredReels.map((reel) => (
-            <div
+            <a
               key={reel.id}
+              href={reel.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 position: 'relative',
                 flex: '0 0 clamp(230px, 20vw, 270px)',
@@ -857,6 +860,9 @@ export default function WorkPage() {
                 backgroundColor: '#1B1B1E',
                 boxShadow: '0 14px 30px -8px rgba(0, 0, 0, 0.22)',
                 transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease',
+                display: 'block',
+                textDecoration: 'none',
+                cursor: 'pointer',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-6px)';
@@ -966,11 +972,8 @@ export default function WorkPage() {
                   </div>
                 </div>
 
-                {/* "Watch Reel" button redirecting directly to Instagram as instructed */}
-                <a
-                  href={reel.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* "Watch Reel" bar */}
+                <div
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -984,16 +987,6 @@ export default function WorkPage() {
                     color: '#ffffff',
                     fontSize: '0.76rem',
                     fontWeight: 600,
-                    textDecoration: 'none',
-                    transition: 'all 0.25s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#FFFFFF';
-                    e.currentTarget.style.color = DARK;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
-                    e.currentTarget.style.color = '#FFFFFF';
                   }}
                 >
                   <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
@@ -1001,9 +994,9 @@ export default function WorkPage() {
                     Watch Reel
                   </span>
                   <ArrowUpRight size={13} />
-                </a>
+                </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
 

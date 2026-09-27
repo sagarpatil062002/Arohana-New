@@ -5,12 +5,6 @@
     "description": "On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations and institutional headquarters.",
     "scrollLabel": "SCROLL TO EXPLORE"
   },
-  "stats": [
-    { "value": "14,000+ FT", "label": "Ladakh High-Altitude Operations" },
-    { "value": "FEB 2026", "label": "Western Command Investiture" },
-    { "value": "06 ASSIGNMENTS", "label": "Verified Institutional Briefs" },
-    { "value": "100%", "label": "Protocol Clearance & Security" }
-  ],
   "disclaimer": "Institutional Integrity: All presented Indian Army project materials represent verified shoot direction, post-production and communication assignments executed under authorized institutional protocols. No confidential operational details are disclosed.",
   "projects": [
     {
@@ -21,12 +15,16 @@
       "date": "February 2026",
       "title": "Investiture Ceremony",
       "subtitle": "Ceremonial protocol shoot and documentary post-production.",
-      "description": "Ārohana handled the shoot and post-production for the Western Command Investiture Ceremony in February 2026.",
-      "scopeOfWork": "Concepts of imagery, production, human and event distribution, and operations requirements.",
-      "creativeApproach": "Restrained, dignified visual pacing suited to military protocol and ceremonial integrity.",
-      "productionDiscipline": "Tight turnaround mobile post-production unit multi-track sound engineering and high-definition mastering.",
-      "videoUrl": "/videos/hero-montage.mp4",
+      "description": "Ārohana handled the ceremonial shoot, protocol direction, and rapid post-production for the prestigious Western Command Investiture Ceremony in February 2026.",
+      "scopeOfWork": "Coverage of formal investiture protocols, honors and gallantry awards distribution, parade sequences, and master post-production.",
+      "creativeApproach": "Restrained, dignified visual pacing tailored to military protocol and ceremonial integrity.",
+      "productionDiscipline": "Tight turnaround master post-production with multi-track sound engineering and high-definition broadcast mastering.",
+      "videoUrl": "",
       "image": "/images/army/western-command-1.jpg",
+      "sidePhotos": [
+        "/images/army/western-command-official.jpg",
+        "/images/army/western-command-2.jpg"
+      ],
       "category": "western-command",
       "published": true
     },
@@ -38,11 +36,17 @@
       "date": "2023 – Present",
       "title": "Communication & Production",
       "subtitle": "High-altitude visual communication, films and archival design.",
-      "description": "Ārohana has undertaken communication, design and video-production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.",
-      "scopeOfWork": "Institutional communication campaigns, internal and public-facing visual communication, and video production.",
+      "description": "Ārohana has undertaken communication, design and visual production work for 14 Corps Headquarters, including visual campaigns, Women's Day Nari Shakti initiatives, and First Villages outreach across remote border regions.",
+      "scopeOfWork": "Institutional communications campaigns, internal and public-facing visual communication, photo documentation, and community hygiene initiatives.",
       "creativeApproach": "Authentic high-altitude cinematography paired with authoritative scripting and professional narration.",
-      "productionDiscipline": "Cold filming in sub-zero and remote mountain environments requiring specialized equipment and acclimatized crews.",
-      "image": "/images/army/14corps-2.jpg",
+      "productionDiscipline": "Field documentation in sub-zero and remote mountain environments requiring specialised equipment and acclimatised crews.",
+      "videoUrl": "",
+      "image": "/images/army/14corps-hall-of-fame.jpg",
+      "sidePhotos": [
+        "/images/army/adgpi-firstvillages.jpg",
+        "/images/army/14corps-ladakh-ops.jpg",
+        "/images/army/firefury-changthang-health.jpg"
+      ],
       "category": "14-corps",
       "published": true
     },
@@ -53,12 +57,19 @@
       "location": "Ladakh Theatre",
       "date": "Multi-Year Engagements",
       "title": "Corps-Level Communication & Publications",
-      "subtitle": "XIV Corps communication, publications and community initiatives.",
-      "description": "Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, video and community-facing initiatives.",
-      "scopeOfWork": "Spans historical commemorative literature, community welfare communication, and social video production.",
+      "subtitle": "XIV Corps communication, publications, civil-military partnership and community initiatives.",
+      "description": "Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, photo documentation, and community-facing initiatives — from all-weather civil-military partnerships to tourism bridging programs.",
+      "scopeOfWork": "Spans historical commemorative literature, community welfare communication, hospitality bridging programs, and editorial photo production.",
       "creativeApproach": "Balancing historical gravitas with contemporary digital readability across diverse audiences.",
       "productionDiscipline": "Seamless integration between on-ground research, military history curation, and modern typography.",
-      "image": "/images/army/fire-fury-1.jpg",
+      "videoUrl": "",
+      "image": "/images/army/firefury-corps-hq.jpg",
+      "sidePhotos": [
+        "/images/army/fire-fury-1.jpg",
+        "/images/army/firefury-kargil-memorial.jpg",
+        "/images/army/wangchuk-army-friendship.jpg",
+        "/images/army/firefury-veterans.jpg"
+      ],
       "category": "14-corps",
       "published": true
     },
@@ -69,14 +80,69 @@
       "location": "Chushul Sector, Ladakh (16,000+ ft)",
       "date": "Commemorative Edition",
       "title": "Rezang La War Memorial",
-      "subtitle": "Commemorative coffee-table book design and visual communication.",
-      "description": "Coffee-table book design and visual communication for the Rezang La War Memorial.",
-      "scopeOfWork": "Creating public awareness about the history of the war, its impact, and the sacrifices made by those who served.",
-      "creativeApproach": "Designing coffee-table books that tell the story of the war, its impact, and the sacrifices made by those who served.",
-      "productionDiscipline": "High-specification tactile print finishing, archival image treatment, and institutional review process management.",
+      "subtitle": "Commemorative coffee-table book design, visual communication and tribute documentation.",
+      "description": "Coffee-table book design, visual communication, and tribute photo documentation for the Rezang La War Memorial, honoring the 114 gallant soldiers who made the supreme sacrifice in the 1962 Battle of Rezang La.",
+      "scopeOfWork": "Complete publication design including hardbound cover architecture, typographic systems, archival photo restoration, and on-location memorial documentation.",
+      "creativeApproach": "Subtle, dignified layout allowing historical accounts, family tributes, and veteran testimonies to stand out with gravitas.",
+      "productionDiscipline": "High-specification tactile print finishing, custom clothbound styling, and museum-grade archival reproduction.",
+      "videoUrl": "",
       "image": "/images/army/rezang-la-1.jpg",
+      "sidePhotos": [
+        "/images/army/rezangla-tribute.jpg",
+        "/images/army/rezang-la-2.jpg"
+      ],
       "category": "border-initiatives",
       "published": true
+    },
+    {
+      "id": "sampark-civil-military",
+      "num": "05",
+      "command": "FIRE & FURY CORPS",
+      "location": "Ladakh — Border Villages",
+      "date": "Multi-Year Engagements",
+      "title": "Sampark Civil-Military Initiative",
+      "subtitle": "Community outreach, civil-military bridge programs and field documentation.",
+      "description": "Ārohana has supported the Sampark initiative — a civil-military bridge program connecting Army formations with border communities in Ladakh through documentation, publications and communication design.",
+      "scopeOfWork": "Community outreach visual campaigns, civil-military event coverage, publication design for border area welfare programs.",
+      "creativeApproach": "Warm, human-centric visual communication highlighting community bonds and shared purpose.",
+      "productionDiscipline": "On-ground field documentation in remote border villages with minimal equipment footprint.",
+      "videoUrl": "",
+      "image": "/images/army/sampark-1.jpg",
+      "sidePhotos": [
+        "/images/army/vibrant-villages-1.jpg",
+        "/images/army/adgpi-vibrant-villages.jpg"
+      ],
+      "category": "border-initiatives",
+      "published": true
+    },
+    {
+      "id": "69-armoured-regiment",
+      "num": "06",
+      "command": "WESTERN COMMAND",
+      "location": "Western Theatre, India",
+      "date": "2024–2025",
+      "title": "69 Armoured Regiment",
+      "subtitle": "Institutional visual communication and ceremonial documentation.",
+      "description": "Ārohana delivered visual communication and institutional documentation for 69 Armoured Regiment — capturing armoured formation exercises, institutional milestones, and ceremonial events for record and communication.",
+      "scopeOfWork": "Institutional communication, field photography of armoured exercises, ceremonial event coverage.",
+      "creativeApproach": "Bold, high-contrast visual language befitting armoured formations — power, precision, and discipline.",
+      "productionDiscipline": "Field documentation alongside armoured assets, adherence to operational security protocols.",
+      "videoUrl": "",
+      "image": "/images/army/69armoured-t90.jpg",
+      "sidePhotos": [
+        "/images/army/69armoured-1.jpg",
+        "/images/army/69armoured-2.jpg"
+      ],
+      "category": "western-command",
+      "published": true
     }
-  ]
+  ],
+  "closingBanner": {
+    "eyebrow": "PEOPLE · PLACES · SACRIFICE · A STRONGER TOMORROW",
+    "heading": "Documenting\na stronger tomorrow",
+    "description": "Whether covering an investiture, archiving veteran history, or filming at 16,000 feet, Ārohana brings reverence, discipline, and visual depth to institutional defence communication.",
+    "buttonText": "Discuss Defence Production",
+    "buttonUrl": "/contact",
+    "image": "/images/army/symbolic-army-terrain.jpg"
+  }
 }

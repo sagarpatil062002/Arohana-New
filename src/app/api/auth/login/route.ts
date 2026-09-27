@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 const ADMIN_EMAIL = 'admin@arohana.com';
 const ADMIN_PASSWORD = 'Arohana@2026';
 
