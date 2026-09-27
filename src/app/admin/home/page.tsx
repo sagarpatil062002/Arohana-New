@@ -2066,6 +2066,13 @@ export default function AdminHomePage() {
             setBrandLogoIndex(null);
           }}
           mediaType={mediaPickerTarget?.type || 'image'}
+          initialUrl={
+            brandLogoIndex !== null
+              ? homeData.brands?.list?.[brandLogoIndex]?.logo || ''
+              : mediaPickerTarget
+              ? mediaPickerTarget.path.split('.').reduce((acc: any, key: string) => acc?.[key], homeData) || ''
+              : ''
+          }
           onSelect={(url) => {
             if (brandLogoIndex !== null) {
               const updated = [...(homeData.brands?.list || [])];

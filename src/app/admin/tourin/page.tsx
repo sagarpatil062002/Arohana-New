@@ -920,26 +920,44 @@ export default function AdminTourinPage() {
                         </div>
                       )}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setIsMediaPickerOpen(true)}
-                      style={{
-                        padding: '0.45rem 0.85rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#FFFFFF',
-                        color: '#111113',
-                        fontSize: '0.78rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.35rem',
-                      }}
-                    >
-                      <Upload size={13} />
-                      Replace / Upload Image
-                    </button>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <input
+                          type="text"
+                          placeholder="/images/tourin/... or https://..."
+                          value={selectedJourney.image || ''}
+                          onChange={(e) => handleJourneyChange('image', e.target.value)}
+                          style={{
+                            flex: 1,
+                            padding: '0.45rem 0.75rem',
+                            borderRadius: '8px',
+                            border: '1px solid rgba(0, 0, 0, 0.15)',
+                            fontSize: '0.82rem',
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setIsMediaPickerOpen(true)}
+                          style={{
+                            padding: '0.45rem 0.85rem',
+                            borderRadius: '8px',
+                            border: '1px solid rgba(0, 0, 0, 0.15)',
+                            backgroundColor: '#FFFFFF',
+                            color: '#111113',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          <Upload size={13} />
+                          Upload / Pick
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1065,6 +1083,7 @@ export default function AdminTourinPage() {
         isOpen={isMediaPickerOpen}
         onClose={() => setIsMediaPickerOpen(false)}
         mediaType="image"
+        initialUrl={selectedJourney?.image || ''}
         onSelect={(url) => {
           handleJourneyChange('image', url);
           setIsMediaPickerOpen(false);

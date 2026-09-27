@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Upload, Film, Trash2, Copy, Check, Search, Filter, Loader2, Sparkles } from 'lucide-react';
+import { Upload, Film, Trash2, Copy, Check, Search, Filter, Loader2, Sparkles, Link as LinkIcon, Plus } from 'lucide-react';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 export default function AdminMediaPage() {
@@ -13,6 +13,10 @@ export default function AdminMediaPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [showUrlForm, setShowUrlForm] = useState(false);
+  const [urlInput, setUrlInput] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  const [typeInput, setTypeInput] = useState<'image' | 'video'>('image');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const loadMedia = () => {
@@ -27,6 +31,19 @@ export default function AdminMediaPage() {
   useEffect(() => {
     loadMedia();
   }, []);
+
+  const saveAssets = async (newAssets: any[]) => {
+    setAssets(newAssets);
+    try {
+      await fetch('/api/content/media', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: { assets: newAssets } }),
+      });
+    } catch (err) {
+      console.error('Error saving assets registry:', err);
+    }
+  };
 
   const handleFileUpload = async (file: File) => {
     setIsUploading(true);
@@ -50,27 +67,57 @@ export default function AdminMediaPage() {
     }
   };
 
+  const handleAddUrlAsset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!urlInput.trim()) return;
+
+    const trimmedUrl = urlInput.trim();
+    const isVideo =
+      typeInput === 'video' ||
+      trimmedUrl.endsWith('.mp4') ||
+      trimmedUrl.endsWith('.webm') ||
+      trimmedUrl.includes('youtube.com') ||
+      trimmedUrl.includes('youtu.be');
+
+    const newAsset = {
+      id: `url-${Date.now()}`,
+      name: nameInput.trim() || trimmedUrl.split('/').pop()?.split('?')[0] || 'Linked Media',
+      url: trimmedUrl,
+      type: isVideo ? 'video' : 'image',
+      size: 'External / Linked',
+      uploadedAt: new Date().toISOString(),
+      usedIn: 'Shared URL',
+    };
+
+    const updated = [newAsset, ...assets];
+    await saveAssets(updated);
+    setUrlInput('');
+    setNameInput('');
+    setShowUrlForm(false);
+  };
+
   const handleCopyUrl = (id: string, url: string) => {
     navigator.clipboard.writeText(url);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handleDeleteAsset = () => {
+  const handleDeleteAsset = async () => {
     if (!deleteTargetId) return;
-    setAssets((prev) => prev.filter((a) => a.id !== deleteTargetId));
+    const updated = assets.filter((a) => a.id !== deleteTargetId);
+    await saveAssets(updated);
     setDeleteTargetId(null);
   };
 
   const filteredAssets = assets.filter((a) => {
     if (filterType !== 'all' && a.type !== filterType) return false;
-    if (search && !a.name.toLowerCase().includes(search.toLowerCase())) return false;
+    if (search && !a.name.toLowerCase().includes(search.toLowerCase()) && !a.url.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Upload Zone */}
+      {/* Upload Zone & Share URL */}
       <div
         onDragEnter={() => setDragActive(true)}
         onDragLeave={() => setDragActive(false)}
@@ -133,27 +180,158 @@ export default function AdminMediaPage() {
               <Upload size={22} />
             </div>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 650, color: '#111113', margin: '0 0 0.35rem 0' }}>
-              Drag &amp; Drop Assets Directly From Device
+              Upload Files from Device or Share Web URLs
             </h3>
             <p style={{ fontSize: '0.82rem', color: '#71717A', margin: '0 0 1.25rem 0' }}>
-              Supports High-Res Images (JPG, PNG, WEBP, SVG) &amp; Videos (MP4, WEBM)
+              Supports High-Res Images (JPG, PNG, WEBP, SVG) &amp; Videos (MP4, WEBM, YouTube, Vimeo)
             </p>
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              style={{
-                padding: '0.6rem 1.5rem',
-                borderRadius: '9999px',
-                border: 'none',
-                backgroundColor: '#111113',
-                color: '#FFFFFF',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              Choose File from Device
-            </button>
+
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                style={{
+                  padding: '0.6rem 1.5rem',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  backgroundColor: '#111113',
+                  color: '#FFFFFF',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                }}
+              >
+                <Upload size={14} />
+                Upload File from Device
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowUrlForm((prev) => !prev)}
+                style={{
+                  padding: '0.6rem 1.5rem',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#111113',
+                  fontSize: '0.82rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                }}
+              >
+                <LinkIcon size={14} />
+                {showUrlForm ? 'Close URL Form' : 'Add / Link Media by URL'}
+              </button>
+            </div>
+
+            {/* Inline Add URL Form */}
+            {showUrlForm && (
+              <form
+                onSubmit={handleAddUrlAsset}
+                style={{
+                  marginTop: '1.5rem',
+                  width: '100%',
+                  maxWidth: '560px',
+                  backgroundColor: '#F8F8FA',
+                  padding: '1.25rem',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.75rem',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113' }}>
+                  Link an External Media URL
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', color: '#71717A', marginBottom: '0.25rem' }}>
+                    Media URL (Image or Video)
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="https://... or /images/... or https://youtu.be/..."
+                    value={urlInput}
+                    onChange={(e) => setUrlInput(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.45rem 0.75rem',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      fontSize: '0.82rem',
+                    }}
+                  />
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px', gap: '0.5rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#71717A', marginBottom: '0.25rem' }}>
+                      Asset Title (optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Hero Skyline Video"
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '0.45rem 0.75rem',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(0, 0, 0, 0.12)',
+                        fontSize: '0.82rem',
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', color: '#71717A', marginBottom: '0.25rem' }}>
+                      Type
+                    </label>
+                    <select
+                      value={typeInput}
+                      onChange={(e) => setTypeInput(e.target.value as 'image' | 'video')}
+                      style={{
+                        width: '100%',
+                        padding: '0.45rem 0.5rem',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(0, 0, 0, 0.12)',
+                        fontSize: '0.82rem',
+                        backgroundColor: '#FFFFFF',
+                      }}
+                    >
+                      <option value="image">Image</option>
+                      <option value="video">Video</option>
+                    </select>
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  style={{
+                    alignSelf: 'flex-start',
+                    padding: '0.45rem 1.15rem',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: '#111113',
+                    color: '#FFFFFF',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                >
+                  <Plus size={13} />
+                  Add to Media Library
+                </button>
+              </form>
+            )}
           </>
         )}
       </div>
@@ -181,24 +359,27 @@ export default function AdminMediaPage() {
                 border: 'none',
                 backgroundColor: filterType === t ? '#111113' : '#E4E4E7',
                 color: filterType === t ? '#FFFFFF' : '#3F3F46',
-                fontSize: '0.78rem',
+                fontSize: '0.8rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 textTransform: 'capitalize',
               }}
             >
-              {t === 'all' ? `All Assets (${assets.length})` : `${t}s`}
+              {t} ({t === 'all' ? assets.length : assets.filter((a) => a.type === t).length})
             </button>
           ))}
         </div>
 
         <div style={{ position: 'relative', width: '260px' }}>
-          <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#A1A1AA' }} />
+          <Search
+            size={15}
+            style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#A1A1AA' }}
+          />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search media..."
+            placeholder="Search media or URL..."
             style={{
               width: '100%',
               padding: '0.4rem 0.75rem 0.4rem 2.2rem',
@@ -255,6 +436,25 @@ export default function AdminMediaPage() {
               >
                 {asset.name}
               </div>
+
+              {/* Display full URL with quick-copy */}
+              <div
+                style={{
+                  fontSize: '0.68rem',
+                  fontFamily: 'monospace',
+                  color: '#71717A',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  backgroundColor: '#F4F4F5',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                }}
+                title={asset.url}
+              >
+                {asset.url}
+              </div>
+
               <div style={{ fontSize: '0.72rem', color: '#71717A' }}>
                 {asset.size} &bull; {asset.type.toUpperCase()}
               </div>
@@ -278,7 +478,7 @@ export default function AdminMediaPage() {
                   }}
                 >
                   {copiedId === asset.id ? <Check size={12} /> : <Copy size={12} />}
-                  {copiedId === asset.id ? 'Copied URL' : 'Copy URL'}
+                  {copiedId === asset.id ? 'Copied URL' : 'Copy / Share URL'}
                 </button>
 
                 <button

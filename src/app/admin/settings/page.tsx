@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCmsContent } from '@/lib/cms/content-context';
-import { Save, Check, Globe, ShieldCheck } from 'lucide-react';
+import { Save, Check, Globe, ShieldCheck, Upload } from 'lucide-react';
+import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 export default function AdminSettingsPage() {
   const { content, saveDraft, updateDraftInMemory } = useCmsContent();
   const [settingsData, setSettingsData] = useState<any>(null);
   const [savedStatus, setSavedStatus] = useState(false);
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   useEffect(() => {
     if (content.settings) {
@@ -135,22 +137,57 @@ export default function AdminSettingsPage() {
               <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
                 SOCIAL SHARE IMAGE (OG:IMAGE)
               </label>
-              <input
-                type="text"
-                value={settingsData.ogImage || ''}
-                onChange={(e) => handleChange('ogImage', e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '0.55rem 0.85rem',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(0, 0, 0, 0.12)',
-                  fontSize: '0.85rem',
-                }}
-              />
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  placeholder="/images/... or https://..."
+                  value={settingsData.ogImage || ''}
+                  onChange={(e) => handleChange('ogImage', e.target.value)}
+                  style={{
+                    flex: 1,
+                    padding: '0.55rem 0.85rem',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(0, 0, 0, 0.12)',
+                    fontSize: '0.85rem',
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setIsMediaPickerOpen(true)}
+                  style={{
+                    padding: '0.55rem 0.95rem',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF',
+                    color: '#111113',
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <Upload size={13} />
+                  Upload / Pick
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <MediaPickerModal
+        isOpen={isMediaPickerOpen}
+        onClose={() => setIsMediaPickerOpen(false)}
+        mediaType="image"
+        initialUrl={settingsData.ogImage || ''}
+        onSelect={(url) => {
+          handleChange('ogImage', url);
+          setIsMediaPickerOpen(false);
+        }}
+      />
     </div>
   );
 }

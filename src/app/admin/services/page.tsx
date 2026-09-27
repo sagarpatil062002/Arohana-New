@@ -475,6 +475,7 @@ export default function AdminServicesPage() {
           isOpen={true}
           onClose={() => setMediaPickerTarget(null)}
           mediaType="image"
+          initialUrl={selectedService?.image || ''}
           onSelect={(url) => {
             handleServiceChange('image', url);
             setMediaPickerTarget(null);

@@ -953,6 +953,7 @@ export default function AdminAboutPage() {
         isOpen={isMediaPickerOpen}
         onClose={() => setIsMediaPickerOpen(false)}
         mediaType="image"
+        initialUrl={mediaTarget === 'founder' ? (aboutData.hero?.image || '') : (selectedMember?.image || '')}
         onSelect={(url) => {
           if (mediaTarget === 'member') {
             handleMemberChange('image', url);

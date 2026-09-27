@@ -208,7 +208,7 @@ export default function AdminPartnersPage() {
               </div>
 
               {/* Editable Fields */}
-              <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr 1.2fr', gap: '0.75rem' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#71717A', marginBottom: '0.2rem' }}>
                     BRAND NAME
@@ -243,6 +243,24 @@ export default function AdminPartnersPage() {
                     }}
                   />
                 </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#71717A', marginBottom: '0.2rem' }}>
+                    LOGO URL
+                  </label>
+                  <input
+                    type="text"
+                    value={partner.logo || ''}
+                    placeholder="/images/partners/... or https://..."
+                    onChange={(e) => handlePartnerChange(partner.id, 'logo', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.4rem 0.65rem',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0, 0, 0, 0.12)',
+                      fontSize: '0.82rem',
+                    }}
+                  />
+                </div>
               </div>
 
               {/* Actions */}
@@ -254,7 +272,7 @@ export default function AdminPartnersPage() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.35rem',
-                    padding: '0.35rem 0.75rem',
+                    padding: '0.4rem 0.75rem',
                     borderRadius: '6px',
                     border: '1px solid rgba(0, 0, 0, 0.15)',
                     backgroundColor: '#FFFFFF',
@@ -262,10 +280,11 @@ export default function AdminPartnersPage() {
                     fontSize: '0.75rem',
                     fontWeight: 600,
                     cursor: 'pointer',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   <Upload size={12} />
-                  Change
+                  Upload / Pick
                 </button>
                 <button
                   type="button"
@@ -291,6 +310,7 @@ export default function AdminPartnersPage() {
         isOpen={!!activePartnerIdForUpload}
         onClose={() => setActivePartnerIdForUpload(null)}
         mediaType="image"
+        initialUrl={partnerData.find((p: any) => p.id === activePartnerIdForUpload)?.logo || ''}
         onSelect={(url) => {
           if (activePartnerIdForUpload) {
             handlePartnerChange(activePartnerIdForUpload, 'logo', url);

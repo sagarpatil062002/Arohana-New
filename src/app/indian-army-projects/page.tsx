@@ -304,12 +304,7 @@ export default function IndianArmyProjectsPage() {
 
 
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                  <Link href="/contact" className="card-action-link">
-                    <span>View Project</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
+
               </div>
 
               {/* Right Media Collage */}
@@ -465,28 +460,7 @@ export default function IndianArmyProjectsPage() {
               </div>
             </div>
 
-            {/* Bottom Row: 3 Sub-sections & Action Buttons */}
-            <div className="card-2-bottom-row">
 
-
-              <div className="card-2-bottom-actions">
-                <Link href="/contact" className="btn-dark-pill">
-                  <span>View Project</span>
-                  <ArrowRight size={14} />
-                </Link>
-                <button
-                  type="button"
-                  className="btn-circle-arrow"
-                  aria-label="Next Project"
-                  onClick={() => {
-                    const el = document.getElementById('card-corps-publications');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  <ArrowRight size={15} />
-                </button>
-              </div>
-            </div>
           </article>
         )}
 
@@ -532,12 +506,7 @@ export default function IndianArmyProjectsPage() {
 
 
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                  <Link href="/contact" className="card-action-link">
-                    <span>View Project</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
+
               </div>
 
               {/* Right Side: Open Book & Spread Thumbnails */}
@@ -689,12 +658,7 @@ export default function IndianArmyProjectsPage() {
 
 
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                  <Link href="/contact" className="card-action-link">
-                    <span>View Project</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
+
               </div>
 
               {/* Right Side: Hardbound Book + Archival Photos + Script Quote */}
@@ -803,10 +767,7 @@ export default function IndianArmyProjectsPage() {
                         </div>
                       )}
                     </div>
-                    <Link href="/contact" className="card-action-link" style={{ marginTop: '1.25rem' }}>
-                      <span>View Project</span>
-                      <ArrowRight size={14} />
-                    </Link>
+
                   </div>
                   {p.image && (
                     <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '6px', border: '1px solid rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>

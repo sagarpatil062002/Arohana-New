@@ -822,36 +822,49 @@ export default function AdminArmyProjectsPage() {
                         </div>
                       )}
                     </div>
-                    <div>
-                      <div style={{ fontSize: '0.78rem', color: '#111113', fontWeight: 500, marginBottom: '0.35rem', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '280px' }}>
-                        {selectedProject.image || 'None selected'}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <input
+                          type="text"
+                          placeholder="/images/army/... or https://..."
+                          value={selectedProject.image || ''}
+                          onChange={(e) => handleProjectChange('image', e.target.value)}
+                          style={{
+                            flex: 1,
+                            padding: '0.45rem 0.75rem',
+                            borderRadius: '8px',
+                            border: '1px solid rgba(0, 0, 0, 0.15)',
+                            fontSize: '0.82rem',
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setMediaPickerConfig({
+                              isOpen: true,
+                              mediaType: 'image',
+                              target: 'image',
+                            })
+                          }
+                          style={{
+                            padding: '0.45rem 0.85rem',
+                            borderRadius: '8px',
+                            border: '1px solid rgba(0, 0, 0, 0.15)',
+                            backgroundColor: '#FFFFFF',
+                            color: '#111113',
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          <Upload size={13} />
+                          Upload / Pick
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMediaPickerConfig({
-                            isOpen: true,
-                            mediaType: 'image',
-                            target: 'image',
-                          })
-                        }
-                        style={{
-                          padding: '0.45rem 0.85rem',
-                          borderRadius: '9999px',
-                          border: '1px solid rgba(0, 0, 0, 0.15)',
-                          backgroundColor: '#FFFFFF',
-                          color: '#111113',
-                          fontSize: '0.78rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                        }}
-                      >
-                        <Upload size={13} />
-                        Change Primary Photo
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -1012,6 +1025,15 @@ export default function AdminArmyProjectsPage() {
         isOpen={mediaPickerConfig.isOpen}
         onClose={() => setMediaPickerConfig((prev) => ({ ...prev, isOpen: false }))}
         mediaType={mediaPickerConfig.mediaType}
+        initialUrl={
+          mediaPickerConfig.target === 'image'
+            ? selectedProject?.image || ''
+            : mediaPickerConfig.target === 'videoUrl'
+            ? selectedProject?.videoUrl || ''
+            : mediaPickerConfig.target === 'bannerImage'
+            ? armyData.closingBanner?.image || ''
+            : ''
+        }
         onSelect={(url) => {
           if (mediaPickerConfig.target === 'image') {
             handleProjectChange('image', url);

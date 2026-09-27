@@ -1743,6 +1743,17 @@ export default function AdminWorkPage() {
           isOpen={true}
           onClose={() => setMediaPickerTarget(null)}
           mediaType={mediaPickerTarget.type || 'image'}
+          initialUrl={
+            mediaPickerTarget.path.startsWith('featuredReels.')
+              ? workData.featuredReels?.[parseInt(mediaPickerTarget.path.split('.')[1])]?.coverImage || ''
+              : mediaPickerTarget.path === 'caseStudies.image'
+              ? activeCaseMerged?.image || ''
+              : mediaPickerTarget.path === 'caseStudies.heroImage'
+              ? activeCaseMerged?.heroImage || ''
+              : mediaPickerTarget.path.startsWith('gallery.')
+              ? activeCaseMerged?.gallery?.[parseInt(mediaPickerTarget.path.split('.')[1])]?.image || ''
+              : ''
+          }
           onSelect={async (url) => {
             if (mediaPickerTarget.path.startsWith('featuredReels.')) {
               const parts = mediaPickerTarget.path.split('.');

@@ -74,6 +74,55 @@
       "year": "2024 — Present"
     },
     {
+      "subtitle": "Strategic brand communication and luxury visual direction across contemporary architecture and high-end living.",
+      "heroImage": "/images/case-studies/loom/loom-hero.jpg",
+      "heroImageCaption": "",
+      "sector": "Architecture & Living",
+      "snapshot": {
+        "location": "",
+        "engagementType": "",
+        "duration": "",
+        "coreCapabilities": []
+      },
+      "situation": [
+        "Strategic brand communication and luxury visual direction across contemporary architecture and high-end living."
+      ],
+      "realChallenge": [],
+      "thinking": [],
+      "work": [],
+      "gallery": [
+        {
+          "image": "/uploads/1790510325714-saveclip.app-767268679-18111362180074670-2619111724991034875-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        },
+        {
+          "image": "/uploads/1790510345121-saveclip.app-768615357-18111362150074670-564991585947582552-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        },
+        {
+          "image": "/uploads/1790510352031-saveclip.app-772792357-18111362132074670-551563829676862215-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        },
+        {
+          "image": "/uploads/1790510364282-saveclip.app-775871629-18112144196074670-7650007278374473102-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        },
+        {
+          "image": "/uploads/1790510371487-saveclip.app-779200914-18112144223074670-6707268318767954884-n.jpg",
+          "caption": "Production Asset Caption",
+          "alt": "Loom Crafts"
+        }
+      ],
+      "proof": {
+        "verifiedText": "",
+        "metricsNote": ""
+      },
+      "closingQuote": "",
+      "closingText": "",
       "id": "loom-crafts",
       "num": "02",
       "slug": "loom-crafts",
@@ -86,7 +135,7 @@
         "Built Environment",
         "Brand Strategy"
       ],
-      "image": "/images/case-studies/loom/loom-hero.jpg",
+      "image": "/uploads/1790510284214-loomcrafts-hero.jpg",
       "published": true,
       "featured": true,
       "year": "2023 — 2024"
@@ -162,24 +211,6 @@
       "published": true,
       "featured": true,
       "year": "2023 — Present"
-    },
-    {
-      "id": "misu",
-      "num": "07",
-      "slug": "misu",
-      "title": "Misu",
-      "client": "Misu Asian Dining",
-      "category": "Hospitality",
-      "desc": "End-to-end hospitality consulting, culinary identity systems, and digital execution.",
-      "tags": [
-        "Hospitality",
-        "Consulting",
-        "Digital"
-      ],
-      "image": "/images/case-studies/misu/misu-hero.jpg",
-      "published": true,
-      "featured": true,
-      "year": "2023 — 2024"
     }
   ]
 }

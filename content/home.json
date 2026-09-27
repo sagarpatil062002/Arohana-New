@@ -67,8 +67,8 @@
     "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
     "ctaLabel": "Explore Our Work",
     "ctaLink": "/work",
-    "secondaryCtaLabel": "Watch Showreel",
-    "secondaryCtaLink": "/services",
+    "secondaryCtaLabel": "",
+    "secondaryCtaLink": "",
     "videoUrl": "/videos/hero-montage.mp4",
     "posterImage": "/images/home/hero-poster.jpg"
   },

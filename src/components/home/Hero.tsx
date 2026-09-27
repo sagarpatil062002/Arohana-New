@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Play, X } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
 export default function Hero() {
   const { content } = useCmsContent();
   const heroCms = content?.home?.hero;
-  const [showShowreel, setShowShowreel] = useState(false);
 
   // Content configuration without "Ideas to impact" and without logos on banners
   const tag = heroCms?.badge && !heroCms.badge.includes('BRAND STRATEGY · EXECUTION · CULTURE')
@@ -242,128 +241,11 @@ export default function Hero() {
                     <span>{primaryCtaText}</span>
                     <ArrowRight size={17} />
                   </Link>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowShowreel(true)}
-                    style={{
-                      height: '50px',
-                      padding: '0 1.65rem',
-                      backgroundColor: '#000000',
-                      color: '#ffffff',
-                      border: '1px solid rgba(255, 255, 255, 0.22)',
-                      borderRadius: '4px',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.65rem',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
-                      transition: 'all 0.25s ease',
-                    }}
-                    className="button-editorial hero-secondary-cta"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.backgroundColor = '#1f1f23';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.backgroundColor = '#000000';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '50%',
-                        border: '1.5px solid #ffffff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Play size={10} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '1.5px' }} />
-                    </div>
-                    <span>Watch Showreel</span>
-                  </button>
                 </div>
               </motion.div>
             </div>
           </div>
         </div>
-
-        {/* Video Showreel Modal */}
-        {showShowreel && (
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 9999,
-              backgroundColor: 'rgba(0, 0, 0, 0.85)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '1.5rem',
-            }}
-            onClick={() => setShowShowreel(false)}
-          >
-              <div
-              className="showreel-modal-dialog"
-              style={{
-                position: 'relative',
-                width: '100%',
-                maxWidth: '960px',
-                aspectRatio: '16/9',
-                backgroundColor: '#000000',
-                borderRadius: '6px',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                overflow: 'hidden',
-                boxShadow: '0 25px 80px rgba(0, 0, 0, 0.75)',
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                type="button"
-                onClick={() => setShowShowreel(false)}
-                aria-label="Close Showreel modal"
-                style={{
-                  position: 'absolute',
-                  top: '1rem',
-                  right: '1rem',
-                  zIndex: 10,
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '4px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  color: '#ffffff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s',
-                }}
-              >
-                <X size={20} />
-              </button>
-
-              <video
-                src="/videos/services.webm"
-                controls
-                autoPlay
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-          </div>
-        )}
 
         <style jsx>{`
           .hero-container {
