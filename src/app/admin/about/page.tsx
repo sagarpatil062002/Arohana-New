@@ -6,14 +6,14 @@ import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
-import { Plus, Trash2, Save, Check, Upload, Users, BookOpen, Sparkles, MessageSquare } from 'lucide-react';
+import { Plus, Trash2, Save, Check, Upload, Users, BookOpen, Sparkles, MessageSquare, Image as ImageIcon } from 'lucide-react';
 
 export default function AdminAboutPage() {
   const { content, saveDraft, updateDraftInMemory } = useCmsContent();
   const [aboutData, setAboutData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'hero' | 'chapters' | 'team' | 'cta'>('hero');
   const [activeChapterIdx, setActiveChapterIdx] = useState(0);
-  const [selectedMemberId, setSelectedMemberId] = useState<string | null>('madhura');
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>('abijitha');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [mediaTarget, setMediaTarget] = useState<'member' | 'founder'>('member');
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
@@ -22,6 +22,9 @@ export default function AdminAboutPage() {
   useEffect(() => {
     if (content.about) {
       setAboutData(JSON.parse(JSON.stringify(content.about)));
+      if (!selectedMemberId && content.about?.team?.members?.[0]?.id) {
+        setSelectedMemberId(content.about.team.members[0].id);
+      }
     }
   }, [content.about]);
 
@@ -392,6 +395,106 @@ export default function AdminAboutPage() {
                 ))}
               </div>
             </div>
+
+            {/* Founder Hero Image / Artwork */}
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.5rem' }}>
+                FOUNDER HERO ARTWORK / COLLAGE IMAGE
+              </label>
+              <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', padding: '1rem', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '12px', backgroundColor: '#FAFAFA' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100px',
+                    height: '120px',
+                    borderRadius: '8px',
+                    overflow: 'hidden',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid rgba(0,0,0,0.12)',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Image
+                    src={aboutData.hero?.image || '/images/about/hero-founder-collage.png'}
+                    alt="Founder Hero Artwork"
+                    fill
+                    style={{ objectFit: 'contain' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', flexGrow: 1 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    <label
+                      style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: '9999px',
+                        border: '1px solid #111113',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        fontSize: '0.78rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                      }}
+                    >
+                      <Upload size={13} />
+                      Upload From Any Folder
+                      <input
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={async (e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            const fd = new FormData();
+                            fd.append('file', e.target.files[0]);
+                            fd.append('category', 'Hero Artwork');
+                            const res = await fetch('/api/upload', { method: 'POST', body: fd });
+                            const data = await res.json();
+                            if (data.success && data.url) {
+                              handleHeroChange('image', data.url);
+                            }
+                          }
+                        }}
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMediaTarget('founder');
+                        setIsMediaPickerOpen(true);
+                      }}
+                      style={{
+                        padding: '0.5rem 1rem',
+                        borderRadius: '9999px',
+                        border: '1px solid rgba(0, 0, 0, 0.15)',
+                        backgroundColor: '#FFFFFF',
+                        color: '#111113',
+                        fontSize: '0.78rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                      }}
+                    >
+                      <ImageIcon size={13} />
+                      Browse Media Library
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    value={aboutData.hero?.image || ''}
+                    onChange={(e) => handleHeroChange('image', e.target.value)}
+                    placeholder="/images/about/hero-founder-collage.png"
+                    style={{ width: '100%', padding: '0.45rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.78rem' }}
+                  />
+                  <div style={{ fontSize: '0.72rem', color: '#71717A' }}>
+                    Tip: The collage layout and framing will be preserved automatically.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -604,16 +707,16 @@ export default function AdminAboutPage() {
                   <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
                     HEADSHOT / PORTRAIT PHOTO
                   </label>
-                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.85rem', backgroundColor: '#FAFAFA', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)' }}>
                     <div
                       style={{
                         position: 'relative',
-                        width: '70px',
-                        height: '70px',
+                        width: '75px',
+                        height: '75px',
                         borderRadius: '50%',
                         overflow: 'hidden',
-                        backgroundColor: '#F4F4F5',
-                        border: '1px solid rgba(0,0,0,0.1)',
+                        backgroundColor: '#EBEBEB',
+                        border: '2px solid rgba(0,0,0,0.1)',
                         flexShrink: 0,
                       }}
                     >
@@ -625,30 +728,98 @@ export default function AdminAboutPage() {
                         </div>
                       )}
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setMediaTarget('member');
-                        setIsMediaPickerOpen(true);
-                      }}
-                      style={{
-                        padding: '0.45rem 0.85rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#FFFFFF',
-                        color: '#111113',
-                        fontSize: '0.78rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.35rem',
-                      }}
-                    >
-                      <Upload size={13} />
-                      Replace / Upload Photo
-                    </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexGrow: 1 }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        <label
+                          style={{
+                            padding: '0.45rem 0.95rem',
+                            borderRadius: '9999px',
+                            border: '1px solid #111113',
+                            backgroundColor: '#111113',
+                            color: '#FFFFFF',
+                            fontSize: '0.76rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                          }}
+                        >
+                          <Upload size={13} />
+                          Upload From Any Folder
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={async (e) => {
+                              if (e.target.files && e.target.files[0]) {
+                                const fd = new FormData();
+                                fd.append('file', e.target.files[0]);
+                                fd.append('category', 'Team Headshots');
+                                const res = await fetch('/api/upload', { method: 'POST', body: fd });
+                                const data = await res.json();
+                                if (data.success && data.url) {
+                                  handleMemberChange('image', data.url);
+                                }
+                              }
+                            }}
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMediaTarget('member');
+                            setIsMediaPickerOpen(true);
+                          }}
+                          style={{
+                            padding: '0.45rem 0.95rem',
+                            borderRadius: '9999px',
+                            border: '1px solid rgba(0, 0, 0, 0.15)',
+                            backgroundColor: '#FFFFFF',
+                            color: '#111113',
+                            fontSize: '0.76rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                          }}
+                        >
+                          <ImageIcon size={13} />
+                          Browse Media Library
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        value={selectedMember.image || ''}
+                        onChange={(e) => handleMemberChange('image', e.target.value)}
+                        placeholder="/images/about/team-abijitha.jpg"
+                        style={{ width: '100%', padding: '0.4rem 0.7rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.78rem' }}
+                      />
+                    </div>
                   </div>
+                </div>
+
+                {/* Member Bio */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    MEMBER BIO / STATEMENT
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={selectedMember.bio || ''}
+                    onChange={(e) => handleMemberChange('bio', e.target.value)}
+                    placeholder="Enter member bio or background story..."
+                    style={{
+                      width: '100%',
+                      padding: '0.6rem 0.85rem',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(0,0,0,0.12)',
+                      fontSize: '0.82rem',
+                      fontFamily: 'inherit',
+                      lineHeight: 1.5,
+                    }}
+                  />
                 </div>
               </div>
             )}
@@ -731,6 +902,8 @@ export default function AdminAboutPage() {
         onSelect={(url) => {
           if (mediaTarget === 'member') {
             handleMemberChange('image', url);
+          } else if (mediaTarget === 'founder') {
+            handleHeroChange('image', url);
           }
           setIsMediaPickerOpen(false);
         }}

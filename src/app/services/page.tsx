@@ -59,19 +59,16 @@ const ENGAGEMENT_MODELS = [
   {
     num: '01',
     title: 'Strategic Retainers',
-    desc: 'Ongoing support for long-term brand, growth and operational goals.',
     href: '/contact',
   },
   {
     num: '02',
-    title: 'High-Impact Sprints',
-    desc: 'Focused, time-bound projects for specific outcomes.',
+    title: 'Project Collaborations',
     href: '/contact',
   },
   {
     num: '03',
     title: 'Specialised Production Briefs',
-    desc: 'Dedicated teams for high-quality content and production needs.',
     href: '/contact',
   },
 ];
@@ -720,71 +717,46 @@ export default function ServicesPage() {
             }}
           >
             {ENGAGEMENT_MODELS.map((model, idx) => (
-              <Link
+              <div
                 key={model.num}
-                href={model.href}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent: 'space-between',
                   paddingRight: idx < ENGAGEMENT_MODELS.length - 1 ? 'clamp(1rem, 2.5vw, 2.5rem)' : '0',
                   borderRight: idx < ENGAGEMENT_MODELS.length - 1 ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
-                  textDecoration: 'none',
                   color: DARK,
-                  transition: 'transform 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-3px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <div>
-                  <div
-                    className="tag-mono"
+                <div
+                  style={{
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  <span
                     style={{
-                      fontSize: '0.75rem',
+                      fontSize: '0.88rem',
                       fontWeight: 700,
                       color: DARK,
-                      letterSpacing: '0.12em',
-                      marginBottom: '1rem',
+                      letterSpacing: '0.04em',
                     }}
                   >
                     {model.num}
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: 'clamp(1.2rem, 1.7vw, 1.45rem)',
-                      fontWeight: 650,
-                      letterSpacing: '-0.02em',
-                      marginBottom: '0.75rem',
-                      color: DARK,
-                    }}
-                  >
-                    {model.title}
-                  </h3>
-                  <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: MUTED }}>
-                    {model.desc}
-                  </p>
-                </div>
-
-                <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
-                  <span
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      border: '1px solid rgba(0, 0, 0, 0.18)',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <ArrowRight size={14} color={DARK} />
                   </span>
                 </div>
-              </Link>
+
+                <h3
+                  style={{
+                    fontSize: 'clamp(1.4rem, 2.2vw, 1.85rem)',
+                    fontWeight: 650,
+                    letterSpacing: '-0.025em',
+                    color: DARK,
+                    lineHeight: 1.25,
+                    margin: 0,
+                  }}
+                >
+                  {model.title}
+                </h3>
+              </div>
             ))}
           </div>
         </section>

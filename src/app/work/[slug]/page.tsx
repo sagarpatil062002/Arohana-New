@@ -1,9 +1,11 @@
 import React from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowUpRight, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CASE_STUDIES, getCaseStudyBySlug } from '@/data/case-studies';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const params = CASE_STUDIES.map((cs) => ({
@@ -11,10 +13,16 @@ export async function generateStaticParams() {
   }));
   params.push({ slug: 'raysons' });
   params.push({ slug: 'the-she-project' });
+  params.push({ slug: 'indian-army' });
+  params.push({ slug: 'indian-army-projects' });
   return params;
 }
 
 export default function CaseStudyDetailPage({ params }: { params: { slug: string } }) {
+  if (params.slug === 'indian-army' || params.slug === 'indian-army-projects') {
+    redirect('/indian-army-projects');
+  }
+
   const caseStudy = getCaseStudyBySlug(params.slug);
 
   if (!caseStudy) {

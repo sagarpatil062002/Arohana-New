@@ -16,6 +16,31 @@
     "p3": "Tourin was created to make space for the second one.",
     "storyLinkText": "OUR STORY"
   },
+  "destination": {
+    "tag": "THE DESTINATION",
+    "heading": "Where we go.",
+    "primary": "Ladakh is our home ground and primary destination — where our roots, local relationships, and deep operational presence allow us to craft truly authentic, slow-paced journeys.",
+    "upcoming": "We will be adding more places (coming soon) as new journeys and routes are finalized.",
+    "places": [
+      {
+        "id": "ladakh",
+        "name": "LADAKH",
+        "status": "Active",
+        "subtitle": "High Passes, Starlit Deserts & Living Monasteries",
+        "regions": "Nubra · Sham Valley · Hanle Dark Sky · Zanskar",
+        "image": "/images/tourin/dest-ladakh.jpg"
+      },
+      {
+        "id": "more-places",
+        "name": "ADDING MORE PLACES",
+        "status": "Coming Soon",
+        "subtitle": "New Routes & Untouched Terrains",
+        "regions": "Carefully scouting new regions with local hosts and unhurried pacing.",
+        "image": "/images/tourin/tourin-hero.jpg",
+        "isComingSoon": true
+      }
+    ]
+  },
   "philosophy": {
     "tag": "OUR PHILOSOPHY",
     "heading": "What we believe.",
@@ -30,32 +55,38 @@
       "title": "The Slow Ladakh Odyssey",
       "duration": "8 Days / 7 Nights",
       "type": "Cultural Immersion & Slow Exploration",
-      "desc": "Cultural immersion, heritage stays and hidden villages without rushing.",
+      "desc": "Apricot valley heritage stays, 11th-century monastic fresco libraries, and unhurried Indus trails.",
       "image": "/images/tourin/dest-ladakh.jpg",
       "elevation": "9,500 — 11,500 FT",
       "published": true
     },
     {
-      "id": "india-unexplored",
-      "title": "India Unexplored",
-      "duration": "7 Days / 6 Nights",
-      "type": "Offbeat Destinations & Local Experiences",
-      "desc": "Offbeat destinations, local experiences and thoughtful travel.",
-      "image": "/images/tourin/dest-india.jpg",
-      "elevation": "Various",
+      "id": "hanle-dark-sky",
+      "title": "Silent Frontiers: Hanle & High Lakes",
+      "duration": "8 Days / 7 Nights",
+      "type": "Nomadic Grasslands & Dark Sky Sanctuaries",
+      "desc": "Stargazing at India’s premier Dark Sky Reserve, secluded turquoise lake shores, and Changpa nomadic pastoralists.",
+      "image": "/images/tourin/tourin-2.jpg",
+      "elevation": "13,500 — 14,764 FT",
       "published": true
     },
     {
-      "id": "asia-reimagined",
-      "title": "Asia Reimagined",
+      "id": "zanskar-traverse",
+      "title": "The Ancient Kingdom: Zanskar Traverse",
       "duration": "9 Days / 8 Nights",
-      "type": "Curated International Experiences",
-      "desc": "Curated international experiences for curious travellers.",
-      "image": "/images/tourin/dest-international.jpg",
-      "elevation": "Various",
+      "type": "Expedition Traverse & Living Faith",
+      "desc": "Cliffside rock-hewn cave monasteries, glacial river canyons, and traditional Zanskari guest lodges.",
+      "image": "/images/tourin/tourin-3.jpg",
+      "elevation": "11,000 — 14,500 FT",
       "published": true
     }
   ],
+  "journeysTaken": {
+    "tag": "PROOF THAT IT WORKS",
+    "heading": "Journeys already taken.",
+    "p1": "Tourin has successfully guided private cultural journeys, intimate escapes, and bespoke high-altitude expeditions across Ladakh's most remote valleys and mountain passes.",
+    "p2": "Proven on high-altitude routes with trusted local relationships, tailored medical acclimatisation, and zero-compromise logistical care."
+  },
   "stats": [
     { "value": "17,580 FT", "label": "Maximum Altitude Reached" },
     { "value": "100%", "label": "Oxygen & Medical Readiness" },

@@ -11,7 +11,7 @@ import { Plus, Trash2, Eye, EyeOff, Save, Check, Upload, Compass, ChevronUp, Che
 export default function AdminTourinPage() {
   const { content, saveDraft, updateDraftInMemory } = useCmsContent();
   const [tourinData, setTourinData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'philosophy' | 'journeys' | 'stats'>('hero');
+  const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'destination' | 'philosophy' | 'journeys' | 'proof' | 'stats'>('hero');
   const [selectedJourneyId, setSelectedJourneyId] = useState<string | null>('slow-ladakh');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
@@ -52,6 +52,75 @@ export default function AdminTourinPage() {
     };
     setTourinData(updated);
     updateDraftInMemory('tourin', updated);
+  };
+
+  const handleDestinationChange = (field: string, val: any) => {
+    const updated = {
+      ...tourinData,
+      destination: {
+        ...(tourinData.destination || {}),
+        [field]: val,
+      },
+    };
+    setTourinData(updated);
+    updateDraftInMemory('tourin', updated);
+  };
+
+  const handleJourneysTakenChange = (field: string, val: any) => {
+    const updated = {
+      ...tourinData,
+      journeysTaken: {
+        ...(tourinData.journeysTaken || {}),
+        [field]: val,
+      },
+    };
+    setTourinData(updated);
+    updateDraftInMemory('tourin', updated);
+  };
+
+  const handleAddPlace = () => {
+    const newPlace = {
+      id: `place-${Date.now()}`,
+      name: 'NEW DESTINATION',
+      status: 'Coming Soon',
+      subtitle: 'New Routes & Untouched Terrains',
+      regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
+      image: '/images/tourin/tourin-hero.jpg',
+      isComingSoon: true,
+    };
+    const currentPlaces = tourinData.destination?.places || [
+      {
+        id: 'ladakh',
+        name: 'LADAKH',
+        status: 'Active',
+        subtitle: 'High Passes, Starlit Deserts & Living Monasteries',
+        regions: 'Nubra · Sham Valley · Hanle Dark Sky · Zanskar',
+        image: '/images/tourin/dest-ladakh.jpg',
+      },
+      {
+        id: 'more-places',
+        name: 'ADDING MORE PLACES',
+        status: 'Coming Soon',
+        subtitle: 'New Routes & Untouched Terrains',
+        regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
+        image: '/images/tourin/tourin-hero.jpg',
+        isComingSoon: true,
+      },
+    ];
+    handleDestinationChange('places', [...currentPlaces, newPlace]);
+  };
+
+  const handleUpdatePlace = (index: number, field: string, val: any) => {
+    const currentPlaces = [...(tourinData.destination?.places || [])];
+    if (!currentPlaces[index]) return;
+    currentPlaces[index] = { ...currentPlaces[index], [field]: val };
+    handleDestinationChange('places', currentPlaces);
+  };
+
+  const handleDeletePlace = (index: number) => {
+    const currentPlaces = [...(tourinData.destination?.places || [])];
+    currentPlaces.splice(index, 1);
+    handleDestinationChange('places', currentPlaces);
   };
 
   const handlePhilosophyChange = (field: string, val: any) => {
@@ -226,9 +295,11 @@ export default function AdminTourinPage() {
           {[
             { id: 'hero', label: '01: Hero & Story' },
             { id: 'genesis', label: '02: The Genesis' },
-            { id: 'philosophy', label: '03: Philosophy' },
-            { id: 'journeys', label: `04: Journeys (${tourinData.journeys?.length || 0})` },
-            { id: 'stats', label: '05: Readiness Stats' },
+            { id: 'destination', label: '03: Where We Go' },
+            { id: 'philosophy', label: '04: Philosophy' },
+            { id: 'journeys', label: `05: Journeys (${tourinData.journeys?.length || 0})` },
+            { id: 'proof', label: '06: Journeys Taken' },
+            { id: 'stats', label: '07: Readiness Stats' },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -414,7 +485,200 @@ export default function AdminTourinPage() {
           </div>
         )}
 
-        {/* ─── TAB 03: PHILOSOPHY ─── */}
+        {/* ─── TAB 03: WHERE WE GO (DESTINATION) ─── */}
+        {activeTab === 'destination' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Section 03: Where We Go (Destination Policy)
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#71717A', lineHeight: 1.5 }}>
+              Currently kept focused exclusively on <strong>Ladakh</strong>. Copy indicates more destinations are being added (coming soon) without displaying placeholder cards.
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                  SECTION TAG
+                </label>
+                <input
+                  type="text"
+                  value={tourinData.destination?.tag || ''}
+                  onChange={(e) => handleDestinationChange('tag', e.target.value)}
+                  placeholder="THE DESTINATION"
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                  SECTION HEADING
+                </label>
+                <input
+                  type="text"
+                  value={tourinData.destination?.heading || ''}
+                  onChange={(e) => handleDestinationChange('heading', e.target.value)}
+                  placeholder="Where we go."
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                PRIMARY REGION DESCRIPTION (LADAKH)
+              </label>
+              <textarea
+                rows={3}
+                value={tourinData.destination?.primary || ''}
+                onChange={(e) => handleDestinationChange('primary', e.target.value)}
+                placeholder="Ladakh is our home ground and primary destination..."
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                EXPANSION / COMING SOON COPY
+              </label>
+              <textarea
+                rows={2}
+                value={tourinData.destination?.upcoming || ''}
+                onChange={(e) => handleDestinationChange('upcoming', e.target.value)}
+                placeholder="We will be adding more places (coming soon) as new journeys and routes are finalized."
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit' }}
+              />
+            </div>
+
+            {/* Places / Destination Cards List */}
+            <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#111113' }}>
+                  DESTINATION CARDS ({tourinData.destination?.places?.length || 2})
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddPlace}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.35rem 0.75rem',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF',
+                    color: '#111113',
+                    fontSize: '0.74rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Plus size={13} />
+                  Add Destination Place
+                </button>
+              </div>
+
+              {(tourinData.destination?.places || [
+                {
+                  id: 'ladakh',
+                  name: 'LADAKH',
+                  status: 'Active',
+                  subtitle: 'High Passes, Starlit Deserts & Living Monasteries',
+                  regions: 'Nubra · Sham Valley · Hanle Dark Sky · Zanskar',
+                  image: '/images/tourin/dest-ladakh.jpg',
+                },
+                {
+                  id: 'more-places',
+                  name: 'ADDING MORE PLACES',
+                  status: 'Coming Soon',
+                  subtitle: 'New Routes & Untouched Terrains',
+                  regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
+                  image: '/images/tourin/tourin-hero.jpg',
+                  isComingSoon: true,
+                },
+              ]).map((place: any, pIdx: number) => (
+                <div
+                  key={place.id || pIdx}
+                  style={{
+                    padding: '1rem',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(0,0,0,0.08)',
+                    backgroundColor: '#FAFAFA',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.75rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 700, color: place.isComingSoon ? '#DE322D' : '#16A34A', textTransform: 'uppercase' }}>
+                      {place.status || (place.isComingSoon ? 'Coming Soon' : 'Active')}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleDeletePlace(pIdx)}
+                      title="Delete Place"
+                      style={{ border: 'none', background: 'transparent', color: '#EF4444', cursor: 'pointer', padding: '0.2rem' }}
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                        NAME
+                      </label>
+                      <input
+                        type="text"
+                        value={place.name || ''}
+                        onChange={(e) => handleUpdatePlace(pIdx, 'name', e.target.value)}
+                        style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                        STATUS BADGE (e.g. Active / Coming Soon)
+                      </label>
+                      <input
+                        type="text"
+                        value={place.status || ''}
+                        onChange={(e) => {
+                          handleUpdatePlace(pIdx, 'status', e.target.value);
+                          handleUpdatePlace(pIdx, 'isComingSoon', e.target.value.toLowerCase().includes('soon'));
+                        }}
+                        style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                      SUBTITLE
+                    </label>
+                    <input
+                      type="text"
+                      value={place.subtitle || ''}
+                      onChange={(e) => handleUpdatePlace(pIdx, 'subtitle', e.target.value)}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                      REGIONS / SUMMARY
+                    </label>
+                    <input
+                      type="text"
+                      value={place.regions || ''}
+                      onChange={(e) => handleUpdatePlace(pIdx, 'regions', e.target.value)}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 04: PHILOSOPHY ─── */}
         {activeTab === 'philosophy' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
@@ -683,7 +947,72 @@ export default function AdminTourinPage() {
           </div>
         )}
 
-        {/* ─── TAB 05: READINESS STATS ─── */}
+        {/* ─── TAB 06: JOURNEYS TAKEN (PROOF) ─── */}
+        {activeTab === 'proof' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Section 06: Journeys Already Taken (Proof &amp; Track Record)
+            </div>
+            <div style={{ fontSize: '0.78rem', color: '#71717A', lineHeight: 1.5 }}>
+              Focus on depth, execution quality, and medical safety. <em>(Guideline: Avoid arbitrary numbers or metrics in narrative copy).</em>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                  SECTION TAG
+                </label>
+                <input
+                  type="text"
+                  value={tourinData.journeysTaken?.tag || ''}
+                  onChange={(e) => handleJourneysTakenChange('tag', e.target.value)}
+                  placeholder="PROOF THAT IT WORKS"
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                  SECTION HEADING
+                </label>
+                <input
+                  type="text"
+                  value={tourinData.journeysTaken?.heading || ''}
+                  onChange={(e) => handleJourneysTakenChange('heading', e.target.value)}
+                  placeholder="Journeys already taken."
+                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                PRIMARY SUMMARY PARAGRAPH
+              </label>
+              <textarea
+                rows={3}
+                value={tourinData.journeysTaken?.p1 || ''}
+                onChange={(e) => handleJourneysTakenChange('p1', e.target.value)}
+                placeholder="Tourin has successfully guided private cultural journeys..."
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit' }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                OPERATIONAL &amp; SAFETY DETAIL PARAGRAPH
+              </label>
+              <textarea
+                rows={2}
+                value={tourinData.journeysTaken?.p2 || ''}
+                onChange={(e) => handleJourneysTakenChange('p2', e.target.value)}
+                placeholder="Proven on high-altitude routes with trusted local relationships..."
+                style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit' }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 07: READINESS STATS ─── */}
         {activeTab === 'stats' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>

@@ -843,6 +843,320 @@ export default function IndianArmyProjectsPage() {
       </main>
 
       {/* ==========================================================================
+          5B. VERIFIED MILITARY BROADCASTS, MEDIA & DOCUMENTARIES
+          ========================================================================== */}
+      <section className="army-container" style={{ marginTop: '4rem', marginBottom: '4rem' }}>
+        <div style={{ marginBottom: '2.5rem' }}>
+          <div className="hero-eyebrow" style={{ marginBottom: '0.75rem' }}>
+            <span className="eyebrow-badge">
+              <Shield size={12} className="shield-icon" />
+              <span>OFFICIAL BROADCASTS &amp; CITATIONS</span>
+            </span>
+            <span className="eyebrow-dot" />
+            <span className="eyebrow-sub">DEFENCE MEDIA EVIDENCE</span>
+          </div>
+          <h2
+            style={{
+              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              fontWeight: 500,
+              letterSpacing: '-0.03em',
+              color: '#111',
+              marginBottom: '0.75rem',
+            }}
+          >
+            Verified Broadcasts, Documentaries &amp; Citations
+          </h2>
+          <p style={{ color: '#555', maxWidth: '780px', fontSize: '1rem', lineHeight: 1.6 }}>
+            Official media releases, documentary broadcasts, and social dispatches issued by the Indian Army (ADGPI), Fire &amp; Fury Corps (14 Corps), and regional leadership highlighting Ārohana’s field productions.
+          </p>
+        </div>
+
+        {/* Featured Video Player: Operation Sadbhavana Documentary */}
+        <div
+          style={{
+            backgroundColor: '#0c0c0e',
+            borderRadius: '8px',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            overflow: 'hidden',
+            boxShadow: '0 12px 36px rgba(0, 0, 0, 0.15)',
+            marginBottom: '2.5rem',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 380px), 1fr))',
+          }}
+        >
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', minHeight: '300px', backgroundColor: '#000' }}>
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/Ki6c7vRhbtA"
+              title="Indian Army Operation Sadbhavana Documentary"
+              style={{ width: '100%', height: '100%', border: 0 }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: '#fff' }}>
+            <div className="tag-mono" style={{ color: '#ff3b30', fontSize: '0.75rem', marginBottom: '0.65rem' }}>
+              FEATURED DOCUMENTARY FILM
+            </div>
+            <h3 style={{ fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)', fontWeight: 500, lineHeight: 1.25, marginBottom: '1rem', color: '#fff' }}>
+              Operation Sadbhavana — Sustainable Health &amp; Hygiene in Remote Ladakh
+            </h3>
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              Field-produced documentary showcasing community workshops, reusable menstrual health distribution, and village outreach conducted in partnership with the Indian Army across 8 border settlements.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <a
+                href="https://youtu.be/Ki6c7vRhbtA?si=EyZ7o6lAxOc1rXmf"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  backgroundColor: '#ff3b30',
+                  color: '#fff',
+                  padding: '0.65rem 1.25rem',
+                  borderRadius: '4px',
+                  fontWeight: 600,
+                  fontSize: '0.85rem',
+                  textDecoration: 'none',
+                }}
+              >
+                <Play size={14} fill="#fff" /> Watch on YouTube
+              </a>
+              <span style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.5)', fontFamily: 'var(--font-mono)' }}>
+                Official Clearance &bull; 14 Corps Sadbhavana
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Official Dispatches & Citations Grid */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+            gap: '1.25rem',
+          }}
+        >
+          {/* Card: ADGPI Official 1 */}
+          <a
+            href="https://x.com/adgpi/status/1898172481665667373?s=20"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span className="tag-mono" style={{ color: '#0066cc', fontSize: '0.7rem', fontWeight: 600 }}>
+                  ADGPI INDIAN ARMY
+                </span>
+                <ArrowUpRight size={14} color="#666" />
+              </div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
+                Official Ceremonial Coverage
+              </h4>
+              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                Official military announcement and photographic release via @adgpi.
+              </p>
+            </div>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
+              View Dispatch on X &rarr;
+            </div>
+          </a>
+
+          {/* Card: ADGPI Official 2 */}
+          <a
+            href="https://x.com/adgpi/status/1871757564112752765?s=20"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span className="tag-mono" style={{ color: '#0066cc', fontSize: '0.7rem', fontWeight: 600 }}>
+                  ADGPI INDIAN ARMY
+                </span>
+                <ArrowUpRight size={14} color="#666" />
+              </div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
+                Defence Theatre Operations
+              </h4>
+              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                Official headquarters communication and high-altitude visual documentation.
+              </p>
+            </div>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
+              View Dispatch on X &rarr;
+            </div>
+          </a>
+
+          {/* Card: Fire & Fury Corps 1 */}
+          <a
+            href="https://x.com/firefurycorps/status/1879478273392197982?s=20"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span className="tag-mono" style={{ color: '#d97706', fontSize: '0.7rem', fontWeight: 600 }}>
+                  FIRE &amp; FURY CORPS (14 CORPS)
+                </span>
+                <ArrowUpRight size={14} color="#666" />
+              </div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
+                Ladakh Sector Initiatives
+              </h4>
+              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                Field communication and community engagement across eastern Ladakh border areas.
+              </p>
+            </div>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
+              View Dispatch on X &rarr;
+            </div>
+          </a>
+
+          {/* Card: Fire & Fury Corps 2 */}
+          <a
+            href="https://x.com/firefurycorps/status/1933746811455381927?s=20"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span className="tag-mono" style={{ color: '#d97706', fontSize: '0.7rem', fontWeight: 600 }}>
+                  FIRE &amp; FURY CORPS (14 CORPS)
+                </span>
+                <ArrowUpRight size={14} color="#666" />
+              </div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
+                High-Altitude Milestone
+              </h4>
+              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                Commemorative release covering tactical achievements in alpine desert environments.
+              </p>
+            </div>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
+              View Dispatch on X &rarr;
+            </div>
+          </a>
+
+          {/* Card: Sonam Wangchuk Ladakh Citation */}
+          <a
+            href="https://x.com/Wangchuk66/status/1952406276731715848?s=20"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span className="tag-mono" style={{ color: '#059669', fontSize: '0.7rem', fontWeight: 600 }}>
+                  REGIONAL COMMUNITY CITATION
+                </span>
+                <ArrowUpRight size={14} color="#666" />
+              </div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
+                Sonam Wangchuk &bull; Ladakh Community
+              </h4>
+              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                Public commentary and regional acknowledgement of environmental &amp; community initiatives.
+              </p>
+            </div>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
+              View Citation on X &rarr;
+            </div>
+          </a>
+
+          {/* Card: Official Instagram Field Reel */}
+          <a
+            href="https://www.instagram.com/reel/C4Qdu0uRnnB/?igsh=a3UydmJ4NGNvbDU="
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: '1.5rem',
+              backgroundColor: '#ffffff',
+              borderRadius: '6px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <span className="tag-mono" style={{ color: '#e1306c', fontSize: '0.7rem', fontWeight: 600 }}>
+                  INSTAGRAM FIELD REEL
+                </span>
+                <ArrowUpRight size={14} color="#666" />
+              </div>
+              <h4 style={{ fontSize: '1rem', fontWeight: 500, color: '#111', lineHeight: 1.35, marginBottom: '0.5rem' }}>
+                Border Village Outreach Reel
+              </h4>
+              <p style={{ fontSize: '0.82rem', color: '#666', lineHeight: 1.5 }}>
+                On-ground video footage from Sadbhavana workshops in high-altitude Ladakhi villages.
+              </p>
+            </div>
+            <div style={{ marginTop: '1.25rem', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: '#888' }}>
+              Watch Reel on Instagram &rarr;
+            </div>
+          </a>
+        </div>
+      </section>
+
+      {/* ==========================================================================
           6. FULL-WIDTH PANORAMIC BANNER (Soldiers Silhouette Sunset Horizon)
           ========================================================================== */}
       <section className="army-container closing-banner-section" id="closing-panoramic-banner">

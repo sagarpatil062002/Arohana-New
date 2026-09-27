@@ -44,6 +44,8 @@ export const PROJECT_DIRECTORY: ProjectDirectoryItem[] = [
     tags: ['Café Concept', 'Social Media', 'Visual Identity'],
     description: 'Artisanal modern café concept. Brand identity rollout, interior menu choreography, and youth-focused digital engagement.',
     image: '/images/work/qubice-thumb.jpg',
+    videoUrl: 'https://workdrive.zohopublic.in/writer/open/gkeshe049852b96d1484e98a5684d50c2d406',
+    socialUrl: 'https://www.instagram.com/reel/DbIvEiLqD2Y/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
   {
     id: 'kanopy',
@@ -85,6 +87,24 @@ export const PROJECT_DIRECTORY: ProjectDirectoryItem[] = [
     description: 'Multi-cuisine street food destination. Quick-service operational systems, brand identity, and footfall activation.',
     image: '/images/work/khaugali-thumb.jpg',
   },
+  {
+    id: 'shelkang-cafe',
+    name: 'Shelkang Cafe',
+    sector: 'Hospitality & F&B',
+    tags: ['Himalayan Café', 'Brand Identity', 'Social Content'],
+    description: 'Scenic high-altitude café and dining experience in Ladakh. Visual storytelling, brand identity, and community engagement.',
+    image: '/images/work/qubice-thumb.jpg',
+    videoUrl: 'https://www.instagram.com/reel/DH4sg0Vz7wO/?stkn=bWJnNWM3aGEzaXUy',
+  },
+  {
+    id: 'amgoc',
+    name: 'Amgoc',
+    sector: 'Lifestyle & Consumer',
+    tags: ['Lifestyle & Dining', 'Creative Direction', 'Brand Strategy'],
+    description: 'Distinctive lifestyle and culinary space. Brand identity, visual storytelling, and digital creative direction.',
+    image: '/images/work/kanopy-thumb.jpg',
+    socialUrl: 'https://www.instagram.com/_amgoc_?stkn=eWthbWJkOXN6aG50',
+  },
 
   // Real Estate & Built Environment
   {
@@ -95,14 +115,17 @@ export const PROJECT_DIRECTORY: ProjectDirectoryItem[] = [
     description: 'Multi-business enterprise spanning industrial casting, residential developments, and hospitality assets.',
     image: '/images/work/raysons-thumb.jpg',
     caseStudySlug: 'raysons-group',
+    videoUrl: 'https://www.instagram.com/reel/DdWTH3nCcWE/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
   {
     id: 'citron',
-    name: 'Citron',
+    name: 'Citeron',
     sector: 'Real Estate & Built Environment',
     tags: ['Real Estate Launch', 'Architectural Communication', 'Lead Campaigns'],
     description: 'Contemporary residential development. Architectural USP articulation, site walkthrough films, and targeted buyer communication.',
     image: '/images/work/citron-thumb.jpg',
+    videoUrl: 'https://www.instagram.com/reel/DYpCXcaA6PG/?stkn=MWd4MjVqZ3VoZDVmMw==',
+    socialUrl: 'https://www.instagram.com/p/Db8QUwOgfUB/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
   {
     id: 'loom-crafts',
@@ -112,6 +135,7 @@ export const PROJECT_DIRECTORY: ProjectDirectoryItem[] = [
     description: 'Dual-journey brand architecture separating luxury all-weather furniture from modular architectural prefab living systems.',
     image: '/images/work/loom-thumb.jpg',
     caseStudySlug: 'loom-crafts',
+    videoUrl: 'https://www.instagram.com/reel/DdtjcrJvqkN/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
 
   // Healthcare
@@ -123,6 +147,7 @@ export const PROJECT_DIRECTORY: ProjectDirectoryItem[] = [
     description: 'Specialised clinical dermatology and aesthetics practice. Replacing commercial hype with medical trust and patient education.',
     image: '/images/work/rrskins-thumb.jpg',
     caseStudySlug: 'rr-skins',
+    videoUrl: 'https://www.instagram.com/reel/DcK68hoPIYf/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
 
   // Lifestyle & Consumer
@@ -133,6 +158,17 @@ export const PROJECT_DIRECTORY: ProjectDirectoryItem[] = [
     tags: ['Heritage Jewellery', 'Visual Identity', 'Campaign Films'],
     description: 'Generational fine jewellery house. Heritage craftsmanship narrative, festive collections, and elevated visual campaigns.',
     image: '/images/work/dtk-thumb.jpg',
+    videoUrl: 'https://www.instagram.com/reel/DM7TLxWS1gK/?stkn=MWN0ajlkdWd3djdoMw==',
+  },
+  {
+    id: 'riana',
+    name: 'Riana',
+    sector: 'Lifestyle & Consumer',
+    tags: ['Fashion & Lifestyle', 'Creative Direction', 'Reels Production'],
+    description: 'Contemporary aesthetic lifestyle brand. Tactile product narratives, seasonal visual campaigns, and digital storytelling.',
+    image: '/images/work/dtk-thumb.jpg',
+    videoUrl: 'https://www.instagram.com/reel/Dc3fHqXoH8c/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
+    socialUrl: 'https://www.instagram.com/p/DdWWhcyiFzM/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
   {
     id: 'fraganta',
@@ -216,4 +252,6 @@ export const BRANDS_WORKED_WITH: BrandLogo[] = [
   { name: 'Spice Goa', sector: 'Culinary Heritage', initials: 'SG' },
   { name: 'Fraganta', sector: 'Luxury Fragrance', initials: 'FG' },
   { name: 'Holiday Village', sector: 'Eco Tourism & Resorts', initials: 'HV' },
+  { name: 'Shelkang Cafe', sector: 'Himalayan Hospitality & Café', initials: 'SC' },
+  { name: 'Amgoc', sector: 'Lifestyle & Dining', initials: 'AM' },
 ];

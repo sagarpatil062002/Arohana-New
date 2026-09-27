@@ -80,7 +80,7 @@
         "id": "raysons",
         "name": "Raysons Group",
         "monogram": "RG",
-        "logo": "/images/partners/raysons.svg",
+        "logo": "/uploads/1790487614238-raysons.jpg",
         "badgeBg": "#0066B3",
         "badgeColor": "#ffffff",
         "link": "/work/raysons-group"
@@ -98,45 +98,72 @@
         "id": "khau-gully",
         "name": "Khau Gully",
         "monogram": "KG",
-        "logo": "/images/partners/khaugully.svg",
+        "logo": "/uploads/1790488524999-khau-gully.png",
         "badgeBg": "#E65100",
         "badgeColor": "#ffffff",
         "link": "/work"
       },
       {
-        "id": "tranquil-studio",
-        "name": "Tranquil Studio",
-        "monogram": "TS",
-        "badgeBg": "#2E4053",
+        "id": "loomcrafts",
+        "name": "Loom Crafts",
+        "monogram": "LC",
+        "badgeBg": "#2A3439",
         "badgeColor": "#ffffff",
-        "link": "/work"
+        "link": "/work/loom-crafts",
+        "logo": "/uploads/1790495564237-looms-craft.png"
+      },
+      {
+        "id": "rr-skins",
+        "name": "RR Skins",
+        "monogram": "RR",
+        "badgeBg": "linear-gradient(135deg, #104E5B 0%, #082930 100%)",
+        "badgeColor": "#ffffff",
+        "link": "/work/rr-skins"
       },
       {
         "id": "she-project",
         "name": "SHE Project",
         "monogram": "SHE",
-        "logo": "/images/partners/she.svg",
+        "logo": "/uploads/1790493040874-she-logo-04.png",
         "badgeBg": "linear-gradient(135deg, #DE322D 0%, #B22222 100%)",
         "badgeColor": "#ffffff",
-        "link": "/work"
+        "link": "/work/she"
       },
       {
         "id": "dtk",
-        "name": "DTK",
+        "name": "DTK Jewellery",
         "monogram": "DTK",
-        "logo": "/images/partners/dtk.svg",
+        "logo": "/uploads/1790492224271-dk-kharekar-saraf.png",
         "badgeBg": "#1B4F72",
         "badgeColor": "#ffffff",
         "link": "/work"
       },
       {
+        "id": "shelkang-cafe",
+        "name": "Shelkang Cafe",
+        "monogram": "SC",
+        "badgeBg": "#4A3B32",
+        "badgeColor": "#ffffff",
+        "link": "/work",
+        "logo": "/uploads/1790495487525-shelkang-cafe.png"
+      },
+      {
+        "id": "amgoc",
+        "name": "Amgoc",
+        "monogram": "AMG",
+        "badgeBg": "#2C3E50",
+        "badgeColor": "#ffffff",
+        "link": "/work",
+        "logo": "/uploads/1790495501815-amgoc.png"
+      },
+      {
         "id": "misu",
         "name": "Misu",
         "monogram": "MISU",
-        "logo": "/images/partners/misu.svg",
+        "logo": "/uploads/1790488557207-misu.png",
         "badgeBg": "#881337",
         "badgeColor": "#ffffff",
-        "link": "/work"
+        "link": "/work/misu"
       },
       {
         "id": "indian-army",
@@ -144,7 +171,44 @@
         "monogram": "IA",
         "badgeBg": "linear-gradient(135deg, #1C3119 0%, #0D180B 100%)",
         "badgeColor": "#ffffff",
-        "link": "/indian-army-projects"
+        "link": "/indian-army-projects",
+        "logo": "/uploads/1790493031037-indian-army-logo-05.png"
+      },
+      {
+        "id": "residency",
+        "name": "Residency Club Kolhapur",
+        "monogram": "RC",
+        "logo": "/images/clients/residency-club.png",
+        "badgeBg": "#ffffff",
+        "badgeColor": "#1B4D3E",
+        "link": "/work"
+      },
+      {
+        "id": "genesis",
+        "name": "Genesis Clinic",
+        "monogram": "GSC",
+        "logo": "/images/clients/genesis.png",
+        "badgeBg": "#ffffff",
+        "badgeColor": "#00838F",
+        "link": "/work"
+      },
+      {
+        "id": "vital-wellness",
+        "name": "Vital Wellness",
+        "monogram": "VW",
+        "logo": "/images/clients/vital-wellness.png",
+        "badgeBg": "#ffffff",
+        "badgeColor": "#2B2B52",
+        "link": "/work"
+      },
+      {
+        "id": "manchen",
+        "name": "Manchen Restaurant",
+        "monogram": "MR",
+        "logo": "/images/clients/manchen.png",
+        "badgeBg": "#094AA8",
+        "badgeColor": "#ffffff",
+        "link": "/work"
       }
     ]
   },
@@ -259,69 +323,121 @@
     "ctaLink": "/work",
     "projects": [
       {
-        "id": "vital-wellness",
-        "index": "01",
-        "title": "Vital Wellness",
-        "category": "Wellness & Healthcare",
-        "tags": [
-          "Brand Identity",
-          "Experience Design",
-          "Packaged Goods"
-        ],
-        "image": "/images/case-studies/selected-work/vital-wellness.jpg",
-        "link": "/work"
-      },
-      {
-        "id": "residency-club",
-        "index": "02",
-        "title": "Residency Club Kolhapur",
-        "category": "Hospitality & F&B",
-        "tags": [
-          "Hospitality Branding",
-          "Content Production",
-          "Spatial Identity"
-        ],
-        "image": "/images/case-studies/selected-work/residency-club.jpg",
-        "link": "/work"
-      },
-      {
         "id": "raysons-group",
-        "index": "03",
+        "index": "01",
         "title": "Raysons Group",
-        "category": "Construction & Infrastructure",
+        "category": "Industrial & Real Estate",
         "tags": [
           "Corporate Branding",
-          "Brand Film Series",
-          "Spatial Experience"
+          "Industrial Film",
+          "Real Estate"
         ],
-        "image": "/images/case-studies/selected-work/raysons-group.jpg",
+        "image": "/images/case-studies/raysons/neora-1.jpg",
         "link": "/work/raysons-group"
       },
       {
-        "id": "abhijeet-magdum",
-        "index": "04",
-        "title": "Abhijeet Magdum Group",
-        "category": "Construction & Infrastructure",
+        "id": "loom-crafts",
+        "index": "02",
+        "title": "Loom Crafts",
+        "category": "Luxury Furniture & Prefab",
         "tags": [
-          "Brand Identity",
-          "Project Documentary",
-          "Media Production"
+          "Brand Strategy",
+          "Modular Living",
+          "Spatial Content"
         ],
-        "image": "/images/case-studies/selected-work/abhijeet-magdum.jpg",
+        "image": "/images/case-studies/loom/loom-hero.jpg",
+        "link": "/work/loom-crafts"
+      },
+      {
+        "id": "rr-skins",
+        "index": "03",
+        "title": "RR Skins",
+        "category": "Clinical Healthcare",
+        "tags": [
+          "Medical Trust",
+          "Patient Education",
+          "Doctor Positioning"
+        ],
+        "image": "/images/case-studies/rrskins/rrskins-hero.jpg",
+        "link": "/work/rr-skins"
+      },
+      {
+        "id": "she",
+        "index": "04",
+        "title": "SHE Initiative",
+        "category": "Institutional & Community",
+        "tags": [
+          "Women Healthcare",
+          "Documentary Film",
+          "Field Execution"
+        ],
+        "image": "/images/case-studies/she/she-hero.jpg",
+        "link": "/work/she"
+      },
+      {
+        "id": "indian-army",
+        "index": "05",
+        "title": "Indian Army Projects",
+        "category": "Defence & Institutional",
+        "tags": [
+          "Military Filming",
+          "Publication Design",
+          "High-Altitude Operations"
+        ],
+        "image": "/images/army/western-command-1.jpg",
+        "link": "/indian-army-projects"
+      },
+      {
+        "id": "picturetime",
+        "index": "06",
+        "title": "PictureTime",
+        "category": "Entertainment & Cinema",
+        "tags": [
+          "Mobile Cinema",
+          "Festival Programming",
+          "Cultural Content"
+        ],
+        "image": "/images/case-studies/picturetime/picturetime-hero.jpg",
+        "link": "/work/picturetime"
+      },
+      {
+        "id": "dtk",
+        "index": "07",
+        "title": "DTK Jewellery",
+        "category": "Fine Jewellery",
+        "tags": [
+          "Heritage Craftsmanship",
+          "Festive Campaigns",
+          "Visual Storytelling"
+        ],
+        "image": "/images/work/dtk-thumb.jpg",
+        "link": "/work"
+      },
+      {
+        "id": "qubice",
+        "index": "08",
+        "title": "Qubice",
+        "category": "Modular Living & Café",
+        "tags": [
+          "Modular Solutions",
+          "Brand Identity",
+          "Visual Narrative"
+        ],
+        "image": "/images/work/qubice-thumb.jpg",
         "link": "/work"
       },
       {
         "id": "misu",
-        "index": "05",
+        "index": "09",
         "title": "Misu Pan-Asian",
         "category": "Hospitality & F&B",
         "tags": [
           "Brand Identity",
-          "Interior Signage",
+          "Hospitality Consulting",
           "Digital Assets"
         ],
-        "image": "/images/case-studies/selected-work/misu.jpg",
-        "link": "/work"
+        "image": "/images/case-studies/misu/misu-hero.jpg",
+        "link": "/work/misu"
       }
     ]
   },

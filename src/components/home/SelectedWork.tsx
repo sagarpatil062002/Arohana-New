@@ -18,67 +18,85 @@ export interface ProjectItem {
 
 const PROJECTS: ProjectItem[] = [
   {
-    id: 'vital-wellness',
-    index: '01',
-    title: 'Vital Wellness',
-    category: 'Wellness & Healthcare',
-    tags: ['Brand Identity', 'Experience Design', 'Packaged Goods'],
-    image: '/images/case-studies/selected-work/vital-wellness.jpg',
-    link: '/work',
-  },
-  {
-    id: 'residency-club',
-    index: '02',
-    title: 'Residency Club Kolhapur',
-    category: 'Hospitality & F&B',
-    tags: ['Hospitality Branding', 'Content Production', 'Spatial Identity'],
-    image: '/images/case-studies/selected-work/residency-club.jpg',
-    link: '/work',
-  },
-  {
     id: 'raysons-group',
-    index: '03',
+    index: '01',
     title: 'Raysons Group',
-    category: 'Construction & Infrastructure',
-    tags: ['Corporate Branding', 'Brand Film Series', 'Spatial Experience'],
-    image: '/images/case-studies/selected-work/raysons-group.jpg',
+    category: 'Industrial & Real Estate',
+    tags: ['Corporate Branding', 'Industrial Film', 'Real Estate'],
+    image: '/images/case-studies/raysons/neora-1.jpg',
     link: '/work/raysons-group',
   },
   {
-    id: 'abhijeet-magdum',
+    id: 'loom-crafts',
+    index: '02',
+    title: 'Loom Crafts',
+    category: 'Luxury Furniture & Prefab',
+    tags: ['Brand Strategy', 'Modular Living', 'Spatial Content'],
+    image: '/images/case-studies/loom/loom-hero.jpg',
+    link: '/work/loom-crafts',
+  },
+  {
+    id: 'rr-skins',
+    index: '03',
+    title: 'RR Skins',
+    category: 'Clinical Healthcare',
+    tags: ['Medical Trust', 'Patient Education', 'Doctor Positioning'],
+    image: '/images/case-studies/rrskins/rrskins-hero.jpg',
+    link: '/work/rr-skins',
+  },
+  {
+    id: 'she',
     index: '04',
-    title: 'Abhijeet Magdum\nGroup of Constructions',
-    category: 'Construction & Infrastructure',
-    tags: ['Brand Identity', 'Project Documentary', 'Media Production'],
-    image: '/images/case-studies/selected-work/abhijeet-magdum.jpg',
+    title: 'SHE Initiative',
+    category: 'Institutional & Community',
+    tags: ['Women Healthcare', 'Documentary Film', 'Field Execution'],
+    image: '/images/case-studies/she/she-hero.jpg',
+    link: '/work/she',
+  },
+  {
+    id: 'indian-army',
+    index: '05',
+    title: 'Indian Army Projects',
+    category: 'Defence & Institutional',
+    tags: ['Military Filming', 'Publication Design', 'High-Altitude Operations'],
+    image: '/images/army/western-command-1.jpg',
+    link: '/indian-army-projects',
+  },
+  {
+    id: 'picturetime',
+    index: '06',
+    title: 'PictureTime',
+    category: 'Entertainment & Cinema',
+    tags: ['Mobile Cinema', 'Festival Programming', 'Cultural Content'],
+    image: '/images/case-studies/picturetime/picturetime-hero.jpg',
+    link: '/work/picturetime',
+  },
+  {
+    id: 'dtk',
+    index: '07',
+    title: 'DTK Jewellery',
+    category: 'Fine Jewellery',
+    tags: ['Heritage Craftsmanship', 'Festive Campaigns', 'Visual Storytelling'],
+    image: '/images/work/dtk-thumb.jpg',
+    link: '/work',
+  },
+  {
+    id: 'qubice',
+    index: '08',
+    title: 'Qubice',
+    category: 'Modular Living & Café',
+    tags: ['Modular Solutions', 'Brand Identity', 'Visual Narrative'],
+    image: '/images/work/qubice-thumb.jpg',
     link: '/work',
   },
   {
     id: 'misu',
-    index: '05',
+    index: '09',
     title: 'Misu Pan-Asian',
     category: 'Hospitality & F&B',
-    tags: ['Brand Identity', 'Interior Signage', 'Digital Assets'],
-    image: '/images/case-studies/selected-work/misu.jpg',
+    tags: ['Brand Identity', 'Hospitality Consulting', 'Digital Assets'],
+    image: '/images/case-studies/misu/misu-hero.jpg',
     link: '/work/misu',
-  },
-  {
-    id: 'khau-gully',
-    index: '06',
-    title: 'Khau Gully',
-    category: 'Hospitality & F&B',
-    tags: ['The Urban F&B', 'Experience Design', 'Social Media'],
-    image: '/images/case-studies/selected-work/khau-gully.jpg',
-    link: '/work',
-  },
-  {
-    id: 'pretty-plants',
-    index: '07',
-    title: 'The Pretty Plants',
-    category: 'Lifestyle & Retail',
-    tags: ['Retail Identity', 'Campaign Shoot', 'Store Branding'],
-    image: '/images/case-studies/selected-work/pretty-plants.jpg',
-    link: '/work',
   },
 ];
 
@@ -280,98 +298,109 @@ export default function SelectedWork() {
                   opacity = 1;
                   zIndex = 100;
                 } else if (offset === -1) {
-                  translateX = -95;
+                  translateX = -110;
                   translateY = 0;
-                  translateZ = -45;
+                  translateZ = -50;
                   rotateY = 12;
-                  scale = 0.86;
-                  opacity = 0.45;
+                  scale = 0.85;
+                  opacity = 0.55;
                   zIndex = 90;
                 } else if (offset === 1) {
-                  translateX = 95;
+                  translateX = 110;
                   translateY = 0;
-                  translateZ = -45;
+                  translateZ = -50;
                   rotateY = -12;
-                  scale = 0.86;
-                  opacity = 0.45;
+                  scale = 0.85;
+                  opacity = 0.55;
                   zIndex = 90;
                 } else {
-                  translateX = offset > 0 ? 170 : -170;
+                  translateX = offset > 0 ? 220 : -220;
                   translateY = 0;
-                  translateZ = -100;
+                  translateZ = -120;
                   rotateY = offset > 0 ? -20 : 20;
-                  scale = 0.72;
+                  scale = 0.7;
                   opacity = 0;
-                  zIndex = 50;
+                  zIndex = 10;
                 }
               } else {
-                // Desktop 7-card 3D perspective coverflow
+                // Desktop 7-card 3D perspective coverflow with non-overlapping spacing
                 if (offset === 0) {
                   translateX = 0;
-                  translateY = -10;
-                  translateZ = 0;
+                  translateY = -12;
+                  translateZ = 30;
                   rotateY = 0;
-                  scale = 1.08;
+                  scale = 1.06;
                   opacity = 1;
                   zIndex = 100;
                 } else if (offset === -1) {
-                  translateX = -215;
+                  translateX = -250;
                   translateY = 0;
-                  translateZ = -60;
+                  translateZ = -50;
                   rotateY = 16;
-                  scale = 0.94;
+                  scale = 0.92;
                   opacity = 0.95;
-                  zIndex = 90;
+                  zIndex = 85;
                 } else if (offset === 1) {
-                  translateX = 215;
+                  translateX = 250;
                   translateY = 0;
-                  translateZ = -60;
+                  translateZ = -50;
                   rotateY = -16;
-                  scale = 0.94;
+                  scale = 0.92;
                   opacity = 0.95;
-                  zIndex = 90;
+                  zIndex = 85;
                 } else if (offset === -2) {
-                  translateX = -395;
+                  translateX = -470;
                   translateY = 0;
-                  translateZ = -130;
-                  rotateY = 28;
-                  scale = 0.86;
-                  opacity = 0.85;
-                  zIndex = 80;
+                  translateZ = -120;
+                  rotateY = 26;
+                  scale = 0.82;
+                  opacity = 0.80;
+                  zIndex = 70;
                 } else if (offset === 2) {
-                  translateX = 395;
+                  translateX = 470;
                   translateY = 0;
-                  translateZ = -130;
-                  rotateY = -28;
-                  scale = 0.86;
-                  opacity = 0.85;
-                  zIndex = 80;
+                  translateZ = -120;
+                  rotateY = -26;
+                  scale = 0.82;
+                  opacity = 0.80;
+                  zIndex = 70;
                 } else if (offset === -3) {
-                  translateX = -550;
+                  translateX = -660;
                   translateY = 0;
-                  translateZ = -200;
-                  rotateY = 36;
-                  scale = 0.78;
-                  opacity = 0.65;
-                  zIndex = 70;
+                  translateZ = -190;
+                  rotateY = 34;
+                  scale = 0.72;
+                  opacity = 0.50;
+                  zIndex = 55;
                 } else if (offset === 3) {
-                  translateX = 550;
+                  translateX = 660;
                   translateY = 0;
-                  translateZ = -200;
-                  rotateY = -36;
-                  scale = 0.78;
-                  opacity = 0.65;
-                  zIndex = 70;
+                  translateZ = -190;
+                  rotateY = -34;
+                  scale = 0.72;
+                  opacity = 0.50;
+                  zIndex = 55;
+                } else {
+                  // Cards beyond visible range are hidden to prevent overlapping
+                  translateX = offset > 0 ? 860 : -860;
+                  translateY = 0;
+                  translateZ = -260;
+                  rotateY = offset > 0 ? -40 : 40;
+                  scale = 0.60;
+                  opacity = 0;
+                  zIndex = 0;
                 }
               }
 
               // Real-time drag displacement
               const appliedTranslateX = translateX + (isDragging ? dragDelta * 0.65 : 0);
+              const isHidden = opacity === 0 || Math.abs(offset) > (isMobile ? 1 : 3);
 
               return (
                 <div
                   key={project.id}
                   onClick={() => {
+                    if (isHidden) return;
                     if (Math.abs(dragDelta) < 10) {
                       if (!isActive) {
                         setCurrentIndex(idx);
@@ -387,7 +416,7 @@ export default function SelectedWork() {
                     transform: `translate3d(${appliedTranslateX}px, ${translateY}px, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                     opacity,
                     zIndex,
-                    pointerEvents: isMobile && Math.abs(offset) > 1 ? 'none' : 'auto',
+                    pointerEvents: isHidden ? 'none' : 'auto',
                     transition: isDragging
                       ? 'none'
                       : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease',

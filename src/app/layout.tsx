@@ -30,11 +30,22 @@ export const metadata: Metadata = {
   },
 };
 
+import { getSectionContent } from '@/lib/cms/content-manager';
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
+  const initialContent: Record<string, any> = {};
+  for (const s of sections) {
+    try {
+      const val = getSectionContent(s, true);
+      if (val) initialContent[s] = val;
+    } catch (e) {}
+  }
+
   return (
     <html lang="en">
       <head>
@@ -42,12 +53,18 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                if (!sessionStorage.getItem('arohana_loaded')) {
+                // Only run intro experience loader on root homepage
+                if ((window.location.pathname === '/' || window.location.pathname === '') && !sessionStorage.getItem('arohana_loaded')) {
                   document.documentElement.classList.add('arohana-is-loading');
+                  setTimeout(function() {
+                    document.documentElement.classList.remove('arohana-is-loading');
+                  }, 1800);
                 } else {
                   document.documentElement.classList.add('arohana-already-loaded');
                 }
-              } catch (e) {}
+              } catch (e) {
+                document.documentElement.classList.remove('arohana-is-loading');
+              }
             `,
           }}
         />
@@ -56,7 +73,7 @@ export default function RootLayout({
         <ExperienceLoader />
         <div id="root-main-content">
           <SmoothScroll>
-            <AppShell>{children}</AppShell>
+            <AppShell initialContent={initialContent}>{children}</AppShell>
           </SmoothScroll>
         </div>
       </body>

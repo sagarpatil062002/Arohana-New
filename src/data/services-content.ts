@@ -116,31 +116,21 @@ export interface EngagementModelContent {
 export const ENGAGEMENT_MODELS: EngagementModelContent[] = [
   {
     num: '01',
-    title: 'Ongoing digital partnership',
-    bestFor: 'Brands needing continuous strategy, content, creative and platform management',
-    description:
-      'Continuous brand growth where Ārohana leads marketing strategy, monthly narrative calendars, creative direction, photo/video production, and multi-channel campaign management.',
+    title: 'Strategic Retainers',
+    bestFor: '',
+    description: '',
   },
   {
     num: '02',
-    title: 'Hospitality consulting',
-    bestFor: 'Restaurants, cafés, resorts and hospitality businesses needing operational or commercial intervention',
-    description:
-      'Targeted operational and culinary consulting addressing concept, menu engineering, kitchen SOPs, food costing, staff training, and pre-launch setup.',
+    title: 'Project Collaborations',
+    bestFor: '',
+    description: '',
   },
   {
     num: '03',
-    title: 'Project production',
-    bestFor: 'Films, documentaries, launches, campaigns, exhibitions or other defined projects',
-    description:
-      'Defined milestone-driven production covering end-to-end scripting, on-ground shoot direction, and post-production for corporate, institutional, or brand films.',
-  },
-  {
-    num: '04',
-    title: 'Hybrid engagement',
-    bestFor: 'Businesses where business consulting and digital communication need to move together',
-    description:
-      'Holistic engagement where operational restructuring and commercial repositioning are deployed simultaneously with ongoing brand communication and growth.',
+    title: 'Specialised Production Briefs',
+    bestFor: '',
+    description: '',
   },
 ];
 

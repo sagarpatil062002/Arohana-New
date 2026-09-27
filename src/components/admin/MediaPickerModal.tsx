@@ -27,12 +27,20 @@ export default function MediaPickerModal({
 
   useEffect(() => {
     if (isOpen) {
-      fetch('/content/media.json')
+      fetch('/api/content/media?draft=true')
         .then((r) => r.json())
-        .then((data) => {
-          if (data.assets) setAssets(data.assets);
+        .then((res) => {
+          const assetList = res?.data?.assets || res?.assets || [];
+          setAssets(assetList);
         })
-        .catch(() => {});
+        .catch(() => {
+          fetch('/content/media.json')
+            .then((r) => r.json())
+            .then((data) => {
+              if (data.assets) setAssets(data.assets);
+            })
+            .catch(() => {});
+        });
     }
   }, [isOpen]);
 
@@ -60,7 +68,9 @@ export default function MediaPickerModal({
       if (data.success && data.asset) {
         setAssets((prev) => [data.asset, ...prev]);
         setSelectedUrl(data.url);
-        setActiveTab('library');
+        // Automatically select the newly uploaded file and close modal
+        onSelect(data.url);
+        onClose();
       }
     } catch (err) {
       console.error('Upload failed:', err);

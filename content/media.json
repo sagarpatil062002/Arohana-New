@@ -1,6 +1,186 @@
 {
   "assets": [
     {
+      "id": "asset-1790495564237",
+      "name": "looms craft.png",
+      "url": "/uploads/1790495564237-looms-craft.png",
+      "type": "image",
+      "size": "5 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:52:44.240Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790495501815",
+      "name": "amgoc.png",
+      "url": "/uploads/1790495501815-amgoc.png",
+      "type": "image",
+      "size": "6 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:51:41.818Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790495487525",
+      "name": "shelkang cafe.png",
+      "url": "/uploads/1790495487525-shelkang-cafe.png",
+      "type": "image",
+      "size": "13 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:51:27.532Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790493255876",
+      "name": "sharada-exotica-nagala-park.webp",
+      "url": "/uploads/1790493255876-sharada-exotica-nagala-park.webp",
+      "type": "image",
+      "size": "22 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:14:15.893Z",
+      "usedIn": "general"
+    },
+    {
+      "id": "asset-1790493040874",
+      "name": "SHE LOGO-04.png",
+      "url": "/uploads/1790493040874-she-logo-04.png",
+      "type": "image",
+      "size": "803 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:10:40.877Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790493031037",
+      "name": "INDIAN ARMY LOGO-05.png",
+      "url": "/uploads/1790493031037-indian-army-logo-05.png",
+      "type": "image",
+      "size": "431 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:10:31.043Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790492948209",
+      "name": "loomcraft.png",
+      "url": "/uploads/1790492948209-loomcraft.png",
+      "type": "image",
+      "size": "101 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T07:09:08.213Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790492224271",
+      "name": "dk kharekar saraf.png",
+      "url": "/uploads/1790492224271-dk-kharekar-saraf.png",
+      "type": "image",
+      "size": "4 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T06:57:04.275Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790488557207",
+      "name": "Misu.png",
+      "url": "/uploads/1790488557207-misu.png",
+      "type": "image",
+      "size": "6 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:55:57.211Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790488524999",
+      "name": "khau gully.png",
+      "url": "/uploads/1790488524999-khau-gully.png",
+      "type": "image",
+      "size": "38 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:55:25.007Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790487614238",
+      "name": "raysons.jpg",
+      "url": "/uploads/1790487614238-raysons.jpg",
+      "type": "image",
+      "size": "14 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:40:14.240Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790487452655",
+      "name": "raysons.jpg",
+      "url": "/uploads/1790487452655-raysons.jpg",
+      "type": "image",
+      "size": "14 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:37:32.668Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790485494840",
+      "name": "Jagruthi.jpeg",
+      "url": "/uploads/1790485494840-jagruthi.jpeg",
+      "type": "image",
+      "size": "123 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:04:54.865Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790485471306",
+      "name": "Jeena Mutha.jpg",
+      "url": "/uploads/1790485471306-jeena-mutha.jpg",
+      "type": "image",
+      "size": "4.9 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:04:31.327Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790485445998",
+      "name": "Jeena Mutha.HEIC",
+      "url": "/uploads/1790485445998-jeena-mutha.heic",
+      "type": "image",
+      "size": "3.6 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:04:06.014Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790485416766",
+      "name": "Abijitha.jpg",
+      "url": "/uploads/1790485416766-abijitha.jpg",
+      "type": "image",
+      "size": "112 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:03:36.769Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790485344352",
+      "name": "Sarika.jpeg",
+      "url": "/uploads/1790485344352-sarika.jpeg",
+      "type": "image",
+      "size": "282 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:02:24.363Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790485327129",
+      "name": "Neha Mehta.jpeg",
+      "url": "/uploads/1790485327129-neha-mehta.jpeg",
+      "type": "image",
+      "size": "169 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T05:02:07.139Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1788787864077",
       "name": "arohana-logo.png",
       "url": "/uploads/1788787864077-arohana-logo.png",

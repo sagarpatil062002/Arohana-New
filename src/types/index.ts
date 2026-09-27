@@ -27,6 +27,14 @@ export interface CaseStudyGalleryItem {
   alt: string;
 }
 
+export interface CaseStudyMediaLink {
+  title: string;
+  url: string;
+  type: 'reel' | 'video' | 'post' | 'drive' | 'youtube' | 'tweet';
+  caption?: string;
+  thumbnail?: string;
+}
+
 export interface CaseStudy {
   slug: string;
   title: string;
@@ -45,6 +53,8 @@ export interface CaseStudy {
     metricsNote?: string;
   };
   gallery: CaseStudyGalleryItem[];
+  videos?: CaseStudyMediaLink[];
+  mediaLinks?: CaseStudyMediaLink[];
   closingQuote: string;
   closingText: string;
 }
@@ -57,6 +67,8 @@ export interface ProjectDirectoryItem {
   description: string;
   image: string;
   caseStudySlug?: string;
+  videoUrl?: string;
+  socialUrl?: string;
 }
 
 export interface ServicePillar {

@@ -13,31 +13,52 @@ interface CmsContextType {
 
 const CmsContext = createContext<CmsContextType | null>(null);
 
-export function CmsProvider({ children }: { children: React.ReactNode }) {
-  const [content, setContent] = useState<Record<string, any>>({});
-  const [isLoading, setIsLoading] = useState(true);
+export function CmsProvider({
+  children,
+  initialContent = {},
+}: {
+  children: React.ReactNode;
+  initialContent?: Record<string, any>;
+}) {
+  const [content, setContent] = useState<Record<string, any>>(initialContent);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Initial load of sections
+  const channelRef = React.useRef<BroadcastChannel | null>(null);
+
+  // Initial load of sections via single batch endpoint
   useEffect(() => {
-    const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
-    Promise.all(
-      sections.map((sec) =>
-        fetch(`/api/content/${sec}`)
-          .then((r) => r.json())
-          .then((res) => ({ section: sec, data: res.data }))
-          .catch(() => ({ section: sec, data: null }))
-      )
-    ).then((results) => {
-      const initial: Record<string, any> = {};
-      results.forEach((r) => {
-        if (r.data) initial[r.section] = r.data;
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((res) => {
+        if (res.success && res.data) {
+          setContent(res.data);
+          setIsLoading(false);
+        } else {
+          throw new Error('Fallback to individual');
+        }
+      })
+      .catch(() => {
+        const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
+        Promise.all(
+          sections.map((sec) =>
+            fetch(`/api/content/${sec}`)
+              .then((r) => r.json())
+              .then((res) => ({ section: sec, data: res.data }))
+              .catch(() => ({ section: sec, data: null }))
+          )
+        ).then((results) => {
+          const initial: Record<string, any> = {};
+          results.forEach((r) => {
+            if (r.data) initial[r.section] = r.data;
+          });
+          setContent(initial);
+          setIsLoading(false);
+        });
       });
-      setContent(initial);
-      setIsLoading(false);
-    });
 
     // Listen to broadcast messages from admin editor if previewing in another tab/frame
     const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('arohana_cms_preview') : null;
+    channelRef.current = channel;
     if (channel) {
       channel.onmessage = (event) => {
         if (event.data?.type === 'DRAFT_UPDATE' && event.data.section && event.data.data) {
@@ -47,7 +68,10 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
           }));
         }
       };
-      return () => channel.close();
+      return () => {
+        channel.close();
+        channelRef.current = null;
+      };
     }
   }, []);
 
@@ -65,11 +89,15 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
 
   const updateDraftInMemory = (section: string, data: any) => {
     setContent((prev) => ({ ...prev, [section]: data }));
-    if (typeof BroadcastChannel !== 'undefined') {
+    if (channelRef.current) {
       try {
-        const channel = new BroadcastChannel('arohana_cms_preview');
-        channel.postMessage({ type: 'DRAFT_UPDATE', section, data });
-        channel.close();
+        channelRef.current.postMessage({ type: 'DRAFT_UPDATE', section, data });
+      } catch (err) {}
+    } else if (typeof BroadcastChannel !== 'undefined') {
+      try {
+        const ch = new BroadcastChannel('arohana_cms_preview');
+        ch.postMessage({ type: 'DRAFT_UPDATE', section, data });
+        setTimeout(() => ch.close(), 1000);
       } catch (err) {}
     }
   };

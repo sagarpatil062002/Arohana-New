@@ -90,37 +90,23 @@ export default function Navbar() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px',
               textDecoration: 'none',
               zIndex: 2,
             }}
           >
-            <span
+            <Image
+              src="/images/tourin/tourin-logo.png"
+              alt="Tourin by Ārohana"
+              width={120}
+              height={44}
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '1.4rem',
-                fontWeight: 800,
-                letterSpacing: '-0.02em',
-                color: '#111111',
+                height: '44px',
+                width: 'auto',
+                objectFit: 'contain',
+                display: 'block',
               }}
-            >
-              TOURIN
-            </span>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                fontSize: '0.55rem',
-                fontWeight: 700,
-                letterSpacing: '0.18em',
-                color: '#8e8e94',
-                lineHeight: 1.25,
-                textTransform: 'uppercase',
-              }}
-            >
-              <span>TRAVEL BEYOND</span>
-              <span>THE ORDINARY</span>
-            </div>
+              priority
+            />
           </Link>
         ) : (
           <Link

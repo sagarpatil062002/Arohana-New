@@ -9,6 +9,14 @@ export default function ExperienceLoader() {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
+    // Only run on homepage root path '/'
+    if (typeof window !== 'undefined' && window.location.pathname !== '/' && window.location.pathname !== '') {
+      setIsVisible(false);
+      document.documentElement.classList.remove('arohana-is-loading');
+      document.documentElement.classList.add('arohana-already-loaded');
+      return;
+    }
+
     // Check if shown in this session already
     try {
       const hasLoaded = sessionStorage.getItem('arohana_loaded');
@@ -23,6 +31,14 @@ export default function ExperienceLoader() {
       return;
     }
 
+    // Absolute failsafe: Never keep the site stuck on loading longer than 1.4s under any circumstance
+    const failsafe = setTimeout(() => {
+      document.documentElement.classList.remove('arohana-is-loading');
+      document.documentElement.classList.add('arohana-already-loaded');
+      setIsFading(true);
+      setTimeout(() => setIsVisible(false), 300);
+    }, 1400);
+
     let current = 0;
     const interval = setInterval(() => {
       // Accelerate toward 100%
@@ -32,6 +48,7 @@ export default function ExperienceLoader() {
 
       if (current >= 100) {
         clearInterval(interval);
+        clearTimeout(failsafe);
         setTimeout(() => {
           setIsFading(true);
           try {
@@ -46,7 +63,10 @@ export default function ExperienceLoader() {
       }
     }, 45);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(failsafe);
+    };
   }, []);
 
   if (!isVisible) return null;

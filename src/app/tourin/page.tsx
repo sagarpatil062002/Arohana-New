@@ -60,6 +60,21 @@ export default function TourinPage() {
     quote: 'Travel should not merely fill your calendar; it should reshape how you observe the earth.',
   };
 
+  const destination = tourinCms.destination || {
+    tag: 'THE DESTINATION',
+    heading: 'Where we go.',
+    primary:
+      'Ladakh is our home ground and primary destination — where our roots, local relationships, and deep operational presence allow us to craft truly authentic, slow-paced journeys.',
+    upcoming: 'We will be adding more places (coming soon) as new journeys and routes are finalized.',
+  };
+
+  const journeysTaken = tourinCms.journeysTaken || {
+    tag: 'PROOF THAT IT WORKS',
+    heading: 'Journeys already taken.',
+    p1: 'Tourin has successfully guided private cultural journeys, intimate escapes, and bespoke high-altitude expeditions across Ladakh\'s most remote valleys and mountain passes.',
+    p2: 'Proven on high-altitude routes with trusted local relationships, tailored medical acclimatisation, and zero-compromise logistical care.',
+  };
+
   const containerRef = useRef<HTMLDivElement>(null);
   const hoverPillRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -71,6 +86,33 @@ export default function TourinPage() {
 
   // Active Journey for Itinerary Modal
   const [activeJourney, setActiveJourney] = useState<JourneyItem | null>(null);
+
+  // Toggle for View More Destinations
+  const [showAllPlaces, setShowAllPlaces] = useState<boolean>(false);
+
+  const defaultPlaces = [
+    {
+      id: 'ladakh',
+      name: 'LADAKH',
+      status: 'Active',
+      subtitle: 'High Passes, Starlit Deserts & Living Monasteries',
+      regions: 'Nubra · Sham Valley · Hanle Dark Sky · Zanskar',
+      image: '/images/tourin/dest-ladakh.jpg',
+    },
+    {
+      id: 'more-places',
+      name: 'ADDING MORE PLACES',
+      status: 'Coming Soon',
+      subtitle: 'New Routes & Untouched Terrains',
+      regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
+      image: '/images/tourin/tourin-hero.jpg',
+      isComingSoon: true,
+    },
+  ];
+
+  const destinationPlaces = (destination.places && destination.places.length > 0)
+    ? destination.places
+    : defaultPlaces;
 
   const journeysScrollRef = useRef<HTMLDivElement>(null);
 
@@ -140,7 +182,7 @@ export default function TourinPage() {
       title: 'The Slow Ladakh Odyssey',
       duration: '8 Days / 7 Nights',
       type: 'Cultural Immersion & Slow Exploration',
-      desc: 'Cultural immersion, heritage stays and hidden villages without rushing.',
+      desc: 'Apricot valley heritage stays, 11th-century monastic fresco libraries, and unhurried Indus trails.',
       image: '/images/tourin/dest-ladakh.jpg',
       elevation: '9,500 — 11,500 FT',
       highlights: [
@@ -155,41 +197,41 @@ export default function TourinPage() {
       ],
     },
     {
-      id: 'india-unexplored',
-      title: 'India Unexplored',
-      duration: '7 Days / 6 Nights',
-      type: 'Offbeat Destinations & Local Experiences',
-      desc: 'Offbeat destinations, local experiences and thoughtful travel.',
-      image: '/images/tourin/dest-india.jpg',
-      elevation: 'Various',
+      id: 'hanle-dark-sky',
+      title: 'Silent Frontiers: Hanle & High Lakes',
+      duration: '8 Days / 7 Nights',
+      type: 'Nomadic Grasslands & Dark Sky Sanctuaries',
+      desc: 'Stargazing at India’s premier Dark Sky Reserve, secluded turquoise lake shores, and Changpa nomadic pastoralists.',
+      image: '/images/tourin/tourin-2.jpg',
+      elevation: '13,500 — 14,764 FT',
       highlights: [
-        'Curated offbeat destinations away from typical tourist circuits',
-        'Authentic local food experiences and community interactions',
-        'Thoughtful pacing with time for personal exploration',
+        'Night-sky astronomy and telescope stargazing in the Hanle Dark Sky Reserve',
+        'Warm encounters with Changpa Pashmina nomadic herders on high plateaus',
+        'Private lakeside eco-camps on secluded meadow shores away from crowds',
       ],
       phases: [
-        { phase: 'Days 1–2', title: 'Arrival & Local Immersion', description: 'Settle in, explore the neighbourhood, meet local hosts.' },
-        { phase: 'Days 3–5', title: 'Deep Exploration & Cultural Encounters', description: 'Off-the-beaten-path villages, artisan workshops, and nature trails.' },
-        { phase: 'Days 5–7', title: 'Reflection & Meaningful Return', description: 'Community meals, storytelling evenings, and gentle departure.' },
+        { phase: 'Days 1–3', title: 'Leh Acclimatisation & Indus Valley', description: 'Calibrated ascent, monastery libraries, and medical briefing.' },
+        { phase: 'Days 4–5', title: 'Hanle Dark Sky Sanctuary (14,764 FT)', description: 'Observatory night skies and high-altitude grassland silence.' },
+        { phase: 'Days 6–8', title: 'Pangong Tso & Pastoral Plains', description: 'Secluded turquoise lake shores and nomadic pastoral encounters.' },
       ],
     },
     {
-      id: 'asia-reimagined',
-      title: 'Asia Reimagined',
+      id: 'zanskar-traverse',
+      title: 'The Ancient Kingdom: Zanskar Traverse',
       duration: '9 Days / 8 Nights',
-      type: 'Curated International Experiences',
-      desc: 'Curated international experiences for curious travellers.',
-      image: '/images/tourin/dest-international.jpg',
-      elevation: 'Various',
+      type: 'Expedition Traverse & Living Faith',
+      desc: 'Cliffside rock-hewn cave monasteries, glacial river canyons, and traditional Zanskari guest lodges.',
+      image: '/images/tourin/tourin-3.jpg',
+      elevation: '11,000 — 14,500 FT',
       highlights: [
-        'Handpicked destinations across Asia for authentic cultural immersion',
-        'Boutique stays that reflect local architecture and craft traditions',
-        'Guided experiences led by regional storytellers and artisans',
+        'Hike to the legendary cliff-embedded cave monastery of Phugtal Gompa',
+        'Dramatic vistas of the twin glacial peaks of Mount Nun and Mount Kun',
+        'Stays in family-run Zanskari guest lodges with warm wood-stove hospitality',
       ],
       phases: [
-        { phase: 'Days 1–3', title: 'Arrival & Cultural Orientation', description: 'Heritage walks, local market exploration, and introductory cuisine.' },
-        { phase: 'Days 4–6', title: 'Deep Cultural & Landscape Immersion', description: 'Temple trails, craft villages, and countryside experiences.' },
-        { phase: 'Days 7–9', title: 'Coastal, Culinary & Departure', description: 'Seaside serenity, farewell meals, and thoughtful return.' },
+        { phase: 'Days 1–2', title: 'Suru Valley & Nun-Kun Glacier Views', description: 'Traversing lush green valleys towards glacial peaks.' },
+        { phase: 'Days 3–6', title: 'Heart of Zanskar & Phugtal Cave Monastery', description: 'Hike to the cliffside monastery of Phugtal and Karsha Gompa.' },
+        { phase: 'Days 7–9', title: 'Padum Fortress Ruins & High Pass Return', description: 'Ancient palace ruins, local feast, and return traverse.' },
       ],
     },
   ];
@@ -606,69 +648,201 @@ export default function TourinPage() {
             {/* Timeline Col */}
             <div className="genesis-timeline-col">
               <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">03</span>
+                <span className="timeline-num-badge">02</span>
                 <span className="timeline-dot-red" />
               </div>
               <div className="timeline-connector-line" />
             </div>
 
-            {/* Content: Left text + Right image grid */}
-            <div className="tourin-section-inner">
+            {/* Content: Left text + Right destination cards grid */}
+            <div
+              className="tourin-section-inner"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'minmax(280px, 1fr) 1.5fr',
+                gap: 'clamp(2rem, 4vw, 4rem)',
+                alignItems: 'start',
+              }}
+            >
               {/* Left Text */}
               <div className="tourin-section-left">
                 <div className="genesis-tag">
                   <span className="tag-red-bullet">•</span>
-                  <span>THE DESTINATION</span>
+                  <span>{destination.tag || 'THE DESTINATION'}</span>
                 </div>
 
                 <h2 className="tourin-section-heading">
-                  Where we go.
+                  {destination.heading || 'Where we go.'}
                 </h2>
 
                 <div className="tourin-section-body">
                   <p>
-                    Ladakh is where Tourin begins, but it is only the start. We design journeys
-                    across India and select international destinations — each chosen for its culture,
-                    landscapes and meaningful experiences.
+                    {destination.primary || 'Ladakh is our home ground and primary destination — where our roots, local relationships, and deep operational presence allow us to craft truly authentic, slow-paced journeys.'}
+                  </p>
+                  <p style={{ marginTop: '0.85rem' }}>
+                    {destination.upcoming || 'We will be adding more places (coming soon) as new journeys and routes are finalized.'}
                   </p>
                 </div>
 
-                <Link href="#curated-journeys" className="genesis-story-link" style={{ marginTop: '2rem' }}>
-                  <span>EXPLORE DESTINATIONS</span>
-                  <ArrowUpRight size={15} strokeWidth={2.4} />
-                </Link>
+                <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.85rem', alignItems: 'flex-start' }}>
+                  <Link href="#curated-journeys" className="genesis-story-link">
+                    <span>EXPLORE LADAKH JOURNEYS</span>
+                    <ArrowUpRight size={15} strokeWidth={2.4} />
+                  </Link>
+
+                  {/* View More button for destinations */}
+                  <button
+                    type="button"
+                    onClick={() => setShowAllPlaces(!showAllPlaces)}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      padding: 0,
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      color: '#DE322D',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                      marginTop: '0.25rem',
+                    }}
+                  >
+                    <span>{showAllPlaces ? 'View Less Places' : 'View More Places'}</span>
+                    <ArrowRight size={13} style={{ transform: showAllPlaces ? 'rotate(-90deg)' : 'none', transition: 'transform 0.2s ease' }} />
+                  </button>
+                </div>
               </div>
 
-              {/* Right: Destination Cards Grid */}
-              <div className="dest-grid">
-                {[
-                  { label: 'LADAKH', sub: 'Mountains & Culture', img: '/images/tourin/dest-ladakh.jpg', alt: 'High altitude Himalayan lake with snow-capped peaks' },
-                  { label: 'INDIA', sub: 'Diverse Landscapes', img: '/images/tourin/dest-india.jpg', alt: 'Pristine Indian coast with turquoise water' },
-                  { label: 'INTERNATIONAL', sub: 'Curated Experiences', img: '/images/tourin/dest-international.jpg', alt: 'Mediterranean hilltop town at sunset' },
-                  { label: 'MORE PLACES', sub: 'Worth Knowing', img: '/images/tourin/dest-more-places.jpg', alt: 'Japanese shrine with red torii gates' },
-                ].map((dest, idx) => (
-                  <div key={dest.label} className="dest-card-wrap">
-                    <div className="dest-card">
-                      <Image
-                        src={dest.img}
-                        alt={dest.alt}
-                        fill
-                        sizes="(max-width: 768px) 45vw, (max-width: 1200px) 22vw, 260px"
-                        className="object-cover dest-card-img"
-                      />
-                      <div className="dest-card-overlay" />
-                      {idx === 3 && (
-                        <div className="dest-card-arrow">
-                          <ArrowRight size={16} strokeWidth={2.5} />
+              {/* Right: Destination Cards Grid (Ladakh + Adding More Places Coming Soon) */}
+              <div style={{ width: '100%' }}>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
+                    gap: '1.25rem',
+                  }}
+                >
+                  {(showAllPlaces ? destinationPlaces : destinationPlaces.slice(0, 2)).map((place: any) => (
+                    <div key={place.id} className="dest-card-wrap">
+                      <div
+                        className="dest-card"
+                        style={{
+                          height: '310px',
+                          position: 'relative',
+                          border: place.isComingSoon ? '1px dashed rgba(222, 50, 45, 0.4)' : '1px solid rgba(0,0,0,0.08)',
+                          backgroundColor: place.isComingSoon ? '#0f1014' : '#e5e7eb',
+                        }}
+                      >
+                        <Image
+                          src={place.image || '/images/tourin/dest-ladakh.jpg'}
+                          alt={place.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 360px"
+                          className="object-cover dest-card-img"
+                          style={{
+                            opacity: place.isComingSoon ? 0.35 : 1,
+                            filter: place.isComingSoon ? 'grayscale(0.3)' : 'none',
+                          }}
+                        />
+                        <div
+                          className="dest-card-overlay"
+                          style={{
+                            background: place.isComingSoon
+                              ? 'linear-gradient(to top, rgba(12, 12, 16, 0.96) 0%, rgba(12, 12, 16, 0.6) 50%, rgba(12, 12, 16, 0.35) 100%)'
+                              : 'linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%)',
+                          }}
+                        />
+
+                        {/* Top Badge: Active or Coming Soon */}
+                        <div style={{ position: 'absolute', top: '0.9rem', right: '0.9rem', zIndex: 3 }}>
+                          <span
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                              padding: '0.28rem 0.65rem',
+                              borderRadius: '9999px',
+                              fontSize: '0.65rem',
+                              fontFamily: 'var(--font-mono)',
+                              letterSpacing: '0.1em',
+                              fontWeight: 700,
+                              textTransform: 'uppercase',
+                              backgroundColor: place.isComingSoon ? '#DE322D' : 'rgba(0, 0, 0, 0.7)',
+                              color: '#FFFFFF',
+                              boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                            }}
+                          >
+                            {place.isComingSoon ? 'Coming Soon' : 'Active'}
+                          </span>
                         </div>
-                      )}
+
+                        {place.isComingSoon && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: '1.25rem',
+                              left: '1.25rem',
+                              right: '1.25rem',
+                              zIndex: 3,
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontFamily: 'var(--font-mono)',
+                                fontSize: '0.68rem',
+                                color: '#DE322D',
+                                fontWeight: 700,
+                                letterSpacing: '0.12em',
+                                marginBottom: '0.25rem',
+                                textTransform: 'uppercase',
+                              }}
+                            >
+                              Future Destinations
+                            </div>
+                            <div
+                              style={{
+                                fontFamily: 'var(--font-display)',
+                                fontSize: '1.18rem',
+                                fontWeight: 550,
+                                color: '#FFFFFF',
+                                lineHeight: 1.2,
+                                marginBottom: '0.35rem',
+                              }}
+                            >
+                              Adding More Places
+                            </div>
+                            <p
+                              style={{
+                                fontSize: '0.78rem',
+                                color: 'rgba(255, 255, 255, 0.75)',
+                                lineHeight: 1.45,
+                                margin: 0,
+                              }}
+                            >
+                              Scouting unhurried routes, authentic village stays and mountain passes.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="dest-card-meta" style={{ marginTop: '0.65rem' }}>
+                        <span className="dest-card-label" style={{ fontSize: '0.88rem' }}>
+                          {place.name}
+                        </span>
+                        <span className="dest-card-sub" style={{ fontSize: '0.82rem' }}>
+                          {place.subtitle}
+                        </span>
+                        {place.regions && (
+                          <span style={{ fontSize: '0.75rem', color: '#777', marginTop: '0.15rem' }}>
+                            {place.regions}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="dest-card-meta">
-                      <span className="dest-card-label">{dest.label}</span>
-                      <span className="dest-card-sub">{dest.sub}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -692,16 +866,27 @@ export default function TourinPage() {
           className="padding-global"
           style={{ maxWidth: '1440px', margin: '0 auto' }}
         >
-          {/* 1. MASTER HEADER & PHILOSOPHY */}
-          <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
-            <div className="genesis-tag">
-              <span className="tag-red-bullet">•</span>
-              <span>{philosophy.tag || 'OUR PHILOSOPHY & APPROACH'}</span>
+          <div className="tourin-section-row">
+            {/* Timeline Col */}
+            <div className="genesis-timeline-col">
+              <div className="timeline-badge-wrap">
+                <span className="timeline-num-badge">03</span>
+                <span className="timeline-dot-red" />
+              </div>
+              <div className="timeline-connector-line" />
             </div>
-            <h2 className="genesis-heading">
-              {philosophy.heading || 'What we believe.'}
-            </h2>
-          </div>
+
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {/* 1. MASTER HEADER & PHILOSOPHY */}
+              <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
+                <div className="genesis-tag">
+                  <span className="tag-red-bullet">•</span>
+                  <span>{philosophy.tag || 'OUR PHILOSOPHY & APPROACH'}</span>
+                </div>
+                <h2 className="genesis-heading">
+                  {philosophy.heading || 'What we believe.'}
+                </h2>
+              </div>
 
           {/* Core Philosophy Narrative & Quote Grid */}
           <div
@@ -848,7 +1033,9 @@ export default function TourinPage() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
 
       {/* ================================================================
            06 — EXPERIENCE MARQUEE (Continuous Horizontal Ticker)
@@ -960,7 +1147,7 @@ export default function TourinPage() {
             {/* Timeline Col */}
             <div className="genesis-timeline-col">
               <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">06</span>
+                <span className="timeline-num-badge">04</span>
                 <span className="timeline-dot-red" />
               </div>
               <div className="timeline-connector-line" />
@@ -981,7 +1168,7 @@ export default function TourinPage() {
               <div>
                 <div className="genesis-tag">
                   <span className="tag-red-bullet">•</span>
-                  <span>PROOF THAT IT WORKS</span>
+                  <span>{journeysTaken.tag || 'PROOF THAT IT WORKS'}</span>
                 </div>
 
                 <h2
@@ -995,49 +1182,31 @@ export default function TourinPage() {
                     marginBottom: '1.5rem',
                   }}
                 >
-                  Journeys already taken.
+                  {journeysTaken.heading || 'Journeys already taken.'}
                 </h2>
 
-                <div
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(3.5rem, 6vw, 5.5rem)',
-                    fontWeight: 600,
-                    color: '#111111',
-                    lineHeight: 0.95,
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  15+
-                </div>
-
-                <div style={{ maxWidth: '380px' }}>
+                <div style={{ maxWidth: '380px', marginTop: '1.25rem' }}>
                   <p
                     style={{
-                      fontSize: '0.95rem',
-                      color: '#555555',
-                      lineHeight: 1.65,
-                      marginBottom: '0.75rem',
+                      fontSize: '0.98rem',
+                      color: '#444444',
+                      lineHeight: 1.7,
+                      marginBottom: '0.85rem',
+                      fontWeight: 450,
                     }}
                   >
-                    Tourin has already completed 15+ separate bookings, ranging from individual travellers and small groups to larger groups, including a 20-biker trip.
+                    {journeysTaken.p1 || 'Tourin has successfully guided private cultural journeys, intimate escapes, and bespoke high-altitude expeditions across Ladakh\'s most remote valleys and mountain passes.'}
                   </p>
                   <p
                     style={{
-                      fontSize: '0.875rem',
+                      fontSize: '0.88rem',
                       color: '#777777',
-                      lineHeight: 1.6,
-                      marginBottom: '2rem',
+                      lineHeight: 1.65,
                     }}
                   >
-                    These are early proof that there is an audience for the kind of travel Tourin is building.
+                    {journeysTaken.p2 || 'Proven on high-altitude routes with trusted local relationships, tailored medical acclimatisation, and zero-compromise logistical care.'}
                   </p>
                 </div>
-
-                <Link href="/tourin#curated-journeys" className="genesis-story-link">
-                  <span>REAL TRAVELLER STORIES</span>
-                  <ArrowUpRight size={15} strokeWidth={2.4} />
-                </Link>
               </div>
 
               {/* Right: 3-Column Photo Grid (2 rows x 3 columns) */}
@@ -1101,7 +1270,7 @@ export default function TourinPage() {
             {/* Timeline Col */}
             <div className="genesis-timeline-col">
               <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">07</span>
+                <span className="timeline-num-badge">05</span>
                 <span className="timeline-dot-red" />
               </div>
               <div className="timeline-connector-line" />
@@ -1216,17 +1385,18 @@ export default function TourinPage() {
                 </div>
               </div>
 
-              {/* 3 Cards Grid */}
+              {/* Curated Journeys: 1 Active Journey + Adding More Places Coming Soon Card */}
               <div
                 ref={journeysScrollRef}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: '1.5rem',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))',
+                  gap: '1.75rem',
                 }}
                 className="curated-cards-grid"
               >
-                {journeys.map((journey, idx) => (
+                {/* 1. The Single Curated Journey */}
+                {journeys.slice(0, 1).map((journey) => (
                   <div
                     key={journey.id}
                     className="tourin-journey-card"
@@ -1244,7 +1414,7 @@ export default function TourinPage() {
                       transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                     }}
                   >
-                    {/* Top Image with Number Badge */}
+                    {/* Top Image */}
                     <div
                       style={{
                         position: 'relative',
@@ -1257,7 +1427,7 @@ export default function TourinPage() {
                         src={journey.image}
                         alt={journey.title}
                         fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         style={{
                           objectFit: 'cover',
                           transition: 'transform 0.6s ease',
@@ -1268,25 +1438,36 @@ export default function TourinPage() {
                       <div
                         style={{
                           position: 'absolute',
-                          top: '1.25rem',
-                          left: '1.25rem',
-                          fontFamily: 'var(--font-display)',
-                          fontSize: '1.75rem',
-                          fontWeight: 400,
-                          color: '#ffffff',
-                          lineHeight: 1,
-                          textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
-                          userSelect: 'none',
+                          top: '1rem',
+                          right: '1rem',
+                          zIndex: 2,
                         }}
                       >
-                        {String(idx + 1).padStart(2, '0')}
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            padding: '0.25rem 0.65rem',
+                            borderRadius: '9999px',
+                            fontSize: '0.66rem',
+                            fontFamily: 'var(--font-mono)',
+                            letterSpacing: '0.08em',
+                            fontWeight: 700,
+                            textTransform: 'uppercase',
+                            backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                            color: '#FFFFFF',
+                            backdropFilter: 'blur(8px)',
+                          }}
+                        >
+                          Curated Expedition
+                        </span>
                       </div>
                     </div>
 
                     {/* Card Body */}
                     <div
                       style={{
-                        padding: '1.5rem',
+                        padding: '1.75rem',
                         display: 'flex',
                         flexDirection: 'column',
                         flex: 1,
@@ -1295,7 +1476,7 @@ export default function TourinPage() {
                       <h3
                         style={{
                           fontFamily: 'var(--font-display)',
-                          fontSize: '1.3rem',
+                          fontSize: '1.35rem',
                           fontWeight: 500,
                           color: '#111111',
                           lineHeight: 1.2,
@@ -1307,20 +1488,20 @@ export default function TourinPage() {
 
                       <div
                         style={{
-                          fontSize: '0.825rem',
+                          fontSize: '0.85rem',
                           color: '#777777',
                           marginBottom: '0.85rem',
-                          fontWeight: 400,
+                          fontWeight: 500,
                         }}
                       >
-                        {journey.duration}
+                        {journey.duration} · {journey.elevation || '11,500 FT'}
                       </div>
 
                       <p
                         style={{
-                          fontSize: '0.875rem',
+                          fontSize: '0.9rem',
                           color: '#555555',
-                          lineHeight: 1.55,
+                          lineHeight: 1.6,
                           marginBottom: '1.5rem',
                           flex: 1,
                         }}
@@ -1333,17 +1514,173 @@ export default function TourinPage() {
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '0.35rem',
-                          fontSize: '0.825rem',
+                          fontSize: '0.85rem',
                           fontWeight: 600,
                           color: '#111111',
                         }}
                       >
                         <span>Explore Journey</span>
-                        <ArrowUpRight size={14} />
+                        <ArrowUpRight size={15} />
                       </div>
                     </div>
                   </div>
                 ))}
+
+                {/* 2. Adding More Places / Coming Soon Card */}
+                <div
+                  className="tourin-journey-card"
+                  style={{
+                    borderRadius: '16px',
+                    backgroundColor: '#0d0e12',
+                    border: '1px dashed rgba(222, 50, 45, 0.4)',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                >
+                  {/* Top Image with Atmospheric Wash */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      aspectRatio: '16/10',
+                      overflow: 'hidden',
+                      backgroundColor: '#16171d',
+                    }}
+                  >
+                    <Image
+                      src="/images/tourin/tourin-hero.jpg"
+                      alt="Adding More Places"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{
+                        objectFit: 'cover',
+                        opacity: 0.32,
+                        filter: 'grayscale(0.4)',
+                        transition: 'transform 0.6s ease',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                    />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'linear-gradient(to top, #0d0e12 0%, rgba(13, 14, 18, 0.6) 60%, rgba(13, 14, 18, 0.3) 100%)',
+                      }}
+                    />
+
+                    {/* Coming Soon Badge */}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '1rem',
+                        right: '1rem',
+                        zIndex: 2,
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          padding: '0.28rem 0.75rem',
+                          borderRadius: '9999px',
+                          fontSize: '0.68rem',
+                          fontFamily: 'var(--font-mono)',
+                          letterSpacing: '0.1em',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          backgroundColor: '#DE322D',
+                          color: '#FFFFFF',
+                          boxShadow: '0 2px 10px rgba(222, 50, 45, 0.35)',
+                        }}
+                      >
+                        Coming Soon
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Card Body */}
+                  <div
+                    style={{
+                      padding: '1.75rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flex: 1,
+                      color: '#ffffff',
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.7rem',
+                        color: '#DE322D',
+                        fontWeight: 700,
+                        letterSpacing: '0.12em',
+                        marginBottom: '0.35rem',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      UPCOMING ITINERARIES
+                    </div>
+
+                    <h3
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: '1.35rem',
+                        fontWeight: 500,
+                        color: '#ffffff',
+                        lineHeight: 1.2,
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Adding More Places
+                    </h3>
+
+                    <div
+                      style={{
+                        fontSize: '0.85rem',
+                        color: 'rgba(255, 255, 255, 0.55)',
+                        marginBottom: '0.85rem',
+                        fontWeight: 450,
+                      }}
+                    >
+                      New Itineraries &amp; Routes in Preparation
+                    </div>
+
+                    <p
+                      style={{
+                        fontSize: '0.9rem',
+                        color: 'rgba(255, 255, 255, 0.72)',
+                        lineHeight: 1.6,
+                        marginBottom: '1.5rem',
+                        flex: 1,
+                      }}
+                    >
+                      We are scouting and designing new slow-travel routes across untouched valleys and remote mountain communities. New curated journeys will be announced soon.
+                    </p>
+
+                    <Link
+                      href="/contact"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.45rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        color: '#DE322D',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s ease',
+                      }}
+                    >
+                      <span>Inquire about upcoming journeys</span>
+                      <ArrowRight size={15} />
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -43,7 +43,6 @@ interface ReelItem {
   subtitle: string;
   category: string;
   image: string;
-  video?: string;
   instagramUrl: string;
 }
 
@@ -55,7 +54,6 @@ const REELS: ReelItem[] = [
     subtitle: 'Raysons Group · Architecture',
     category: 'Real Estate & Built Environment',
     image: '/images/case-studies/raysons/neora-1.jpg',
-    video: '/videos/hero-montage.mp4',
     instagramUrl: 'https://www.instagram.com/arohana.studio',
   },
   {
@@ -92,7 +90,6 @@ const REELS: ReelItem[] = [
     subtitle: 'Indian Army · Ladakh Missions',
     category: 'Institutions & Government',
     image: '/images/army/14corps-2.jpg',
-    video: '/videos/hero-montage.mp4',
     instagramUrl: 'https://www.instagram.com/arohana.studio',
   },
   {
@@ -592,16 +589,38 @@ export default function WorkPage() {
         subtitle: r.subtitle || '',
         category: r.category || '',
         image: r.coverImage || r.image || '/images/case-studies/raysons/neora-1.jpg',
-        video: r.video || '/videos/hero-montage.mp4',
         instagramUrl: r.instagramUrl || 'https://www.instagram.com/byarohana/',
       }))
     : REELS;
+
+  // ── CMS-driven case studies (falls back to hardcoded if CMS unavailable) ──
+  const activeCaseStudies: CaseStudyItem[] = (workCms?.caseStudies && workCms.caseStudies.length > 0)
+    ? workCms.caseStudies
+        .filter((c: any) => c.published !== false)
+        .map((c: any, i: number) => ({
+          id: c.id || `cs-${i}`,
+          slug: c.slug || c.id || `cs-${i}`,
+          num: c.num || String(i + 1).padStart(2, '0'),
+          title: c.title || '',
+          desc: c.desc || '',
+          tags: Array.isArray(c.tags) ? c.tags : [],
+          category: c.category || '',
+          image: c.image || CASE_STUDIES[i % CASE_STUDIES.length]?.image || '/images/case-studies/raysons/neora-1.jpg',
+        }))
+    : CASE_STUDIES;
+
+  const getCase = (idOrSlug: string, fallbackIdx: number): CaseStudyItem => {
+    return (
+      activeCaseStudies.find((c) => c.id === idOrSlug || c.slug === idOrSlug) ||
+      activeCaseStudies[fallbackIdx] ||
+      CASE_STUDIES[fallbackIdx]
+    );
+  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const reelsScrollRef = useRef<HTMLDivElement>(null);
   const [selectedReelFilter, setSelectedReelFilter] = useState('All');
   const [selectedCaseFilter, setSelectedCaseFilter] = useState('All');
-  const [activeDirectoryIndex, setActiveDirectoryIndex] = useState(0);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
   // Filtered Reels
@@ -848,31 +867,14 @@ export default function WorkPage() {
                 e.currentTarget.style.boxShadow = '0 14px 30px -8px rgba(0, 0, 0, 0.22)';
               }}
             >
-              {/* Media: Image / Video */}
-              {reel.video ? (
-                <video
-                  src={reel.video}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-              ) : (
-                <Image
-                  src={reel.image}
-                  alt={reel.hookTitle}
-                  fill
-                  sizes="280px"
-                  style={{ objectFit: 'cover' }}
-                />
-              )}
+              {/* Media: High-resolution clean cover image only */}
+              <Image
+                src={reel.image}
+                alt={reel.hookTitle}
+                fill
+                sizes="280px"
+                style={{ objectFit: 'cover' }}
+              />
 
               {/* Gradient Dark Overlay */}
               <div
@@ -1082,8 +1084,8 @@ export default function WorkPage() {
 
               {/* Card 03: PictureTime */}
               <WorkCaseCard
-                cs={CASE_STUDIES[2]}
-                isDimmed={isCardDimmed(CASE_STUDIES[2].tags)}
+                cs={getCase('picturetime', 2)}
+                isDimmed={isCardDimmed(getCase('picturetime', 2).tags)}
                 imageAspect="16 / 9"
               />
             </div>
@@ -1092,8 +1094,8 @@ export default function WorkPage() {
             <div className="work-bento-col-2">
               {/* Card 01: Raysons Group */}
               <WorkCaseCard
-                cs={CASE_STUDIES[0]}
-                isDimmed={isCardDimmed(CASE_STUDIES[0].tags)}
+                cs={getCase('raysons-group', 0)}
+                isDimmed={isCardDimmed(getCase('raysons-group', 0).tags)}
                 imageAspect="16 / 9.5"
               />
 
@@ -1101,20 +1103,18 @@ export default function WorkPage() {
               <div className="work-bento-subgrid">
                 {/* Card 04: Misu */}
                 <WorkCaseCard
-                  cs={CASE_STUDIES[3]}
-                  isDimmed={isCardDimmed(CASE_STUDIES[3].tags)}
+                  cs={getCase('misu', 3)}
+                  isDimmed={isCardDimmed(getCase('misu', 3).tags)}
                   imageAspect="1 / 1"
                 />
 
                 {/* Card 05: SHE + Tagline */}
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <WorkCaseCard
-                    cs={CASE_STUDIES[4]}
-                    isDimmed={isCardDimmed(CASE_STUDIES[4].tags)}
+                    cs={getCase('she', 4)}
+                    isDimmed={isCardDimmed(getCase('she', 4).tags)}
                     imageAspect="16 / 8.5"
                   />
-
-
                 </div>
               </div>
             </div>
@@ -1123,295 +1123,17 @@ export default function WorkPage() {
             <div className="work-bento-col-3">
               {/* Card 02: Loom Crafts */}
               <WorkCaseCard
-                cs={CASE_STUDIES[1]}
-                isDimmed={isCardDimmed(CASE_STUDIES[1].tags)}
+                cs={getCase('loom-crafts', 1)}
+                isDimmed={isCardDimmed(getCase('loom-crafts', 1).tags)}
                 imageAspect="16 / 9.5"
               />
 
               {/* Card 06: RR Skins */}
               <WorkCaseCard
-                cs={CASE_STUDIES[5]}
-                isDimmed={isCardDimmed(CASE_STUDIES[5].tags)}
+                cs={getCase('rr-skins', 5)}
+                isDimmed={isCardDimmed(getCase('rr-skins', 5).tags)}
                 imageAspect="16 / 10"
               />
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════════
-            SECTION 4: CLIENT / PROJECT DIRECTORY ("Additional work")
-            ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          style={{
-            paddingTop: 'clamp(4rem, 7vw, 6.5rem)',
-            paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
-            borderTop: BORDER,
-          }}
-        >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'start',
-            }}
-          >
-            {/* Left Column: Heading & Directory Context */}
-            <div style={{ position: 'sticky', top: '100px' }}>
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '0.85rem',
-                }}
-              >
-                {workCms?.directoryHeader?.eyebrow || 'CLIENT / PROJECT DIRECTORY'}
-              </div>
-
-              <h2
-                style={{
-                  fontSize: 'clamp(2.5rem, 4.8vw, 4.8rem)',
-                  fontWeight: 650,
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.05,
-                  color: DARK,
-                  marginBottom: '1.25rem',
-                }}
-              >
-                {workCms?.directoryHeader?.title ? (
-                  workCms.directoryHeader.title
-                ) : (
-                  <>
-                    Additional
-                    <br />
-                    work
-                  </>
-                )}
-              </h2>
-
-              <p
-                style={{
-                  fontSize: 'clamp(0.95rem, 1.2vw, 1.12rem)',
-                  lineHeight: 1.6,
-                  color: BODY_TEXT,
-                  maxWidth: '420px',
-                  marginBottom: 'clamp(2rem, 3.5vw, 3rem)',
-                }}
-              >
-                {workCms?.directoryHeader?.subtitle || 'A selection of other businesses and projects we’ve worked with across different sectors.'}
-              </p>
-
-              <div
-                className="tag-mono hide-on-mobile"
-                style={{
-                  fontSize: '0.62rem',
-                  letterSpacing: '0.18em',
-                  color: FAINT,
-                  lineHeight: 1.8,
-                  borderLeft: '2px solid rgba(0, 0, 0, 0.1)',
-                  paddingLeft: '1rem',
-                }}
-              >
-                <div>DIFFERENT PEOPLE</div>
-                <div>DIFFERENT CHALLENGES</div>
-                <div>SAME PURPOSE.</div>
-              </div>
-            </div>
-
-            {/* Right Column: Responsive Placeholder Cards Grid for Each Sector */}
-            <div className="work-directory-column" style={{ width: '100%' }}>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-                  gap: '1.25rem',
-                }}
-              >
-                {((workCms?.directoryCategories && workCms.directoryCategories.length > 0)
-                  ? workCms.directoryCategories
-                  : DIRECTORY_CATEGORIES
-                ).map((cat: any) => (
-                  <div
-                    key={cat.num}
-                    style={{
-                      backgroundColor: '#FFFFFF',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(0, 0, 0, 0.08)',
-                      padding: '1.75rem 1.6rem 1.6rem',
-                      boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-4px)';
-                      e.currentTarget.style.boxShadow = '0 16px 36px -6px rgba(0, 0, 0, 0.08)';
-                      e.currentTarget.style.borderColor = 'rgba(222, 50, 45, 0.35)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 4px 18px rgba(0, 0, 0, 0.03)';
-                      e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)';
-                    }}
-                  >
-                    <div>
-                      {/* Top Row: Index Badge & Subtitle */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginBottom: '0.85rem',
-                        }}
-                      >
-                        <span
-                          className="tag-mono"
-                          style={{
-                            fontSize: '0.72rem',
-                            fontWeight: 700,
-                            letterSpacing: '0.12em',
-                            color: RED,
-                          }}
-                        >
-                          {cat.num}
-                        </span>
-                        <span
-                          className="tag-mono"
-                          style={{
-                            fontSize: '0.58rem',
-                            letterSpacing: '0.14em',
-                            color: MUTED,
-                            textTransform: 'uppercase',
-                          }}
-                        >
-                          SECTOR
-                        </span>
-                      </div>
-
-                      {/* Sector Title & Subtitle */}
-                      <h3
-                        style={{
-                          fontSize: '1.2rem',
-                          fontWeight: 650,
-                          letterSpacing: '-0.02em',
-                          color: DARK,
-                          margin: 0,
-                          lineHeight: 1.25,
-                        }}
-                      >
-                        {cat.title}
-                      </h3>
-                      <div
-                        className="tag-mono"
-                        style={{
-                          fontSize: '0.62rem',
-                          letterSpacing: '0.14em',
-                          color: MUTED,
-                          marginTop: '0.35rem',
-                          marginBottom: '1.25rem',
-                        }}
-                      >
-                        {cat.subtitle}
-                      </div>
-
-                      {/* Clients Pill Tags */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '0.4rem',
-                        }}
-                      >
-                        {cat.clients.map((client: any) => {
-                          const hasDetailPage = Boolean(
-                            client.href &&
-                            client.href !== '/contact' &&
-                            client.href !== '#' &&
-                            client.href !== ''
-                          );
-
-                          return hasDetailPage ? (
-                            <Link
-                              key={client.name}
-                              href={client.href}
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.35rem',
-                                fontSize: '0.72rem',
-                                fontWeight: 500,
-                                padding: '0.32rem 0.65rem',
-                                borderRadius: '4px',
-                                backgroundColor: '#F4F4F6',
-                                color: DARK,
-                                textDecoration: 'none',
-                                transition: 'all 0.2s ease',
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#111113';
-                                e.currentTarget.style.color = '#ffffff';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = '#F4F4F6';
-                                e.currentTarget.style.color = DARK;
-                              }}
-                            >
-                              <span>{client.name}</span>
-                              <ArrowUpRight size={11} />
-                            </Link>
-                          ) : (
-                            <span
-                              key={client.name}
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                fontSize: '0.72rem',
-                                fontWeight: 450,
-                                padding: '0.32rem 0.65rem',
-                                borderRadius: '4px',
-                                backgroundColor: '#FAFAFA',
-                                border: '1px solid rgba(0, 0, 0, 0.06)',
-                                color: '#52525B',
-                              }}
-                            >
-                              {client.name}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Bottom Indicator */}
-                    <div
-                      style={{
-                        paddingTop: '1.25rem',
-                        marginTop: '1.25rem',
-                        borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <span className="tag-mono" style={{ fontSize: '0.62rem', color: FAINT }}>
-                        {cat.clients.length} {cat.clients.length === 1 ? 'ENGAGEMENT' : 'ENGAGEMENTS'}
-                      </span>
-                      <ArrowRight size={13} color={MUTED} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Bottom Explore Button */}
-              <div className="work-directory-footer" style={{ marginTop: '2.5rem' }}>
-                <Link href={workCms?.directoryHeader?.ctaHref || '/contact'} className="work-dir-explore-btn">
-                  <span>{workCms?.directoryHeader?.ctaText || 'Start an engagement with us'}</span>
-                  <ArrowRight size={16} color="#ffffff" />
-                </Link>
-              </div>
             </div>
           </div>
         </section>

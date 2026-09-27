@@ -81,13 +81,13 @@ const CHAPTERS: ChapterData[] = [
   {
     number: '03',
     code: '03 / 03',
-    tag: 'EXPANSION & LADAKH',
-    title: 'Expansion & Ladakh.',
-    subtitle: 'High-altitude challenges and national institutions.',
+    tag: 'EXPANSION, LADAKH & TOURIN',
+    title: 'Expansion, Ladakh & Tourin.',
+    subtitle: 'High-altitude challenges, defence missions, and experiential travel.',
     leftText:
-      'As Arohana grew, our footprint expanded from Kolhapur and Pune across western India and eventually into the high-altitude terrain of Ladakh. Working alongside defence institutions, including the Indian Army’s 14 Corps (Fire & Fury Corps), Western Command, and border initiatives, transformed how we think about scale, discipline, and purpose.',
+      'As Arohana grew, our footprint expanded from Kolhapur and Pune across western India and into the high-altitude terrain of Ladakh. Working alongside defence institutions, including the Indian Army’s 14 Corps (Fire & Fury Corps), Western Command, and border initiatives, transformed how we think about scale, discipline, and purpose.',
     rightText:
-      'Operating in sensitive, extreme environments taught our entire team a different calibre of accountability. When communications and documentation affect lives and national legacy, there is no margin for superficiality. That standard of uncompromised precision now governs every client brand Arohana touches today.',
+      'Operating in Ladakh also sparked a new dimension of our work: Tourin. Witnessing how conventional travel rushed past the authentic culture of the Himalayas, we conceived Tourin — Arohana’s own experiential travel brand. Rooted in slow pacing, heritage homestays, and genuine community encounters, Tourin demonstrates that thoughtful execution and deep respect for people apply just as powerfully to travel.',
     quote: 'Discipline in execution is the ultimate differentiator.',
     attribution: '— MADHURA HAWAL · FOUNDER, AROHANA',
   },
@@ -119,39 +119,32 @@ const TEAM: TeamMember[] = [
     bio: 'With a natural eye for aesthetics and a passion for storytelling, I bring ideas to life through visual content and video editing. My approach combines creativity with attention to detail, ensuring that every piece of content feels purposeful, engaging, and well-crafted. I enjoy exploring new creative tools, experimenting with fresh ideas, and continuously refining my skills. Adaptable and committed to quality, I strive to create work that not only looks good but also communicates effectively and leaves a lasting impression.',
   },
   {
-    id: 'jeena',
-    name: 'Jeena',
+    id: 'neha-mehta',
+    name: 'Neha Mehta',
     role: 'SOCIAL MEDIA STRATEGIST',
-    image: '/images/about/team-jeena.jpg',
-    bio: 'Been in this industry for 4+ years, worked across multiple industries and somewhere along the way, I now look at billboards, ads, Instagram posts and campaigns through a completely different lens. Now I’m like - why? What was the thought process behind it? What was the reason behind it? Why did it work? (Which means I have a crazy amount of screenshots, leading to some serious storage issues.) Can I complain, though? Not really. It is what it is! I love playing with fun ideas for campaigns, exploring different niches and bringing creativity into everything I do. I also love sharing funny stickers in the group chat. (I’m a little funny too.)',
+    image: '/images/about/team-neha.jpg',
+    bio: 'Neha is a Digital Marketing Executive with two years of experience in this industry, currently working as a Social Media Strategist at Arohana Consultancy. Her expertise includes social media strategy, content planning, performance marketing, and digital brand building. At Arohana, she has had the opportunity to work with brands across different industries, gaining diverse experience in understanding audiences, developing communication strategies, and creating digital campaigns that align with each brand’s goals.',
   },
   {
     id: 'sarika-jain',
     name: 'Sarika Jain',
     role: 'GRAPHIC DESIGNER',
-    image: '/images/about/team-tanvi.jpg',
+    image: '/images/about/team-sarika.jpg',
     bio: 'With 5+ years of experience, I’ve had the opportunity to work across multiple industries and explore a wide range of creative styles. I love experimenting with fresh ideas, discovering new niches and bringing creativity into everything I do. The designer in me is always searching for inspiration—whether it’s in an advertisement, an Instagram post or something astounding. Every new idea helps me grow, learn and look at design from a different perspective. Most days, I’m either racing against a deadline or working on something the team needed “yesterday”—but I genuinely enjoy the energy of it all. I’m a happy-go-lucky person who believes that a positive attitude, a curious mind and a little bit of humor can make the creative process even better.',
   },
   {
-    id: 'shagun-lakhotia',
-    name: 'Shagun Lakhotia',
-    role: 'GRAPHIC DESIGNER',
-    image: '/images/about/team-riya.jpg',
-    bio: 'A creative and detail-oriented designer with a strong interest in graphic designing, interaction design, and visual communication. I enjoy turning ideas into meaningful and engaging digital experiences, while paying close attention to both aesthetics and usability. I’m always keen to learn new tools, explore different design approaches, and improve my skills through new creative challenges. I value thoughtful design, adaptability, and creating work that is visually appealing, user-focused, and effective.',
+    id: 'bhavika',
+    name: 'Bhavika',
+    role: 'BRAND STRATEGIST',
+    image: '/images/about/team-bhavika.jpg',
+    bio: 'I’m Bhavika, a brand strategist, storyteller and professional overthinker. I’m curious about people, pop culture, good food, pretty spaces and the little things that make an idea stick. I’m usually observing, collecting references, making connections between random things and turning them into something interesting. Basically, I’m just trying to make sense of the world and occasionally make something cool out of it.',
   },
   {
-    id: 'neha-mehta',
-    name: 'Neha Mehta',
+    id: 'jeena',
+    name: 'Jeena',
     role: 'SOCIAL MEDIA STRATEGIST',
-    image: '/images/about/team-radha.jpg',
-    bio: 'Neha is a Digital Marketing Executive with two years of experience in this industry, currently working as a Social Media Strategist at Arohana Consultancy. Her expertise includes social media strategy, content planning, performance marketing, and digital brand building. At Arohana, she has had the opportunity to work with brands across different industries, gaining diverse experience in understanding audiences, developing communication strategies, and creating digital campaigns that align with each brand’s goals.',
-  },
-  {
-    id: 'farhan-shaikh',
-    name: 'Farhan Shaikh',
-    role: 'SR. VIDEO EDITOR',
-    image: '/images/about/team-farhan.jpg',
-    bio: 'A creative and detail-oriented professional with a strong interest in visual content, video editing, and digital media. I enjoy turning ideas into engaging visuals and polished content, with a focus on quality, creativity, and clear communication. I’m always keen to learn new tools and techniques, improve my skills, and take on creative challenges. I value consistency, adaptability, and delivering work that is both visually appealing and effective.',
+    image: '/images/about/team-jeena.jpg',
+    bio: 'Been in this industry for 4+ years, worked across multiple industries and somewhere along the way, I now look at billboards, ads, Instagram posts and campaigns through a completely different lens. Now I’m like - why? What was the thought process behind it? What was the reason behind it? Why did it work? (Which means I have a crazy amount of screenshots, leading to some serious storage issues.) Can I complain, though? Not really. It is what it is! I love playing with fun ideas for campaigns, exploring different niches and bringing creativity into everything I do. I also love sharing funny stickers in the group chat. (I’m a little funny too.)',
   },
 ];
 
@@ -159,15 +152,16 @@ export default function StudioPage() {
   const { content } = useCmsContent();
   const aboutCms = content.about || {};
 
-  const heroData = aboutCms.hero || {
-    eyebrow: 'THE AROHANA STORY',
-    headline: "I didn't plan to build Arohana.",
-    subheadline: "I built it because I kept seeing the same gap between what brands were being promised and what was actually happening on the ground.",
-    introP1: "The road to Arohana was anything but straight. I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people see only after they become responsible for the whole thing.",
-    introP2: "Today, Arohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building.",
-    founderName: "Madhura Hawal",
-    founderTitle: "Founder & Strategic Director",
-    stats: STATS,
+  const heroData = {
+    eyebrow: aboutCms.hero?.eyebrow || 'THE AROHANA STORY',
+    headline: aboutCms.hero?.headline || "I didn't plan to build Arohana.",
+    subheadline: aboutCms.hero?.subheadline || "I built it because I kept seeing the same gap between what brands were being promised and what was actually happening on the ground.",
+    introP1: aboutCms.hero?.introP1 || "The road to Arohana was anything but straight. I built it after spending years inside businesses — learning what makes them work, what makes them struggle, and what people see only after they become responsible for the whole thing.",
+    introP2: aboutCms.hero?.introP2 || "Today, Arohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building. And in Ladakh, that same philosophy led to Tourin, our venture in experiential high-altitude travel.",
+    founderName: aboutCms.hero?.founderName || "Madhura Hawal",
+    founderTitle: aboutCms.hero?.founderTitle || "Founder & Strategic Director",
+    image: aboutCms.hero?.image || aboutCms.hero?.founderImage || '/images/about/hero-founder-collage.png',
+    stats: aboutCms.hero?.stats || STATS,
   };
 
   const chaptersData: ChapterData[] = (aboutCms.chapters && aboutCms.chapters.length > 0)
@@ -431,8 +425,8 @@ export default function StudioPage() {
                 }}
               >
                 <Image
-                  src="/images/about/hero-founder-collage.png"
-                  alt="Madhura Hawal — Founder & Strategic Lead, Ārohana Studio"
+                  src={heroData.image || '/images/about/hero-founder-collage.png'}
+                  alt={`${heroData.founderName || 'Madhura Hawal'} — ${heroData.founderTitle || 'Founder & Strategic Lead'}, Ārohana Studio`}
                   fill
                   priority
                   style={{ objectFit: 'contain' }}
@@ -592,8 +586,8 @@ export default function StudioPage() {
                 <div className="chapters-mobile-nodes-grid">
                   {chaptersData.map((ch, idx) => {
                     const isActive = idx === activeChapterIndex;
-                    const shortTag = idx === 0 ? 'The Roots' : idx === 1 ? 'The Turning Point' : 'Expansion & Ladakh';
-                    const shortSub = idx === 0 ? 'Hospitality' : idx === 1 ? 'The Detour' : 'The Work Got Interesting';
+                    const shortTag = idx === 0 ? 'The Roots' : idx === 1 ? 'The Turning Point' : 'Ladakh & Tourin';
+                    const shortSub = idx === 0 ? 'Hospitality' : idx === 1 ? 'The Detour' : 'Travel & Purpose';
                     return (
                       <button
                         key={ch.number}
@@ -777,7 +771,173 @@ export default function StudioPage() {
           </div>
         </section>
 
+        {/* ═══════════════════════════════════════════════════════════════════
+            SECTION 3: TOURIN SPOTLIGHT ("Beyond Client Work")
+            ═══════════════════════════════════════════════════════════════════ */}
+        <section
+          style={{
+            paddingTop: 'clamp(4rem, 6vw, 5.5rem)',
+            paddingBottom: 'clamp(4rem, 6vw, 5.5rem)',
+            borderTop: BORDER,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: '#111113',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+              position: 'relative',
+              boxShadow: '0 24px 60px -15px rgba(0, 0, 0, 0.2)',
+            }}
+          >
+            {/* Left Column: Narrative & CTA */}
+            <div
+              style={{
+                padding: 'clamp(2.5rem, 5vw, 4.5rem)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                color: '#ffffff',
+                zIndex: 2,
+              }}
+            >
+              <div>
+                <div
+                  className="tag-mono"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    fontSize: '0.68rem',
+                    letterSpacing: '0.18em',
+                    color: RED,
+                    fontWeight: 700,
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  <span style={{ width: '18px', height: '2px', backgroundColor: RED, display: 'inline-block' }} />
+                  BEYOND CLIENT WORK · AN AROHANA VENTURE
+                </div>
 
+                <h3
+                  style={{
+                    fontSize: 'clamp(2rem, 3.8vw, 3.2rem)',
+                    fontWeight: 650,
+                    letterSpacing: '-0.03em',
+                    lineHeight: 1.1,
+                    color: '#ffffff',
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  Tourin
+                  <span style={{ color: RED }}>.</span>
+                  <br />
+                  <span style={{ fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', fontWeight: 400, color: 'rgba(255, 255, 255, 0.7)' }}>
+                    Travel beyond the itinerary.
+                  </span>
+                </h3>
+
+                <p
+                  style={{
+                    fontSize: 'clamp(0.92rem, 1.15vw, 1.02rem)',
+                    lineHeight: 1.7,
+                    color: 'rgba(255, 255, 255, 0.72)',
+                    maxWidth: '480px',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  Conceived, branded, and operated by Ārohana, Tourin brings our design standard into the physical world through slow, immersive high-altitude journeys in Ladakh.
+                </p>
+
+                <p
+                  style={{
+                    fontSize: 'clamp(0.85rem, 1vw, 0.94rem)',
+                    lineHeight: 1.65,
+                    color: 'rgba(255, 255, 255, 0.55)',
+                    maxWidth: '480px',
+                  }}
+                >
+                  Rooted in authentic heritage homestays, native high-altitude cuisine, starlit dark-sky sanctuaries, and respectful community connection.
+                </p>
+              </div>
+
+              <div style={{ marginTop: '2.5rem' }}>
+                <Link
+                  href="/tourin"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    backgroundColor: RED,
+                    color: '#ffffff',
+                    padding: '0.85rem 1.65rem',
+                    borderRadius: '4px',
+                    fontSize: '0.82rem',
+                    fontWeight: 650,
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    transition: 'all 0.25s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffffff';
+                    e.currentTarget.style.color = DARK;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = RED;
+                    e.currentTarget.style.color = '#ffffff';
+                  }}
+                >
+                  <span>Explore Tourin</span>
+                  <ArrowRight size={15} strokeWidth={2.4} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Column: Visual Photo */}
+            <div
+              style={{
+                position: 'relative',
+                minHeight: '340px',
+                width: '100%',
+              }}
+            >
+              <Image
+                src="/images/tourin/tourin-hero.jpg"
+                alt="High Himalayas and quiet moments in remote Ladakh"
+                fill
+                sizes="(max-width: 900px) 100vw, 50vw"
+                style={{ objectFit: 'cover' }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(90deg, rgba(17, 17, 19, 0.8) 0%, rgba(17, 17, 19, 0.2) 60%, rgba(17, 17, 19, 0.4) 100%)',
+                }}
+              />
+              <div
+                className="tag-mono"
+                style={{
+                  position: 'absolute',
+                  bottom: '1.5rem',
+                  right: '1.5rem',
+                  fontSize: '0.64rem',
+                  color: 'rgba(255, 255, 255, 0.75)',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  backdropFilter: 'blur(8px)',
+                  padding: '0.35rem 0.75rem',
+                  borderRadius: '4px',
+                  letterSpacing: '0.12em',
+                }}
+              >
+                LADAKH · EXPERIENTIAL TRAVEL
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 5: OUR TEAM ("People behind possibilities.")
@@ -823,99 +983,115 @@ export default function StudioPage() {
             </h2>
           </div>
 
-          {/* 7 Team Members in a Responsive Grid with Bios */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-              gap: 'clamp(1.25rem, 2vw, 2.25rem)',
-            }}
-          >
-            {TEAM.map((member) => (
+          {/* Team Members in a Responsive Grid with Bios */}
+          {(() => {
+            const rawMembers = (teamData.members && teamData.members.length > 0) ? teamData.members : TEAM;
+            const activeTeamMembers = rawMembers.map((member: any) => {
+              const fallback = TEAM.find((t) => t.id === member.id || t.name.toLowerCase() === member.name?.toLowerCase());
+              return {
+                id: member.id || fallback?.id || member.name.toLowerCase().replace(/\s+/g, '-'),
+                name: member.name || fallback?.name || '',
+                role: member.role || fallback?.role || '',
+                image: member.image || fallback?.image || '/images/about/team-abijitha.jpg',
+                bio: member.bio || fallback?.bio || '',
+              };
+            });
+
+            return (
               <div
-                key={member.id}
                 style={{
-                  backgroundColor: BG_CARD,
-                  borderRadius: '6px',
-                  border: BORDER,
-                  overflow: 'hidden',
-                  boxShadow: '0 8px 24px -6px rgba(0, 0, 0, 0.04)',
-                  transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-6px)';
-                  e.currentTarget.style.boxShadow = '0 20px 35px -10px rgba(0, 0, 0, 0.1)';
-                  e.currentTarget.style.borderColor = 'rgba(222, 50, 45, 0.3)';
-                  handlePillEnter(member.name.toUpperCase());
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px -6px rgba(0, 0, 0, 0.04)';
-                  e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)';
-                  handlePillLeave();
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+                  gap: 'clamp(1.25rem, 2vw, 2.25rem)',
                 }}
               >
-                {/* Photo container */}
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    aspectRatio: '1 / 1.12',
-                    backgroundColor: '#EBEBEB',
-                  }}
-                >
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 360px"
-                    style={{ objectFit: 'cover', objectPosition: 'top' }}
-                  />
-                </div>
+                {activeTeamMembers.map((member: any) => (
+                  <div
+                    key={member.id}
+                    style={{
+                      backgroundColor: BG_CARD,
+                      borderRadius: '6px',
+                      border: BORDER,
+                      overflow: 'hidden',
+                      boxShadow: '0 8px 24px -6px rgba(0, 0, 0, 0.04)',
+                      transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-6px)';
+                      e.currentTarget.style.boxShadow = '0 20px 35px -10px rgba(0, 0, 0, 0.1)';
+                      e.currentTarget.style.borderColor = 'rgba(222, 50, 45, 0.3)';
+                      handlePillEnter(member.name.toUpperCase());
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 8px 24px -6px rgba(0, 0, 0, 0.04)';
+                      e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)';
+                      handlePillLeave();
+                    }}
+                  >
+                    {/* Photo container */}
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '1 / 1.12',
+                        backgroundColor: '#EBEBEB',
+                      }}
+                    >
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 360px"
+                        style={{ objectFit: 'cover', objectPosition: 'top' }}
+                      />
+                    </div>
 
-                {/* Caption & Bio below photo */}
-                <div style={{ padding: '1.25rem 1.35rem 1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                  <div
-                    style={{
-                      fontSize: '1.05rem',
-                      fontWeight: 650,
-                      letterSpacing: '-0.015em',
-                      color: DARK,
-                      lineHeight: 1.25,
-                    }}
-                  >
-                    {member.name}
+                    {/* Caption & Bio below photo */}
+                    <div style={{ padding: '1.25rem 1.35rem 1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                      <div
+                        style={{
+                          fontSize: '1.05rem',
+                          fontWeight: 650,
+                          letterSpacing: '-0.015em',
+                          color: DARK,
+                          lineHeight: 1.25,
+                        }}
+                      >
+                        {member.name}
+                      </div>
+                      <div
+                        className="tag-mono"
+                        style={{
+                          fontSize: '0.64rem',
+                          letterSpacing: '0.12em',
+                          color: RED,
+                          fontWeight: 700,
+                          marginTop: '0.35rem',
+                          lineHeight: 1.35,
+                        }}
+                      >
+                        {member.role}
+                      </div>
+                      <p
+                        style={{
+                          fontSize: '0.82rem',
+                          lineHeight: 1.6,
+                          color: BODY_TEXT,
+                          marginTop: '0.85rem',
+                          marginBottom: 0,
+                        }}
+                      >
+                        {member.bio}
+                      </p>
+                    </div>
                   </div>
-                  <div
-                    className="tag-mono"
-                    style={{
-                      fontSize: '0.64rem',
-                      letterSpacing: '0.12em',
-                      color: RED,
-                      fontWeight: 700,
-                      marginTop: '0.35rem',
-                      lineHeight: 1.35,
-                    }}
-                  >
-                    {member.role}
-                  </div>
-                  <p
-                    style={{
-                      fontSize: '0.82rem',
-                      lineHeight: 1.6,
-                      color: BODY_TEXT,
-                      marginTop: '0.85rem',
-                      marginBottom: 0,
-                    }}
-                  >
-                    {member.bio}
-                  </p>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════════

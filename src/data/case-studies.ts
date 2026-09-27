@@ -83,14 +83,79 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: 'Neora Deck rooftop space and guest ambiance',
       },
       {
+        image: '/images/case-studies/raysons/neora-2.jpg',
+        caption: 'Neora Deck: Curated culinary craft, bar ambiance and guest experience.',
+        alt: 'Neora Deck dining room and evening lighting',
+      },
+      {
         image: '/images/case-studies/raysons/realestate-1.jpg',
         caption: 'Raysons Real Estate: Architectural scale and project credibility.',
         alt: 'Raysons Real Estate architectural development',
       },
       {
+        image: '/images/case-studies/raysons/realestate-2.jpg',
+        caption: 'Raysons Real Estate: On-ground construction and engineering execution.',
+        alt: 'Raysons Real Estate site development and construction progress',
+      },
+      {
         image: '/images/case-studies/raysons/casting-hero.jpg',
         caption: 'Casting Film: Molten casting and foundry floor cinematography.',
         alt: 'Raysons casting facility and industrial production',
+      },
+      {
+        image: '/images/case-studies/raysons/casting-1.jpg',
+        caption: 'Industrial Film: High-precision engineering and manufacturing operations.',
+        alt: 'Raysons industrial plant floor and casting machinery',
+      },
+    ],
+    videos: [
+      {
+        title: 'Raysons Real Estate — Video Showcase',
+        url: 'https://www.instagram.com/reel/DdWTH3nCcWE/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Architectural walkthrough & project development showcase.',
+      },
+      {
+        title: 'Raysons Industrial & Corporate Reel',
+        url: 'https://www.instagram.com/reel/Dbx4lNICAyh/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Industrial capabilities, casting operations & engineering precision.',
+      },
+      {
+        title: 'Raysons Real Estate — Brand Film',
+        url: 'https://www.instagram.com/reel/DVJET2yDMnO/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Commercial & residential real estate development communication.',
+      },
+      {
+        title: 'Raysons Project Walkthrough',
+        url: 'https://www.instagram.com/reel/DdoXm82iUN3/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'On-ground development progress and site aesthetics.',
+      },
+      {
+        title: 'Founder-Led Communication',
+        url: 'https://www.instagram.com/reel/DcLpnUsihzX/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Leadership perspective and corporate vision narrative.',
+      },
+      {
+        title: 'Neora Deck — Rooftop Hospitality Reel',
+        url: 'https://www.instagram.com/reel/C-HO9zcIAsj/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
+        type: 'reel',
+        caption: 'Experiential hospitality storytelling for Neora Deck.',
+      },
+      {
+        title: 'Neora Deck — Lifestyle & Dining Atmosphere',
+        url: 'https://www.instagram.com/reel/DYXFlHzsYvc/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Dining ambiance, culinary craft, and guest experience.',
+      },
+      {
+        title: 'Raysons Real Estate — Campaign Creative',
+        url: 'https://www.instagram.com/p/Da-WplEstQb/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Static brand architectural showcase and key project announcements.',
       },
     ],
     closingQuote:
@@ -216,6 +281,62 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: 'Loom Prefab Raipur open house walkthrough',
       },
     ],
+    videos: [
+      {
+        title: 'Loom Crafts Furniture — Luxury Outdoor Collection',
+        url: 'https://www.instagram.com/reel/DdtjcrJvqkN/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Craftsmanship, weather-proof engineering, and architectural integration.',
+      },
+      {
+        title: 'Loom Crafts Furniture — Design & Space Styling',
+        url: 'https://www.instagram.com/reel/DafmclZPtq4/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Tactile materiality and living space lifestyle presentation.',
+      },
+      {
+        title: 'Loom Crafts Prefab — Modular Pod Walkthrough',
+        url: 'https://www.instagram.com/reel/DbnpPPSKwDT/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Rapid installation, high-performance structural engineering, and finished living pods.',
+      },
+      {
+        title: 'Loom Crafts Furniture — Tactile Collection',
+        url: 'https://www.instagram.com/p/DcOP9fuCOaV/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Outdoor furniture aesthetics showcasing materials without overlaid text.',
+      },
+      {
+        title: 'Loom Crafts Furniture — Living Spaces',
+        url: 'https://www.instagram.com/p/Db8RMkaCBcJ/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Residential veranda and garden spatial arrangement.',
+      },
+      {
+        title: 'Loom Crafts Furniture — Weave Detail',
+        url: 'https://www.instagram.com/p/DbnrEt0iHmj/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Intricate hand-woven texture and premium all-weather durability.',
+      },
+      {
+        title: 'Loom Prefab — Structural Assembly',
+        url: 'https://www.instagram.com/p/DblJkadDG4-/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Precision engineered modular framing and swift on-site installation.',
+      },
+      {
+        title: 'Loom Prefab — Pod Design',
+        url: 'https://www.instagram.com/p/DcysVe_k2Yu/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Architectural modular homes built for diverse terrains.',
+      },
+      {
+        title: 'Loom Prefab — Modular Living Pod',
+        url: 'https://www.instagram.com/p/DcJL7KwjO4L/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'Interior and exterior finishes of complete turnkey prefabricated spaces.',
+      },
+    ],
     closingQuote:
       'When you communicate two businesses under one brand, you cannot force one generic catalogue. Clarity comes from honoring how each customer actually buys.',
     closingText:
@@ -332,6 +453,44 @@ export const CASE_STUDIES: CaseStudy[] = [
         image: '/images/case-studies/picturetime/bahadur-1.jpg',
         caption: '120 Bahadur: Dedicated theatrical promotion assets and film announcement creatives.',
         alt: '120 Bahadur theatrical campaign creative',
+      },
+    ],
+    videos: [
+      {
+        title: 'PictureTime — Flagship Production Reel',
+        url: 'https://www.instagram.com/reel/DQMS9CxjHn-/?stkn=b2t2dnlyYzE5d3o5',
+        type: 'reel',
+        caption: 'Mobile digital cinema network across India and premier cultural festivals.',
+      },
+      {
+        title: 'PictureTime — IFFI / DIFF Film Showcase',
+        url: 'https://www.instagram.com/reel/DctLC8-NT7f/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'On-ground presence at premier international film festivals in Goa and Dharamshala.',
+      },
+      {
+        title: 'PictureTime — Himalayan Theatre Experience',
+        url: 'https://www.instagram.com/reel/DbDgpuEtHvs/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'High-altitude cinema deployment in Ladakh bringing theatrical releases to remote regions.',
+      },
+      {
+        title: 'PictureTime — Founder-Led Story & Vision',
+        url: 'https://www.instagram.com/reel/DdWRHxIti1V/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Strategic business model and scalable cinema infrastructure vision.',
+      },
+      {
+        title: 'PictureTime — Master Work & Media Drive',
+        url: 'https://drive.google.com/file/d/1xHVRMHxHqWjXok8kRVIhVzgVQuD1rkm-/view?usp=drive_link',
+        type: 'drive',
+        caption: 'High-definition master video showcase and festival broadcast reel.',
+      },
+      {
+        title: 'PictureTime — IFFI Goa Event & Screenings',
+        url: 'https://www.instagram.com/p/DWTM-BSkWl2/?stkn=NHd3Y3Zqd3o1YW9j',
+        type: 'post',
+        caption: 'Live screening infrastructure and festival delegate engagement.',
       },
     ],
     closingQuote:
@@ -452,6 +611,32 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: 'Indian Army social platform adoption of SHE documentary',
       },
     ],
+    videos: [
+      {
+        title: 'SHE — Community Health Empowerment Documentary',
+        url: 'https://youtu.be/Ki6c7vRhbtA?si=EyZ7o6lAxOc1rXmf',
+        type: 'youtube',
+        caption: 'Documentary chronicling the sustainable health & hygiene campaign across 8 Ladakhi border villages under Operation Sadbhavana.',
+      },
+      {
+        title: 'SHE — Village Workshop & Outreach Reel',
+        url: 'https://www.instagram.com/reel/C4Qdu0uRnnB/?igsh=a3UydmJ4NGNvbDU=',
+        type: 'reel',
+        caption: 'Interactive workshops with local women and village leaders in remote border communities.',
+      },
+      {
+        title: 'SHE — Field Documentation Reel',
+        url: 'https://www.instagram.com/reel/DD_U5eeyHEd/?igsh=MWQ1MTNxa3V6Y2Vsdw==',
+        type: 'reel',
+        caption: 'On-ground field facilitation and health awareness delivery in Himalayan settlements.',
+      },
+      {
+        title: 'SHE — Comprehensive Documentation Drive',
+        url: 'https://drive.google.com/drive/folders/14h3gbddcftc-sw1dvJk4enywxb4GPD4j?usp=drive_link',
+        type: 'drive',
+        caption: 'Complete photographic archive and campaign collateral documentation.',
+      },
+    ],
     closingQuote:
       'Sensitive community communication succeeds when you listen first, speak with respect, and leave behind tools that genuinely belong to the people.',
     closingText:
@@ -570,6 +755,20 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: 'Misu guests dining in restaurant',
       },
     ],
+    videos: [
+      {
+        title: 'Misu — Culinary Storytelling & Dining Reel',
+        url: 'https://www.instagram.com/reel/C-HO9zcIAsj/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
+        type: 'reel',
+        caption: 'High-energy dining room ambiance, wok craftsmanship, and cocktail artistry.',
+      },
+      {
+        title: 'Misu — Operational & Brand Archive',
+        url: 'https://drive.google.com/drive/folders/1kF3ARx6OsycX6lpIxXZ9qOqjZ192dZcC?usp=drive_link',
+        type: 'drive',
+        caption: 'Hospitality brand documentation and culinary production assets.',
+      },
+    ],
     closingQuote:
       'Great hospitality happens where the back of the kitchen, the front of the house, and the guest’s imagination meet seamlessly.',
     closingText:
@@ -683,6 +882,32 @@ export const CASE_STUDIES: CaseStudy[] = [
         alt: 'RR Skins clinic interior and treatment rooms',
       },
     ],
+    videos: [
+      {
+        title: 'RR Skins — Clinical Video & Treatment Explainer',
+        url: 'https://www.instagram.com/reel/DcK68hoPIYf/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Doctor-led educational video explaining evidence-based clinical dermatology treatments.',
+      },
+      {
+        title: 'RR Skins — Clinic Walkthrough & Patient Care',
+        url: 'https://www.instagram.com/reel/DbIkGvYvoEO/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Visuals of clinic environment, patient consultation, and medical standards.',
+      },
+      {
+        title: 'RR Skins — Doctor & Team Consultation',
+        url: 'https://www.instagram.com/reel/DakT-y1vcET/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'reel',
+        caption: 'Physician interaction and reassuring patient guidance.',
+      },
+      {
+        title: 'RR Skins — Skincare Science Carousel',
+        url: 'https://www.instagram.com/p/DZ9-d0DFK7H/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
+        type: 'post',
+        caption: 'In-depth patient educational guide breaking down skin health and routine care.',
+      },
+    ],
     closingQuote:
       'In healthcare, trust is not won by loud promises. It is built when a doctor takes the time to explain the truth clearly and calmly.',
     closingText:
@@ -692,18 +917,88 @@ export const CASE_STUDIES: CaseStudy[] = [
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   const normalized = slug.toLowerCase();
+  let base: CaseStudy | undefined;
   if (normalized === 'raysons' || normalized === 'raysons-group') {
-    return CASE_STUDIES.find((cs) => cs.slug === 'raysons-group' || cs.slug === 'raysons');
+    base = CASE_STUDIES.find((cs) => cs.slug === 'raysons-group' || cs.slug === 'raysons');
+  } else if (normalized === 'she' || normalized === 'the-she-project') {
+    base = CASE_STUDIES.find((cs) => cs.slug === 'she' || cs.slug === 'the-she-project');
+  } else {
+    base = CASE_STUDIES.find(
+      (cs) =>
+        cs.slug === normalized ||
+        cs.slug === `${normalized}-group` ||
+        cs.slug === `the-${normalized}-project`
+    );
   }
-  if (normalized === 'she' || normalized === 'the-she-project') {
-    return CASE_STUDIES.find((cs) => cs.slug === 'she' || cs.slug === 'the-she-project');
+
+  if (!base) return undefined;
+
+  if (typeof window === 'undefined') {
+    try {
+      // Dynamic import / require of getSectionContent to ensure compatibility
+      // with both server environment and static evaluation
+      const { getSectionContent } = require('@/lib/cms/content-manager');
+      const workCms = getSectionContent('work', true);
+    if (workCms?.caseStudies && Array.isArray(workCms.caseStudies)) {
+      const cmsItem = workCms.caseStudies.find(
+        (c: any) =>
+          c.id === base?.slug ||
+          c.slug === base?.slug ||
+          c.id === normalized ||
+          c.slug === normalized ||
+          (base?.slug === 'raysons-group' && (c.id === 'raysons-group' || c.slug === 'raysons')) ||
+          (base?.slug === 'she' && (c.id === 'the-she-project' || c.slug === 'the-she-project'))
+      );
+
+      if (cmsItem) {
+        return {
+          ...base,
+          title: cmsItem.title || base.title,
+          subtitle: cmsItem.subtitle || cmsItem.desc || base.subtitle,
+          sector: cmsItem.sector || cmsItem.category || base.sector,
+          heroImage: cmsItem.heroImage || cmsItem.image || base.heroImage,
+          heroImageCaption: cmsItem.heroImageCaption !== undefined ? cmsItem.heroImageCaption : base.heroImageCaption,
+          tags: Array.isArray(cmsItem.tags) && cmsItem.tags.length > 0 ? cmsItem.tags : base.tags,
+          snapshot: {
+            ...base.snapshot,
+            ...(cmsItem.snapshot || {}),
+            coreCapabilities:
+              cmsItem.snapshot?.coreCapabilities && cmsItem.snapshot.coreCapabilities.length > 0
+                ? cmsItem.snapshot.coreCapabilities
+                : base.snapshot.coreCapabilities,
+          },
+          situation:
+            Array.isArray(cmsItem.situation) && cmsItem.situation.length > 0
+              ? cmsItem.situation
+              : base.situation,
+          realChallenge:
+            Array.isArray(cmsItem.realChallenge) && cmsItem.realChallenge.length > 0
+              ? cmsItem.realChallenge
+              : base.realChallenge,
+          thinking:
+            Array.isArray(cmsItem.thinking) && cmsItem.thinking.length > 0
+              ? cmsItem.thinking
+              : base.thinking,
+          work:
+            Array.isArray(cmsItem.work) && cmsItem.work.length > 0
+              ? cmsItem.work
+              : base.work,
+          gallery:
+            Array.isArray(cmsItem.gallery) && cmsItem.gallery.length > 0
+              ? cmsItem.gallery
+              : base.gallery,
+          proof: cmsItem.proof ? { ...base.proof, ...cmsItem.proof } : base.proof,
+          closingQuote: cmsItem.closingQuote !== undefined ? cmsItem.closingQuote : base.closingQuote,
+          closingText: cmsItem.closingText !== undefined ? cmsItem.closingText : base.closingText,
+        };
+      }
+    }
+  } catch (err) {
+    // If running in an environment without direct fs access, fallback to base
   }
-  return CASE_STUDIES.find(
-    (cs) =>
-      cs.slug === normalized ||
-      cs.slug === `${normalized}-group` ||
-      cs.slug === `the-${normalized}-project`
-  );
+}
+
+  return base;
 }
 
 

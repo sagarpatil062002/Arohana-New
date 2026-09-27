@@ -981,9 +981,9 @@ export const SEED_WORK_DIRECTORY: WorkDirectoryItem[] = [
     projectTitle: 'Tourin — Experiential Ladakh',
     client: 'Ārohana Owned Venture',
     sector: 'Travel & Tourism',
-    shortDescription: 'An experiential travel brand beginning with Ladakh — built from lived experience rather than a generic destination catalogue. 15+ curated journeys conducted.',
+    shortDescription: 'An experiential travel brand beginning with Ladakh — built from lived experience rather than a generic destination catalogue. Curated expeditions across high passes and valleys.',
     thumbnail: '/images/work/tourin-thumb.jpg',
-    tags: ['Experiential Brand', '15+ Journeys', 'Content Production'],
+    tags: ['Experiential Brand', 'Curated Journeys', 'Content Production'],
     caseStudyLink: '/tourin',
   },
   {
