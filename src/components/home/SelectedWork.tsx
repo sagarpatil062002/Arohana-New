@@ -71,33 +71,6 @@ const PROJECTS: ProjectItem[] = [
     image: '/images/case-studies/picturetime/picturetime-hero.jpg',
     link: '/work/picturetime',
   },
-  {
-    id: 'dtk',
-    index: '07',
-    title: 'DTK Jewellery',
-    category: 'Fine Jewellery',
-    tags: ['Heritage Craftsmanship', 'Festive Campaigns', 'Visual Storytelling'],
-    image: '/images/work/dtk-thumb.jpg',
-    link: '/work',
-  },
-  {
-    id: 'qubice',
-    index: '08',
-    title: 'Qubice',
-    category: 'Modular Living & Café',
-    tags: ['Modular Solutions', 'Brand Identity', 'Visual Narrative'],
-    image: '/images/work/qubice-thumb.jpg',
-    link: '/work',
-  },
-  {
-    id: 'misu',
-    index: '09',
-    title: 'Misu Pan-Asian',
-    category: 'Hospitality & F&B',
-    tags: ['Brand Identity', 'Hospitality Consulting', 'Digital Assets'],
-    image: '/images/case-studies/misu/misu-hero.jpg',
-    link: '/work/misu',
-  },
 ];
 
 export default function SelectedWork() {
@@ -108,8 +81,8 @@ export default function SelectedWork() {
   const activeSubtitle = workCms?.subtitle || 'A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.';
   const projectsList: ProjectItem[] = (workCms?.projects && workCms.projects.length > 0) ? workCms.projects : PROJECTS;
 
-  // Center card initially on Abhijeet Magdum (index 3) to match reference layout
-  const [currentIndex, setCurrentIndex] = useState(3);
+  // Center card initially on index 0 (Raysons Group)
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -349,44 +322,28 @@ export default function SelectedWork() {
                   opacity = 0.95;
                   zIndex = 85;
                 } else if (offset === -2) {
-                  translateX = -470;
+                  translateX = -460;
                   translateY = 0;
-                  translateZ = -120;
-                  rotateY = 26;
+                  translateZ = -110;
+                  rotateY = 24;
                   scale = 0.82;
-                  opacity = 0.80;
+                  opacity = 0.78;
                   zIndex = 70;
                 } else if (offset === 2) {
-                  translateX = 470;
+                  translateX = 460;
                   translateY = 0;
-                  translateZ = -120;
-                  rotateY = -26;
+                  translateZ = -110;
+                  rotateY = -24;
                   scale = 0.82;
-                  opacity = 0.80;
+                  opacity = 0.78;
                   zIndex = 70;
-                } else if (offset === -3) {
-                  translateX = -660;
-                  translateY = 0;
-                  translateZ = -190;
-                  rotateY = 34;
-                  scale = 0.72;
-                  opacity = 0.50;
-                  zIndex = 55;
-                } else if (offset === 3) {
-                  translateX = 660;
-                  translateY = 0;
-                  translateZ = -190;
-                  rotateY = -34;
-                  scale = 0.72;
-                  opacity = 0.50;
-                  zIndex = 55;
                 } else {
-                  // Cards beyond visible range are hidden to prevent overlapping
-                  translateX = offset > 0 ? 860 : -860;
+                  // Back card in 6-item loop: smoothly hidden at the rear
+                  translateX = offset > 0 ? 660 : -660;
                   translateY = 0;
-                  translateZ = -260;
-                  rotateY = offset > 0 ? -40 : 40;
-                  scale = 0.60;
+                  translateZ = -220;
+                  rotateY = offset > 0 ? -32 : 32;
+                  scale = 0.65;
                   opacity = 0;
                   zIndex = 0;
                 }
@@ -394,7 +351,7 @@ export default function SelectedWork() {
 
               // Real-time drag displacement
               const appliedTranslateX = translateX + (isDragging ? dragDelta * 0.65 : 0);
-              const isHidden = opacity === 0 || Math.abs(offset) > (isMobile ? 1 : 3);
+              const isHidden = opacity === 0 || Math.abs(offset) > (isMobile ? 1 : 2);
 
               return (
                 <div

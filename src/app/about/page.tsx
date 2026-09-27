@@ -160,7 +160,7 @@ export default function StudioPage() {
     introP2: aboutCms.hero?.introP2 || "Today, Arohana brings together that experience with strategy, communication, creativity and execution — for businesses that are serious about what they are building. And in Ladakh, that same philosophy led to Tourin, our venture in experiential high-altitude travel.",
     founderName: aboutCms.hero?.founderName || "Madhura Hawal",
     founderTitle: aboutCms.hero?.founderTitle || "Founder & Strategic Director",
-    image: aboutCms.hero?.image || aboutCms.hero?.founderImage || '/images/about/hero-founder-collage.png',
+    image: aboutCms.hero?.image || aboutCms.hero?.founderImage || '/images/about/madhura-portrait.jpg',
     stats: aboutCms.hero?.stats || STATS,
   };
 
@@ -407,13 +407,13 @@ export default function StudioPage() {
               }}
             >
               <div
+                className="founder-card-wrapper"
                 style={{
                   position: 'relative',
                   width: '100%',
-                  maxWidth: '460px',
-                  aspectRatio: '450 / 537',
+                  maxWidth: '430px',
                   transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  filter: 'drop-shadow(0 20px 35px rgba(0, 0, 0, 0.08))',
+                  padding: '1.5rem 1rem',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-6px)';
@@ -424,14 +424,187 @@ export default function StudioPage() {
                   handlePillLeave();
                 }}
               >
-                <Image
-                  src={heroData.image || '/images/about/hero-founder-collage.png'}
-                  alt={`${heroData.founderName || 'Madhura Hawal'} — ${heroData.founderTitle || 'Founder & Strategic Lead'}, Ārohana Studio`}
-                  fill
-                  priority
-                  style={{ objectFit: 'contain' }}
-                  sizes="(max-width: 768px) 92vw, 460px"
+                {/* Ambient Warm Golden Halo (Echoes the temple gold filigree) */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    width: '380px',
+                    height: '380px',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(234, 179, 8, 0.22) 0%, rgba(245, 158, 11, 0.08) 50%, transparent 72%)',
+                    top: '-10px',
+                    right: '-15px',
+                    zIndex: 0,
+                    pointerEvents: 'none',
+                  }}
                 />
+
+                {/* Badge 1: Top Right Frosted Glass Card (Strategy · Creativity · Impact) */}
+                <div
+                  className="founder-top-badge"
+                  style={{
+                    position: 'absolute',
+                    top: '-16px',
+                    right: '-20px',
+                    zIndex: 4,
+                    backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.95)',
+                    borderRadius: '16px',
+                    padding: '0.85rem 1.15rem',
+                    boxShadow: '0 16px 36px -6px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.04)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.35rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#DE322D', display: 'inline-block' }} />
+                    <span style={{ fontSize: '0.62rem', letterSpacing: '0.12em', fontWeight: 700, color: '#71717A', textTransform: 'uppercase' }}>
+                      THE SPINE
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "'Caveat', cursive, var(--font-sans), sans-serif",
+                      fontSize: '1.55rem',
+                      fontWeight: 700,
+                      color: '#18181B',
+                      lineHeight: 1.1,
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    <div>Strategy</div>
+                    <div>Creativity</div>
+                    <div>Impact</div>
+                  </div>
+                  <svg width="60" height="8" viewBox="0 0 60 8" fill="none" style={{ marginTop: '-1px' }}>
+                    <path d="M2 5C16 2.5 42 3 58 5.5" stroke="#DE322D" strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
+                </div>
+
+                {/* Main Framed Founder Portrait Card */}
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '340 / 425',
+                    borderRadius: '26px',
+                    overflow: 'hidden',
+                    boxShadow: '0 25px 60px -15px rgba(22, 23, 26, 0.22), 0 4px 16px rgba(0, 0, 0, 0.06)',
+                    border: '1.5px solid rgba(255, 255, 255, 0.9)',
+                    zIndex: 1,
+                  }}
+                >
+                  <Image
+                    src={heroData.image && !heroData.image.includes('hero-founder-collage') ? heroData.image : '/images/about/madhura-portrait.jpg'}
+                    alt={`${heroData.founderName || 'Madhura Hawal'} — ${heroData.founderTitle || 'Founder & Strategic Director'}, Ārohana Studio`}
+                    fill
+                    priority
+                    style={{ objectFit: 'cover', objectPosition: 'center 12%' }}
+                    sizes="(max-width: 768px) 92vw, 430px"
+                  />
+
+                  {/* Subtle Gradient Scrim at Bottom */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to top, rgba(15, 16, 20, 0.75) 0%, rgba(15, 16, 20, 0.2) 28%, transparent 55%)',
+                      pointerEvents: 'none',
+                    }}
+                  />
+
+                  {/* Founder Identity Card (Bottom-Left Glass Capsule) */}
+                  <div
+                    className="founder-identity-card"
+                    style={{
+                      position: 'absolute',
+                      bottom: '1.25rem',
+                      left: '1.25rem',
+                      backgroundColor: 'rgba(15, 16, 20, 0.78)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255, 255, 255, 0.18)',
+                      borderRadius: '14px',
+                      padding: '0.75rem 1.15rem',
+                      boxShadow: '0 12px 28px rgba(0, 0, 0, 0.35)',
+                      zIndex: 3,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
+                      <span style={{ fontSize: '1.15rem', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+                        {heroData.founderName || 'Madhura Hawal'}
+                      </span>
+                      <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#DE322D', display: 'inline-block' }} />
+                    </div>
+                    <div style={{ fontSize: '0.66rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#D4D4D8' }}>
+                      {heroData.founderTitle || 'FOUNDER & STRATEGIC DIRECTOR'}
+                    </div>
+                    <div style={{ fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A1A1AA', marginTop: '0.15rem' }}>
+                      ĀROHANA STUDIO
+                    </div>
+                  </div>
+                </div>
+
+                {/* Badge 2: Mid-Left Frosted Card (People · Brands · Possibilities) */}
+                <div
+                  className="founder-left-badge"
+                  style={{
+                    position: 'absolute',
+                    left: '-26px',
+                    top: '36%',
+                    zIndex: 4,
+                    backgroundColor: 'rgba(255, 255, 255, 0.94)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.95)',
+                    borderRadius: '16px',
+                    padding: '0.85rem 1.05rem',
+                    boxShadow: '0 16px 36px -8px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.45rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '16px' }}>
+                    <div style={{ width: '4px', height: '7px', backgroundColor: '#D97706', borderRadius: '1.5px' }} />
+                    <div style={{ width: '4px', height: '11px', backgroundColor: '#D97706', borderRadius: '1.5px' }} />
+                    <div style={{ width: '4px', height: '16px', backgroundColor: '#DE322D', borderRadius: '1.5px' }} />
+                  </div>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 650, color: '#18181B', lineHeight: 1.35, letterSpacing: '-0.01em' }}>
+                    <div>People</div>
+                    <div>Brands</div>
+                    <div>Possibilities</div>
+                  </div>
+                </div>
+
+                {/* Badge 3: Bottom-Right Frosted Quote Card */}
+                <div
+                  className="founder-quote-badge"
+                  style={{
+                    position: 'absolute',
+                    right: '-22px',
+                    bottom: '8%',
+                    zIndex: 4,
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1.5px solid rgba(222, 50, 45, 0.25)',
+                    borderRadius: '18px',
+                    padding: '0.85rem 1.15rem',
+                    maxWidth: '175px',
+                    boxShadow: '0 18px 36px -8px rgba(0, 0, 0, 0.14), 0 4px 12px rgba(0, 0, 0, 0.04)',
+                  }}
+                >
+                  <div style={{ fontSize: '1.45rem', lineHeight: 1, color: '#DE322D', fontWeight: 800, marginBottom: '0.25rem', fontFamily: 'serif' }}>
+                    “
+                  </div>
+                  <div style={{ fontSize: '0.76rem', fontWeight: 550, color: '#18181B', lineHeight: 1.4 }}>
+                    For businesses that build what matters.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1309,9 +1482,76 @@ export default function StudioPage() {
           }
         }
 
+        @media (max-width: 860px) {
+          .hero-story-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+          .founder-card-wrapper {
+            max-width: 380px !important;
+            margin: 0 auto !important;
+          }
+        }
+
         @media (max-width: 640px) {
           .chapters-narrative-grid {
             grid-template-columns: 1fr !important;
+          }
+          .founder-card-wrapper {
+            max-width: clamp(275px, 86vw, 340px) !important;
+            padding: 1.25rem 0.25rem !important;
+            margin: 0 auto !important;
+          }
+          .founder-top-badge {
+            right: -6px !important;
+            top: -14px !important;
+            transform: scale(0.85) !important;
+            transform-origin: top right !important;
+          }
+          .founder-left-badge {
+            left: -8px !important;
+            top: 36% !important;
+            transform: scale(0.85) !important;
+            transform-origin: left center !important;
+          }
+          .founder-quote-badge {
+            right: -6px !important;
+            bottom: 4% !important;
+            transform: scale(0.85) !important;
+            transform-origin: bottom right !important;
+          }
+          .founder-identity-card {
+            bottom: 0.75rem !important;
+            left: 0.75rem !important;
+            padding: 0.6rem 0.9rem !important;
+          }
+        }
+
+        @media (max-width: 400px) {
+          .founder-card-wrapper {
+            max-width: 290px !important;
+          }
+          .founder-top-badge {
+            right: 0 !important;
+            top: -12px !important;
+            transform: scale(0.78) !important;
+            transform-origin: top right !important;
+          }
+          .founder-left-badge {
+            left: 0 !important;
+            transform: scale(0.78) !important;
+            transform-origin: left center !important;
+          }
+          .founder-quote-badge {
+            right: 0 !important;
+            bottom: 2% !important;
+            transform: scale(0.78) !important;
+            transform-origin: bottom right !important;
+          }
+          .founder-identity-card {
+            bottom: 0.6rem !important;
+            left: 0.6rem !important;
+            padding: 0.5rem 0.75rem !important;
           }
         }
 

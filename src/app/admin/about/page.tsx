@@ -158,7 +158,7 @@ export default function AdminAboutPage() {
   const curChapter = aboutData.chapters?.[activeChapterIdx] || {};
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
+    <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
       {/* ─── LEFT COLUMN: ABOUT / STUDIO SECTION EDITOR ─── */}
       <div
         style={{
@@ -168,6 +168,8 @@ export default function AdminAboutPage() {
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
+          height: '100%',
+          minHeight: 0,
         }}
       >
         <div
@@ -236,6 +238,7 @@ export default function AdminAboutPage() {
 
         {/* Section Tabs */}
         <div
+          className="admin-tabs-row"
           style={{
             display: 'flex',
             gap: '0.25rem',
@@ -243,6 +246,8 @@ export default function AdminAboutPage() {
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             backgroundColor: '#F4F4F5',
             overflowX: 'auto',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
           }}
         >
           {[
@@ -277,7 +282,19 @@ export default function AdminAboutPage() {
 
         {/* ─── TAB 01: HERO & STATS ─── */}
         {activeTab === 'hero' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div
+            className="admin-editor-scroll"
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '1.5rem 1.5rem 6rem 1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.25rem',
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'contain',
+            }}
+          >
             <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Section 01: Studio Hero &amp; Founder Overview
             </div>
@@ -500,7 +517,19 @@ export default function AdminAboutPage() {
 
         {/* ─── TAB 02: THREE CHAPTERS ─── */}
         {activeTab === 'chapters' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div
+            className="admin-editor-scroll"
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '1.5rem 1.5rem 6rem 1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.25rem',
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'contain',
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Section 02: The Three Chapters Timeline
@@ -626,6 +655,7 @@ export default function AdminAboutPage() {
           <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '220px 1fr', overflow: 'hidden' }}>
             {/* Team Members List */}
             <div
+              className="admin-editor-scroll"
               style={{
                 borderRight: '1px solid rgba(0, 0, 0, 0.08)',
                 overflowY: 'auto',
@@ -663,7 +693,19 @@ export default function AdminAboutPage() {
 
             {/* Member Form Editor */}
             {selectedMember && (
-              <div style={{ overflowY: 'auto', padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div
+                className="admin-editor-scroll"
+                style={{
+                  flex: 1,
+                  overflowY: 'auto',
+                  padding: '1.25rem 1.5rem 6rem 1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  scrollBehavior: 'smooth',
+                  overscrollBehavior: 'contain',
+                }}
+              >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#DE322D', letterSpacing: '0.1em' }}>
                     TEAM MEMBER: {selectedMember.name}
@@ -828,7 +870,19 @@ export default function AdminAboutPage() {
 
         {/* ─── TAB 04: CLOSING CTA ─── */}
         {activeTab === 'cta' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div
+            className="admin-editor-scroll"
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '1.5rem 1.5rem 6rem 1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.25rem',
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'contain',
+            }}
+          >
             <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               Section 04: Bottom Closing Banner &amp; CTA
             </div>

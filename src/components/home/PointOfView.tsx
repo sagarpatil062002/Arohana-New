@@ -154,14 +154,14 @@ export default function PointOfView() {
               {/* Layer 5: Main Founder Portrait Card */}
               <div className="pov-portrait-frame">
                 <Image
-                  src="/images/home/madhura-editorial.jpg"
+                  src={povCms?.founderImage || "/images/home/madhura-editorial.jpg"}
                   alt="Madhura Hawal - Founder of Ārohana Consultancy"
                   fill
                   priority
                   sizes="(max-width: 768px) 300px, (max-width: 1200px) 360px, 400px"
                   style={{
                     objectFit: 'cover',
-                    objectPosition: 'center 20%',
+                    objectPosition: 'center 15%',
                   }}
                 />
               </div>

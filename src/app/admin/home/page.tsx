@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
@@ -35,12 +35,18 @@ export default function AdminHomePage() {
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
   const [brandLogoIndex, setBrandLogoIndex] = useState<number | null>(null);
   const [savedStatus, setSavedStatus] = useState(false);
+  const editorScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (content.home) {
       setHomeData(JSON.parse(JSON.stringify(content.home)));
     }
   }, [content.home]);
+
+  // Smoothly scroll editor back to top when switching sections
+  useEffect(() => {
+    editorScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activeSectionId]);
 
   if (!homeData) {
     return (
@@ -107,7 +113,7 @@ export default function AdminHomePage() {
   ];
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.08fr 0.92fr', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
+    <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.08fr 0.92fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
       {/* ─── LEFT COLUMN: SECTION-BY-SECTION EDITOR ─── */}
       <div
         style={{
@@ -118,6 +124,8 @@ export default function AdminHomePage() {
           border: '1px solid rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
           boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
+          height: '100%',
+          minHeight: 0,
         }}
       >
         {/* Editor Top Bar */}
@@ -167,16 +175,19 @@ export default function AdminHomePage() {
           </button>
         </div>
 
-        {/* Section Navigation Tabs (Horizontal Pill Selector) */}
+        {/* Section Navigation Tabs (Horizontal Pill Selector with hidden scrollbar) */}
         <div
+          className="admin-tabs-row"
           style={{
             display: 'flex',
-            gap: '0.4rem',
+            gap: '0.45rem',
             padding: '0.65rem 1rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
             backgroundColor: '#FFFFFF',
             overflowX: 'auto',
             whiteSpace: 'nowrap',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
           }}
         >
           {sectionTabs.map((tab) => {
@@ -218,8 +229,18 @@ export default function AdminHomePage() {
           })}
         </div>
 
-        {/* Scrollable Section Form Content */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '1.4rem' }}>
+        {/* Scrollable Section Form Content - Prominent, smooth, effortless scroll */}
+        <div
+          ref={editorScrollRef}
+          className="admin-editor-scroll"
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '1.4rem 1.6rem 6rem 1.6rem',
+            scrollBehavior: 'smooth',
+            overscrollBehavior: 'contain',
+          }}
+        >
           {/* ════════════════════════════════════════════════════════════
               SECTION 01: HERO
              ════════════════════════════════════════════════════════════ */}

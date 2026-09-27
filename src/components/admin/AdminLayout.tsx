@@ -321,7 +321,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </header>
 
         {/* Dynamic Page Content */}
-        <main style={{ flex: 1, padding: '1.75rem', overflowY: 'auto' }}>
+        <main
+          className="admin-main-viewport"
+          style={{
+            flex: 1,
+            padding: '1.25rem 1.5rem',
+            overflowY: 'auto',
+            height: 'calc(100vh - 65px)',
+            boxSizing: 'border-box',
+          }}
+        >
           {children}
         </main>
       </div>
@@ -363,6 +372,73 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       )}
 
       <style jsx global>{`
+        /* ─── Global Admin CRM Scrollbar Enhancements ─── */
+        /* Make editor scrollbars prominent, smooth, and effortless to grab */
+        .admin-editor-scroll,
+        .admin-custom-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: #94A3B8 #F1F5F9;
+          overscroll-behavior: contain;
+          scroll-behavior: smooth;
+        }
+
+        .admin-editor-scroll::-webkit-scrollbar,
+        .admin-custom-scroll::-webkit-scrollbar {
+          width: 9px;
+          height: 9px;
+        }
+
+        .admin-editor-scroll::-webkit-scrollbar-track,
+        .admin-custom-scroll::-webkit-scrollbar-track {
+          background: #F1F5F9;
+          border-radius: 9999px;
+        }
+
+        .admin-editor-scroll::-webkit-scrollbar-thumb,
+        .admin-custom-scroll::-webkit-scrollbar-thumb {
+          background: #94A3B8;
+          border-radius: 9999px;
+          border: 2px solid #F1F5F9;
+        }
+
+        .admin-editor-scroll::-webkit-scrollbar-thumb:hover,
+        .admin-custom-scroll::-webkit-scrollbar-thumb:hover {
+          background: #475569;
+        }
+
+        .admin-editor-scroll::-webkit-scrollbar-thumb:active,
+        .admin-custom-scroll::-webkit-scrollbar-thumb:active {
+          background: #1E293B;
+        }
+
+        /* Completely hide ugly horizontal scrollbar bar in tab rows */
+        .admin-tabs-row,
+        .no-scrollbar {
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+
+        .admin-tabs-row::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+
+        @media (max-width: 1024px) {
+          .admin-split-grid {
+            grid-template-columns: 1fr !important;
+            height: auto !important;
+            min-height: 100% !important;
+          }
+          .admin-main-viewport {
+            height: auto !important;
+            min-height: calc(100vh - 65px) !important;
+            overflow-y: auto !important;
+            padding: 1rem !important;
+          }
+        }
+
         @media (max-width: 900px) {
           .admin-sidebar {
             position: fixed !important;

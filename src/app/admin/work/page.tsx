@@ -337,7 +337,7 @@ export default function AdminWorkPage() {
   const effectivePreviewUrl = previewUrlType === 'work' ? '/work' : `/work/${detailSlug}`;
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
+    <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
       {/* ─── LEFT COLUMN: WORK SECTIONS & FORM EDITOR ─── */}
       <div
         style={{
@@ -347,6 +347,8 @@ export default function AdminWorkPage() {
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
+          height: '100%',
+          minHeight: 0,
         }}
       >
         {/* Top Header */}
@@ -512,7 +514,7 @@ export default function AdminWorkPage() {
 
         {/* ── TAB 1: PAGE HEADER ── */}
         {activeTab === 'header' && (
-          <div style={{ padding: '1.5rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div className="admin-editor-scroll" style={{ padding: '1.5rem 1.5rem 6rem 1.5rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
                 EYEBROW LABEL
@@ -553,7 +555,7 @@ export default function AdminWorkPage() {
 
         {/* ── TAB 2: REELS CAROUSEL ── */}
         {activeTab === 'reels' && (
-          <div style={{ padding: '1.5rem', overflowY: 'auto' }}>
+          <div className="admin-editor-scroll" style={{ padding: '1.5rem 1.5rem 6rem 1.5rem', overflowY: 'auto', flex: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
                 Featured Reels (Static Cover Images + Reel Links)
@@ -747,7 +749,7 @@ export default function AdminWorkPage() {
               </div>
 
               {/* Case Studies List */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '0.5rem' }}>
+              <div className="admin-editor-scroll" style={{ flex: 1, overflowY: 'auto', padding: '0.5rem' }}>
                 {filteredCases.map((c: any) => {
                   const isSelected = selectedCase?.id === c.id;
                   return (
@@ -811,6 +813,7 @@ export default function AdminWorkPage() {
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
                 {/* Subtabs for Case Study Editor */}
                 <div
+                  className="admin-tabs-row"
                   style={{
                     display: 'flex',
                     gap: '4px',
@@ -818,6 +821,8 @@ export default function AdminWorkPage() {
                     borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
                     backgroundColor: '#FAFAFA',
                     overflowX: 'auto',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
                   }}
                 >
                   <button
@@ -924,7 +929,19 @@ export default function AdminWorkPage() {
                 </div>
 
                 {/* Subtab Content Form */}
-                <div style={{ flex: 1, overflowY: 'auto', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div
+                  className="admin-editor-scroll"
+                  style={{
+                    flex: 1,
+                    overflowY: 'auto',
+                    padding: '1.25rem 1.25rem 6rem 1.25rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1rem',
+                    scrollBehavior: 'smooth',
+                    overscrollBehavior: 'contain',
+                  }}
+                >
                   {/* ── SUBTAB 1: CARD OVERVIEW ── */}
                   {caseSubTab === 'card' && (
                     <>

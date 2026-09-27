@@ -332,7 +332,7 @@
           "Industrial Film",
           "Real Estate"
         ],
-        "image": "/images/case-studies/raysons/neora-1.jpg",
+        "image": "/uploads/1790493255876-sharada-exotica-nagala-park.webp",
         "link": "/work/raysons-group"
       },
       {
@@ -399,45 +399,6 @@
         ],
         "image": "/images/case-studies/picturetime/picturetime-hero.jpg",
         "link": "/work/picturetime"
-      },
-      {
-        "id": "dtk",
-        "index": "07",
-        "title": "DTK Jewellery",
-        "category": "Fine Jewellery",
-        "tags": [
-          "Heritage Craftsmanship",
-          "Festive Campaigns",
-          "Visual Storytelling"
-        ],
-        "image": "/images/work/dtk-thumb.jpg",
-        "link": "/work"
-      },
-      {
-        "id": "qubice",
-        "index": "08",
-        "title": "Qubice",
-        "category": "Modular Living & Café",
-        "tags": [
-          "Modular Solutions",
-          "Brand Identity",
-          "Visual Narrative"
-        ],
-        "image": "/images/work/qubice-thumb.jpg",
-        "link": "/work"
-      },
-      {
-        "id": "misu",
-        "index": "09",
-        "title": "Misu Pan-Asian",
-        "category": "Hospitality & F&B",
-        "tags": [
-          "Brand Identity",
-          "Hospitality Consulting",
-          "Digital Assets"
-        ],
-        "image": "/images/case-studies/misu/misu-hero.jpg",
-        "link": "/work/misu"
       }
     ]
   },
