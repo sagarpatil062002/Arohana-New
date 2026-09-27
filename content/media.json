@@ -1,6 +1,16 @@
 {
   "assets": [
     {
+      "id": "asset-1790521096761",
+      "name": "rrskin logo.jpg",
+      "url": "/uploads/1790521096761-rrskin-logo.jpg",
+      "type": "image",
+      "size": "53 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-27T14:58:16.767Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1790518977249",
       "name": "raysons.3jpg.jpg",
       "url": "/uploads/1790518977249-raysons.3jpg.jpg",
