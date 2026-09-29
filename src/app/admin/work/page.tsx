@@ -91,7 +91,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
 export default function AdminWorkPage() {
   const { content, saveDraft, updateDraftInMemory, publishAll } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'header' | 'reels' | 'cases'>('cases');
+  const [activeTab, setActiveTab] = useState<'reels' | 'header' | 'cases'>('reels');
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
   const [searchQuery, setSearchQuery] = useState('');

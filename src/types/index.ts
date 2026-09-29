@@ -43,6 +43,10 @@ export interface CaseStudy {
   heroImageCaption: string;
   sector: string;
   tags: string[];
+  challenge?: string;
+  whatWeDid?: string;
+  theResult?: string;
+  stillsSubtitle?: string;
   snapshot: CaseStudySnapshot;
   situation: string[];
   realChallenge: string[];

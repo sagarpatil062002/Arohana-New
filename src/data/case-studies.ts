@@ -3,12 +3,16 @@ import { CaseStudy } from '@/types';
 export const CASE_STUDIES: CaseStudy[] = [
   {
     slug: 'raysons-group',
-    title: 'Raysons Group',
-    subtitle: 'One relationship. Three very different businesses.',
+    title: 'Raysons Group — Neora Deck',
+    subtitle: 'Experiential Dining & Rooftop Hospitality',
     heroImage: '/images/case-studies/raysons/neora-1.jpg',
     heroImageCaption: 'Neora Deck rooftop hospitality & on-ground execution — the origin of Ārohana’s partnership with Raysons Group.',
     sector: 'Hospitality, Real Estate & Industrial Casting',
     tags: ['Relationship-Led Strategy', 'Hospitality Ecosystem', 'Real Estate Communication', 'Industrial Film Production'],
+    challenge: 'Neora Deck had a physical experience worth discovering — but the digital presence needed to translate its space, food and hospitality into a brand people could experience before they walked through the doors.',
+    whatWeDid: 'We built Neora Deck’s digital communication around the experience of being there. From content concepts and creative direction to shoots, reels, food and space storytelling, we created a visual language that brought the venue to life online.',
+    theResult: 'Neora Deck’s social presence evolved into an extension of the venue itself — showcasing not just what it serves, but the mood, moments and experience that make the space distinctive.',
+    stillsSubtitle: 'Experience-led Content · Food & Space Shoots · Visual Storytelling · Ongoing Property shoots',
     snapshot: {
       sector: 'Multi-Entity Group (Hospitality, Real Estate & Casting)',
       location: 'Kolhapur & Western Maharashtra',
@@ -165,12 +169,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'loom-crafts',
-    title: 'Loom Crafts',
-    subtitle: 'One brand. Two businesses. A communication system built around how people actually buy.',
+    title: 'Loom Crafts — Case Study',
+    subtitle: 'Luxury Outdoor Furniture & Prefab Architectural Living',
     heroImage: '/images/case-studies/loom/loom-hero.jpg',
     heroImageCaption: 'Loom Crafts dual ecosystem — outdoor luxury furniture & high-performance prefab modular architecture.',
     sector: 'Furniture · Prefab / Modular Homes',
     tags: ['Category Education', 'Dual-Journey Architecture', 'On-Site Projects', 'Event Expansion'],
+    challenge: 'Loom Crafts operates across two very different categories — premium furniture and prefab/modular homes. The challenge was to communicate both effectively without confusing audiences or diluting either brand.',
+    whatWeDid: 'We built a two-track content system for the brand: one focused on craftsmanship, luxury and lifestyle for the furniture line, and the other focused on engineering, design and possibilities for the prefab architectural vertical. This was supported by process-led factory shoots, architectural documentation, and strategic exhibition coverage at D-ARC.',
+    theResult: 'Loom Crafts moved beyond product-led communication towards a more informative, design-forward brand presence that clearly separates yet elevates both lines of business.',
+    stillsSubtitle: 'Furniture Storytelling · Prefab Education · Factory & Process Content · D-ARC',
     snapshot: {
       sector: 'Luxury Outdoor Furniture & Modular Prefab Living',
       location: 'Delhi NCR, Bangalore & Pan-India',
@@ -344,12 +352,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'picturetime',
-    title: 'PictureTime',
-    subtitle: 'From promoting cinema to building a broader story around what PictureTime is building.',
+    title: 'PictureTime — Case Study',
+    subtitle: 'Cinema Network & Cultural Distribution',
     heroImage: '/images/case-studies/picturetime/picturetime-hero.jpg',
     heroImageCaption: 'PictureTime mobile digital cinema deployed at flagship film festivals and remote cultural hubs.',
     sector: 'Entertainment · Cinema · Media',
     tags: ['Brand Narrative', 'Festival Communication', 'On-Ground Direction', 'Investor Storytelling'],
+    challenge: 'PictureTime needed a more consistent digital presence and a stronger brand narrative—one that could engage cinema audiences while also communicating its larger business vision.',
+    whatWeDid: 'Ārohana managed PictureTime’s digital communication across Instagram, Facebook and LinkedIn, covering strategy, content calendars, creative direction, campaigns and platform execution. Major initiatives included IFFI and DIFF festival communication, on ground filmmaker interviews, 120 Bahadur promotions, reels, social creatives and LinkedIn/founder-led communication.',
+    theResult: 'PictureTime evolved from primarily promoting individual films and theatre moments to communicating a more structured, distinctive and business-conscious brand story, supported by consistent digital content and high-value cultural and industry-led opportunities.',
+    stillsSubtitle: 'Social Media Management | Content Strategy | IFFI | DIFF | Filmmaker Interviews | On ground Content',
     snapshot: {
       sector: 'Mobile Cinema, Cultural Infrastructure & Media',
       location: 'Ladakh, Goa (IFFI), Pan-India',
@@ -644,12 +656,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     slug: 'misu',
-    title: 'Misu',
-    subtitle: 'Turning a restaurant from a collection of moving parts into a more considered hospitality business.',
+    title: 'MISU — Case Study',
+    subtitle: 'Pan-Asian Dining & Hospitality Turnaround',
     heroImage: '/images/case-studies/misu/misu-hero.jpg',
     heroImageCaption: 'Misu Pan-Asian dining experience: interior ambiance, culinary craft, and service choreography.',
     sector: 'Hospitality · Restaurant · Goa',
     tags: ['Hospitality Consulting', 'Food Cost Control', 'Kitchen SOPs', 'Revenue Optimisation'],
+    challenge: 'Misu’s challenges went beyond marketing: the brand required operational structure, menu engineering, food-cost control, and consistent guest communication to build a commercially resilient restaurant model.',
+    whatWeDid: 'Ārohana worked inside the business for nearly two years, partnering on hospitality consulting, menu re-engineering, food-cost discipline, kitchen systems, staff service SOPs, and culinary social media content.',
+    theResult: 'Helped Misu move towards a more structured and commercially focused hospitality operation, aligning back-of-house cost controls with an elevated front-of-house dining experience and consistent digital presence.',
+    stillsSubtitle: 'Hospitality Consulting · Menu Engineering · Food Cost Control · Concept Development · SOPs setup · Social Media · Content Production',
     snapshot: {
       sector: 'Contemporary Pan-Asian Restaurant & Bar',
       location: 'Goa & Regional Expansion',
@@ -913,6 +929,262 @@ export const CASE_STUDIES: CaseStudy[] = [
     closingText:
       'Have a similar business challenge? Let’s start with the context, not a template.',
   },
+  {
+    slug: 'la-confidence',
+    title: 'La Confidence Derma Clinic — Case Study',
+    subtitle: 'Doctor-Led Clinical Dermatological Care',
+    heroImage: '/uploads/1790518446224-rrskins1.jpg',
+    heroImageCaption: 'La Confidence Derma Clinic consultation and patient-focused healthcare storytelling.',
+    sector: 'Healthcare · Clinical Dermatology',
+    tags: ['Doctor-led Content', 'Educational Reels', 'Skin & Hair Education', 'Content Production'],
+    challenge: 'Dermatology is an expertise-led category where patients often have questions, hesitations and misinformation, requiring credible, trust-building communication rather than aggressive retail sales tactics.',
+    whatWeDid: 'Built social content around doctor-led education and patient-focused storytelling. We created clear video formats explaining treatments, skin health science, and clinical procedures in an approachable and reassuring voice.',
+    theResult: 'Evolved into a knowledge-led digital extension of the clinic that addresses real patient concerns, demystifies clinical procedures, and establishes enduring authority and patient confidence.',
+    stillsSubtitle: 'Doctor-led Content · Educational Reels · Skin & Hair Education · Content Production',
+    snapshot: {
+      sector: 'Specialised Clinical Dermatology & Aesthetic Healthcare',
+      location: 'Leh, Ladakh',
+      engagementType: 'Ongoing Digital Partnership',
+      duration: 'Ongoing Strategic Retainer',
+      coreCapabilities: [
+        'Doctor-led Content',
+        'Educational Reels',
+        'Skin & Hair Education',
+        'Content Production',
+      ],
+    },
+    situation: [
+      'Dermatology is an expertise-led category where patients often have questions before they have a treatment decision. La Confidence needed a digital presence that could educate, build credibility and make specialised dermatology more approachable without feeling like conventional clinic advertising.',
+    ],
+    realChallenge: [
+      'Dermatology is an expertise-led category where patients often have questions before they have a treatment decision. La Confidence needed a digital presence that could educate, build credibility and make specialised dermatology more approachable without feeling like conventional clinic advertising.',
+    ],
+    thinking: [
+      'We built the social content around doctor-led education and patient-focused storytelling — translating complex dermatology topics into accessible Reels and visual content. The communication covered skin, hair, nails and aesthetic dermatology, alongside treatment explainers, FAQs, technology, patient experiences and clinic-led content.',
+    ],
+    work: [
+      {
+        title: 'Doctor-Led Education & Treatment Explainers',
+        description:
+          'Translating complex dermatology topics into accessible Reels and visual content covering skin, hair, nails, and aesthetic dermatology.',
+        bullets: [
+          'Doctor-led educational video series',
+          'Treatment explainers, FAQs, and technology clarity',
+          'Patient experiences and clinic-led content',
+        ],
+      },
+      {
+        title: 'High-Trust Content Production',
+        description:
+          'Dignified, clinical-standard video production and educational reels building medical credibility.',
+        bullets: [
+          'Doctor-led consultation explainers',
+          'Skin & hair care advice',
+          'Authentic, human clinic interactions',
+        ],
+      },
+    ],
+    proof: {
+      verifiedText:
+        'La Confidence’s social presence evolved into a knowledge-led digital extension of the clinic, giving prospective patients a clearer understanding of treatments, technologies and dermatological concerns while strengthening the doctor and clinic’s credibility online.',
+    },
+    gallery: [
+      {
+        image: '/uploads/1790518446224-rrskins1.jpg',
+        caption: 'Doctor consultation and patient-first medical communication.',
+        alt: 'La Confidence consultation',
+      },
+      {
+        image: '/uploads/1790518423080-rrskin2.jpg',
+        caption: 'Specialized clinical dermatology and aesthetic technology.',
+        alt: 'La Confidence clinical technology',
+      },
+      {
+        image: '/uploads/1790518461764-rrskins3.jpg',
+        caption: 'Clean, sophisticated clinic environment in Ladakh.',
+        alt: 'La Confidence clinic',
+      },
+    ],
+    videos: [
+      {
+        title: 'La Confidence — Reels Showcase',
+        url: 'https://www.instagram.com/la_confidence_derma_clinic/reels/?hl=en',
+        type: 'reel',
+        caption: 'Doctor-led educational Reels on clinical skincare and aesthetic dermatology.',
+      },
+    ],
+    closingQuote:
+      'In healthcare, trust is not won by loud advertising. It is built when patients are given clear, doctor-led understanding.',
+    closingText:
+      'Want to make specialized expertise approachable and trusted? Let’s talk.',
+  },
+  {
+    slug: 'ladakh-football-association',
+    title: 'Ladakh Football Association — Case Study',
+    subtitle: 'High-Altitude Sporting Community & Tournaments',
+    heroImage: '/images/army/army-hero.jpg',
+    heroImageCaption: 'Ladakh Football Association high-altitude matches and grassroots sporting community.',
+    sector: 'Institutional · Sports & Community',
+    tags: ['Social Media Videos', 'Match-Day Communication', 'On-Ground Coverage', 'Graphic Design'],
+    challenge: 'With multiple leagues, tournaments, fixtures and community initiatives across high-altitude regions, the challenge was to create a digital presence that kept players, fans and institutions informed and inspired.',
+    whatWeDid: 'Built a structured content system around the full football calendar — covering match-day graphics, live tournament updates, player stories, on-ground video production, and institutional communication.',
+    theResult: 'Became a central digital touchpoint for football in Ladakh, amplifying local sporting talent, building strong community pride, and engaging audiences across the region and beyond.',
+    stillsSubtitle: 'Social Media Videos · Match-Day Communication · On-Ground Coverage · Graphic Design · Community Communication',
+    snapshot: {
+      sector: 'Sports Association & Regional Youth Development',
+      location: 'Ladakh',
+      engagementType: 'Strategic Communication & Media Partner',
+      duration: 'Ongoing',
+      coreCapabilities: [
+        'Social Media Videos',
+        'Match-Day Communication',
+        'On-Ground Coverage',
+        'Graphic Design',
+        'Community Communication',
+      ],
+    },
+    situation: [
+      'With multiple leagues, tournaments, fixtures and football development initiatives happening across Ladakh, the challenge was to create a digital presence that could keep the football community informed while giving the association a stronger, more professional identity.',
+    ],
+    realChallenge: [
+      'With multiple leagues, tournaments, fixtures and football development initiatives happening across Ladakh, the challenge was to create a digital presence that could keep the football community informed while giving the association a stronger, more professional identity.',
+    ],
+    thinking: [
+      'We built a structured content system around the full football calendar — from match-day communication, fixtures and results to points tables, tournament promotions, team stories and on-ground moments. Content was designed to make the association’s ongoing activity easier to follow while giving different competitions and initiatives their own visibility.',
+    ],
+    work: [
+      {
+        title: 'Match-Day & Tournament Communication',
+        description:
+          'Structured graphic design and instant updates keeping players, fans, and regional supporters connected.',
+        bullets: [
+          'Fixtures, results, and league tables',
+          'Tournament announcements and promotion',
+          'Professional sports branding standards',
+        ],
+      },
+      {
+        title: 'On-Ground Coverage & Highlight Videos',
+        description:
+          'On-location filming capturing match highlights, player stories, and mountain football culture.',
+        bullets: [
+          'On-ground match video coverage and reels',
+          'Team stories and grassroots player spotlights',
+          'Tournament atmosphere and tourist interest amplification',
+        ],
+      },
+    ],
+    proof: {
+      verifiedText:
+        'The association’s social channels became a central digital touchpoint for football in Ladakh, bringing together competitions, match updates, teams and community activity in a consistent communication system. Leading to follower growth and tourist interests.',
+    },
+    gallery: [
+      {
+        image: '/images/army/army-hero.jpg',
+        caption: 'High-altitude football matches surrounded by the Himalayan mountains.',
+        alt: 'Ladakh Football Association match',
+      },
+      {
+        image: '/images/army/western-command.jpg',
+        caption: 'Grassroots tournament and youth sports community engagement.',
+        alt: 'Ladakh football community',
+      },
+    ],
+    videos: [
+      {
+        title: 'Ladakh Football Association — Reels',
+        url: 'https://www.instagram.com/ladakhfootball_association/?hl=en',
+        type: 'reel',
+        caption: 'Tournament coverage, highlights, and community stories.',
+      },
+    ],
+    closingQuote:
+      'Sport in Ladakh is more than competition — it is an identity, a community, and a shared pride.',
+    closingText:
+      'Looking to build a digital home for an active institution or community? Let’s talk.',
+  },
+  {
+    slug: 'save-changthang',
+    title: 'Save Changthang — Case Study',
+    subtitle: 'High-Altitude Community Empowerment & Nomadic Heritage',
+    heroImage: '/uploads/1790516538989-communtiy.jpg',
+    heroImageCaption: 'Youth initiatives, educational workshops, and community events across the Changthang plateau.',
+    sector: 'Community · Youth Development',
+    tags: ['Community Storytelling', 'Visual Art Direction', 'Sports & Tournaments', 'Education Content'],
+    challenge: 'Brings together a wide range of initiatives — from sports and youth education to career opportunities and nomadic heritage preservation. The challenge was communicating these diverse programmes under one unified, impactful voice.',
+    whatWeDid: 'Developed content around the people, programmes and possibilities — documenting community sports, youth training camps, vocational initiatives, and cultural heritage across the remote Changthang plateau.',
+    theResult: "Evolved into an inspiring window into the organisation's work and the aspirations of its community, connecting local youth with broader opportunities and institutional support.",
+    stillsSubtitle: 'Community Storytelling · Visual Art Direction · Sports & Tournament Communication · Education & Training Content',
+    snapshot: {
+      sector: 'Grassroots Community & Youth Development',
+      location: 'Changthang, Ladakh',
+      engagementType: 'Community Storytelling & Media Partner',
+      duration: 'Ongoing',
+      coreCapabilities: [
+        'Community Storytelling',
+        'Visual Art Direction',
+        'Sports & Tournament Communication',
+        'Education & Training Content',
+      ],
+    },
+    situation: [
+      'Save Changthang brings together a wide range of initiatives — from sports and education to career opportunities, cultural activities and youth development. The challenge was to give these diverse efforts a clear and consistent digital voice while making the work and its impact easier for the wider community to discover.',
+    ],
+    realChallenge: [
+      'Save Changthang brings together a wide range of initiatives — from sports and education to career opportunities, cultural activities and youth development. The challenge was to give these diverse efforts a clear and consistent digital voice while making the work and its impact easier for the wider community to discover.',
+    ],
+    thinking: [
+      'We developed content around the people, programmes and possibilities shaping Changthang’s next generation. From football tournaments and community initiatives to career opportunities, guest lectures, training programmes and cultural moments, the content turned individual activities into a larger, connected story.',
+    ],
+    work: [
+      {
+        title: 'People & Possibility Storytelling',
+        description:
+          'Human-centered content documenting student opportunities, youth aspirations, and local change-makers.',
+        bullets: [
+          'Documenting youth career opportunities and training',
+          'Educational guest lectures and skill-building sessions',
+          'Cultural preservation and community pride',
+        ],
+      },
+      {
+        title: 'Sports & Event Communication',
+        description:
+          'Tournament visual direction and live coverage connecting remote settlements into a unified story.',
+        bullets: [
+          'Football tournaments and community sports communication',
+          'Visual art direction for grassroots events',
+          'Connecting individual activities into an inspiring collective movement',
+        ],
+      },
+    ],
+    proof: {
+      verifiedText:
+        'Save Changthang’s digital presence evolved into a window into the organisation’s work and the aspirations of its community — documenting opportunities, celebrating participation and bringing greater visibility to initiatives happening across Changthang.',
+    },
+    gallery: [
+      {
+        image: '/uploads/1790516538989-communtiy.jpg',
+        caption: 'Educational workshops and community development sessions in Changthang.',
+        alt: 'Save Changthang workshop',
+      },
+      {
+        image: '/uploads/1790516546127-community-2.jpg',
+        caption: 'Sports tournaments and youth events bringing villages together.',
+        alt: 'Save Changthang sports',
+      },
+      {
+        image: '/uploads/1790516555239-community-3.jpg',
+        caption: 'Grassroots community dialogue and future possibilities.',
+        alt: 'Save Changthang community',
+      },
+    ],
+    videos: [],
+    closingQuote:
+      'When you give voice to community aspirations, individual efforts turn into a movement with purpose.',
+    closingText:
+      'Working on impactful social or community storytelling? Let’s talk.',
+  },
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
@@ -922,6 +1194,8 @@ export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
     base = CASE_STUDIES.find((cs) => cs.slug === 'raysons-group' || cs.slug === 'raysons');
   } else if (normalized === 'she' || normalized === 'the-she-project') {
     base = CASE_STUDIES.find((cs) => cs.slug === 'she' || cs.slug === 'the-she-project');
+  } else if (normalized === 'rr-skins' || normalized === 'la-confidence' || normalized === 'la-confidence-derma-clinic') {
+    base = CASE_STUDIES.find((cs) => cs.slug === 'la-confidence' || cs.slug === 'rr-skins');
   } else {
     base = CASE_STUDIES.find(
       (cs) =>

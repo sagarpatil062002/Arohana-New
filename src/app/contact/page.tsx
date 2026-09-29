@@ -66,7 +66,7 @@ export default function ContactPage() {
 
   const email = contact.email || 'founder@byarohana.com';
   const phone = contact.phone || '+91 83800 92241';
-  const locations = contact.locations || 'Goa · Kolhapur · Delhi · Ladakh';
+  const locations = contact.locations || 'Goa, India';
   const callCta = contact.callCta || {
     tag: 'DISCOVERY CALL',
     title: 'Prefer to start with a call?',
@@ -102,17 +102,6 @@ export default function ContactPage() {
 
         {/* Header */}
         <div style={{ maxWidth: '1020px', marginBottom: 'clamp(2.5rem, 5vw, 5rem)' }}>
-          <div
-            className="contact-header-anim tag-mono"
-            style={{
-              color: '#ff3b30',
-              marginBottom: '1rem',
-              display: 'block',
-            }}
-          >
-            {contact.tag || 'DIRECT ENGAGEMENT'}
-          </div>
-
           <h1
             className="contact-header-anim"
             style={{
@@ -264,24 +253,6 @@ export default function ContactPage() {
                           }}
                         >
                           Instagram <ArrowUpRight size={13} />
-                        </a>
-                      )}
-                      {contact.socials?.behance && (
-                        <a
-                          href={contact.socials.behance}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            fontSize: '0.9rem',
-                            color: '#111',
-                            textDecoration: 'none',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                            fontWeight: 500,
-                          }}
-                        >
-                          Behance <ArrowUpRight size={13} />
                         </a>
                       )}
                     </div>
@@ -632,65 +603,6 @@ export default function ContactPage() {
                 </button>
               </form>
             )}
-          </div>
-        </div>
-
-        {/* Frequently Asked Questions */}
-        <div style={{ marginTop: 'clamp(5rem, 9vw, 8rem)' }}>
-          <div style={{ maxWidth: '800px', marginBottom: 'clamp(2rem, 4vw, 3.5rem)' }}>
-            <div
-              className="tag-mono"
-              style={{
-                color: '#DE322D',
-                marginBottom: '0.75rem',
-                display: 'block',
-                fontSize: '0.8rem',
-              }}
-            >
-              FREQUENTLY ASKED QUESTIONS
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-                fontWeight: 500,
-                letterSpacing: '-0.03em',
-                lineHeight: 1.1,
-                color: '#111',
-                margin: '0 0 0.75rem 0',
-              }}
-            >
-              Everything you need to know about working with Ārohana.
-            </h2>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))', gap: '1.5rem' }}>
-            {faqs.map((faq: { q: string; a: string }, idx: number) => (
-              <div
-                key={idx}
-                style={{
-                  padding: 'clamp(1.5rem, 3vw, 2.25rem)',
-                  borderRadius: '20px',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid rgba(0, 0, 0, 0.08)',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.75rem',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: '#DE322D', fontWeight: 600 }}>
-                    0{idx + 1}
-                  </span>
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 600, color: '#111', margin: 0 }}>
-                    {faq.q}
-                  </h3>
-                </div>
-                <p style={{ color: '#555', fontSize: '0.95rem', lineHeight: 1.65, margin: 0 }}>
-                  {faq.a}
-                </p>
-              </div>
-            ))}
           </div>
         </div>
       </div>

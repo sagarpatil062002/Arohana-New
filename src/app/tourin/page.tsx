@@ -43,7 +43,7 @@ export default function TourinPage() {
   };
 
   const genesis = tourinCms.genesis || {
-    tag: 'THE GENESIS',
+    tag: '',
     heading: 'Why Tourin.',
     p1: 'Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.',
     p2: 'There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.',
@@ -105,7 +105,7 @@ export default function TourinPage() {
       status: 'Coming Soon',
       subtitle: 'New Routes & Untouched Terrains',
       regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
-      image: '/images/tourin/tourin-hero.jpg',
+      image: '/images/tourin/dest-more-places.jpg',
       isComingSoon: true,
     },
   ];
@@ -452,61 +452,45 @@ export default function TourinPage() {
 
               {/* Action Buttons Row */}
               <div className="tourin-action-buttons">
-                <a href="#curated-journeys" className="tourin-primary-pill">
-                  <span>Explore Journeys</span>
-                  <ArrowRight size={15} strokeWidth={2.4} />
-                </a>
-
-                <Link href="/contact" className="tourin-secondary-pill">
+                <Link href="/contact" className="tourin-secondary-pill" style={{ backgroundColor: '#111113', color: '#ffffff' }}>
                   <span>Talk to us about a journey</span>
                   <ArrowRight size={15} strokeWidth={2.4} />
                 </Link>
               </div>
 
-
             </div>
 
-            {/* ── CENTER COLUMN: Main Feature Card (Santorini Sunset with Cursive Overlay) ── */}
+            {/* ── CENTER COLUMN: Main Feature Card ── */}
             <div className="tourin-col-center">
               <div className="santorini-feature-card">
                 <Image
-                  src="/images/tourin/santorini-sunset.jpg"
-                  alt="Scenic Santorini cliffside white village with blue domes overlooking caldera sea at sunset"
+                  src="/images/tourin/tourin-hero.jpg"
+                  alt="High altitude mountain landscape in Ladakh"
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   className="santorini-card-img"
                 />
                 <div className="santorini-vignette-overlay" />
-
-                {/* Handwritten Script in the Sky */}
-                <div className="santorini-script-overlay">
-                  <span>Different</span>
-                  <span>Places</span>
-                  <span>Richer</span>
-                  <span>You</span>
-                </div>
               </div>
             </div>
 
             {/* ── RIGHT COLUMN: Editorial Timeline & Lower Turquoise Lake Card ── */}
             <div className="tourin-col-right">
-
-
               {/* Lower Thumbnail Card: Pristine Turquoise Lake */}
               <div className="tourin-right-lower">
                 <div className="lake-thumbnail-card">
                   <Image
-                    src="/images/tourin/turquoise-lake.jpg"
-                    alt="Pristine turquoise glacial alpine lake"
+                    src="/images/tourin/dest-ladakh.jpg"
+                    alt="Pristine alpine landscape"
                     fill
                     sizes="(max-width: 1024px) 100vw, 22vw"
                     className="lake-card-img"
                   />
                   <div className="lake-gradient-dim" />
-                  <a href="#curated-journeys" className="lake-action-circle" aria-label="Explore alpine journeys">
+                  <Link href="/contact" className="lake-action-circle" aria-label="Talk to us about a journey">
                     <ArrowRight size={14} strokeWidth={2.4} />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -547,7 +531,6 @@ export default function TourinPage() {
               {/* Timeline Indicator Column */}
               <div className="genesis-timeline-col">
                 <div className="timeline-badge-wrap">
-                  <span className="timeline-num-badge">01</span>
                   <span className="timeline-dot-red" />
                 </div>
                 <div className="timeline-connector-line" />
@@ -556,11 +539,12 @@ export default function TourinPage() {
               {/* Row 1 Content Grid: Left Text Column + Right Media Gallery */}
               <div className="genesis-row-content">
                 <div className="genesis-text-col">
-                  <div className="genesis-tag">
-                    <span className="timeline-mobile-badge">01</span>
-                    <span className="tag-red-bullet">•</span>
-                    <span>{genesis.tag || 'THE GENESIS'}</span>
-                  </div>
+                  {genesis.tag ? (
+                    <div className="genesis-tag">
+                      <span className="tag-red-bullet">•</span>
+                      <span>{genesis.tag}</span>
+                    </div>
+                  ) : null}
 
                   <h2 className="genesis-heading">
                     {genesis.heading || 'Why Tourin.'}
@@ -577,11 +561,6 @@ export default function TourinPage() {
                       {genesis.p3}
                     </p>
                   </div>
-
-                  <Link href="/about" className="genesis-story-link">
-                    <span>{genesis.storyLinkText || 'OUR STORY'}</span>
-                    <ArrowRight size={15} strokeWidth={2.4} />
-                  </Link>
                 </div>
 
                 {/* Right Side: Two Image Cards + Vertical Editorial Slogan */}
@@ -606,14 +585,6 @@ export default function TourinPage() {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 30vw, 240px"
                       className="object-cover"
                     />
-                  </div>
-
-                  {/* Vertical Slogan: TRAVEL DEEPER LIVE FULLER */}
-                  <div className="genesis-slogan-stack">
-                    <span>TRAVEL</span>
-                    <span>DEEPER</span>
-                    <span>LIVE</span>
-                    <span>FULLER</span>
                   </div>
                 </div>
               </div>
@@ -650,7 +621,6 @@ export default function TourinPage() {
             {/* Timeline Col */}
             <div className="genesis-timeline-col">
               <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">02</span>
                 <span className="timeline-dot-red" />
               </div>
               <div className="timeline-connector-line" />
@@ -661,30 +631,27 @@ export default function TourinPage() {
               {/* Left Text */}
               <div className="tourin-section-left">
                 <div className="genesis-tag">
-                  <span className="timeline-mobile-badge">02</span>
                   <span className="tag-red-bullet">•</span>
                   <span>{destination.tag || 'THE DESTINATION'}</span>
                 </div>
 
                 <h2 className="tourin-section-heading">
-                  {destination.heading || 'Where we go.'}
+                  Where We Go
                 </h2>
 
                 <div className="tourin-section-body">
                   <p>
-                    {destination.primary || 'Ladakh is our home ground and primary destination — where our roots, local relationships, and deep operational presence allow us to craft truly authentic, slow-paced journeys.'}
+                    We create thoughtful journeys through places with character, culture and a story to tell. We go beyond the usual tourist circuit to discover local experiences, landscapes, food, people and ways of life.
                   </p>
                   <p style={{ marginTop: '0.85rem' }}>
-                    {destination.upcoming || 'We will be adding more places (coming soon) as new journeys and routes are finalized.'}
+                    Our journeys currently begins in Ladakh, with plans to take the same approach to other destinations.
+                  </p>
+                  <p style={{ marginTop: '0.85rem' }}>
+                    Wherever we go, the idea remains simple — travel deeper, experience more and leave with a sense of the place and memories.
                   </p>
                 </div>
 
                 <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.85rem', alignItems: 'flex-start' }}>
-                  <Link href="#curated-journeys" className="genesis-story-link">
-                    <span>EXPLORE LADAKH JOURNEYS</span>
-                    <ArrowUpRight size={15} strokeWidth={2.4} />
-                  </Link>
-
                   {/* View More button for destinations */}
                   <button
                     type="button"
@@ -859,7 +826,6 @@ export default function TourinPage() {
             {/* Timeline Col */}
             <div className="genesis-timeline-col">
               <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">03</span>
                 <span className="timeline-dot-red" />
               </div>
               <div className="timeline-connector-line" />
@@ -869,7 +835,6 @@ export default function TourinPage() {
               {/* 1. MASTER HEADER & PHILOSOPHY */}
               <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
                 <div className="genesis-tag">
-                  <span className="timeline-mobile-badge">03</span>
                   <span className="tag-red-bullet">•</span>
                   <span>{philosophy.tag || 'OUR PHILOSOPHY & APPROACH'}</span>
                 </div>
@@ -939,7 +904,16 @@ export default function TourinPage() {
                         onClick={() => setActiveTravellerIndex(idx)}
                         className={`traveller-row${isActive ? ' traveller-row--active' : ''}`}
                       >
-                        <span className="traveller-row-num">{item.num}</span>
+                        <span
+                          style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            backgroundColor: isActive ? '#DE322D' : 'rgba(0, 0, 0, 0.25)',
+                            flexShrink: 0,
+                            marginTop: '0.55rem',
+                          }}
+                        />
                         <p className="traveller-row-text">{item.text}</p>
                       </div>
                     );
@@ -947,7 +921,7 @@ export default function TourinPage() {
                 </div>
               </div>
 
-              {/* Right: Atmospheric Photo with script overlay */}
+              {/* Right: Atmospheric Photo without script overlay */}
               <div className="traveller-photo-wrap">
                 <div className="traveller-photo-card">
                   <Image
@@ -958,12 +932,6 @@ export default function TourinPage() {
                     className="object-cover traveller-photo-img"
                   />
                   <div className="traveller-photo-overlay" />
-                  <div className="traveller-cursive-block">
-                    <span>Curious</span>
-                    <span>Thoughtful</span>
-                    <span>Open</span>
-                    <span>For More</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1005,13 +973,6 @@ export default function TourinPage() {
                   <span className="exp-card-label">{pillar.label}</span>
                 </div>
               ))}
-            </div>
-
-            <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'flex-start' }}>
-              <Link href="#curated-journeys" className="genesis-story-link">
-                <span>EXPLORE CURATED JOURNEYS</span>
-                <ArrowRight size={15} strokeWidth={2.4} />
-              </Link>
             </div>
           </div>
         </div>
@@ -1129,7 +1090,6 @@ export default function TourinPage() {
             {/* Timeline Col */}
             <div className="genesis-timeline-col">
               <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">04</span>
                 <span className="timeline-dot-red" />
               </div>
               <div className="timeline-connector-line" />
@@ -1140,7 +1100,6 @@ export default function TourinPage() {
               {/* Left: Text */}
               <div>
                 <div className="genesis-tag">
-                  <span className="timeline-mobile-badge">04</span>
                   <span className="tag-red-bullet">•</span>
                   <span>{journeysTaken.tag || 'PROOF THAT IT WORKS'}</span>
                 </div>
@@ -1219,8 +1178,9 @@ export default function TourinPage() {
       </section>
 
       {/* ================================================================
-           07 — SECTION: CURATED JOURNEYS
+           07 — SECTION: CURATED JOURNEYS (kept in backend)
       ================================================================ */}
+      {false && (
       <section
         id="curated-journeys"
         style={{
@@ -1650,6 +1610,7 @@ export default function TourinPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ================================================================
            08 — SECTION: CTA BANNER ("Come travel differently.")
@@ -1661,7 +1622,7 @@ export default function TourinPage() {
           backgroundColor: '#0a1017',
           color: '#ffffff',
           padding: 'clamp(4.5rem, 7vw, 7rem) 0',
-          minHeight: '480px',
+          minHeight: '440px',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -1678,8 +1639,8 @@ export default function TourinPage() {
           }}
         >
           <Image
-            src="/images/tourin/tourin-cta-banner.jpg"
-            alt="Traveller looking out over sunset mountains and coast"
+            src="/images/tourin/tourin-lake-deck.jpg"
+            alt="Traveller looking out over high altitude landscape"
             fill
             priority
             style={{
@@ -1695,7 +1656,7 @@ export default function TourinPage() {
               right: 0,
               bottom: 0,
               background:
-                'linear-gradient(to right, rgba(16, 28, 40, 0.92) 0%, rgba(16, 28, 40, 0.78) 38%, rgba(16, 28, 40, 0.25) 70%, rgba(16, 28, 40, 0.4) 100%)',
+                'linear-gradient(to right, rgba(16, 28, 40, 0.94) 0%, rgba(16, 28, 40, 0.82) 45%, rgba(16, 28, 40, 0.35) 80%, rgba(16, 28, 40, 0.5) 100%)',
             }}
           />
         </div>
@@ -1719,7 +1680,7 @@ export default function TourinPage() {
 
           <div className="cta-content-row">
             {/* Left Headline & Buttons */}
-            <div style={{ maxWidth: '580px' }}>
+            <div style={{ maxWidth: '620px' }}>
               <h2
                 style={{
                   fontFamily: 'var(--font-display)',
@@ -1735,52 +1696,21 @@ export default function TourinPage() {
               </h2>
               <p
                 style={{
-                  color: 'rgba(255, 255, 255, 0.82)',
-                  fontSize: 'clamp(1rem, 1.4vw, 1.25rem)',
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  fontSize: 'clamp(1rem, 1.3vw, 1.2rem)',
                   marginBottom: '2.5rem',
-                  lineHeight: 1.5,
+                  lineHeight: 1.6,
                 }}
               >
-                Explore our journeys.
+                Custom journeys designed around character, culture, and high-altitude quietude.
               </p>
 
               <div className="cta-action-buttons">
-                <a
-                  href="#curated-journeys"
-                  style={{
-                    height: '48px',
-                    padding: '0 1.85rem',
-                    backgroundColor: '#000000',
-                    color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.25)',
-                    borderRadius: '4px',
-                    fontSize: '0.88rem',
-                    fontWeight: 550,
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.6rem',
-                    transition: 'all 0.25s ease',
-                    boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#222226';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#000000';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <span>Explore Journeys</span>
-                  <ArrowRight size={15} />
-                </a>
-
                 <Link
                   href="/contact"
                   style={{
                     height: '48px',
-                    padding: '0 1.85rem',
+                    padding: '0 2rem',
                     backgroundColor: '#000000',
                     border: '1px solid rgba(255, 255, 255, 0.25)',
                     color: '#ffffff',
@@ -1808,224 +1738,11 @@ export default function TourinPage() {
                 </Link>
               </div>
             </div>
-
-            {/* Right: Handwritten Script text */}
-            <div className="cta-script-text">
-              <div>Same</div>
-              <div>World</div>
-              <div>Different</div>
-              <div>Stories</div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ================================================================
-          09 — TOURIN LIGHT FOOTER
-      ================================================================ */}
-      <footer
-        style={{
-          backgroundColor: '#ffffff',
-          color: '#111111',
-          paddingTop: 'clamp(3.5rem, 5vw, 5rem)',
-          paddingBottom: 'clamp(2rem, 3vw, 2.5rem)',
-          borderTop: '1px solid rgba(0, 0, 0, 0.08)',
-        }}
-      >
-        <div
-          className="padding-global"
-          style={{ maxWidth: '1440px', margin: '0 auto' }}
-        >
-          {/* Main Footer Grid */}
-          <div className="tourin-footer-grid">
-            {/* Column 1: TOURIN Brand */}
-            <div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '1.35rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.04em',
-                  color: '#111111',
-                  marginBottom: '0.5rem',
-                }}
-              >
-                TOURIN
-              </div>
-              <p
-                style={{
-                  color: '#666666',
-                  fontSize: '0.85rem',
-                  lineHeight: 1.5,
-                  margin: 0,
-                  maxWidth: '220px',
-                }}
-              >
-                Experiential travel, beyond boundaries.
-              </p>
-            </div>
 
-            {/* Column 2: ĀROHANA Nav */}
-            <div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '1.1rem',
-                  fontWeight: 600,
-                  color: '#111111',
-                  marginBottom: '0.85rem',
-                }}
-              >
-                ĀROHANA
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '1.25rem',
-                  fontSize: '0.85rem',
-                }}
-              >
-                {[
-                  { label: 'Studio', href: '/about' },
-                  { label: 'Work', href: '/work' },
-                  { label: 'Services', href: '/services' },
-                  { label: 'Tourin', href: '/tourin' },
-                  { label: 'Army Projects', href: '/indian-army-projects' },
-                  { label: 'Contact', href: '/contact' },
-                ].map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    style={{
-                      color: item.label === 'Tourin' ? '#DE322D' : '#555555',
-                      textDecoration: 'none',
-                      transition: 'color 0.2s ease',
-                      fontWeight: item.label === 'Tourin' ? 500 : 400,
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color =
-                        item.label === 'Tourin' ? '#DE322D' : '#555555')
-                    }
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Column 3: OFFICE */}
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#888888',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.1em',
-                  marginBottom: '0.75rem',
-                  textTransform: 'uppercase',
-                  fontWeight: 600,
-                }}
-              >
-                OFFICE
-              </div>
-              <div
-                style={{
-                  color: '#555555',
-                  fontSize: '0.825rem',
-                  lineHeight: 1.6,
-                }}
-              >
-                <div style={{ color: '#111111', fontWeight: 600, marginBottom: '0.25rem' }}>
-                  ĀROHANA Consultancy
-                </div>
-                <div>30, Goodwill Square, Aundh-Ravet BRTS Rd,</div>
-                <div style={{ marginBottom: '0.75rem' }}>
-                  Near D Mart, Thergaon, Pune 411033, India.
-                </div>
-
-                <div>
-                  <a
-                    href="mailto:founder@byarohana.com"
-                    style={{
-                      color: '#111111',
-                      textDecoration: 'none',
-                      display: 'block',
-                      marginBottom: '0.2rem',
-                    }}
-                  >
-                    founder@byarohana.com
-                  </a>
-                  <a
-                    href="tel:+918380092241"
-                    style={{
-                      color: '#555555',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    +91 83800 92241
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Column 4: SOCIAL */}
-            <div>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#888888',
-                  fontSize: '0.72rem',
-                  letterSpacing: '0.1em',
-                  marginBottom: '0.75rem',
-                  textTransform: 'uppercase',
-                  fontWeight: 600,
-                }}
-              >
-                SOCIAL
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.45rem',
-                  fontSize: '0.825rem',
-                }}
-              >
-                {[
-                  { label: 'LinkedIn', href: 'https://linkedin.com' },
-                  { label: 'Instagram', href: 'https://instagram.com' },
-                  { label: 'Behance', href: 'https://behance.net' },
-                ].map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      color: '#555555',
-                      textDecoration: 'none',
-                      transition: 'color 0.2s ease',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#111111')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = '#555555')}
-                  >
-                    {s.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Copyright */}
-          <div className="tourin-footer-bottom">
-            <div>© 2025 ĀROHANA Consultancy. All Rights Reserved.</div>
-            <div style={{ color: '#555555' }}>Pune • Ladakh • Pan-India Engagements</div>
-            <div style={{ color: '#777777' }}>Tourin | Experiential Travel & Journeys</div>
-          </div>
-        </div>
-      </footer>
 
       {/* ================================================================
           DETAILED ITINERARY MODAL (Accessible on clicking any Journey Card)

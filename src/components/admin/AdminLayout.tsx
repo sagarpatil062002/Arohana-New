@@ -23,6 +23,7 @@ import {
   X,
   ExternalLink,
   Check,
+  FileText,
 } from 'lucide-react';
 import PublishDialog from './PublishDialog';
 import { useCmsContent } from '@/lib/cms/content-context';
@@ -44,15 +45,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     setMobileNavOpen(false);
   }, [pathname]);
 
+  // Sidebar arranged strictly in the exact order of the frontend Navbar:
+  // Home -> Studio/About -> Work -> Case Studies -> Services -> Tourin -> Army Projects -> Contact
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { label: 'Home Page', href: '/admin/home', icon: Home },
-    { label: 'Work & Cases', href: '/admin/work', icon: Briefcase },
+    { label: 'Studio / About', href: '/admin/about', icon: Users },
+    { label: 'Work Page', href: '/admin/work', icon: Briefcase },
+    { label: 'Case Studies', href: '/admin/cases', icon: FileText },
     { label: 'Services', href: '/admin/services', icon: Layers },
     { label: 'Tourin Brand', href: '/admin/tourin', icon: Compass },
     { label: 'Army Projects', href: '/admin/army-projects', icon: Shield },
-    { label: 'About / Studio', href: '/admin/about', icon: Users },
-    { label: 'Partner Logos', href: '/admin/partners', icon: Users },
     { label: 'Contact Info', href: '/admin/contact', icon: Mail },
     { label: 'Footer Settings', href: '/admin/footer', icon: PanelBottom },
     { label: 'Media Library', href: '/admin/media', icon: ImageIcon },

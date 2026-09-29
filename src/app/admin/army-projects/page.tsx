@@ -107,7 +107,7 @@ export default function AdminArmyProjectsPage() {
       id: newId,
       num: newNum,
       command: '14 CORPS HEADQUARTERS',
-      location: 'Ladakh Theatre',
+      location: 'Ladakh',
       date: '2026',
       title: 'New Institutional Assignment',
       subtitle: 'Ceremonial protocol shoot and documentary production.',
@@ -183,12 +183,39 @@ export default function AdminArmyProjectsPage() {
             backgroundColor: '#FAFAFA',
           }}
         >
-          <div>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-              Indian Army Projects
-            </h2>
-            <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
-              Institutional briefs, verified assignments, videos &amp; publications.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div>
+              <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Indian Army Projects
+              </h2>
+              <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
+                Institutional briefs, verified assignments, videos &amp; publications.
+              </div>
+            </div>
+
+            {/* Quick Section Dropdown Selector */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#52525B' }}>Section:</span>
+              <select
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value as any)}
+                style={{
+                  padding: '0.35rem 0.65rem',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#111113',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  outline: 'none',
+                }}
+              >
+                <option value="projects">01: Project Cards &amp; Assignments</option>
+                <option value="hero">02: Page Hero Header</option>
+                <option value="disclaimer">03: Institutional Integrity Statement</option>
+                <option value="closingBanner">04: Closing Banner &amp; CTA</option>
+              </select>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '0.65rem' }}>

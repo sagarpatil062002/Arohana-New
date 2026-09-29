@@ -15,10 +15,10 @@ import {
 } from 'lucide-react';
 
 const CATEGORIES = [
-  { id: 'all', label: 'All Assignments', count: '06' },
-  { id: 'western-command', label: 'HQ Western Command', count: '02' },
-  { id: '14-corps', label: '14 Corps & High Altitude', count: '02' },
-  { id: 'border-initiatives', label: 'Border Initiatives', count: '02' },
+  { id: 'all', label: 'All Assignments' },
+  { id: 'western-command', label: 'Western Command' },
+  { id: '14-corps', label: 'Fire & Fury Corps (XIV Corps)' },
+  { id: 'border-initiatives', label: 'Rezang La Memorial' },
 ];
 
 const SPREAD_PAGES = [
@@ -43,19 +43,19 @@ export default function IndianArmyProjectsPage() {
     eyebrow: 'PEOPLE · PLACES · SACRIFICE · A STRONGER TOMORROW',
     heading: 'Documenting\na stronger tomorrow',
     description: 'Whether covering an investiture, archiving veteran history, or filming at 16,000 feet, Ārohana brings reverence, discipline, and visual depth to institutional defence communication.',
-    buttonText: "Let's Discuss a Project",
+    buttonText: 'Start a conversation',
     buttonUrl: '/contact',
-    image: '/images/army/symbolic-army-terrain.jpg',
+    image: '/uploads/1790516827847-rezang-la-memorial.jpg',
   };
 
   const p1 = projectsList.find((p: any) => p.id === 'western-command-investiture') || projectsList[0] || {
     id: 'western-command-investiture',
     num: '01',
     command: 'WESTERN COMMAND',
-    location: 'HQ Western Command Theatre',
+    location: 'HQ Western Command',
     date: 'February 2026',
     title: 'Investiture Ceremony',
-    subtitle: 'Ceremonial protocol shoot and documentary post-production.',
+    subtitle: 'Shoot · Production · Post-production',
     description: 'Ārohana handled the shoot and post-production for the Western Command Investiture Ceremony in February 2026.',
     scopeOfWork: 'Coverage of formal investiture protocols, honors and awards distribution, parade sequences.',
     creativeApproach: 'Restrained, dignified visual pacing tailored to military protocol and ceremonial integrity.',
@@ -73,19 +73,19 @@ export default function IndianArmyProjectsPage() {
     id: '14-corps-communication',
     num: '02',
     command: '14 CORPS HEADQUARTERS',
-    location: 'Leh & Indus Valley, Ladakh',
-    date: '2023 – Present',
+    location: 'Ladakh',
+    date: '',
     title: 'Communication & Production',
-    subtitle: 'High-altitude visual communication, films and archival design.',
+    subtitle: 'Design · Scripting · films',
     description: 'Ārohana has undertaken communication, design and visual production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.',
     scopeOfWork: 'Institutional communications campaign, internal and public-facing visual communication, and photo documentation.',
     creativeApproach: 'Authentic high-altitude cinematography paired with authoritative scripting and professional narration.',
     productionDiscipline: 'Field filming in sub-zero and remote mountain environments requiring specialised equipment and acclimatised crews.',
-    image: '/images/army/14corps-hall-of-fame.jpg',
+    image: '/uploads/1790515799187-high-alltitude-1.jpg',
     sidePhotos: [
-      '/images/army/adgpi-firstvillages.jpg',
-      '/images/army/14corps-ladakh-ops.jpg',
       '/images/army/firefury-changthang-health.jpg',
+      '/uploads/1790515822524-high-altitude-2.jpg',
+      '/uploads/1790515846174-highlatude-3.jpg',
     ],
     category: '14-corps',
     published: true,
@@ -95,20 +95,19 @@ export default function IndianArmyProjectsPage() {
     id: 'corps-publications',
     num: '03',
     command: 'FIRE & FURY CORPS',
-    location: 'Ladakh Theatre',
-    date: 'Multi-Year Engagements',
-    title: 'Corps-Level Communication & Publications',
-    subtitle: 'XIV Corps communication, publications and community initiatives.',
-    description: 'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, photo documentation and community-facing initiatives.',
-    scopeOfWork: 'Spans historical commemorative literature, community welfare communication, and visual documentation.',
+    location: 'Ladakh',
+    date: '',
+    title: 'Fire & Fury Corps — XIV Corps, Rezang La & 69 Armoured',
+    subtitle: 'Collateral designing · Content creation · Publications',
+    description: 'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, 69 Armoured Regiment collateral designing and content creation, and Rezang La War Memorial documentation.',
+    scopeOfWork: 'Spans historical commemorative literature, coffee table books, community welfare communication, and visual documentation.',
     creativeApproach: 'Balancing historical gravitas with contemporary digital readability across diverse audiences.',
     productionDiscipline: 'Seamless integration between on-ground research, military history curation, and modern typography.',
-    image: '/images/army/firefury-corps-hq.jpg',
+    image: '/uploads/1790516375474-firefury1.jpg',
     sidePhotos: [
-      '/images/army/fire-fury-1.jpg',
-      '/images/army/firefury-kargil-memorial.jpg',
-      '/images/army/wangchuk-army-friendship.jpg',
-      '/images/army/firefury-veterans.jpg',
+      '/images/army/69armoured-2.jpg',
+      '/uploads/1790516827847-rezang-la-memorial.jpg',
+      '/uploads/1790516538989-communtiy.jpg',
     ],
     category: '14-corps',
     published: true,
@@ -118,18 +117,18 @@ export default function IndianArmyProjectsPage() {
     id: 'rezang-la-memorial',
     num: '04',
     command: 'FIRE & FURY CORPS',
-    location: 'Chushul Sector, Ladakh (16,000+ ft)',
-    date: 'Commemorative Edition',
+    location: 'Ladakh',
+    date: '',
     title: 'Rezang La War Memorial',
-    subtitle: 'Commemorative coffee-table book design and visual communication.',
-    description: 'Coffee-table book design and visual communication for the Rezang La War Memorial.',
+    subtitle: 'Collateral designing | Content production',
+    description: 'Coffee-table book design, editorial publication architecture, and visual communication for the Rezang La War Memorial.',
     scopeOfWork: 'Complete publication design including hardbound cover architecture, typographic systems, and archival photo restoration.',
     creativeApproach: 'Subtle, dignified layout allowing historical accounts and veteran testimonies to stand out with gravitas.',
     productionDiscipline: 'High-specification tactile print finishing, custom clothbound styling, and museum-grade archival reproduction.',
-    image: '/images/army/rezang-la-1.jpg',
+    image: '/uploads/1790516737581-rezangla.jpg',
     sidePhotos: [
       '/images/army/rezangla-tribute.jpg',
-      '/images/army/rezang-la-2.jpg',
+      '/uploads/1790516827847-rezang-la-memorial.jpg',
     ],
     category: 'border-initiatives',
     published: true,
@@ -175,8 +174,6 @@ export default function IndianArmyProjectsPage() {
                 <Shield size={12} className="shield-icon" />
                 <span>DEFENCE &amp; INSTITUTIONAL PRODUCTION</span>
               </span>
-              <span className="eyebrow-dot" />
-              <span className="eyebrow-sub">HIGH-ALTITUDE THEATRE</span>
             </div>
 
             {/* Attractive Architectural Headline */}
@@ -199,32 +196,16 @@ export default function IndianArmyProjectsPage() {
               {hero.description}
             </p>
 
-            {/* Distinctive Pillar Badges */}
-            <div className="hero-pillars">
-              <span className="pillar-item">
-                <span className="pillar-dot" /> HQ Western Command
-              </span>
-              <span className="pillar-item">
-                <span className="pillar-dot" /> 14 Corps &amp; High Altitude
-              </span>
-              <span className="pillar-item">
-                <span className="pillar-dot" /> Rezang La War Memorial
-              </span>
-            </div>
-
             {/* Attractive CTA Group */}
             <div className="hero-cta-group">
               <a href="#army-projects" className="hero-primary-btn">
                 <span>Explore Assignments</span>
                 <ArrowRight size={15} />
               </a>
-
-
             </div>
           </div>
         </div>
       </section>
-
 
       {/* ==========================================================================
           3. INSTITUTIONAL INTEGRITY STATEMENT
@@ -235,29 +216,6 @@ export default function IndianArmyProjectsPage() {
           <p className="integrity-text">
             {disclaimerText}
           </p>
-        </div>
-      </div>
-
-      {/* ==========================================================================
-          4. FILTER PILL TABS
-          ========================================================================== */}
-      <div className="army-container filter-section">
-        <div className="filter-pills" role="tablist">
-          {CATEGORIES.map((cat) => {
-            const isActive = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`filter-pill ${isActive ? 'active' : ''}`}
-                role="tab"
-                aria-selected={isActive}
-              >
-                <span>{cat.label}</span>
-                <span className="pill-count">({cat.count})</span>
-              </button>
-            );
-          })}
         </div>
       </div>
 
@@ -273,7 +231,6 @@ export default function IndianArmyProjectsPage() {
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">{p1.num}</span>
                 <span className="meta-tag-pill">{p1.command}</span>
               </div>
               <div className="card-meta-right">
@@ -346,7 +303,6 @@ export default function IndianArmyProjectsPage() {
                       sizes="220px"
                       style={{ objectFit: 'cover' }}
                     />
-                    <span className="more-badge">+4</span>
                   </div>
                 </div>
               </div>
@@ -362,7 +318,6 @@ export default function IndianArmyProjectsPage() {
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">{p2.num}</span>
                 <span className="meta-tag-pill">{p2.command}</span>
               </div>
               <div className="card-meta-right">
@@ -459,7 +414,6 @@ export default function IndianArmyProjectsPage() {
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">{p3.num}</span>
                 <span className="meta-tag-pill">{p3.command}</span>
               </div>
               <div className="card-meta-right">
@@ -611,7 +565,6 @@ export default function IndianArmyProjectsPage() {
             {/* Top Meta Bar */}
             <div className="card-meta-bar">
               <div className="card-meta-left">
-                <span className="meta-badge-num">{p4.num}</span>
                 <span className="meta-tag-pill">{p4.command}</span>
               </div>
               <div className="card-meta-right">
@@ -678,30 +631,6 @@ export default function IndianArmyProjectsPage() {
                     />
                   </div>
                 </div>
-
-                {/* Handwritten Script Calligraphy */}
-                <div className="rezang-quote-col">
-                  <div className="rezang-script-quote">
-                    Some
-                    <br />
-                    sacrifices
-                    <br />
-                    never fade.
-                  </div>
-                  <span className="rezang-quote-author">— REZANG LA</span>
-                </div>
-
-                <button
-                  type="button"
-                  className="card-4-bottom-arrow"
-                  aria-label="Next Section"
-                  onClick={() => {
-                    const el = document.getElementById('closing-panoramic-banner');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  <ArrowRight size={15} />
-                </button>
               </div>
             </div>
           </article>
@@ -717,7 +646,6 @@ export default function IndianArmyProjectsPage() {
               <article key={p.id} className="project-card card-light" data-category={p.category}>
                 <div className="card-meta-bar">
                   <div className="card-meta-left">
-                    <span className="meta-badge-num">{p.num}</span>
                     <span className="meta-tag-pill">{p.command}</span>
                   </div>
                   <div className="card-meta-right">
@@ -797,132 +725,14 @@ export default function IndianArmyProjectsPage() {
             </p>
 
             <Link href={closingBanner.buttonUrl || '/contact'} className="banner-btn">
-              <span>{closingBanner.buttonText || "Let's Discuss a Project"}</span>
+              <span>{closingBanner.buttonText || 'Start a conversation'}</span>
               <ArrowRight size={15} />
             </Link>
-          </div>
-
-          {/* Right Signature Calligraphy */}
-          <div className="banner-right-script">
-            For
-            <br />
-            Those
-            <br />
-            Who Protect
-            <br />
-            Ours.
           </div>
         </div>
       </section>
 
-      {/* ==========================================================================
-          7. DEDICATED SITE FOOTER (Matching Reference Image)
-          ========================================================================== */}
-      <footer className="site-footer" id="contact">
-        <div className="army-container">
-          <div className="footer-top-grid">
-            {/* Brand Summary */}
-            <div className="footer-brand">
-              <p className="f-tagline" style={{ marginTop: 0 }}>
-                Strategic Communication.
-                <br />
-                Real-World Impact.
-              </p>
-            </div>
 
-            {/* Navigation Links */}
-            <div>
-              <div className="footer-col-title">Navigation</div>
-              <ul className="footer-links-list">
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li>
-                  <Link href="/about">Studio</Link>
-                </li>
-                <li>
-                  <Link href="/work">Work</Link>
-                </li>
-                <li>
-                  <Link href="/services">Services</Link>
-                </li>
-                <li>
-                  <Link href="/tourin">Tourin</Link>
-                </li>
-                <li>
-                  <Link href="/indian-army-projects" className="f-active-link">
-                    Army Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact">Contact</Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Office Details */}
-            <div className="footer-office">
-              <div className="footer-col-title">Office</div>
-              <p>
-                <strong>ĀROHANA Consultancy</strong>
-              </p>
-              <p>
-                60, Goodwill Square, Aundh-Ravet BRTS Rd,
-                <br />
-                Near D Mart, Thergaon, Pune 416033, India.
-              </p>
-              <p>
-                <a href="mailto:founder@byarohana.com">founder@byarohana.com</a>
-              </p>
-              <p>
-                <a href="tel:+918380092241">+91 83800 92241</a>
-              </p>
-            </div>
-
-            {/* Social Channels */}
-            <div>
-              <div className="footer-col-title">Social</div>
-              <ul className="footer-links-list">
-                <li>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a href="https://behance.net" target="_blank" rel="noopener noreferrer">
-                    Behance
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="footer-bottom-bar">
-            <div>&copy; {new Date().getFullYear()} Ārohana Consultancy. All Rights Reserved.</div>
-            <div>Pune &middot; Ladakh &middot; Pan-India Engagements</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <span>Army Projects &middot; Institutional Production</span>
-              <span>&bull;</span>
-              <Link
-                href="/admin"
-                style={{
-                  color: '#777777',
-                  textDecoration: 'none',
-                  transition: 'color 0.2s ease',
-                }}
-              >
-                Admin CRM
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       {/* ==========================================================================
           8. SCOPED COMPONENT STYLES MATCHING THE REFERENCE IMAGE EXACTLY

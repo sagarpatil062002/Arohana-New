@@ -19,28 +19,28 @@ interface CapabilityItemData {
 
 const CAPABILITIES_DATA: CapabilityItemData[] = [
   {
-    title: 'Brand & Digital Growth',
-    tags: ['Brand Strategy', 'Creative Direction', 'Performance Marketing', 'Platform Execution'],
+    title: 'Digital Brand Growth',
+    tags: ['Content Strategy', 'Social Media Management', 'Performance Marketing', 'Digital Production', 'Website Management & Branding'],
     image: '/images/services/digital-growth.jpg',
-    alt: 'Digital brand strategy and growth systems',
+    alt: 'Digital brand growth and social media management',
     description:
-      'Brand strategy, social ecosystems, creative direction and platforms for businesses building commanding market presence.',
+      'Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding',
     href: '/services#digital-growth',
   },
   {
-    title: 'Content & Communication',
-    tags: ['Documentaries', 'Corporate Films', 'Extreme Terrains', 'Post-Production'],
+    title: 'Content Production',
+    tags: ['Content Ideation', 'Scripting', 'Shoot', 'Post-Production', 'Art Direction', 'Photography', 'Influencer & UGC Content', 'AI Content'],
     image: '/images/services/content-production.jpg',
     alt: 'Content and brand production from scripting through post-production',
     description:
-      'Corporate films, documentaries, official ceremonies and institutional field production under demanding environments.',
+      'Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content',
     href: '/services#brand-production',
   },
   {
     title: 'Hospitality & Experience',
-    tags: ['Concept & Menu', 'Kitchen Pass', 'Unit Economics', 'Guest Journeys'],
-    image: '/images/services/hospitality-consulting.jpg',
-    alt: 'Hospitality consulting and operational systems',
+    tags: ['Concept & Menu', 'Food & Space Shoots', 'Kitchen Pass', 'Guest Journeys'],
+    image: '/images/case-studies/raysons/neora-1.jpg',
+    alt: 'Neora Deck hospitality consulting and visual storytelling',
     description:
       'Menu design, operational systems, staff workflows, revenue optimisation and digital marketing for hospitality brands.',
     href: '/services#hospitality-consulting',
@@ -66,17 +66,10 @@ const SHARP_STATS: StatData[] = [
   },
   {
     id: 'sectors',
-    target: 6,
-    twoDigits: true,
+    target: 10,
+    suffix: '+',
     label: 'Industry Sectors',
     detail: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence',
-  },
-  {
-    id: 'cases',
-    target: 8,
-    twoDigits: true,
-    label: 'Featured Case Studies',
-    detail: 'Multi-entity retainers and technical production',
   },
   {
     id: 'expeditions',
@@ -560,11 +553,12 @@ export default function ServicesSection() {
         /* ── Sharp Flipping Numbers Grid ── */
         .sharp-stats-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1.75rem;
-          padding: 2.25rem 0;
+          grid-template-columns: repeat(3, 1fr);
+          gap: clamp(1.75rem, 3.5vw, 4rem);
+          padding: 2.75rem 0;
           border-top: 1px solid rgba(255, 255, 255, 0.12);
           border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+          width: 100%;
         }
 
         .sharp-stat-item {

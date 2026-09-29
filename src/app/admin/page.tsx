@@ -39,10 +39,9 @@ export default function AdminDashboardPage() {
       fetch('/api/content/army-projects').then((r) => r.json()),
       fetch('/api/content/tourin').then((r) => r.json()),
       fetch('/api/content/about').then((r) => r.json()),
-      fetch('/api/content/partners').then((r) => r.json()),
       fetch('/content/media.json').then((r) => r.json()),
     ])
-      .then(([home, work, services, army, tourin, about, partners, media]) => {
+      .then(([home, work, services, army, tourin, about, media]) => {
         setCounts({
           sections: home.data?.sections?.length || 10,
           caseStudies: work.data?.caseStudies?.length || 6,
@@ -50,7 +49,6 @@ export default function AdminDashboardPage() {
           armyProjects: army.data?.projects?.length || 4,
           tourinJourneys: tourin.data?.journeys?.length || 3,
           aboutChapters: about.data?.chapters?.length || 3,
-          partners: partners.data?.partners?.length || 7,
           mediaAssets: media.assets?.length || 4,
         } as any);
       })
@@ -59,12 +57,12 @@ export default function AdminDashboardPage() {
 
   const stats = [
     { label: 'Homepage Sections', value: counts.sections, href: '/admin/home', icon: Layers, color: '#3B82F6' },
-    { label: 'Active Case Studies', value: counts.caseStudies, href: '/admin/work', icon: Briefcase, color: '#DE322D' },
-    { label: 'Practice Areas', value: counts.services, href: '/admin/services', icon: FileText, color: '#10B981' },
+    { label: 'Studio Chapters', value: (counts as any).aboutChapters || 3, href: '/admin/about', icon: Users, color: '#0EA5E9' },
+    { label: 'Work Page & Reels', value: 6, href: '/admin/work', icon: Briefcase, color: '#F97316' },
+    { label: 'Case Studies', value: counts.caseStudies, href: '/admin/cases', icon: FileText, color: '#DE322D' },
+    { label: 'Practice Areas', value: counts.services, href: '/admin/services', icon: Layers, color: '#10B981' },
     { label: 'Tourin Journeys', value: counts.tourinJourneys, href: '/admin/tourin', icon: Compass, color: '#F59E0B' },
     { label: 'Army Projects', value: counts.armyProjects, href: '/admin/army-projects', icon: Shield, color: '#8B5CF6' },
-    { label: 'Studio Chapters', value: (counts as any).aboutChapters || 3, href: '/admin/about', icon: Users, color: '#0EA5E9' },
-    { label: 'Partner Logos', value: counts.partners, href: '/admin/partners', icon: Users, color: '#6366F1' },
     { label: 'Uploaded Assets', value: counts.mediaAssets, href: '/admin/media', icon: ImageIcon, color: '#EC4899' },
   ];
 
@@ -254,11 +252,14 @@ export default function AdminDashboardPage() {
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {[
-              { title: 'Homepage Sections', desc: 'Reorder, toggle visibility, and edit hero content', href: '/admin/home' },
-              { title: 'Case Studies Directory', desc: 'Add or update client projects & Instagram reels', href: '/admin/work' },
+              { title: 'Homepage Sections', desc: 'Reorder, toggle visibility, and edit hero banner & CTA buttons', href: '/admin/home' },
+              { title: 'Studio / About Us', desc: 'Update founder philosophy, agency chapters & ethos', href: '/admin/about' },
+              { title: 'Work Page & Instagram Reels', desc: 'Manage page heading and Instagram reel showcases', href: '/admin/work' },
+              { title: 'Case Studies Directory', desc: 'Add or update in-depth client case study narratives & galleries', href: '/admin/cases' },
               { title: 'Practice Areas', desc: 'Configure services, capabilities and consulting scopes', href: '/admin/services' },
-              { title: 'Indian Army Projects', desc: 'Update verified defence briefs, stats & publications', href: '/admin/army-projects' },
               { title: 'Tourin Journeys', desc: 'Manage destination thinking, itineraries & expedition stats', href: '/admin/tourin' },
+              { title: 'Indian Army Projects', desc: 'Update verified defence briefs, stats & publications', href: '/admin/army-projects' },
+              { title: 'Contact Information', desc: 'Manage studio emails, address, and enquiry routing', href: '/admin/contact' },
             ].map((m) => (
               <Link
                 key={m.title}

@@ -1,25 +1,587 @@
-=== Page 0 ===
-Use this image for Hero Section of Home Page and 
-remove the currently used ﬂower video 
-Make the design ﬁt in this kind of box,
-which has cropped edges
-ADD THE ARROWS LIKE THIS
-Here,
-•
-User should be to able scroll from left to right (vice versa) on desktop and mobile as well
-•
-By default the cards should move from left to right every 1.5 secs
-INDIAN
-ARMY
-PROJECTS
-ADD DIFFERENT
-KIND OF IMAGE
-NOT NECESSARILY
-SOLDIER, SOMETHING
-THAT SHOWS ARMY 
-SYMBOLICALLY
-Instead of this 8+ Client,
-make the logos move in animation
-from left to right
-(just like in the current website)
+=== PAGE 1 ===
+ 
+Home Page 
+ 
+Change this banner design, use a design something that suits a digital marketing 
+agency - either create something from given all arohana details or brand details. The 
+banner should seem like a creative agency. 
+ 
+Put this army section towards the end of the Home page banner 
+ 
+ 
+Change copy here -  
+BRANDING & COMMUNICATION - INSTITUTIONAL 
+Making institutional
+stories matter
+digitally 
+Social media content shoot,, brand communication, on-ground storytelling designed for 
+defence and institutional organizations 
+ 
+
+
+=== PAGE 2 ===
+ 
+ 
+ 
+All headers on images should be corrected - also use visuals accordingly from drive - 
+use best visuals 
+All visuals should be clickable 
+Investiture Ceremony - Shoot · Production · Post-production 
+14 CORPS HEADQUARTERS - Design · Scripting · films 
+SHE - SUSTAINABLE HEALTH EMPOWERMENT - Campaign identity · Documentary  · Communication 
+Rezang La War Memorial - Collateral designing | Content production  
+69 Armoured Regiment - Collateral designing | Content creation 
+ 
+ 
+ 
+Order of Home page should be 
+1. Main Banner - we build brands business.......... 
+2. What we do 
+3. Work proof 
+4. Practice Areas and scope 
+5. Brand and digital growth 
+6. Content and communication 
+7. Hospitality and experience 
+8. Trusted by brands and institutions 
+9. Army section  
+ 
+
+
+=== PAGE 3 ===
+ 
+ 
+ 
+ 
+work proof section - remove Indian army details and she 
+All work proofs image needs to be clickable to the respective case study page 
+Brands needed under work proof - (Use correct images/videos from links shared) 
+Raysons (Neora Deck) 
+Misu 
+Loom Crafts 
+Picture Time 
+La confidence 
+SHE  
+DKT  
+ 
+ 
+ 
+ 
+
+
+=== PAGE 4 ===
+ 
+Here - make 10+ Industry Sectors 
+remove - featured case study 
+ 
+ 
+Header Change: Digital Brand Growth (Change image and use something related to digital 
+growth, prefarably from out image bank) 
+Content strategy | Social Media Management | Performance Marketing | Digital production | 
+Website management and branding 
+ 
+ 
+Header Change: Content Production  ( Use a good image from out image/shoot bank) 
+Content Ideation | Scripting | Shoot | Post-production |Art Direction | Photography | Influencer 
+& UGC content | AI content  
+ 
+Hospitality & experience - use image from Neora Deck 
+ 
+
+
+=== PAGE 5 ===
+ 
+ 
+ 
+ 
+Remove selected partners and organisation (Red heading) 
+Copy change - Trusted by Brands & Institutions 
+make logos bigger 
+Correct the logo of - picture time, RR skin (Google actual logos and use them) 
+ 
+ 
+All images that show here should be from Arohana - dont use ai images or google/stock images 
+ 
+Remove direct founder access, proof over clain, generic jargons 
+ 
+ 
+Change address to Goa address 
+ 
+
+
+=== PAGE 6 ===
+ 
+Remove behance 
+remove - Pune Ladhak pan india engagements 
+Remove - authentic brand and strategy practice 
+ 
+ 
+ 
+Studio 
+ 
+ 
+1. Meet the founder should take you to start a conversation 
+2. Around Madhura's image - remove all unnecessary text - strategic creative impact | 
+People brand possibility | for businesses..... 
+3. Below Madhura's name - company name - just keep Company name 
+ 
+ 
+
+
+=== PAGE 7 ===
+ 
+ 
+Remove this portion from studio section 
+ 
+People behind possibilities 
+Farhan content is missing - please add back 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 8 ===
+ 
+Work  
+ 
+1. Remove the numbering on each image 
+2. Add more work Videos - Army, Riana, Cubice, Citeron, Prefab, DTK, Shelkang, Amgoc 
+3. Keep it auto scrollers 
+4. Under misu - the video playing is Neora deck, correct the header on this Video to Neora 
+deck 
+ 
+Im Resharing All case study content - Update that and remove all extra content 
+1. Keep header, description and core scope for all case studies - remove location, 
+engagement type duration 
+2. Remove Verified impact portion 
+3. Remove SHE portion 
+PictureTime — Case Study 
+The Challenge
+PictureTime needed a more consistent digital presence and a stronger brand 
+narrative—one that could engage cinema audiences while also communicating its larger 
+business vision. 
+What We Did
+Ārohana managed PictureTime’s digital communication across Instagram, Facebook 
+and LinkedIn, covering strategy, content calendars, creative direction, campaigns and 
+platform execution. Major initiatives included IFFI and DIFF festival communication, on-
+ground filmmaker interviews, 120 Bahadur promotions, reels, social creatives and 
+LinkedIn/founder-led communication. 
+The Result
+PictureTime evolved from primarily promoting individual films and theatre moments to 
+ 
+
+
+=== PAGE 9 ===
+ 
+communicating a more structured, distinctive and business-conscious brand story, 
+supported by consistent digital content and high-value cultural and industry-led 
+opportunities. 
+ 
+Stills from some of our work for Picture Time (Please take images from their 
+instagram or links given
+Social Media Management | Content Strategy | IFFI | DIFF | Filmmaker Interviews | On-
+ground Content 
+ 
+Raysons Group - Neora Deck 
+1. Remove the portion - Outcomes commercial change 
+2. Change case study format and copy 
+3. Remove Loomcrafts portion - next case study 
+4. Remove Location engagement duration 
+5. Use good and relevant images 
+The Challenge
+Neora Deck had a physical experience worth discovering — but the digital presence 
+needed to translate its space, food and hospitality into a brand people could experience 
+before they walked through the doors. 
+What We Did
+We built Neora Deck’s digital communication around the experience of being there. 
+From content concepts and creative direction to shoots, reels, food and space 
+storytelling, we created a visual language that brought the venue to life online. 
+The Result
+Neora Deck’s social presence evolved into an extension of the venue itself — 
+showcasing not just what it serves, but the mood, moments and experience that make 
+the space distinctive. 
+Stills from some of our work for Raysons Group (Please take images from their 
+instagram or links given)
+Experience-led Content · Food & Space Shoots · Visual Storytelling · Ongoing Property 
+ 
+
+
+=== PAGE 10 ===
+ 
+shoots 
+ 
+LOOM CRAFTS 
+1. Remove - location, Duration, Engagement 
+2. Remove Verified ompact 
+3. Remove Picture Time case study 
+4. Use relevant and good images - actual images no placeholders 
+The Challenge
+Loom Crafts operates across two very different categories — premium furniture and 
+prefab/modular homes. One sells through aspiration and design; the other requires 
+education, proof and confidence before purchase. The challenge was to make both 
+verticals feel connected while communicating them in completely different ways. 
+What We Did
+We built a two-track content system for the brand. Furniture communication focused on 
+spaces, materials, lifestyle and design, while prefab content moved deeper into projects, 
+factory processes, construction, installation and educational storytelling. We also 
+extended the content system into D-ARC Bengaluru and the Raipur Open House through 
+pre-event, on-ground and post-event communication. 
+The Result
+Loom Crafts moved beyond product-led communication towards a more informative, 
+visual and solution-led brand presence — giving customers a clearer understanding of 
+both what the brand makes and how it delivers it. 
+Stills from some of our work for Loom Crafts (Please take images from their instagram 
+or links given
+Furniture Storytelling · Prefab Education · Factory & Process Content · D-ARC  
+ 
+MISU 
+1. Use relevant and good images - actual images no placeholders (Check 
+google/instagram) 
+ 
+
+
+=== PAGE 11 ===
+ 
+The Challenge
+Misu’s challenges went beyond marketing. The restaurant needed greater operational 
+structure, food-cost control, standardisation, staff capability and revenue focus, 
+alongside a more consistent digital presence. 
+What We Did
+Ārohana worked inside the business for nearly two years, connecting operations with 
+the guest-facing brand. The engagement covered food-cost control, menu engineering, 
+recipe and product development, SOPs, staff training, kitchen systems, revenue 
+optimisation and social-media management. 
+The Result
+The engagement helped Misu move towards a more structured and commercially 
+focused hospitality operation, with stronger cost control, improved visibility and 
+increased revenue during the engagement. After nearly two years, the systems and 
+setup were handed back to the client. 
+Stills from some of our work for MISU (Please take images from their instagram or 
+links given
+Hospitality Consulting · Menu Engineering · Food Cost Control · Concept Development · · 
+SOPs setup · Social Media · Content Production 
+ 
+LA CONFIDENCE DERMA CLINIC 
+1. Use relevant and good images - actual images no placeholders 
+2.  
+https://www.instagram.com/la_confidence_derma_clinic/reels/?hl=en  
+Making Dermatology digitally relevant 
+The Challenge
+Dermatology is an expertise-led category where patients often have questions before 
+they have a treatment decision. La Confidence needed a digital presence that could 
+educate, build credibility and make specialised dermatology more approachable 
+without feeling like conventional clinic advertising. 
+What We Did
+ 
+
+
+=== PAGE 12 ===
+ 
+We built the social content around doctor-led education and patient-focused 
+storytelling — translating complex dermatology topics into accessible Reels and visual 
+content. The communication covered skin, hair, nails and aesthetic dermatology, 
+alongside treatment explainers, FAQs, technology, patient experiences and clinic-led 
+content. 
+The Result
+La Confidence’s social presence evolved into a knowledge-led digital extension of the 
+clinic, giving prospective patients a clearer understanding of treatments, technologies 
+and dermatological concerns while strengthening the doctor and clinic’s credibility 
+online. 
+Stills from some of our work for La Confidence Derma Clinic (Please take images from 
+their instagram or links given
+ Doctor-led Content · Educational Reels · Skin & Hair Education · Content Production 
+ 
+LADAKH FOOTBALL ASSOCIATION 
+1. Use relevant and good images - actual images no placeholders 
+ 
+https://www.instagram.com/ladakhfootball_association/?hl=en 
+Building offline community online 
+The Challenge
+With multiple leagues, tournaments, fixtures and football development initiatives 
+happening across Ladakh, the challenge was to create a digital presence that could 
+keep the football community informed while giving the association a stronger, more 
+professional identity. 
+What We Did
+We built a structured content system around the full football calendar — from match-
+day communication, fixtures and results to points tables, tournament promotions, team 
+stories and on-ground moments. Content was designed to make the association’s 
+ongoing activity easier to follow while giving different competitions and initiatives their 
+own visibility. 
+ 
+
+
+=== PAGE 13 ===
+ 
+The Result
+The association’s social channels became a central digital touchpoint for football in 
+Ladakh, bringing together competitions, match updates, teams and community activity 
+in a consistent communication system. Leading to follower growth and tourist interests 
+Stills from some of our work for Ladakh Football Association (Please take images from 
+their instagram or links given
+Social Media Videos· Match-Day Communication · On-Ground Coverage · Graphic 
+Design · Community Communication  
+ 
+SAVE CHANGTHANG 
+1. Use relevant and good images - actual images no placeholders 
+ 
+Turning community initiatives into a digital movement for Changthang’s youth. 
+The Challenge
+Save Changthang brings together a wide range of initiatives — from sports and 
+education to career opportunities, cultural activities and youth development. The 
+challenge was to give these diverse efforts a clear and consistent digital voice while 
+making the work and its impact easier for the wider community to discover. 
+What We Did
+We developed content around the people, programmes and possibilities shaping 
+Changthang’s next generation. From football tournaments and community initiatives to 
+career opportunities, guest lectures, training programmes and cultural moments, the 
+content turned individual activities into a larger, connected story. 
+The Result
+Save Changthang’s digital presence evolved into a window into the organisation’s work 
+and the aspirations of its community — documenting opportunities, celebrating 
+participation and bringing greater visibility to initiatives happening across Changthang. 
+Stills from some of our work for Save Changthang (Please take images from their 
+instagram or links given
+ Community Storytelling · Visual Art Direction · Sports & Tournament Communication · · 
+ 
+
+
+=== PAGE 14 ===
+ 
+Education & Training content  
+ 
+ 
+SHE — SUSTAINABLE HEALTH EMPOWERMENT 
+1. Use relevant and good images - actual images no placeholders 
+ 
+Health initiative from concept to communities - On ground 
+The Challenge
+SHE was an Indian Army-supported initiative under Operation Sadbhavana, created to 
+address menstrual health, hygiene and sustainability in remote communities of Ladakh. 
+The challenge was to communicate a sensitive subject in a way that was accessible, 
+culturally appropriate and built on trust. 
+What We Did
+Ārohana developed the initiative from the ground up — creating the name SHE, 
+campaign identity and mascot, followed by brochures, standees and community 
+communication. We also handled scripting, on-ground filming, documentary production, 
+voice-over, editing and social content. The team was present across eight remote 
+villages, documenting the programme and engaging directly with participating 
+communities. 
+The Result
+SHE became a recognisable communication platform for the Army-supported 
+initiative, helping take its message of menstrual health, dignity and sustainability into 
+remote communities. The resulting documentary content was subsequently used by the 
+Indian Army across its social platforms and the initiative was also featured in the 
+Army’s magazine. 
+Major Activities:
+Campaign Identity · Community Communication · Brochures · Standees · On-Ground 
+Documentation · Documentary Production  
+ 
+ 
+
+
+=== PAGE 15 ===
+ 
+ 
+The results and case studies that show up under every filter should be as follows 
+Real Estate - Raysons 
+Lifestyle - Loom Crafts 
+Institutional - Indian Army, Ladakh Football association 
+Hospitality - Neoro, MISU 
+Healthcare - La confidence 
+Entertainment - picture time 
+Community - Save Chantang 
+ 
+ 
+ 
+SERVICES 
+ 
+Change this copy - it should be talking about our services and use image accordingly. 
+use this copy 
+ 
+
+
+=== PAGE 16 ===
+ 
+What We Do 
+We help businesses build stronger brands, communicate better and grow through 
+digitally.
+Our work spans digital brand growth, hospitality consulting and content & brand 
+production — bringing strategy, creativity and execution together to meet the needs of 
+each business 
+ 
+DIGITAL BRAND GROWTH (Use relvant image to social media 
+mangement) 
+ Digital presence that helps brands stay relevant, consistent and connected with their 
+audiences while resulting in business growth 
+●
+Social Media Management 
+●
+Brand Strategy & Positioning 
+●
+Social relevant Monthly Calendars 
+●
+Creative Direction 
+●
+Copywriting & Scripting 
+●
+Photography & Videography 
+●
+Video Production & Editing 
+●
+Campaign Development 
+●
+Meta & Google Advertising 
+●
+SEO 
+●
+Website Strategy & Design 
+●
+Lead Generation activities 
+●
+Website launch 
+ 
+Hospitality - Content ok | Visual use relevant - from Arohana image bank only 
+ 
+ 
+CONTENT & BRAND PRODUCTION (Use realistic shoot image from 
+ 
+
+
+=== PAGE 17 ===
+ 
+Arohana image bank) 
+ Taking Brand stories from concept and scripting to production and communication  
+●
+Social Media Content Creation 
+●
+Corporate Films 
+●
+Brand Films 
+●
+Documentaries 
+●
+Institutional Films 
+●
+Scripting 
+●
+Voice-over/Audiobooks 
+●
+Photography & Videography 
+●
+Editing 
+●
+Sound & Post-Production 
+●
+UGC content execution 
+ 
+How Engagements work - remove 
+ 
+ 
+TOURIN 
+ 
+1. Remove explore Journey button 
+2. Images here should be actual tourin images - use from drive shared 
+3. Done add any copy/text on images 
+4. Remove all of the unecessary numbering and quotes from all pages in the website 
+ 
+
+
+=== PAGE 18 ===
+ 
+ 
+ 
+ 
+ 5. Remove this our story Button - This page is telling our story anyway, no 
+need to redirect 
+6. Use relevant trip images from tourin image bank shared 
+ 7. remove all unecessary numbers and header from whole website 
+8. Update copy - Where we go and also use relevant /real images from the image 
+bank. also add image to adding more places. 
+Where We Go 
+We create thoughtful journeys through places with character, culture and a story to tell.
+We go beyond the usual tourist circuit to discover local experiences, landscapes, food, 
+people and ways of life.
+Our journeys currently begins in Ladakh, with plans to take the same approach to other 
+destinations.
+Wherever we go, the idea remains simple — travel deeper, experience more and leave 
+with a sense of the place and memories. 
+ 
+What we believe in - Ok 
+Who is this for - use image from image bank, dont add any copy on the image 
+The Experience Pillars - add relevant images from the image bank 
+Explore curated journeys - keep in the backend, remove for now 
+Journeys taken - update images from drive 
+ 
+
+
+=== PAGE 19 ===
+ 
+Journeys design with a reason - keep in backend, will update later, remove for now 
+ 
+ 
+Change this image - create something from our image bank, dont add any quote like - 
+small world different stories - in banner 
+Explore Journeys - remove the click button 
+ 
+ARMY PROJECTS 
+ 
+1. Remove high altitude theatre 
+2. Remove - 
+ 
+3. Remove - 
+ 
+4. Western Command - use good images from the google drive 
+5. Communication and production - Use good images, prathamesh has it with him. 
+Remove 2023 - Present 
+6. FIRE & FURY Corps - use better images - prathamesh has them 
+7. All ARMY Videos shared should be linked accordingly to this page 
+8. Done use any AI image, use from image bank only 
+9. FIRE & FURY Corps should have these in content  all together - Check document 
+ 
+
+
+=== PAGE 20 ===
+ 
+share initially - X1V corpse, Rezangla war, 69 Armoured Regiment 
+10. Razangla copy - should show and mention about Coffee table book designs, 
+Editorial etc - check word doc shared initially. Location just write Ladakh 
+11. Documenting a stronger tomorrow  - Change image - use from image bank, 
+best images 
+12.Remove the quote - for those who protect ours 
+13.replace - discuss defence production - with - start a conversation 
+14.Avoid inecessary numbering to images and right sides 
+15.Avoid irrelevant arrows 
+ 
+ 
+ 
+CONTACT 
+1. Remove - red copy - direct engagement 
+2. Social Links - remove behance 
+3. FAQ - is it relevant for an agency? if not remove it 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+=== PAGE 21 ===
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 

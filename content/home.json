@@ -2,43 +2,43 @@
   "sections": [
     {
       "id": "hero",
-      "name": "01: Hero Video / Carousel Container",
+      "name": "01: Main Banner - We build brands businesses...",
       "visible": true,
       "type": "hero"
     },
     {
-      "id": "army",
-      "name": "02: Indian Army Projects 3D Spotlight",
-      "visible": true,
-      "type": "spotlight"
-    },
-    {
       "id": "pov",
-      "name": "03: Editorial Intro / A Point of View",
+      "name": "02: What We Do",
       "visible": true,
       "type": "philosophy"
     },
     {
       "id": "work",
-      "name": "04: Selected Work Showcase (3D Coverflow)",
+      "name": "03: Work Proof",
       "visible": true,
       "type": "showcase"
     },
     {
       "id": "services",
-      "name": "05: Capabilities & Sharp Numbers",
+      "name": "04: Practice Areas and Scope (Digital Growth, Content, Hospitality)",
       "visible": true,
       "type": "services"
     },
     {
       "id": "brands",
-      "name": "06: Selected Brands & Organisations",
+      "name": "05: Trusted by Brands & Institutions",
       "visible": true,
       "type": "brands"
     },
     {
+      "id": "army",
+      "name": "06: Army Section",
+      "visible": true,
+      "type": "spotlight"
+    },
+    {
       "id": "cta",
-      "name": "07: Signature Mouse-Trail Interactive CTA",
+      "name": "07: Interactive CTA",
       "visible": true,
       "type": "cta"
     },
@@ -65,16 +65,25 @@
     "badge": "STRATEGY · COMMUNICATION · EXECUTION",
     "headline": "We build brands,\nbusinesses &\nexperiences.",
     "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
+    "bannerImage": "/images/home/hero-mountain-sky.png",
+    "posterImage": "/images/home/hero-mountain-sky.png",
+    "videoUrl": "",
+    "buttons": [
+      {
+        "id": "btn-1",
+        "label": "Explore Our Work",
+        "url": "/work",
+        "variant": "primary"
+      }
+    ],
     "ctaLabel": "Explore Our Work",
     "ctaLink": "/work",
     "secondaryCtaLabel": "",
-    "secondaryCtaLink": "",
-    "videoUrl": "/videos/hero-montage.mp4",
-    "posterImage": "/images/home/hero-poster.jpg"
+    "secondaryCtaLink": ""
   },
   "brands": {
-    "eyebrow": "SELECTED PARTNERS & ORGANISATIONS",
-    "heading": "Trusted by forward-thinking businesses and institutions",
+    "eyebrow": "",
+    "heading": "Trusted by Brands & Institutions",
     "list": [
       {
         "id": "raysons",
@@ -89,7 +98,7 @@
         "id": "picturetime",
         "name": "PictureTime",
         "monogram": "PT",
-        "logo": "/images/partners/picturetime.svg",
+        "logo": "/uploads/1790517819970-picture-time-hero.png",
         "badgeBg": "linear-gradient(135deg, #E50914 0%, #831010 100%)",
         "badgeColor": "#ffffff",
         "link": "/work/picturetime"
@@ -116,6 +125,7 @@
         "id": "rr-skins",
         "name": "RR Skins",
         "monogram": "RR",
+        "logo": "/uploads/1790521096761-rrskin-logo.jpg",
         "badgeBg": "linear-gradient(135deg, #104E5B 0%, #082930 100%)",
         "badgeColor": "#ffffff",
         "link": "/work/rr-skins"
@@ -228,22 +238,14 @@
       {
         "id": "sectors",
         "tag": "02",
-        "target": 6,
-        "twoDigits": true,
+        "target": 10,
+        "suffix": "+",
         "title": "Industry Sectors",
         "desc": ""
       },
       {
-        "id": "cases",
-        "tag": "03",
-        "target": 8,
-        "twoDigits": true,
-        "title": "Featured Case Studies",
-        "desc": ""
-      },
-      {
         "id": "expeditions",
-        "tag": "04",
+        "tag": "03",
         "target": 15,
         "suffix": "+",
         "title": "Himalayan Expeditions",
@@ -252,153 +254,162 @@
     ]
   },
   "armySpotlight": {
-    "eyebrow": "DEFENCE & INSTITUTIONAL PRODUCTION",
-    "title": "Documenting service under demanding conditions.",
-    "description": "On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations.",
-    "badge": "VERIFIED INSTITUTIONAL BRIEFS",
+    "eyebrow": "BRANDING & COMMUNICATION - INSTITUTIONAL",
+    "title": "Making institutional\nstories matter\ndigitally",
+    "description": "Social media content shoot, brand communication, on-ground storytelling designed for defence and institutional organizations",
+    "badge": "INSTITUTIONAL BRIEFS",
     "ctaText": "Explore All Army Projects",
     "ctaLink": "/indian-army-projects",
     "cards": [
       {
-        "id": "army-ceremonies",
-        "index": "04",
-        "category": "INVESTITURE CEREMONY",
-        "title": "Indian Army Ceremonies",
-        "location": "WESTERN COMMAND HQ THEATRE",
-        "image": "/images/army/western-command-1.jpg"
+        "id": "investiture-ceremony",
+        "index": "",
+        "category": "Shoot · Production · Post-production",
+        "title": "Investiture Ceremony",
+        "location": "WESTERN COMMAND",
+        "image": "/images/army/western-command-1.jpg",
+        "link": "/indian-army-projects"
       },
       {
-        "id": "logistics-support",
-        "index": "02",
-        "category": "OPERATIONAL",
-        "title": "Logistics Support",
-        "location": "HIGH-ALTITUDE REGIONS",
-        "image": "/images/army/sampark-1.jpg"
+        "id": "14-corps-hq",
+        "index": "",
+        "category": "Design · Scripting · films",
+        "title": "14 CORPS HEADQUARTERS",
+        "location": "LEH, LADAKH",
+        "image": "/uploads/1790515799187-high-alltitude-1.jpg",
+        "link": "/indian-army-projects"
       },
       {
-        "id": "high-altitude-impact",
-        "index": "01",
-        "category": "VIBRANT VILLAGES INITIATIVE",
-        "title": "High-Altitude Impact",
-        "location": "EASTERN LADAKH – LAC BORDERS",
-        "image": "/images/army/vibrant-villages-1.jpg"
+        "id": "rezang-la-memorial",
+        "index": "",
+        "category": "Collateral designing | Content production",
+        "title": "Rezang La War Memorial",
+        "location": "CHUSHUL SECTOR, LADAKH",
+        "image": "/uploads/1790516827847-rezang-la-memorial.jpg",
+        "link": "/indian-army-projects"
       },
       {
-        "id": "border-communities",
-        "index": "03",
-        "category": "COMMUNITY OUTREACH",
-        "title": "Border Communities",
-        "location": "PEOPLE, PLACES, PROGRESS",
-        "image": "/images/army/rezang-la-1.jpg"
-      },
-      {
-        "id": "institutional-content",
-        "index": "05",
-        "category": "TRAINING & DOCUMENTATION",
-        "title": "Institutional Content",
-        "location": "DISCIPLINE IN EVERY FRAME",
-        "image": "/images/army/western-command-2.jpg"
+        "id": "69-armoured-regiment",
+        "index": "",
+        "category": "Collateral designing | Content creation",
+        "title": "69 Armoured Regiment",
+        "location": "LADAKH",
+        "image": "/images/army/69armoured-t90.jpg",
+        "link": "/indian-army-projects"
       }
     ]
   },
   "pov": {
-    "eyebrow": "POSITIONING & PHILOSOPHY",
+    "eyebrow": "",
     "headline": "Some businesses need better marketing. Others need a better way of thinking about the business itself.",
     "highlightPhrase": "the business itself.",
     "paragraph1": "Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.",
     "paragraph2": "Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.",
     "btnPrimaryText": "Read Founder Story & Philosophy",
     "btnPrimaryLink": "/about",
-    "btnSecondaryText": "Explore Three Practice Areas",
+    "btnSecondaryText": "Explore Practice Areas",
     "btnSecondaryLink": "/services",
     "quote": "Sometimes what looks like a marketing problem isn't a marketing problem at all.",
     "attribution": "MADHURA HAWAL · FOUNDER, ĀROHANA",
     "triadWords": "IDEAS · BRANDS · PEOPLE · PROGRESS"
   },
   "selectedWork": {
-    "eyebrow": "SELECTED WORK SHOWCASE",
+    "eyebrow": "WORK PROOF",
     "title": "The work is the proof.",
-    "subtitle": "",
+    "subtitle": "A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.",
     "ctaText": "View All Case Studies",
     "ctaLink": "/work",
     "projects": [
       {
         "id": "raysons-group",
         "index": "01",
-        "title": "Raysons Group",
+        "title": "Raysons (Neora Deck)",
         "category": "Industrial & Real Estate",
         "tags": [
           "Corporate Branding",
           "Industrial Film",
           "Real Estate"
         ],
-        "image": "/uploads/1790518977249-raysons.3jpg.jpg",
+        "image": "/images/case-studies/raysons/neora-1.jpg",
         "link": "/work/raysons-group"
       },
       {
-        "id": "loom-crafts",
+        "id": "misu",
         "index": "02",
+        "title": "Misu",
+        "category": "Hospitality & Dining",
+        "tags": [
+          "Hospitality Consulting",
+          "Menu Engineering",
+          "Social Media"
+        ],
+        "image": "/images/case-studies/misu/misu-hero.jpg",
+        "link": "/work/misu"
+      },
+      {
+        "id": "loom-crafts",
+        "index": "03",
         "title": "Loom Crafts",
         "category": "Luxury Furniture & Prefab",
         "tags": [
-          "Brand Strategy",
-          "Modular Living",
-          "Spatial Content"
+          "Furniture Storytelling",
+          "Prefab Education",
+          "Process Content"
         ],
         "image": "/uploads/1790517401118-saveclip.app-779200914-18112144223074670-6707268318767954884-n.jpg",
         "link": "/work/loom-crafts"
       },
       {
+        "id": "picturetime",
+        "index": "04",
+        "title": "Picture Time",
+        "category": "Entertainment & Cinema",
+        "tags": [
+          "Social Media Management",
+          "Content Strategy",
+          "Festival Campaigns"
+        ],
+        "image": "/uploads/1790517872955-picturetime2.jpg.jpg",
+        "link": "/work/picturetime"
+      },
+      {
         "id": "rr-skins",
-        "index": "03",
-        "title": "RR Skins",
+        "index": "05",
+        "title": "La Confidence",
         "category": "Clinical Healthcare",
         "tags": [
-          "Medical Trust",
-          "Patient Education",
-          "Doctor Positioning"
+          "Doctor-led Content",
+          "Educational Reels",
+          "Content Production"
         ],
         "image": "/uploads/1790518461764-rrskins3.jpg",
         "link": "/work/rr-skins"
       },
       {
         "id": "she",
-        "index": "04",
-        "title": "SHE Initiative",
+        "index": "06",
+        "title": "SHE",
         "category": "Institutional & Community",
         "tags": [
-          "Women Healthcare",
-          "Documentary Film",
-          "Field Execution"
+          "Campaign Identity",
+          "Documentary",
+          "Community Storytelling"
         ],
         "image": "/images/case-studies/she/she-hero.jpg",
         "link": "/work/she"
       },
       {
-        "id": "indian-army",
-        "index": "05",
-        "title": "Indian Army Projects",
-        "category": "Defence & Institutional",
+        "id": "dtk",
+        "index": "07",
+        "title": "DKT",
+        "category": "Heritage Retail",
         "tags": [
-          "Military Filming",
-          "Publication Design",
-          "High-Altitude Operations"
+          "Brand Communication",
+          "Social Media",
+          "Content Production"
         ],
-        "image": "/images/army/western-command-1.jpg",
-        "link": "/indian-army-projects"
-      },
-      {
-        "id": "picturetime",
-        "index": "06",
-        "title": "PictureTime",
-        "category": "Entertainment & Cinema",
-        "tags": [
-          "Mobile Cinema",
-          "Festival Programming",
-          "Cultural Content"
-        ],
-        "image": "/uploads/1790517872955-picturetime2.jpg.jpg",
-        "link": "/work/picturetime"
+        "image": "/images/work/dtk-thumb.jpg",
+        "link": "/work"
       }
     ]
   },
@@ -409,43 +420,46 @@
     "items": [
       {
         "num": "1",
-        "title": "Brand & Digital Growth",
+        "title": "Digital Brand Growth",
         "tags": [
-          "Brand Strategy",
-          "Social Ecosystems",
-          "Creative Direction",
+          "Content strategy",
+          "Social Media Management",
           "Performance Marketing",
-          "Platform Execution"
+          "Digital production",
+          "Website management and branding"
         ],
         "image": "/images/services/digital-growth.jpg",
-        "description": "Brand strategy, content, social media, creative direction, video production, advertising and websites for businesses that need a stronger market presence.",
+        "description": "Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding",
         "href": "/services#digital-growth"
       },
       {
         "num": "2",
-        "title": "Content & Communication",
+        "title": "Content Production",
         "tags": [
-          "Documentaries",
-          "Films",
-          "Extreme Terrains",
+          "Content Ideation",
           "Scripting",
-          "Post-Production"
+          "Shoot",
+          "Post-production",
+          "Art Direction",
+          "Photography",
+          "Influencer & UGC content",
+          "AI content"
         ],
         "image": "/images/services/content-production.jpg",
-        "description": "Corporate films, documentaries, campaigns and institutional content — from scripting through post-production.",
-        "href": "/services#brand-production"
+        "description": "Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content",
+        "href": "/services#content-production"
       },
       {
         "num": "3",
         "title": "Hospitality & Experience",
         "tags": [
           "Concept & Menu",
-          "Kitchen Pass",
-          "Unit Economics",
-          "Staff Systems",
+          "Food & Space Shoots",
+          "Operating Systems",
+          "Revenue Optimisation",
           "Guest Journeys"
         ],
-        "image": "/images/services/hospitality-consulting.jpg",
+        "image": "/images/case-studies/raysons/neora-1.jpg",
         "description": "Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.",
         "href": "/services#hospitality-consulting"
       }

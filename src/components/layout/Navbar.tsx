@@ -416,7 +416,7 @@ export default function Navbar() {
                 </a>
               </div>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', marginTop: '0.25rem', color: isDarkHero ? 'rgba(255, 255, 255, 0.4)' : 'inherit' }}>
-                Pune • Ladakh • Pan-India Engagements
+                Goa, India
               </div>
             </div>
           </div>

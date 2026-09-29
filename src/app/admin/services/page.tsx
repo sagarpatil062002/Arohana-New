@@ -105,12 +105,39 @@ export default function AdminServicesPage() {
             backgroundColor: '#FAFAFA',
           }}
         >
-          <div>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-              Practice Areas &amp; Capabilities Editor
-            </h2>
-            <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
-              Strategic overview, consulting scopes, deliverables &amp; images.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div>
+              <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Practice Areas &amp; Capabilities Editor
+              </h2>
+              <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
+                Strategic overview, consulting scopes, deliverables &amp; images.
+              </div>
+            </div>
+
+            {/* Quick Section Dropdown Selector */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#52525B' }}>Section:</span>
+              <select
+                value={activeTab}
+                onChange={(e) => setActiveTab(e.target.value as any)}
+                style={{
+                  padding: '0.35rem 0.65rem',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#111113',
+                  fontSize: '0.78rem',
+                  fontWeight: 650,
+                  cursor: 'pointer',
+                  outline: 'none',
+                }}
+              >
+                <option value="header">01: Services Hero &amp; Intro</option>
+                <option value="capabilities">02: 3 Core Practice Areas</option>
+                <option value="why">03: Commercial Proof &amp; Disciplines</option>
+                <option value="cta">04: Closing Engagement CTA</option>
+              </select>
             </div>
           </div>
           <button

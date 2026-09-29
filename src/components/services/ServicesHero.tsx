@@ -80,14 +80,6 @@ export default function ServicesHero() {
             </h1>
 
             <p className="svc-hero-intro">{SERVICES_HERO.intro}</p>
-
-            <div className="svc-hero-scroll">
-              <span className="svc-hero-scroll-line" aria-hidden="true" />
-              <span className="svc-hero-scroll-label">
-                <i aria-hidden="true" />
-                Scroll
-              </span>
-            </div>
           </div>
 
           {/* Right — layered cinematic plate */}

@@ -3,24 +3,23 @@
     "eyebrow": "OWNED EXPERIENTIAL TRAVEL BRAND",
     "headline": "Travel\nbeyond\nthe itinerary.",
     "quote": "Some places are better experienced when you stop trying to see everything.",
-    "description": "Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh, and beyond.",
+    "description": "Tourin creates thoughtful journeys through places with character, culture and a story to tell — beginning with Ladakh, and beyond.",
     "primaryDestination": "Ladakh, Himalayan Plateau",
     "elevation": "11,500 – 17,580 FT",
     "season": "May to October Active Windows"
   },
   "genesis": {
-    "tag": "THE GENESIS",
+    "tag": "",
     "heading": "Why Tourin.",
     "p1": "Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.",
     "p2": "There are the famous sights and photographs. And then there is the place behind them — its people, food, stories, homes, landscapes, silences and everyday life.",
-    "p3": "Tourin was created to make space for the second one.",
-    "storyLinkText": "OUR STORY"
+    "p3": "Tourin was created to make space for the second one."
   },
   "destination": {
     "tag": "THE DESTINATION",
-    "heading": "Where we go.",
-    "primary": "Ladakh is our home ground and primary destination — where our roots, local relationships, and deep operational presence allow us to craft truly authentic, slow-paced journeys.",
-    "upcoming": "We will be adding more places (coming soon) as new journeys and routes are finalized.",
+    "heading": "Where We Go",
+    "primary": "We create thoughtful journeys through places with character, culture and a story to tell. We go beyond the usual tourist circuit to discover local experiences, landscapes, food, people and ways of life.",
+    "upcoming": "Our journeys currently begins in Ladakh, with plans to take the same approach to other destinations. Wherever we go, the idea remains simple — travel deeper, experience more and leave with a sense of the place and memories.",
     "places": [
       {
         "id": "ladakh",
@@ -36,7 +35,7 @@
         "status": "Coming Soon",
         "subtitle": "New Routes & Untouched Terrains",
         "regions": "Carefully scouting new regions with local hosts and unhurried pacing.",
-        "image": "/images/tourin/tourin-hero.jpg",
+        "image": "/images/tourin/dest-more-places.jpg",
         "isComingSoon": true
       }
     ]
@@ -46,8 +45,7 @@
     "heading": "What we believe.",
     "p1": "A good trip should leave you with more than photographs. It should give you a sense of where you were.",
     "p2": "That can mean eating something you have never tried, spending time with a local family, understanding a tradition, staying somewhere connected to its surroundings, taking a slower route, or simply having enough time to notice the place instead of rushing through it.",
-    "p3": "We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops.",
-    "quote": "Travel should not merely fill your calendar; it should reshape how you observe the earth."
+    "p3": "We are interested in travel that feels personal, considered and rooted — not travel that is simply packed with more stops."
   },
   "journeys": [
     {

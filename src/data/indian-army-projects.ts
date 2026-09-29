@@ -64,7 +64,7 @@ export const ARMY_TIMELINE_PROJECTS: ArmyTimelineProject[] = [
       'Ārohana handled the shoot and post-production for the Western Command Investiture Ceremony in February 2026.',
     tags: ['Shoot', 'Production', 'Post-production'],
     metadata: {
-      location: 'HQ Western Command Theatre',
+      location: 'HQ Western Command',
       environment: 'Protocol & Ceremonial Formation',
       productionType: 'Multi-Camera Filming & Sound Master',
       dateOrPeriod: 'February 2026',
@@ -101,10 +101,10 @@ export const ARMY_TIMELINE_PROJECTS: ArmyTimelineProject[] = [
       'Ārohana has undertaken communication, design and video-production work for 14 Corps Headquarters, including visual communication and films developed through scripting, voice-over, editing and sound.',
     tags: ['Visual Communication', 'Video Production', 'Scripting & Sound'],
     metadata: {
-      location: 'Leh & Indus Valley, Ladakh',
-      environment: 'High-Altitude Operational Theatre (11,500+ ft)',
+      location: 'Ladakh',
+      environment: 'High-Altitude Operational Environment (11,500+ ft)',
       productionType: 'Communication Design & Video Production',
-      dateOrPeriod: '2023 – Present',
+      dateOrPeriod: '',
       services: 'Scripting · Voice-Over · Production · Graphic Design',
     },
     expandableSections: {
@@ -132,16 +132,16 @@ export const ARMY_TIMELINE_PROJECTS: ArmyTimelineProject[] = [
     indexNumber: '03',
     timelineLabel: 'FIRE & FURY',
     organization: 'FIRE & FURY CORPS',
-    title: 'Corps-Level Communication & Publications',
-    subtitle: 'XIV Corps communication, publications and community initiatives',
+    title: 'Fire & Fury Corps — XIV Corps, Rezang La & 69 Armoured',
+    subtitle: 'Collateral designing · Content creation · Publications',
     description:
-      'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work associated with Fire & Fury across communication, publications, video and community-facing initiatives.',
+      'Fire & Fury Corps is the designation associated with XIV Corps. Ārohana has undertaken project work across communication, publications, 69 Armoured Regiment collateral designing and content creation, and Rezang La War Memorial documentation.',
     tags: ['Communication', 'Publications', 'Community Initiatives', 'Video'],
     metadata: {
-      location: 'Ladakh Theatre',
+      location: 'Ladakh',
       environment: 'Strategic High-Altitude Corps Area',
       productionType: 'Integrated Communication & Publication Design',
-      dateOrPeriod: 'Multi-Year Engagements',
+      dateOrPeriod: 'Ongoing Formations',
       services: 'Editorial Design · Video · Social Media · Strategy',
     },
     expandableSections: {
@@ -170,12 +170,12 @@ export const ARMY_TIMELINE_PROJECTS: ArmyTimelineProject[] = [
     timelineLabel: 'REZANG LA',
     organization: 'FIRE & FURY CORPS',
     title: 'Rezang La War Memorial',
-    subtitle: 'Commemorative coffee-table book design and visual communication',
+    subtitle: 'Coffee table book designs · Editorial · Content production',
     description:
-      'Coffee-table book design and visual communication for the Rezang La War Memorial.',
-    tags: ['Publication Design', 'Coffee-Table Book', 'Visual Communication'],
+      'Coffee table book designs, editorial publication architecture, and visual communication for the Rezang La War Memorial honoring the supreme sacrifice in the 1962 Battle of Rezang La.',
+    tags: ['Publication Design', 'Coffee-Table Book', 'Editorial Architecture'],
     metadata: {
-      location: 'Chushul Sector, Ladakh (16,000+ ft)',
+      location: 'Ladakh',
       environment: 'Historic High-Altitude Battlefield & Memorial',
       productionType: 'Hardbound Archival Publication',
       dateOrPeriod: 'Commemorative Edition',
@@ -455,7 +455,7 @@ export const FIELD_PHOTO_ESSAY_GALLERY = [
 ];
 
 export const ARMY_PAGE_PROOF_METRICS = [
-  { value: '09', label: 'Field Engagements', detail: 'Across Command & Corps Theatres' },
+  { value: '09', label: 'Field Engagements', detail: 'Across Command & Corps Formations' },
   { value: '16,000+', label: 'Peak Elevation (ft)', detail: 'Extreme High-Altitude Operational Zones' },
   { value: '08', label: 'Border Villages', detail: 'Community Health & Hospitality Work' },
   { value: '100%', label: 'Protocol Compliance', detail: 'Security & Information Clearance Adherence' },

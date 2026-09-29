@@ -213,28 +213,6 @@ export default function InteractiveCTA() {
           </a>
         </div>
 
-        {/* Trust Badges */}
-        <div
-          style={{
-            marginTop: '2.5rem',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1rem',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.75rem',
-            color: 'rgba(255, 255, 255, 0.5)',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-          }}
-        >
-          <span>Direct Founder Access</span>
-          <span>·</span>
-          <span>No Generic Jargon</span>
-          <span>·</span>
-          <span>Proof Over Claims</span>
-        </div>
       </div>
 
       <style jsx>{`

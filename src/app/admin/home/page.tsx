@@ -139,17 +139,45 @@ export default function AdminHomePage() {
             backgroundColor: '#FAFAFA',
           }}
         >
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <h2 style={{ fontSize: '1.1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                Homepage Section Editor
-              </h2>
-              <span style={{ fontSize: '0.72rem', backgroundColor: '#ECFDF5', padding: '2px 8px', borderRadius: '6px', color: '#047857', fontWeight: 600 }}>
-                7 Live Sections
-              </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h2 style={{ fontSize: '1.1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                  Homepage Section Editor
+                </h2>
+                <span style={{ fontSize: '0.72rem', backgroundColor: '#ECFDF5', padding: '2px 8px', borderRadius: '6px', color: '#047857', fontWeight: 600 }}>
+                  7 Live Sections
+                </span>
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#71717A', marginTop: '0.15rem' }}>
+                Select any section to edit copy, sharp metric numbers, images, and brand logos in real-time.
+              </div>
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#71717A', marginTop: '0.15rem' }}>
-              Select any section to edit copy, sharp metric numbers, images, and brand logos in real-time.
+
+            {/* Quick Section Dropdown Selector */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#52525B' }}>Section:</span>
+              <select
+                value={activeSectionId}
+                onChange={(e) => setActiveSectionId(e.target.value)}
+                style={{
+                  padding: '0.4rem 0.75rem',
+                  borderRadius: '6px',
+                  border: '1px solid rgba(0, 0, 0, 0.15)',
+                  backgroundColor: '#FFFFFF',
+                  color: '#111113',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  outline: 'none',
+                }}
+              >
+                {sectionTabs.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           <button
@@ -245,13 +273,13 @@ export default function AdminHomePage() {
               SECTION 01: HERO
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'hero' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
                 <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Hero Section Video &amp; Messaging
+                  Hero Banner &amp; Messaging
                 </h3>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Controls the primary above-the-fold carousel, badges, headlines, and call-to-actions.
+                  Manage the creative agency photographic hero banner, typography, and dynamic action buttons.
                 </p>
               </div>
 
@@ -291,70 +319,24 @@ export default function AdminHomePage() {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    PRIMARY CTA TEXT
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.hero?.ctaLabel || ''}
-                    onChange={(e) => updateField(['hero', 'ctaLabel'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    PRIMARY CTA LINK
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.hero?.ctaLink || ''}
-                    onChange={(e) => updateField(['hero', 'ctaLink'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    SECONDARY CTA TEXT
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.hero?.secondaryCtaLabel || ''}
-                    onChange={(e) => updateField(['hero', 'secondaryCtaLabel'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    SECONDARY CTA LINK
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.hero?.secondaryCtaLink || ''}
-                    onChange={(e) => updateField(['hero', 'secondaryCtaLink'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-              </div>
-
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  HERO POSTER / BACKGROUND IMAGE
+                  BANNER IMAGE (Background Cover)
                 </label>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <input
                     type="text"
-                    value={homeData.hero?.posterImage || ''}
-                    onChange={(e) => updateField(['hero', 'posterImage'], e.target.value)}
+                    value={homeData.hero?.bannerImage || homeData.hero?.posterImage || ''}
+                    onChange={(e) => {
+                      updateField(['hero', 'bannerImage'], e.target.value);
+                      updateField(['hero', 'posterImage'], e.target.value);
+                    }}
                     style={{ ...inputStyle, flex: 1 }}
+                    placeholder="/images/services/services-hero-collage.png"
                   />
                   <button
                     type="button"
-                    onClick={() => setMediaPickerTarget({ path: 'hero.posterImage', type: 'image' })}
+                    onClick={() => setMediaPickerTarget({ path: 'hero.bannerImage', type: 'image' })}
                     style={mediaBtnStyle}
                   >
                     <ImageIcon size={14} /> Pick Image
@@ -364,7 +346,7 @@ export default function AdminHomePage() {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SHOWREEL VIDEO URL / FILE
+                  BACKGROUND VIDEO URL / SHOWREEL (Optional)
                 </label>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <input
@@ -372,14 +354,201 @@ export default function AdminHomePage() {
                     value={homeData.hero?.videoUrl || ''}
                     onChange={(e) => updateField(['hero', 'videoUrl'], e.target.value)}
                     style={{ ...inputStyle, flex: 1 }}
+                    placeholder="/videos/hero-montage.mp4"
                   />
                   <button
                     type="button"
                     onClick={() => setMediaPickerTarget({ path: 'hero.videoUrl', type: 'video' })}
                     style={mediaBtnStyle}
                   >
-                    Pick Video
+                    <ImageIcon size={14} /> Pick Video
                   </button>
+                </div>
+              </div>
+
+              {/* ── Dynamic Action Buttons Manager ── */}
+              <div
+                style={{
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  borderRadius: '10px',
+                  padding: '1.15rem',
+                  backgroundColor: '#FAFAFB',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113' }}>
+                      Hero Action Buttons &amp; Redirect Links
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: '#71717A' }}>
+                      Add, reorder, or edit redirect links and buttons on the hero section.
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const currentButtons = Array.isArray(homeData.hero?.buttons) && homeData.hero.buttons.length > 0
+                        ? homeData.hero.buttons
+                        : [
+                            { id: '1', label: homeData.hero?.ctaLabel || 'Explore Our Work', url: homeData.hero?.ctaLink || '/work', variant: 'primary' },
+                          ];
+                      const newBtn = {
+                        id: `btn-${Date.now()}`,
+                        label: 'New Button',
+                        url: '/contact',
+                        variant: 'secondary',
+                      };
+                      updateField(['hero', 'buttons'], [...currentButtons, newBtn]);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      padding: '0.35rem 0.75rem',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0,0,0,0.12)',
+                      backgroundColor: '#FFFFFF',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      color: '#111113',
+                    }}
+                  >
+                    <Plus size={13} /> Add Button
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {(Array.isArray(homeData.hero?.buttons) && homeData.hero.buttons.length > 0
+                    ? homeData.hero.buttons
+                    : [
+                        { id: '1', label: homeData.hero?.ctaLabel || 'Explore Our Work', url: homeData.hero?.ctaLink || '/work', variant: 'primary' },
+                      ]
+                  ).map((btn: any, idx: number) => (
+                    <div
+                      key={btn.id || idx}
+                      style={{
+                        padding: '0.85rem',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(0,0,0,0.06)',
+                        display: 'grid',
+                        gridTemplateColumns: '1.2fr 1.6fr 1fr auto',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                          Button Label
+                        </span>
+                        <input
+                          type="text"
+                          value={btn.label || ''}
+                          onChange={(e) => {
+                            const list = [
+                              ...(Array.isArray(homeData.hero?.buttons) && homeData.hero.buttons.length > 0
+                                ? homeData.hero.buttons
+                                : [
+                                    { id: '1', label: homeData.hero?.ctaLabel || 'Explore Our Work', url: homeData.hero?.ctaLink || '/work', variant: 'primary' },
+                                    { id: '2', label: homeData.hero?.secondaryCtaLabel || 'What We Do', url: homeData.hero?.secondaryCtaLink || '/services', variant: 'secondary' },
+                                  ]),
+                            ];
+                            list[idx] = { ...list[idx], label: e.target.value };
+                            updateField(['hero', 'buttons'], list);
+                            if (idx === 0) updateField(['hero', 'ctaLabel'], e.target.value);
+                            if (idx === 1) updateField(['hero', 'secondaryCtaLabel'], e.target.value);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                        />
+                      </div>
+
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                          Redirect Link / URL
+                        </span>
+                        <input
+                          type="text"
+                          value={btn.url || ''}
+                          onChange={(e) => {
+                            const list = [
+                              ...(Array.isArray(homeData.hero?.buttons) && homeData.hero.buttons.length > 0
+                                ? homeData.hero.buttons
+                                : [
+                                    { id: '1', label: homeData.hero?.ctaLabel || 'Explore Our Work', url: homeData.hero?.ctaLink || '/work', variant: 'primary' },
+                                    { id: '2', label: homeData.hero?.secondaryCtaLabel || 'What We Do', url: homeData.hero?.secondaryCtaLink || '/services', variant: 'secondary' },
+                                  ]),
+                            ];
+                            list[idx] = { ...list[idx], url: e.target.value };
+                            updateField(['hero', 'buttons'], list);
+                            if (idx === 0) updateField(['hero', 'ctaLink'], e.target.value);
+                            if (idx === 1) updateField(['hero', 'secondaryCtaLink'], e.target.value);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                        />
+                      </div>
+
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
+                          Button Style
+                        </span>
+                        <select
+                          value={btn.variant || 'primary'}
+                          onChange={(e) => {
+                            const list = [
+                              ...(Array.isArray(homeData.hero?.buttons) && homeData.hero.buttons.length > 0
+                                ? homeData.hero.buttons
+                                : [
+                                    { id: '1', label: homeData.hero?.ctaLabel || 'Explore Our Work', url: homeData.hero?.ctaLink || '/work', variant: 'primary' },
+                                    { id: '2', label: homeData.hero?.secondaryCtaLabel || 'What We Do', url: homeData.hero?.secondaryCtaLink || '/services', variant: 'secondary' },
+                                  ]),
+                            ];
+                            list[idx] = { ...list[idx], variant: e.target.value };
+                            updateField(['hero', 'buttons'], list);
+                          }}
+                          style={{
+                            ...inputStyle,
+                            padding: '0.35rem 0.55rem',
+                            fontSize: '0.78rem',
+                            backgroundColor: '#FFFFFF',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <option value="primary">Primary (Red)</option>
+                          <option value="secondary">Secondary (Dark)</option>
+                          <option value="showreel">Watch Showreel</option>
+                        </select>
+                      </div>
+
+                      <div style={{ paddingTop: '1rem' }}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const list = [
+                              ...(Array.isArray(homeData.hero?.buttons) && homeData.hero.buttons.length > 0
+                                ? homeData.hero.buttons
+                                : [
+                                    { id: '1', label: homeData.hero?.ctaLabel || 'Explore Our Work', url: homeData.hero?.ctaLink || '/work', variant: 'primary' },
+                                    { id: '2', label: homeData.hero?.secondaryCtaLabel || 'What We Do', url: homeData.hero?.secondaryCtaLink || '/services', variant: 'secondary' },
+                                  ]),
+                            ];
+                            const filtered = list.filter((_: any, i: number) => i !== idx);
+                            updateField(['hero', 'buttons'], filtered);
+                          }}
+                          style={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            color: '#EF4444',
+                            cursor: 'pointer',
+                            padding: '0.35rem',
+                          }}
+                          title="Delete button"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

@@ -25,65 +25,70 @@ const PARTNER_BRANDS: BrandItem[] = [
     id: 'picturetime',
     name: 'PictureTime',
     monogram: 'PT',
-    logo: '/images/partners/picturetime.svg',
+    logo: '/uploads/1790517819970-picture-time-hero.png',
     link: '/work/picturetime',
   },
   {
     id: 'misu',
     name: 'MISU Pan-Asian',
     monogram: 'MISU',
-    logo: '/images/partners/misu.svg',
-    link: '/work',
+    logo: '/uploads/1790488557207-misu.png',
+    link: '/work/misu',
   },
   {
     id: 'she-project',
     name: 'SHE Project',
     monogram: 'SHE',
-    logo: '/images/partners/she.svg',
-    link: '/work',
+    logo: '/uploads/1790493040874-she-logo-04.png',
+    link: '/work/she',
   },
   {
     id: 'dtk',
     name: 'DTK',
     monogram: 'DTK',
-    logo: '/images/partners/dtk.svg',
+    logo: '/uploads/1790492224271-dk-kharekar-saraf.png',
     link: '/work',
   },
   {
     id: 'khau-gully',
     name: 'Khau Gully',
     monogram: 'KG',
-    logo: '/images/partners/khaugully.svg',
+    logo: '/uploads/1790488524999-khau-gully.png',
     link: '/work',
   },
   {
     id: 'loomcrafts',
     name: 'Loom Crafts',
     monogram: 'LC',
+    logo: '/uploads/1790495564237-looms-craft.png',
     link: '/work/loom-crafts',
   },
   {
     id: 'rr-skins',
     name: 'RR Skins',
     monogram: 'RR',
+    logo: '/uploads/1790521096761-rrskin-logo.jpg',
     link: '/work/rr-skins',
   },
   {
     id: 'indian-army',
     name: 'Indian Army',
     monogram: 'IA',
+    logo: '/uploads/1790493031037-indian-army-logo-05.png',
     link: '/indian-army-projects',
   },
   {
     id: 'amgoc',
     name: 'AMGOC',
     monogram: 'AMG',
+    logo: '/uploads/1790495501815-amgoc.png',
     link: '/work',
   },
   {
     id: 'shelkang',
     name: 'Shelkang Cafe',
     monogram: 'SC',
+    logo: '/uploads/1790495487525-shelkang-cafe.png',
     link: '/work',
   },
   {
@@ -126,10 +131,7 @@ export default function BrandsMarquee() {
   const [isPaused, setIsPaused] = useState(false);
   const { content } = useCmsContent();
   const brandsCms = content?.home?.brands;
-  const activeEyebrow = brandsCms?.eyebrow || 'SELECTED PARTNERS & ORGANISATIONS';
-  const activeHeading = brandsCms?.heading && !brandsCms.heading.includes('forward-thinking')
-    ? brandsCms.heading
-    : 'Trusted by businesses & institutions';
+  const activeHeading = brandsCms?.heading || 'Trusted by Brands & Institutions';
   const activeBrands: BrandItem[] = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
 
   // Seamless loop by duplicating items
@@ -149,24 +151,12 @@ export default function BrandsMarquee() {
         position: 'relative',
       }}
     >
-      <div className="padding-global container-large" style={{ marginBottom: '2rem' }}>
+      <div className="padding-global container-large" style={{ marginBottom: '2.25rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <div
-            className="tag-mono"
-            style={{
-              color: '#DE322D',
-              marginBottom: '0.5rem',
-              fontSize: '0.76rem',
-              letterSpacing: '0.14em',
-              fontWeight: 700,
-            }}
-          >
-            {activeEyebrow}
-          </div>
           <h3
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1.45rem, 2.2vw, 1.95rem)',
+              fontSize: 'clamp(1.5rem, 2.5vw, 2.15rem)',
               fontWeight: 600,
               letterSpacing: '-0.025em',
               color: '#18181b',
@@ -178,7 +168,7 @@ export default function BrandsMarquee() {
         </div>
       </div>
 
-      {/* Smooth Marquee Track able to take actual brand logos clearly */}
+      {/* Smooth Marquee Track able to take actual brand logos clearly and bigger */}
       <div
         className="brands-marquee-outer"
         onMouseEnter={() => setIsPaused(true)}
@@ -187,7 +177,7 @@ export default function BrandsMarquee() {
           position: 'relative',
           width: '100%',
           overflow: 'hidden',
-          padding: '0.75rem 0',
+          padding: '0.85rem 0',
         }}
       >
         <div className="marquee-edge-fade marquee-edge-left" />
@@ -203,35 +193,35 @@ export default function BrandsMarquee() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: brand.logo ? '0.65rem 1.6rem' : '0.65rem 1.35rem',
+                padding: brand.logo ? '0.85rem 2.25rem' : '0.85rem 1.75rem',
                 backgroundColor: '#ffffff',
                 border: '1px solid rgba(0, 0, 0, 0.08)',
                 borderRadius: '4px',
                 textDecoration: 'none',
                 flexShrink: 0,
-                minHeight: '52px',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                minHeight: '80px',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.05)',
                 transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
               {brand.logo ? (
-                /* Actual brand logo displayed clearly */
+                /* Actual brand logo displayed clearly and bigger */
                 <div
                   className="brand-logo-container"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: '32px',
+                    height: '58px',
                   }}
                 >
                   <Image
                     src={brand.logo}
                     alt={brand.name}
-                    width={150}
-                    height={36}
+                    width={220}
+                    height={58}
                     style={{
-                      maxHeight: '30px',
+                      maxHeight: '56px',
                       width: 'auto',
                       objectFit: 'contain',
                       display: 'block',

@@ -11,7 +11,7 @@ import { useCmsContent } from '@/lib/cms/content-context';
 export default function PointOfView() {
   const { content } = useCmsContent();
   const povCms = content?.home?.pov;
-  const activeEyebrow = povCms?.eyebrow || 'POSITIONING & PHILOSOPHY';
+  const activeEyebrow = povCms?.eyebrow || '';
   const activeHeadline = povCms?.headline || 'Some businesses need better marketing. Others need a better way of thinking about the business itself.';
   const activeParagraph1 = povCms?.paragraph1 || 'Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.';
   const activeParagraph2 = povCms?.paragraph2 || "Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.";
@@ -93,11 +93,12 @@ export default function PointOfView() {
               LEFT COLUMN: Header, Headline, Paragraphs, CTA Buttons
               ============================================================ */}
           <div ref={leftRef} className="pov-left-col">
-            {/* Tag / Eyebrow with Red Dash */}
-            <div className="pov-eyebrow-row">
-              <span className="pov-eyebrow-text">{activeEyebrow}</span>
-              <span className="pov-eyebrow-dash" />
-            </div>
+            {/* Tag / Eyebrow if present */}
+            {activeEyebrow ? (
+              <div className="pov-eyebrow-row">
+                <span className="pov-eyebrow-text">{activeEyebrow}</span>
+              </div>
+            ) : null}
 
             {/* Main Headline with Red Accent Text & Underline Dash */}
             <h2 className="pov-headline">

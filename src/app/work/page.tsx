@@ -48,67 +48,58 @@ interface ReelItem {
 
 const REELS: ReelItem[] = [
   {
-    id: 'reel-1',
+    id: 'reel-raysons',
     num: '01',
-    hookTitle: 'Spaces that belong',
-    subtitle: 'Raysons Group · Architecture',
+    hookTitle: 'Raysons Group',
+    subtitle: 'Commercial Real Estate & Industrial Film',
     category: 'Real Estate & Built Environment',
-    image: '/images/case-studies/raysons/neora-1.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
+    image: '/images/reels/raysons-reel.jpg',
+    instagramUrl: 'https://www.instagram.com/reel/C-HO9zcIAsj/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
   },
   {
-    id: 'reel-2',
+    id: 'reel-misu',
     num: '02',
-    hookTitle: 'More than a meal',
-    subtitle: 'Misu · Pan-Asian Dining',
+    hookTitle: 'Misu',
+    subtitle: 'Pan-Asian Dining & Neora Deck Hospitality',
     category: 'Hospitality & F&B',
-    image: '/images/case-studies/misu/misu-hero.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
+    image: '/images/reels/misu-reel.jpg',
+    instagramUrl: 'https://www.instagram.com/reel/DbIvEiLqD2Y/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
   {
-    id: 'reel-3',
+    id: 'reel-rrskins',
     num: '03',
-    hookTitle: 'Care in focus',
-    subtitle: 'RR Skins · Healthcare & Trust',
+    hookTitle: 'RR Skins',
+    subtitle: 'Clinical Dermatology & Patient Trust',
     category: 'Healthcare',
-    image: '/images/case-studies/rrskins/rrskins-hero.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
+    image: '/images/reels/rrskins-reel.jpg',
+    instagramUrl: 'https://www.instagram.com/reel/Dc3fHqXoH8c/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
   },
   {
-    id: 'reel-4',
+    id: 'reel-picturetime',
     num: '04',
-    hookTitle: 'Ideas in motion',
-    subtitle: 'PictureTime · Cinema Network',
+    hookTitle: 'PictureTime',
+    subtitle: 'Mobile Cinema Network & Film Festivals',
     category: 'Entertainment & Media',
-    image: '/images/case-studies/picturetime/picturetime-hero.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
+    image: '/images/reels/picturetime-reel.jpg',
+    instagramUrl: 'https://www.instagram.com/reel/DQMS9CxjHn-/?stkn=b2t2dnlyYzE5d3o5',
   },
   {
-    id: 'reel-5',
+    id: 'reel-she',
     num: '05',
-    hookTitle: 'Stories with purpose',
-    subtitle: 'Indian Army · Ladakh Missions',
+    hookTitle: 'SHE Initiative',
+    subtitle: 'Ladakh Border Villages & Operation Sadbhavana',
     category: 'Institutions & Government',
-    image: '/images/army/14corps-2.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
+    image: '/images/reels/she-reel.jpg',
+    instagramUrl: 'https://www.instagram.com/reel/DD_U5eeyHEd/?igsh=MWQ1MTNxa3V6Y2Vsdw==',
   },
   {
-    id: 'reel-6',
+    id: 'reel-loom',
     num: '06',
-    hookTitle: 'People and process',
-    subtitle: 'Loom Crafts · Handcrafted Living',
+    hookTitle: 'Loom Crafts',
+    subtitle: 'Luxury Outdoor Furniture & Handcrafted Living',
     category: 'Real Estate & Built Environment',
-    image: '/images/case-studies/loom/furniture-1.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
-  },
-  {
-    id: 'reel-7',
-    num: '07',
-    hookTitle: 'Beyond boundaries',
-    subtitle: 'Tourin · High-Altitude Journeys',
-    category: 'Institutions & Government',
-    image: '/images/tourin/tourin-hero.jpg',
-    instagramUrl: 'https://www.instagram.com/arohana.studio',
+    image: '/images/reels/loom-reel.jpg',
+    instagramUrl: 'https://www.instagram.com/reel/DdtjcrJvqkN/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
 ];
 
@@ -124,17 +115,18 @@ const REEL_FILTERS = [
 const CASE_FILTERS = [
   'All',
   'Real Estate',
+  'Lifestyle',
+  'Institutional',
   'Hospitality',
   'Healthcare',
   'Entertainment',
-  'Institutional',
   'Community',
 ];
 
 interface CaseStudyItem {
   id: string;
   slug: string;
-  num: string;
+  num?: string;
   title: string;
   desc: string;
   tags: string[];
@@ -144,64 +136,76 @@ interface CaseStudyItem {
 
 const CASE_STUDIES: CaseStudyItem[] = [
   {
-    id: 'raysons',
+    id: 'raysons-group',
     slug: 'raysons-group',
-    num: '01',
-    title: 'Raysons Group',
-    desc: 'Shows long-term digital partnership across real estate and hospitality, plus project production.',
-    tags: ['Real Estate', 'Hospitality', 'Digital Growth'],
+    title: 'Raysons Group — Neora Deck',
+    desc: 'Translating physical dining space and architecture into a distinctive digital presence.',
+    tags: ['Real Estate', 'Hospitality'],
     category: 'Real Estate',
     image: '/images/case-studies/raysons/neora-1.jpg',
   },
   {
-    id: 'loom',
+    id: 'loom-crafts',
     slug: 'loom-crafts',
-    num: '02',
     title: 'Loom Crafts',
-    desc: 'Shows how one brand can require different communication systems across furniture and prefab.',
-    tags: ['Real Estate', 'Built Environment', 'Brand Strategy'],
-    category: 'Real Estate',
-    image: '/images/case-studies/loom/loom-hero.jpg',
+    desc: 'Connecting premium furniture aspiration with high-confidence prefab architectural education.',
+    tags: ['Lifestyle'],
+    category: 'Lifestyle',
+    image: '/uploads/1790517317971-loomcrafts-hero.jpg',
   },
   {
-    id: 'picturetime',
-    slug: 'picturetime',
-    num: '03',
-    title: 'PictureTime',
-    desc: 'Shows digital brand work plus cultural/event/on-ground content.',
-    tags: ['Entertainment', 'Events', 'Content Production'],
-    category: 'Entertainment',
-    image: '/images/case-studies/picturetime/picturetime-hero.jpg',
+    id: 'indian-army',
+    slug: 'indian-army-projects',
+    title: 'Indian Army',
+    desc: 'High-altitude strategic communication, documentaries, and war memorial documentation across 14 Corps and Western Command.',
+    tags: ['Institutional'],
+    category: 'Institutional',
+    image: '/images/army/14corps-2.jpg',
+  },
+  {
+    id: 'ladakh-football-association',
+    slug: 'ladakh-football-association',
+    title: 'Ladakh Football Association',
+    desc: 'Structuring an active sporting calendar into a central digital touchpoint for community and tourism.',
+    tags: ['Institutional'],
+    category: 'Institutional',
+    image: '/images/army/army-hero.jpg',
   },
   {
     id: 'misu',
     slug: 'misu',
-    num: '04',
-    title: 'Misu',
-    desc: 'Shows the depth of hospitality consulting and digital execution.',
-    tags: ['Hospitality', 'Consulting', 'Digital'],
+    title: 'MISU',
+    desc: 'Connecting on-ground restaurant operations, food-cost discipline, and guest-facing brand.',
+    tags: ['Hospitality'],
     category: 'Hospitality',
     image: '/images/case-studies/misu/misu-hero.jpg',
   },
   {
-    id: 'she',
-    slug: 'she',
-    num: '05',
-    title: 'SHE',
-    desc: 'Shows complex institutional/community communication and on-ground execution.',
-    tags: ['Institutional', 'Community', 'Documentary'],
-    category: 'Institutional',
-    image: '/images/case-studies/she/she-hero.jpg',
+    id: 'la-confidence',
+    slug: 'la-confidence',
+    title: 'La Confidence Derma Clinic',
+    desc: 'Doctor-led medical education and patient-focused storytelling removing clinic advertising cliches.',
+    tags: ['Healthcare'],
+    category: 'Healthcare',
+    image: '/uploads/1790518446224-rrskins1.jpg',
   },
   {
-    id: 'rrskins',
-    slug: 'rr-skins',
-    num: '06',
-    title: 'RR Skins',
-    desc: 'Shows healthcare communication built around trust and education.',
-    tags: ['Healthcare', 'Brand Strategy', 'Content'],
-    category: 'Healthcare',
-    image: '/images/case-studies/rrskins/rrskins-hero.jpg',
+    id: 'picturetime',
+    slug: 'picturetime',
+    title: 'PictureTime',
+    desc: 'Managing digital brand communication, film festival documentation, and founder narrative.',
+    tags: ['Entertainment'],
+    category: 'Entertainment',
+    image: '/uploads/1790517819970-picture-time-hero.png',
+  },
+  {
+    id: 'save-changthang',
+    slug: 'save-changthang',
+    title: 'Save Changthang',
+    desc: 'Connecting education, sports, career pathways, and cultural moments into a cohesive story.',
+    tags: ['Community'],
+    category: 'Community',
+    image: '/uploads/1790516538989-communtiy.jpg',
   },
 ];
 
@@ -352,14 +356,16 @@ function WorkCaseCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container with Number Overlay */}
-      <div
+      {/* Image Container — Clickable directly to Case Study */}
+      <Link
+        href={`/work/${cs.slug}`}
         style={{
           position: 'relative',
           width: '100%',
           aspectRatio: imageAspect,
           backgroundColor: '#EBEAE6',
           overflow: 'hidden',
+          display: 'block',
         }}
       >
         <Image
@@ -373,25 +379,7 @@ function WorkCaseCard({
             transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         />
-
-        {/* 01, 02, etc. plain white mono text overlay in top-left */}
-        <span
-          style={{
-            position: 'absolute',
-            top: '16px',
-            left: '18px',
-            color: '#FFFFFF',
-            fontSize: '0.78rem',
-            fontWeight: 500,
-            fontFamily: 'var(--font-mono, monospace)',
-            letterSpacing: '0.04em',
-            textShadow: '0 1px 4px rgba(0, 0, 0, 0.6)',
-            zIndex: 2,
-          }}
-        >
-          {cs.num}
-        </span>
-      </div>
+      </Link>
 
       {/* Card Content */}
       <div
@@ -891,7 +879,7 @@ export default function WorkPage() {
                 }}
               />
 
-              {/* Top Row: Number Badge & Instagram Reel Icon */}
+              {/* Top Row: Number Badge (Left) & Instagram Reel Icon (Right) */}
               <div
                 style={{
                   position: 'absolute',
@@ -905,15 +893,16 @@ export default function WorkPage() {
                 }}
               >
                 <span
-                  className="tag-mono"
                   style={{
-                    fontSize: '0.68rem',
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                    backdropFilter: 'blur(8px)',
                     padding: '0.2rem 0.55rem',
-                    borderRadius: '6px',
+                    borderRadius: '4px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+                    backdropFilter: 'blur(8px)',
+                    color: '#ffffff',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-mono, monospace)',
+                    letterSpacing: '0.05em',
                   }}
                 >
                   {reel.num}
@@ -934,6 +923,30 @@ export default function WorkPage() {
                 >
                   <Instagram size={14} />
                 </span>
+              </div>
+
+              {/* Center Play Button */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgba(0, 0, 0, 0.45)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1.5px solid rgba(255, 255, 255, 0.25)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  zIndex: 2,
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+                }}
+              >
+                <Play size={18} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '2px' }} />
               </div>
 
               {/* Bottom Details & Direct Reel CTA */}
@@ -1021,113 +1034,80 @@ export default function WorkPage() {
             borderTop: BORDER,
           }}
         >
-          <div className="work-bento-grid">
-            {/* ─── COLUMN 1: Intro Narrative + Filter Pills & Card 03 (PictureTime) ─── */}
-            <div className="work-bento-col-1">
-              <div>
-                <p
-                  style={{
-                    fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
-                    lineHeight: 1.45,
-                    color: '#71717A',
-                    maxWidth: '430px',
-                    fontWeight: 400,
-                  }}
-                >
-                  A selection of businesses and projects that show how Ārohana thinks,
-                  creates and executes across very different environments.
-                </p>
+          {/* Header & Filter Bar */}
+          <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
+            <p
+              style={{
+                fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
+                lineHeight: 1.45,
+                color: '#71717A',
+                maxWidth: '640px',
+                fontWeight: 400,
+                margin: '0 0 1.75rem 0',
+              }}
+            >
+              A selection of businesses and projects that show how Ārohana thinks,
+              creates and executes across very different environments.
+            </p>
 
-                {/* Filter Pills */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    gap: '0.45rem',
-                    marginTop: 'clamp(1.5rem, 2.2vw, 2.25rem)',
-                  }}
-                >
-                  {CASE_FILTERS.map((f) => {
-                    const isActive = selectedCaseFilter === f;
-                    return (
-                      <button
-                        key={f}
-                        type="button"
-                        onClick={() => setSelectedCaseFilter(f)}
-                        style={{
-                          padding: '0.42rem 0.95rem',
-                          borderRadius: '4px',
-                          fontSize: '0.74rem',
-                          fontWeight: 500,
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                          backgroundColor: isActive ? DARK : '#FFFFFF',
-                          color: isActive ? '#FFFFFF' : '#374151',
-                          border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
-                          boxShadow: isActive ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
-                        }}
-                      >
-                        {f}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Card 03: PictureTime */}
-              <WorkCaseCard
-                cs={getCase('picturetime', 2)}
-                isDimmed={isCardDimmed(getCase('picturetime', 2).tags)}
-                imageAspect="16 / 9"
-              />
+            {/* Filter Pills */}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+                gap: '0.5rem',
+              }}
+            >
+              {CASE_FILTERS.map((f) => {
+                const isActive = selectedCaseFilter === f;
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setSelectedCaseFilter(f)}
+                    style={{
+                      padding: '0.45rem 1rem',
+                      borderRadius: '4px',
+                      fontSize: '0.78rem',
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      backgroundColor: isActive ? DARK : '#FFFFFF',
+                      color: isActive ? '#FFFFFF' : '#374151',
+                      border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
+                      boxShadow: isActive ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
+                    }}
+                  >
+                    {f}
+                  </button>
+                );
+              })}
             </div>
+          </div>
 
-            {/* ─── COLUMN 2: Card 01 (Raysons Group) + Subgrid (Misu & SHE) ─── */}
-            <div className="work-bento-col-2">
-              {/* Card 01: Raysons Group */}
-              <WorkCaseCard
-                cs={getCase('raysons-group', 0)}
-                isDimmed={isCardDimmed(getCase('raysons-group', 0).tags)}
-                imageAspect="16 / 9.5"
-              />
-
-              {/* Nested Subgrid: Misu & SHE */}
-              <div className="work-bento-subgrid">
-                {/* Card 04: Misu */}
+          {/* Responsive Editorial Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 380px), 1fr))',
+              gap: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+            }}
+          >
+            {activeCaseStudies
+              .filter((c) => {
+                if (selectedCaseFilter === 'All') return true;
+                const matchCategory = c.category?.toLowerCase() === selectedCaseFilter.toLowerCase();
+                const matchTag = c.tags?.some((t) => t.toLowerCase() === selectedCaseFilter.toLowerCase());
+                return matchCategory || matchTag;
+              })
+              .map((cs) => (
                 <WorkCaseCard
-                  cs={getCase('misu', 3)}
-                  isDimmed={isCardDimmed(getCase('misu', 3).tags)}
-                  imageAspect="1 / 1"
+                  key={cs.id || cs.slug}
+                  cs={cs}
+                  imageAspect="16 / 10"
                 />
-
-                {/* Card 05: SHE + Tagline */}
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <WorkCaseCard
-                    cs={getCase('she', 4)}
-                    isDimmed={isCardDimmed(getCase('she', 4).tags)}
-                    imageAspect="16 / 8.5"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* ─── COLUMN 3: Card 02 (Loom Crafts) & Card 06 (RR Skins) ─── */}
-            <div className="work-bento-col-3">
-              {/* Card 02: Loom Crafts */}
-              <WorkCaseCard
-                cs={getCase('loom-crafts', 1)}
-                isDimmed={isCardDimmed(getCase('loom-crafts', 1).tags)}
-                imageAspect="16 / 9.5"
-              />
-
-              {/* Card 06: RR Skins */}
-              <WorkCaseCard
-                cs={getCase('rr-skins', 5)}
-                isDimmed={isCardDimmed(getCase('rr-skins', 5).tags)}
-                imageAspect="16 / 10"
-              />
-            </div>
+              ))}
           </div>
         </section>
       </div>

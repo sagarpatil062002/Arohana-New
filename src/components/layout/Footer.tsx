@@ -12,8 +12,8 @@ export default function Footer() {
   const footer = content.footer || {};
   const contact = content.contact || {};
 
-  // For Tourin & Army Projects keep dedicated footer matching design; hide on admin
-  if (pathname === '/tourin' || pathname === '/indian-army-projects' || pathname === '/army-projects' || pathname?.startsWith('/admin')) {
+  // Unified footer across all pages; hide only on admin portal
+  if (pathname?.startsWith('/admin')) {
     return null;
   }
 
@@ -28,10 +28,10 @@ export default function Footer() {
 
   const tagline = footer.tagline || 'Business Thinking • Creative Communication • Execution across very different environments.';
   const officeName = contact.office?.name || 'ĀROHANA Consultancy';
-  const officeAddress = contact.office?.address || '30, Goodwill Square, Aundh-Ravet BRTS Rd, Near D Mart, Thergaon, Pune 411033, India.';
+  const officeAddress = contact.office?.address || 'Goa, India';
   const email = contact.email || 'founder@byarohana.com';
   const phone = contact.phone || '+91 83800 92241';
-  const locations = footer.locations || contact.locations || 'Pune • Ladakh • Pan-India Engagements';
+  const locations = footer.locations || contact.locations || 'Goa, India';
   const copyright = footer.copyright || `© ${new Date().getFullYear()} ĀROHANA Consultancy. All Rights Reserved.`;
 
   return (
@@ -214,7 +214,6 @@ export default function Footer() {
               {[
                 { label: 'LinkedIn', href: contact.socials?.linkedin || 'https://linkedin.com' },
                 { label: 'Instagram', href: contact.socials?.instagram || 'https://instagram.com/arohana.studio' },
-                { label: 'Behance', href: contact.socials?.behance || 'https://behance.net' },
               ].map((s) => (
                 <a
                   key={s.label}
@@ -251,10 +250,8 @@ export default function Footer() {
           }}
         >
           <div>{copyright}</div>
-          <div style={{ color: '#555555' }}>{locations}</div>
+          <div style={{ color: '#555555' }}>Goa, India</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <span style={{ color: '#777777' }}>Authentic Strategy &amp; Brand Practice</span>
-            <span style={{ color: 'rgba(0, 0, 0, 0.2)' }}>&bull;</span>
             <Link
               href="/admin"
               style={{

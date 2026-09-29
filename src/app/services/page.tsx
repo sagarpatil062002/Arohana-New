@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useCmsContent } from '@/lib/cms/content-context';
 
 /* ═══════════════════════════════════════════════════════════════════
    SERVICES — Practice Areas & Capabilities
@@ -29,51 +30,47 @@ const FAINT = '#A1A1AA';
 const BORDER = '1px solid rgba(0, 0, 0, 0.08)';
 
 const DIGITAL_DELIVERABLES = [
-  { num: '01', title: 'Brand positioning & value proposition' },
-  { num: '02', title: 'Visual identity & system design' },
-  { num: '03', title: 'Website architecture & development' },
-  { num: '04', title: 'Content publishing frameworks' },
-  { num: '05', title: 'Performance marketing & paid acquisition' },
-  { num: '06', title: 'Digital revenue pipelines & analytics' },
+  { num: '01', title: 'Social Media Management' },
+  { num: '02', title: 'Brand Strategy & Positioning' },
+  { num: '03', title: 'Social relevant Monthly Calendars' },
+  { num: '04', title: 'Creative Direction' },
+  { num: '05', title: 'Copywriting & Scripting' },
+  { num: '06', title: 'Photography & Videography' },
+  { num: '07', title: 'Video Production & Editing' },
+  { num: '08', title: 'Campaign Development' },
+  { num: '09', title: 'Meta & Google Advertising' },
+  { num: '10', title: 'SEO' },
+  { num: '11', title: 'Website Strategy & Design' },
+  { num: '12', title: 'Lead Generation activities' },
+  { num: '13', title: 'Website launch' },
 ];
 
 const HOSPITALITY_DELIVERABLES = [
-  { num: '01', title: 'Concept development & culinary narrative' },
-  { num: '02', title: 'Menu engineering & margin architecture' },
-  { num: '03', title: 'Service journey & front-of-house' },
-  { num: '04', title: 'Staff training & brand touchpoints' },
-  { num: '05', title: 'Guest retention & local marketing' },
-  { num: '06', title: 'Boutique resort & dining diagnostics' },
+  { num: '01', title: 'Hospitality Consulting & Concept Development' },
+  { num: '02', title: 'Menu Engineering & Margin Architecture' },
+  { num: '03', title: 'Kitchen Systems & Standard Operating Procedures' },
+  { num: '04', title: 'Staff Training & Service Standards' },
+  { num: '05', title: 'Revenue Optimisation & Floor Systems' },
+  { num: '06', title: 'Culinary Content & Social Media Storytelling' },
 ];
 
 const PRODUCTION_DELIVERABLES = [
-  { num: '01', title: 'On-location film direction' },
-  { num: '02', title: 'Architectural & interior stills' },
-  { num: '03', title: 'Technical scripting & narrative framing' },
-  { num: '04', title: 'Sound, color & post-production' },
-  { num: '05', title: 'High-altitude / remote capabilities' },
-  { num: '06', title: 'Documentary & social asset toolkits' },
-];
-
-const ENGAGEMENT_MODELS = [
-  {
-    num: '01',
-    title: 'Strategic Retainers',
-    href: '/contact',
-  },
-  {
-    num: '02',
-    title: 'Project Collaborations',
-    href: '/contact',
-  },
-  {
-    num: '03',
-    title: 'Specialised Production Briefs',
-    href: '/contact',
-  },
+  { num: '01', title: 'Social Media Content Creation' },
+  { num: '02', title: 'Corporate Films' },
+  { num: '03', title: 'Brand Films' },
+  { num: '04', title: 'Documentaries' },
+  { num: '05', title: 'Institutional Films' },
+  { num: '06', title: 'Scripting' },
+  { num: '07', title: 'Voice-over / Audiobooks' },
+  { num: '08', title: 'Photography & Videography' },
+  { num: '09', title: 'Editing' },
+  { num: '10', title: 'Sound & Post-Production' },
+  { num: '11', title: 'UGC content execution' },
 ];
 
 export default function ServicesPage() {
+  const { content } = useCmsContent();
+  const servicesCms = content?.services;
   const containerRef = useRef<HTMLDivElement>(null);
 
   /* GSAP scroll reveal animations */
@@ -133,23 +130,6 @@ export default function ServicesPage() {
           >
             {/* Left Column: Heading & Narrative */}
             <div>
-              {/* Eyebrow */}
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.6rem',
-                }}
-              >
-                PRACTICE AREAS & CAPABILITIES
-              </div>
-
               {/* Main Headline */}
               <h1
                 style={{
@@ -161,38 +141,25 @@ export default function ServicesPage() {
                   marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
                 }}
               >
-                Three ways
+                What
                 <br />
-                we work<span style={{ color: RED }}>.</span>
+                We Do<span style={{ color: RED }}>.</span>
               </h1>
-
-              {/* Double Red Dash Line */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)' }}>
-                <span style={{ width: '28px', height: '2.5px', backgroundColor: RED, display: 'inline-block' }} />
-                <span style={{ width: '12px', height: '2.5px', backgroundColor: RED, display: 'inline-block' }} />
-              </div>
 
               {/* Paragraph */}
               <p
                 style={{
-                  maxWidth: '520px',
+                  maxWidth: '540px',
                   fontSize: 'clamp(0.98rem, 1.25vw, 1.15rem)',
                   lineHeight: 1.65,
                   color: BODY_TEXT,
                   fontWeight: 450,
                 }}
               >
-                We operate at the intersection of commercial context, sector depth and creative execution.
-                Our services are built to help you build, grow and communicate with clarity, consistency and impact.
+                We help businesses build stronger brands, communicate better and grow through digitally.
+                <br /><br />
+                Our work spans digital brand growth, hospitality consulting and content & brand production — bringing strategy, creativity and execution together to meet the needs of each business.
               </p>
-
-              {/* Scroll Indicator */}
-              <div style={{ marginTop: 'clamp(3rem, 5vw, 4.5rem)', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                <span className="tag-mono" style={{ fontSize: '0.62rem', color: FAINT, letterSpacing: '0.22em', fontWeight: 600 }}>
-                  SCROLL
-                </span>
-                <span style={{ width: '1px', height: '28px', backgroundColor: 'rgba(0, 0, 0, 0.25)', display: 'inline-block' }} />
-              </div>
             </div>
 
             {/* Right Column: Architectural Mountain Collage */}
@@ -224,7 +191,7 @@ export default function ServicesPage() {
                 }}
               >
                 <Image
-                  src="/images/services/services-hero-collage.png"
+                  src={servicesCms?.heroImage || '/images/services/services-hero-collage.png'}
                   alt="Arohana practice areas — Strategy, Creative, Execution"
                   fill
                   priority
@@ -255,22 +222,8 @@ export default function ServicesPage() {
               alignItems: 'start',
             }}
           >
-            {/* Left Column: Number, Title, Image */}
+            {/* Left Column: Title & Image */}
             <div>
-              {/* Serif Numeral */}
-              <div
-                style={{
-                  fontFamily: 'serif, "Times New Roman", Georgia, serif',
-                  fontSize: 'clamp(3rem, 4.5vw, 4.2rem)',
-                  lineHeight: 1,
-                  color: DARK,
-                  marginBottom: '0.85rem',
-                  fontWeight: 400,
-                }}
-              >
-                01
-              </div>
-
               {/* Category Tag */}
               <div
                 className="tag-mono"
@@ -294,10 +247,10 @@ export default function ServicesPage() {
                   fontWeight: 650,
                   color: DARK,
                   marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
-                  maxWidth: '22ch',
+                  maxWidth: '24ch',
                 }}
               >
-                Brand systems that drive commercial momentum.
+                Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.
               </h2>
 
               {/* Rectangular Image */}
@@ -313,8 +266,8 @@ export default function ServicesPage() {
                 }}
               >
                 <Image
-                  src="/images/services/digital-growth.jpg"
-                  alt="Digital brand growth desk setup with laptop, notebook and coffee"
+                  src="/uploads/1790518970031-raysons2.jpg"
+                  alt="Digital brand growth & social media management"
                   fill
                   sizes="(max-width: 768px) 100vw, 520px"
                   style={{ objectFit: 'cover', objectPosition: 'center 45%' }}
@@ -344,7 +297,7 @@ export default function ServicesPage() {
                     key={item.num}
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: '44px 1fr',
+                      gridTemplateColumns: '26px 1fr',
                       alignItems: 'center',
                       padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
                       borderTop: '1px solid rgba(0, 0, 0, 0.07)',
@@ -357,8 +310,8 @@ export default function ServicesPage() {
                       e.currentTarget.style.paddingLeft = '0';
                     }}
                   >
-                    <span className="tag-mono" style={{ fontSize: '0.72rem', color: FAINT, letterSpacing: '0.12em' }}>
-                      {item.num}
+                    <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
+                      ●
                     </span>
                     <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 500, color: '#222225' }}>
                       {item.title}
@@ -394,22 +347,8 @@ export default function ServicesPage() {
               alignItems: 'center',
             }}
           >
-            {/* Left Column: Number, Title, Deliverables */}
+            {/* Left Column: Title & Deliverables */}
             <div>
-              {/* Serif Numeral */}
-              <div
-                style={{
-                  fontFamily: 'serif, "Times New Roman", Georgia, serif',
-                  fontSize: 'clamp(3rem, 4.5vw, 4.2rem)',
-                  lineHeight: 1,
-                  color: '#ffffff',
-                  marginBottom: '0.85rem',
-                  fontWeight: 400,
-                }}
-              >
-                02
-              </div>
-
               {/* Category Tag */}
               <div
                 className="tag-mono"
@@ -460,7 +399,7 @@ export default function ServicesPage() {
                       key={item.num}
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: '44px 1fr',
+                        gridTemplateColumns: '26px 1fr',
                         alignItems: 'center',
                         padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
                         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
@@ -473,8 +412,8 @@ export default function ServicesPage() {
                         e.currentTarget.style.paddingLeft = '0';
                       }}
                     >
-                      <span className="tag-mono" style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.4)', letterSpacing: '0.12em' }}>
-                        {item.num}
+                      <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
+                        ●
                       </span>
                       <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 450, color: 'rgba(255, 255, 255, 0.92)' }}>
                         {item.title}
@@ -533,8 +472,8 @@ export default function ServicesPage() {
                 }}
               >
                 <Image
-                  src="/images/services/hospitality-consulting.jpg"
-                  alt="Atmospheric hospitality dining table with wine glasses and mountain window view"
+                  src="/images/case-studies/raysons/neora-1.jpg"
+                  alt="Neora Deck experiential dining and rooftop atmosphere"
                   fill
                   sizes="(max-width: 768px) 100vw, 560px"
                   style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
@@ -564,22 +503,8 @@ export default function ServicesPage() {
               alignItems: 'start',
             }}
           >
-            {/* Left Column: Number, Title, Image */}
+            {/* Left Column: Title & Image */}
             <div>
-              {/* Serif Numeral */}
-              <div
-                style={{
-                  fontFamily: 'serif, "Times New Roman", Georgia, serif',
-                  fontSize: 'clamp(3rem, 4.5vw, 4.2rem)',
-                  lineHeight: 1,
-                  color: DARK,
-                  marginBottom: '0.85rem',
-                  fontWeight: 400,
-                }}
-              >
-                03
-              </div>
-
               {/* Category Tag */}
               <div
                 className="tag-mono"
@@ -603,10 +528,10 @@ export default function ServicesPage() {
                   fontWeight: 650,
                   color: DARK,
                   marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
-                  maxWidth: '22ch',
+                  maxWidth: '24ch',
                 }}
               >
-                Cinematic visual production with editorial discipline.
+                Taking Brand stories from concept and scripting to production and communication.
               </h2>
 
               {/* Rectangular Image */}
@@ -622,8 +547,8 @@ export default function ServicesPage() {
                 }}
               >
                 <Image
-                  src="/images/services/content-production.jpg"
-                  alt="Cinematic production camera on tripod overlooking mountain range"
+                  src="/uploads/1790516827847-rezang-la-memorial.jpg"
+                  alt="Cinematic production and on-ground brand storytelling"
                   fill
                   sizes="(max-width: 768px) 100vw, 520px"
                   style={{ objectFit: 'cover', objectPosition: 'center 45%' }}
@@ -653,7 +578,7 @@ export default function ServicesPage() {
                     key={item.num}
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: '44px 1fr',
+                      gridTemplateColumns: '26px 1fr',
                       alignItems: 'center',
                       padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
                       borderTop: '1px solid rgba(0, 0, 0, 0.07)',
@@ -666,8 +591,8 @@ export default function ServicesPage() {
                       e.currentTarget.style.paddingLeft = '0';
                     }}
                   >
-                    <span className="tag-mono" style={{ fontSize: '0.72rem', color: FAINT, letterSpacing: '0.12em' }}>
-                      {item.num}
+                    <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
+                      ●
                     </span>
                     <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 500, color: '#222225' }}>
                       {item.title}
@@ -677,87 +602,6 @@ export default function ServicesPage() {
                 <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.07)' }} />
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════════
-            SECTION 5: HOW ENGAGEMENTS WORK
-            ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          style={{
-            paddingTop: 'clamp(3.5rem, 6vw, 5.5rem)',
-            paddingBottom: 'clamp(3.5rem, 6vw, 5.5rem)',
-            borderTop: BORDER,
-          }}
-        >
-          {/* Header */}
-          <div
-            className="tag-mono"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              fontSize: '0.68rem',
-              letterSpacing: '0.2em',
-              color: DARK,
-              fontWeight: 700,
-              marginBottom: 'clamp(2rem, 4vw, 3.5rem)',
-            }}
-          >
-            <span style={{ width: '28px', height: '2px', backgroundColor: RED, display: 'inline-block' }} />
-            HOW ENGAGEMENTS WORK
-          </div>
-
-          {/* 3 Columns */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
-              gap: 'clamp(1.5rem, 3vw, 3rem)',
-            }}
-          >
-            {ENGAGEMENT_MODELS.map((model, idx) => (
-              <div
-                key={model.num}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  paddingRight: idx < ENGAGEMENT_MODELS.length - 1 ? 'clamp(1rem, 2.5vw, 2.5rem)' : '0',
-                  borderRight: idx < ENGAGEMENT_MODELS.length - 1 ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
-                  color: DARK,
-                }}
-              >
-                <div
-                  style={{
-                    marginBottom: '1.25rem',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '0.88rem',
-                      fontWeight: 700,
-                      color: DARK,
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {model.num}
-                  </span>
-                </div>
-
-                <h3
-                  style={{
-                    fontSize: 'clamp(1.4rem, 2.2vw, 1.85rem)',
-                    fontWeight: 650,
-                    letterSpacing: '-0.025em',
-                    color: DARK,
-                    lineHeight: 1.25,
-                    margin: 0,
-                  }}
-                >
-                  {model.title}
-                </h3>
-              </div>
-            ))}
           </div>
         </section>
 

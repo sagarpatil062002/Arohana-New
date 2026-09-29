@@ -1,18 +1,16 @@
 {
-  "tag": "DIRECT ENGAGEMENT",
   "heading": "Let's start a conversation.",
   "subheading": "Every conversation starts with understanding your business, your commercial reality, and what actually needs to be created, fixed, or scaled.",
   "email": "founder@byarohana.com",
   "phone": "+91 83800 92241",
-  "locations": "Goa · Kolhapur · Delhi · Ladakh",
+  "locations": "Goa, India",
   "office": {
     "name": "ĀROHANA Consultancy",
-    "address": "30, Goodwill Square, Aundh-Ravet BRTS Rd, Near D Mart, Thergaon, Pune 411033, Maharashtra, India."
+    "address": "Goa, India"
   },
   "socials": {
     "linkedin": "https://linkedin.com",
-    "instagram": "https://instagram.com/arohana.studio",
-    "behance": "https://behance.net"
+    "instagram": "https://instagram.com/arohana.studio"
   },
   "callCta": {
     "tag": "DISCOVERY CALL",
@@ -20,23 +18,5 @@
     "description": "Book a 15-minute discovery call to discuss your business challenge.",
     "buttonText": "Book a call",
     "buttonPhone": "+91 83800 92241"
-  },
-  "faqs": [
-    {
-      "q": "How does Ārohana initiate a new client engagement?",
-      "a": "We start with a diagnostic discussion directly with the founder to understand your core commercial challenge, current bottlenecks, and specific objectives. If there is mutual alignment, we propose a clear scope — whether a monthly retainer, a consulting sprint, or a project production brief."
-    },
-    {
-      "q": "Do you work with businesses outside Goa and Maharashtra?",
-      "a": "Yes. Ārohana works with clients across India (Delhi, Bangalore, Ladakh, Mumbai, Goa, Kolhapur) and select international markets. For production and on-ground hospitality consulting, our team deploys on-site anywhere in India."
-    },
-    {
-      "q": "What is the typical turnaround for project proposals?",
-      "a": "Following our initial discovery conversation, tailored proposals and scope documents are typically delivered within 48 to 72 business hours."
-    },
-    {
-      "q": "How do you handle confidential defence or corporate briefs?",
-      "a": "We operate under strict confidentiality and standard non-disclosure protocols. We have extensive experience delivering sensitive defence communication and high-security projects."
-    }
-  ]
+  }
 }

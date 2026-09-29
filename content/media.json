@@ -1,6 +1,16 @@
 {
   "assets": [
     {
+      "id": "asset-1790712682532",
+      "name": "hero-poster.jpg",
+      "url": "/uploads/1790712682532-hero-poster.jpg",
+      "type": "image",
+      "size": "386 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-09-29T20:11:22.541Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1790521096761",
       "name": "rrskin logo.jpg",
       "url": "/uploads/1790521096761-rrskin-logo.jpg",

@@ -12,50 +12,46 @@ interface ArmyCard {
   title: string;
   location: string;
   image: string;
+  link?: string;
 }
 
-// Exactly ordered layout:
-// Far Left: 04, Mid Left: 02, Center (Active): 01, Mid Right: 03, Far Right: 05
+// Exactly ordered layout matching 4 Army projects:
 const ARMY_PROJECT_CARDS: ArmyCard[] = [
   {
-    id: 'army-ceremonies',
-    index: '04',
-    category: 'INVESTITURE CEREMONY',
-    title: 'Indian Army Ceremonies',
-    location: 'WESTERN COMMAND HQ THEATRE',
+    id: 'investiture-ceremony',
+    index: '',
+    category: 'Shoot · Production · Post-production',
+    title: 'Investiture Ceremony',
+    location: 'WESTERN COMMAND',
     image: '/images/army/western-command-1.jpg',
+    link: '/indian-army-projects',
   },
   {
-    id: 'logistics-support',
-    index: '02',
-    category: 'OPERATIONAL',
-    title: 'Logistics Support',
-    location: 'HIGH-ALTITUDE REGIONS',
-    image: '/images/army/sampark-1.jpg',
+    id: '14-corps-hq',
+    index: '',
+    category: 'Design · Scripting · films',
+    title: '14 CORPS HEADQUARTERS',
+    location: 'LEH, LADAKH',
+    image: '/uploads/1790515799187-high-alltitude-1.jpg',
+    link: '/indian-army-projects',
   },
   {
-    id: 'high-altitude-impact',
-    index: '01',
-    category: 'VIBRANT VILLAGES INITIATIVE',
-    title: 'High-Altitude Impact',
-    location: 'EASTERN LADAKH – LAC BORDERS',
-    image: '/images/army/vibrant-villages-1.jpg',
+    id: 'rezang-la-memorial',
+    index: '',
+    category: 'Collateral designing | Content production',
+    title: 'Rezang La War Memorial',
+    location: 'CHUSHUL SECTOR, LADAKH',
+    image: '/uploads/1790516827847-rezang-la-memorial.jpg',
+    link: '/indian-army-projects',
   },
   {
-    id: 'border-communities',
-    index: '03',
-    category: 'COMMUNITY OUTREACH',
-    title: 'Border Communities',
-    location: 'PEOPLE, PLACES, PROGRESS',
-    image: '/images/army/rezang-la-1.jpg',
-  },
-  {
-    id: 'institutional-content',
-    index: '05',
-    category: 'TRAINING & DOCUMENTATION',
-    title: 'Institutional Content',
-    location: 'DISCIPLINE IN EVERY FRAME',
-    image: '/images/army/western-command-2.jpg',
+    id: '69-armoured-regiment',
+    index: '',
+    category: 'Collateral designing | Content creation',
+    title: '69 Armoured Regiment',
+    location: 'LADAKH',
+    image: '/images/army/69armoured-t90.jpg',
+    link: '/indian-army-projects',
   },
 ];
 
@@ -288,16 +284,16 @@ export default function IndianArmySpotlight() {
             </div>
 
             <div className="army-eyebrow-row">
-              <span className="army-eyebrow-text">{armyCms?.eyebrow || 'DEFENCE & INSTITUTIONAL PRODUCTION'}</span>
+              <span className="army-eyebrow-text">{armyCms?.eyebrow || 'BRANDING & COMMUNICATION - INSTITUTIONAL'}</span>
               <span className="army-eyebrow-dash" />
             </div>
 
             <h2 className="army-headline">
-              {armyCms?.title || "Documenting service under demanding conditions."}
+              {armyCms?.title || 'Making institutional\nstories matter\ndigitally'}
             </h2>
 
             <p className="army-description">
-              {armyCms?.description || "On-location film direction, ceremonial protocol documentation, and high-altitude field production conducted directly with Army formations."}
+              {armyCms?.description || 'Social media content shoot, brand communication, on-ground storytelling designed for defence and institutional organizations'}
             </p>
           </div>
         </div>
@@ -404,14 +400,19 @@ export default function IndianArmySpotlight() {
                   <div
                     key={item.id}
                     onClick={() => {
-                      setActiveIndex(index);
-                      resetAutoplay();
+                      if (isActive) {
+                        window.location.href = item.link || '/indian-army-projects';
+                      } else {
+                        setActiveIndex(index);
+                        resetAutoplay();
+                      }
                     }}
                     className={`army-card-wrapper ${isActive ? 'card-active' : ''}`}
                     style={{
                       transform: `translate3d(${translateX}px, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                       opacity,
                       zIndex,
+                      cursor: 'pointer',
                       pointerEvents: isMobile && Math.abs(offset) > 1 ? 'none' : 'auto',
                     }}
                   >
@@ -429,11 +430,6 @@ export default function IndianArmySpotlight() {
                       />
 
                       <div className="army-card-overlay" />
-
-                      <div className="army-card-tag">
-                        <span className="army-card-tag-num">{item.index}</span>
-                        <span className="army-card-tag-line" />
-                      </div>
 
                       <div className="army-card-content">
                         <span className="army-card-category">{item.category}</span>
