@@ -879,35 +879,18 @@ export default function WorkPage() {
                 }}
               />
 
-              {/* Top Row: Number Badge (Left) & Instagram Reel Icon (Right) */}
+              {/* Top Row: Instagram Reel Icon */}
               <div
                 style={{
                   position: 'absolute',
                   top: '14px',
-                  left: '14px',
                   right: '14px',
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
                   alignItems: 'center',
                   zIndex: 2,
                 }}
               >
-                <span
-                  style={{
-                    padding: '0.2rem 0.55rem',
-                    borderRadius: '4px',
-                    backgroundColor: 'rgba(0, 0, 0, 0.55)',
-                    backdropFilter: 'blur(8px)',
-                    color: '#ffffff',
-                    fontSize: '0.72rem',
-                    fontWeight: 700,
-                    fontFamily: 'var(--font-mono, monospace)',
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  {reel.num}
-                </span>
-
                 <span
                   style={{
                     width: '28px',

@@ -118,32 +118,46 @@ export default function Hero() {
                 />
               )}
 
-              {/* Dark Readability Contrast Overlay */}
+              {/* Dark Studio & Readability Gradient Overlay */}
               <div
                 className="hero-overlay"
                 style={{
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(90deg, rgba(7, 11, 20, 0.94) 0%, rgba(7, 11, 20, 0.82) 48%, rgba(7, 11, 20, 0.42) 78%, rgba(7, 11, 20, 0.52) 100%)',
+                    'radial-gradient(ellipse at 85% 20%, rgba(222, 50, 45, 0.16) 0%, transparent 60%), radial-gradient(circle at 15% 85%, rgba(16, 78, 91, 0.2) 0%, transparent 55%), linear-gradient(90deg, rgba(7, 10, 16, 0.96) 0%, rgba(7, 10, 16, 0.86) 48%, rgba(7, 10, 16, 0.72) 100%)',
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Architectural Fine Grid Overlay for Design Agency Aesthetic */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage:
+                    'linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px)',
+                  backgroundSize: '48px 48px',
                   pointerEvents: 'none',
                 }}
               />
             </div>
 
-            {/* Content Stage */}
+            {/* Content Stage — Creative Digital Agency Grid */}
             <div
               className="hero-content-wrapper"
               style={{
                 position: 'relative',
                 zIndex: 20,
-                padding: 'clamp(2.5rem, 5vw, 5.5rem) clamp(2rem, 5vw, 5.5rem)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                maxWidth: '920px',
+                padding: 'clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.75rem, 4.5vw, 4.5rem)',
+                display: 'grid',
+                gridTemplateColumns: '1.2fr 0.95fr',
+                gap: 'clamp(2rem, 4vw, 4.5rem)',
+                alignItems: 'center',
+                width: '100%',
               }}
             >
+              {/* Left Column: Strategic Brand Narrative & CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -184,8 +198,8 @@ export default function Hero() {
                   className="hero-headline"
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(2.7rem, 5.2vw, 5.4rem)',
-                    lineHeight: 1.05,
+                    fontSize: 'clamp(2.7rem, 4.6vw, 4.8rem)',
+                    lineHeight: 1.06,
                     fontWeight: 600,
                     letterSpacing: '-0.035em',
                     color: '#ffffff',
@@ -210,12 +224,12 @@ export default function Hero() {
                 <p
                   className="hero-subtitle"
                   style={{
-                    fontSize: 'clamp(0.98rem, 1.25vw, 1.15rem)',
+                    fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)',
                     color: 'rgba(255, 255, 255, 0.88)',
                     lineHeight: 1.55,
-                    maxWidth: '640px',
+                    maxWidth: '560px',
                     margin: 0,
-                    marginBottom: '2.25rem',
+                    marginBottom: '2rem',
                     fontWeight: 400,
                     textShadow: '0 1px 8px rgba(0, 0, 0, 0.5)',
                   }}
@@ -233,96 +247,144 @@ export default function Hero() {
                     gap: '1rem',
                   }}
                 >
-                  {buttons.map((btn: any, idx: number) => {
-                    if (btn.variant === 'showreel') {
-                      return (
-                        <button
-                          key={btn.id || idx}
-                          type="button"
-                          onClick={() => setShowShowreel(true)}
-                          className="button-editorial hero-secondary-cta"
-                          style={{
-                            height: '50px',
-                            padding: '0 1.65rem',
-                            backgroundColor: '#000000',
-                            color: '#ffffff',
-                            border: '1px solid rgba(255, 255, 255, 0.22)',
-                            borderRadius: '4px',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.65rem',
-                            cursor: 'pointer',
-                            fontSize: '0.9rem',
-                            fontWeight: 600,
-                            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
-                            transition: 'all 0.25s ease',
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.backgroundColor = '#1f1f23';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.backgroundColor = '#000000';
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: '24px',
-                              height: '24px',
-                              borderRadius: '50%',
-                              border: '1.5px solid #ffffff',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}
-                          >
-                            <Play size={10} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '1.5px' }} />
-                          </div>
-                          <span>{btn.label || 'Watch Showreel'}</span>
-                        </button>
-                      );
-                    }
+                  {buttons.map((btn: any, idx: number) => (
+                    <Link
+                      key={btn.id || idx}
+                      href={btn.url || '#'}
+                      className="button-editorial hero-primary-cta"
+                      style={{
+                        height: '50px',
+                        padding: '0 1.85rem',
+                        backgroundColor: '#000000',
+                        color: '#ffffff',
+                        borderRadius: '4px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.65rem',
+                        fontSize: '0.9rem',
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                        border: '1px solid rgba(255, 255, 255, 0.22)',
+                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
+                        transition: 'all 0.25s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.backgroundColor = '#1f1f23';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.backgroundColor = '#000000';
+                      }}
+                    >
+                      <span>{btn.label}</span>
+                      <ArrowRight size={17} />
+                    </Link>
+                  ))}
+                </div>
 
-                    const isPrimary = btn.variant === 'primary' || idx === 0;
-
-                    return (
-                      <Link
-                        key={btn.id || idx}
-                        href={btn.url || '#'}
-                        className="button-editorial hero-primary-cta"
-                        style={{
-                          height: '50px',
-                          padding: '0 1.85rem',
-                          backgroundColor: '#000000',
-                          color: '#ffffff',
-                          borderRadius: '4px',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.65rem',
-                          fontSize: '0.9rem',
-                          fontWeight: 600,
-                          textDecoration: 'none',
-                          border: '1px solid rgba(255, 255, 255, 0.22)',
-                          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.35)',
-                          transition: 'all 0.25s ease',
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.backgroundColor = '#1f1f23';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.backgroundColor = '#000000';
-                        }}
-                      >
-                        <span>{btn.label}</span>
-                        <ArrowRight size={17} />
-                      </Link>
-                    );
-                  })}
+                {/* Agency Practice Areas Bar */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    marginTop: '2rem',
+                    paddingTop: '1.25rem',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: '0.66rem',
+                      color: 'rgba(255, 255, 255, 0.45)',
+                      fontFamily: 'var(--font-mono, monospace)',
+                      letterSpacing: '0.12em',
+                      fontWeight: 600,
+                    }}
+                  >
+                    DISCIPLINES:
+                  </span>
+                  {[
+                    'Digital Brand Growth',
+                    'Content & Film Production',
+                    'Hospitality Consulting',
+                  ].map((area) => (
+                    <span
+                      key={area}
+                      style={{
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        color: 'rgba(255, 255, 255, 0.85)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.07)',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        padding: '0.22rem 0.65rem',
+                        borderRadius: '3px',
+                        backdropFilter: 'blur(6px)',
+                      }}
+                    >
+                      {area}
+                    </span>
+                  ))}
                 </div>
               </motion.div>
+
+              {/* Right Column: Creative Agency Work & Production Showcase */}
+              <div className="hero-agency-showcase">
+                {/* Floating Agency Proof Pill */}
+                <div className="hero-proof-badge">
+                  <span className="hero-proof-dot" />
+                  <span>Real-World Business Impact · Cross-Sector</span>
+                </div>
+
+                {/* Main Card: Commercial Film & Production */}
+                <div className="hero-showcase-card hero-showcase-primary">
+                  <div className="hero-showcase-img-wrap">
+                    <Image
+                      src="/images/case-studies/raysons/neora-1.jpg"
+                      alt="Raysons Group - Commercial Film and Hospitality"
+                      fill
+                      sizes="(max-width: 991px) 100vw, 450px"
+                      style={{ objectFit: 'cover' }}
+                      priority
+                    />
+                    <div className="hero-card-overlay" />
+                    <span className="hero-card-badge">PRODUCTION · 4K FILM</span>
+                    <button
+                      type="button"
+                      onClick={() => setShowShowreel(true)}
+                      className="hero-card-play-btn"
+                      aria-label="Play showreel"
+                    >
+                      <Play size={16} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '2px' }} />
+                    </button>
+                  </div>
+                  <div className="hero-card-meta">
+                    <div className="hero-card-title">Raysons Group · Neora Deck</div>
+                    <div className="hero-card-sub">Multi-Entity Commercial Film & Social Retainers</div>
+                  </div>
+                </div>
+
+                {/* Secondary Floating Card: Experiential & Digital Growth */}
+                <div className="hero-showcase-card hero-showcase-secondary">
+                  <div className="hero-showcase-img-wrap">
+                    <Image
+                      src="/images/reels/misu-reel.jpg"
+                      alt="Misu - Digital Brand Growth & Hospitality"
+                      fill
+                      sizes="240px"
+                      style={{ objectFit: 'cover' }}
+                    />
+                    <div className="hero-card-overlay" />
+                    <span className="hero-card-badge">DIGITAL GROWTH</span>
+                  </div>
+                  <div className="hero-card-meta">
+                    <div className="hero-card-title">Misu Pan-Asian</div>
+                    <div className="hero-card-sub">Social Growth & Dining</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -399,26 +461,185 @@ export default function Hero() {
 
         <style jsx>{`
           .hero-container {
-            height: 660px;
-            min-height: 660px;
+            height: auto;
+            min-height: 640px;
+          }
+
+          .hero-agency-showcase {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 420px;
+          }
+
+          .hero-showcase-primary {
+            position: relative;
+            width: clamp(280px, 27vw, 380px);
+            aspect-ratio: 4 / 3;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: #10141D;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+          }
+
+          .hero-showcase-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+          }
+
+          .hero-showcase-secondary {
+            position: absolute;
+            bottom: -15px;
+            right: -10px;
+            width: clamp(170px, 16vw, 220px);
+            aspect-ratio: 4 / 5;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #10141D;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+            transition: transform 0.4s ease;
+          }
+
+          .hero-showcase-secondary:hover {
+            transform: translateY(-4px) scale(1.02);
+          }
+
+          .hero-showcase-img-wrap {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 44px);
+            background: #1A1E28;
+          }
+
+          .hero-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.5) 100%);
+          }
+
+          .hero-card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+          }
+
+          .hero-card-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+          }
+
+          .hero-card-play-btn:hover {
+            background: #DE322D;
+            border-color: #DE322D;
+            transform: translate(-50%, -50%) scale(1.08);
+          }
+
+          .hero-card-meta {
+            padding: 0.5rem 0.75rem;
+            background: #0E121A;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+          }
+
+          .hero-card-title {
+            font-size: 0.8rem;
+            font-weight: 650;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+          }
+
+          .hero-card-sub {
+            font-size: 0.68rem;
+            color: rgba(255, 255, 255, 0.6);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .hero-proof-badge {
+            position: absolute;
+            top: -12px;
+            left: -10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(14, 18, 26, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+            z-index: 5;
+          }
+
+          .hero-proof-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #4ADE80;
+            box-shadow: 0 0 8px #4ADE80;
           }
 
           @media (max-width: 991px) {
-            .hero-container {
-              height: 580px;
-              min-height: 580px;
+            .hero-content-wrapper {
+              grid-template-columns: 1fr !important;
+              gap: 2.5rem !important;
+              padding: 2.5rem 1.75rem !important;
+            }
+
+            .hero-agency-showcase {
+              min-height: 340px;
+              justify-content: flex-start;
+            }
+
+            .hero-showcase-primary {
+              width: 75% !important;
+            }
+
+            .hero-showcase-secondary {
+              width: 45% !important;
+              right: 5% !important;
             }
           }
 
           @media (max-width: 768px) {
             .hero-container {
-              height: 540px !important;
-              min-height: 540px !important;
+              min-height: auto !important;
               border-radius: 6px !important;
             }
 
             .hero-content-wrapper {
-              padding: 2.25rem 1.5rem !important;
+              padding: 2.25rem 1.25rem !important;
             }
 
             .hero-headline {
@@ -433,34 +654,14 @@ export default function Hero() {
               margin-bottom: 1.5rem !important;
             }
 
-            .hero-cta-buttons {
-              gap: 0.75rem !important;
-            }
-
-            .hero-cta-buttons :global(.hero-primary-cta),
-            .hero-cta-buttons :global(.hero-secondary-cta) {
+            .hero-cta-buttons :global(.hero-primary-cta) {
               height: 46px !important;
               padding: 0 1.4rem !important;
               font-size: 0.84rem !important;
             }
 
-            .hero-overlay {
-              background: linear-gradient(180deg, rgba(7, 11, 20, 0.94) 0%, rgba(7, 11, 20, 0.8) 60%, rgba(7, 11, 20, 0.92) 100%) !important;
-            }
-          }
-
-          @media (max-width: 480px) {
-            .hero-container {
-              height: 520px !important;
-              min-height: 520px !important;
-            }
-
-            .hero-content-wrapper {
-              padding: 1.75rem 1.25rem !important;
-            }
-
-            .hero-headline {
-              font-size: clamp(1.95rem, 7.8vw, 2.35rem) !important;
+            .hero-agency-showcase {
+              display: none !important;
             }
           }
         `}</style>
