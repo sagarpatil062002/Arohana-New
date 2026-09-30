@@ -20,7 +20,7 @@ import MediaPickerModal from '@/components/admin/MediaPickerModal';
 
 export default function AdminDashboardPage() {
   const [counts, setCounts] = useState({
-    sections: 10,
+    sections: 7,
     caseStudies: 6,
     services: 3,
     armyProjects: 4,

@@ -41,24 +41,6 @@
       "name": "07: Interactive CTA",
       "visible": true,
       "type": "cta"
-    },
-    {
-      "id": "impact",
-      "name": "Impact Counters (Integrated into Capabilities)",
-      "visible": false,
-      "type": "stats"
-    },
-    {
-      "id": "montage",
-      "name": "Sectors & Built Environment Montage",
-      "visible": false,
-      "type": "montage"
-    },
-    {
-      "id": "tourin",
-      "name": "Tourin Experiential Travel Feature",
-      "visible": false,
-      "type": "spotlight"
     }
   ],
   "hero": {
@@ -67,7 +49,42 @@
     "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
     "bannerImage": "/images/home/hero-mountain-sky.png",
     "posterImage": "/images/home/hero-mountain-sky.png",
+    "bannerImages": [
+      {
+        "id": "banner-1",
+        "image": "/images/home/hero-mountain-sky.png",
+        "caption": "Brand Strategy & Strategic Landscapes"
+      },
+      {
+        "id": "banner-2",
+        "image": "/uploads/1790712682532-hero-poster.jpg",
+        "caption": "High-Impact Commercial Production"
+      },
+      {
+        "id": "banner-3",
+        "image": "/images/services/services-hero-collage.png",
+        "caption": "Multidisciplinary Creative Execution"
+      }
+    ],
+    "carouselInterval": 5000,
+    "bannerClarity": "clear",
     "videoUrl": "",
+    "showVideoCard": false,
+    "videoCard": {
+      "enabled": false,
+      "videoUrl": "/videos/hero-montage.mp4",
+      "posterImage": "/images/case-studies/raysons/neora-1.jpg",
+      "badge": "PRODUCTION · 4K FILM",
+      "title": "Raysons Group · Neora Deck",
+      "subtitle": "Multi-Entity Commercial Film & Social Retainers"
+    },
+    "showSecondaryCard": false,
+    "secondaryCard": {
+      "image": "/images/reels/misu-reel.jpg",
+      "badge": "DIGITAL GROWTH",
+      "title": "Misu Pan-Asian",
+      "subtitle": "Social Growth & Dining"
+    },
     "buttons": [
       {
         "id": "btn-1",

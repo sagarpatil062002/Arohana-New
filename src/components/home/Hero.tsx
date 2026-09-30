@@ -1,11 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { ArrowRight, Play, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Play, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
+
+interface HeroSlide {
+  id: string;
+  image: string;
+  caption?: string;
+}
 
 export default function Hero() {
   const { content } = useCmsContent();
@@ -17,13 +23,66 @@ export default function Hero() {
     heroCms?.subheadline ||
     'Ārohana brings together business thinking, creative communication and execution across sectors.';
 
-  const bannerImage =
-    heroCms?.bannerImage ||
-    heroCms?.backgroundImage ||
-    heroCms?.posterImage ||
-    '/images/home/hero-mountain-sky.png';
+  // Build slides array from bannerImages or fallback
+  const rawSlides = Array.isArray(heroCms?.bannerImages) && heroCms.bannerImages.length > 0
+    ? heroCms.bannerImages
+    : [
+        {
+          id: 'slide-1',
+          image: heroCms?.bannerImage || heroCms?.backgroundImage || heroCms?.posterImage || '/images/home/hero-mountain-sky.png',
+          caption: 'Strategy · Creative · Execution',
+        },
+      ];
+
+  const slides: HeroSlide[] = rawSlides.map((s: any, idx: number): HeroSlide => {
+    if (typeof s === 'string') {
+      return { id: `slide-${idx}`, image: s, caption: '' };
+    }
+    return {
+      id: s.id || `slide-${idx}`,
+      image: s.image || s.url || heroCms?.bannerImage || '/images/home/hero-mountain-sky.png',
+      caption: s.caption || s.alt || '',
+    };
+  });
+
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const autoAdvanceInterval = Number(heroCms?.carouselInterval) || 5000;
+
+  // Auto-advance carousel when multiple slides exist
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const interval = setInterval(() => {
+      setActiveSlideIndex((prev) => (prev + 1) % slides.length);
+    }, autoAdvanceInterval);
+    return () => clearInterval(interval);
+  }, [slides.length, autoAdvanceInterval]);
+
+  const goToNextSlide = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setActiveSlideIndex((prev) => (prev + 1) % slides.length);
+  };
+
+  const goToPrevSlide = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setActiveSlideIndex((prev) => (prev - 1 + slides.length) % slides.length);
+  };
 
   const videoUrl = heroCms?.videoUrl;
+  const showVideoCard = Boolean(heroCms?.showVideoCard ?? heroCms?.videoCard?.enabled ?? false);
+  const videoCardData = {
+    videoUrl: heroCms?.videoCard?.videoUrl || heroCms?.videoUrl || '/videos/hero-montage.mp4',
+    posterImage: heroCms?.videoCard?.posterImage || '/images/case-studies/raysons/neora-1.jpg',
+    badge: heroCms?.videoCard?.badge || 'PRODUCTION · 4K FILM',
+    title: heroCms?.videoCard?.title || 'Raysons Group · Neora Deck',
+    subtitle: heroCms?.videoCard?.subtitle || 'Multi-Entity Commercial Film & Social Retainers',
+  };
+  const showSecondaryCard = Boolean(heroCms?.showSecondaryCard ?? heroCms?.secondaryCard?.enabled ?? false);
+  const secondaryCardData = {
+    image: heroCms?.secondaryCard?.image || '/images/reels/misu-reel.jpg',
+    badge: heroCms?.secondaryCard?.badge || 'DIGITAL GROWTH',
+    title: heroCms?.secondaryCard?.title || 'Misu Pan-Asian',
+    subtitle: heroCms?.secondaryCard?.subtitle || 'Social Growth & Dining',
+  };
 
   const defaultButtons = [
     {
@@ -78,7 +137,7 @@ export default function Hero() {
               justifyContent: 'center',
             }}
           >
-            {/* Background Media Stage (Video or Banner Image) */}
+            {/* Background Media Stage (Multi-Image Carousel or Video) */}
             <div
               style={{
                 position: 'absolute',
@@ -90,7 +149,7 @@ export default function Hero() {
               {videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm')) ? (
                 <video
                   src={videoUrl}
-                  poster={bannerImage}
+                  poster={slides[0]?.image}
                   autoPlay
                   loop
                   muted
@@ -103,56 +162,70 @@ export default function Hero() {
                   }}
                 />
               ) : (
-                <Image
-                  src={bannerImage}
-                  alt="Arohana Creative Agency & Brand Strategy"
-                  fill
-                  priority
-                  quality={95}
-                  sizes="100vw"
-                  className="hero-background-image"
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center 46%',
-                  }}
-                />
+                <>
+                  {slides.map((slide, idx) => {
+                    const isActive = idx === activeSlideIndex;
+                    return (
+                      <div
+                        key={slide.id || idx}
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          opacity: isActive ? 1 : 0,
+                          transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                          zIndex: isActive ? 2 : 1,
+                          pointerEvents: 'none',
+                        }}
+                      >
+                        <Image
+                          src={slide.image}
+                          alt={slide.caption || "Arohana Creative Agency & Brand Strategy"}
+                          fill
+                          priority={idx === 0}
+                          quality={95}
+                          sizes="100vw"
+                          className="hero-background-image"
+                          style={{
+                            objectFit: 'cover',
+                            objectPosition: 'center 46%',
+                            transform: isActive ? 'scale(1.03)' : 'scale(1)',
+                            transition: 'transform 8s ease-out',
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+                </>
               )}
 
-              {/* Dark Studio & Readability Gradient Overlay */}
+              {/* Luminous & Clear Visual Overlay for Crisp Photographic Visibility */}
               <div
                 className="hero-overlay"
                 style={{
                   position: 'absolute',
                   inset: 0,
+                  zIndex: 3,
                   background:
-                    'radial-gradient(ellipse at 85% 20%, rgba(222, 50, 45, 0.16) 0%, transparent 60%), radial-gradient(circle at 15% 85%, rgba(16, 78, 91, 0.2) 0%, transparent 55%), linear-gradient(90deg, rgba(7, 10, 16, 0.96) 0%, rgba(7, 10, 16, 0.86) 48%, rgba(7, 10, 16, 0.72) 100%)',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              {/* Architectural Fine Grid Overlay for Design Agency Aesthetic */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundImage:
-                    'linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px)',
-                  backgroundSize: '48px 48px',
+                    heroCms?.bannerClarity === 'deep'
+                      ? 'linear-gradient(90deg, rgba(7, 10, 16, 0.72) 0%, rgba(7, 10, 16, 0.48) 50%, rgba(7, 10, 16, 0.25) 100%), linear-gradient(180deg, rgba(7, 10, 16, 0.25) 0%, transparent 45%, rgba(7, 10, 16, 0.45) 100%)'
+                      : heroCms?.bannerClarity === 'balanced'
+                      ? 'linear-gradient(90deg, rgba(7, 10, 16, 0.52) 0%, rgba(7, 10, 16, 0.28) 50%, rgba(7, 10, 16, 0.08) 85%, transparent 100%), linear-gradient(180deg, rgba(7, 10, 16, 0.18) 0%, transparent 45%, rgba(7, 10, 16, 0.38) 100%)'
+                      : 'linear-gradient(90deg, rgba(7, 10, 16, 0.38) 0%, rgba(7, 10, 16, 0.18) 45%, rgba(7, 10, 16, 0.04) 80%, transparent 100%), linear-gradient(180deg, rgba(7, 10, 16, 0.12) 0%, transparent 45%, rgba(7, 10, 16, 0.32) 100%)',
                   pointerEvents: 'none',
                 }}
               />
             </div>
 
-            {/* Content Stage — Creative Digital Agency Grid */}
+            {/* Content Stage — Creative Digital Agency */}
             <div
               className="hero-content-wrapper"
               style={{
                 position: 'relative',
                 zIndex: 20,
                 padding: 'clamp(2.5rem, 4.5vw, 4.5rem) clamp(1.75rem, 4.5vw, 4.5rem)',
-                display: 'grid',
-                gridTemplateColumns: '1.2fr 0.95fr',
-                gap: 'clamp(2rem, 4vw, 4.5rem)',
+                display: showVideoCard ? 'grid' : 'block',
+                gridTemplateColumns: showVideoCard ? '1.2fr 0.95fr' : undefined,
+                gap: showVideoCard ? 'clamp(2rem, 4vw, 4.5rem)' : undefined,
                 alignItems: 'center',
                 width: '100%',
               }}
@@ -162,7 +235,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                style={{ width: '100%' }}
+                style={{ width: '100%', maxWidth: showVideoCard ? '100%' : '920px' }}
               >
                 {/* Pre-title Tracker */}
                 <div
@@ -187,6 +260,7 @@ export default function Hero() {
                       fontSize: '0.82rem',
                       letterSpacing: '0.14em',
                       fontWeight: 700,
+                      textShadow: '0 1px 8px rgba(0, 0, 0, 0.75)',
                     }}
                   >
                     {tag}
@@ -205,7 +279,7 @@ export default function Hero() {
                     color: '#ffffff',
                     margin: 0,
                     marginBottom: '1.35rem',
-                    textShadow: '0 2px 24px rgba(0, 0, 0, 0.65)',
+                    textShadow: '0 2px 28px rgba(0, 0, 0, 0.85), 0 1px 4px rgba(0, 0, 0, 0.9)',
                   }}
                 >
                   {title.split('\n').map((line: string, idx: number) => {
@@ -225,13 +299,13 @@ export default function Hero() {
                   className="hero-subtitle"
                   style={{
                     fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)',
-                    color: 'rgba(255, 255, 255, 0.88)',
+                    color: '#ffffff',
                     lineHeight: 1.55,
                     maxWidth: '560px',
                     margin: 0,
                     marginBottom: '2rem',
                     fontWeight: 400,
-                    textShadow: '0 1px 8px rgba(0, 0, 0, 0.5)',
+                    textShadow: '0 1px 12px rgba(0, 0, 0, 0.88), 0 1px 3px rgba(0, 0, 0, 0.9)',
                   }}
                 >
                   {subtitle}
@@ -298,10 +372,11 @@ export default function Hero() {
                   <span
                     style={{
                       fontSize: '0.66rem',
-                      color: 'rgba(255, 255, 255, 0.45)',
+                      color: 'rgba(255, 255, 255, 0.75)',
                       fontFamily: 'var(--font-mono, monospace)',
                       letterSpacing: '0.12em',
                       fontWeight: 600,
+                      textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)',
                     }}
                   >
                     DISCIPLINES:
@@ -316,12 +391,13 @@ export default function Hero() {
                       style={{
                         fontSize: '0.72rem',
                         fontWeight: 600,
-                        color: 'rgba(255, 255, 255, 0.85)',
-                        backgroundColor: 'rgba(255, 255, 255, 0.07)',
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        color: '#ffffff',
+                        backgroundColor: 'rgba(10, 14, 23, 0.65)',
+                        border: '1px solid rgba(255, 255, 255, 0.22)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
                         padding: '0.22rem 0.65rem',
                         borderRadius: '3px',
-                        backdropFilter: 'blur(6px)',
+                        backdropFilter: 'blur(8px)',
                       }}
                     >
                       {area}
@@ -330,62 +406,221 @@ export default function Hero() {
                 </div>
               </motion.div>
 
-              {/* Right Column: Creative Agency Work & Production Showcase */}
-              <div className="hero-agency-showcase">
-                {/* Floating Agency Proof Pill */}
-                <div className="hero-proof-badge">
-                  <span className="hero-proof-dot" />
-                  <span>Real-World Business Impact · Cross-Sector</span>
+              {/* Right Column: Creative Agency Work & Production Showcase (Rendered only when enabled) */}
+              {showVideoCard && (
+                <div className="hero-agency-showcase">
+                  {/* Floating Agency Proof Pill */}
+                  <div className="hero-proof-badge">
+                    <span className="hero-proof-dot" />
+                    <span>Real-World Business Impact · Cross-Sector</span>
+                  </div>
+
+                  {/* Main Card: Commercial Film & Production */}
+                  <div className="hero-showcase-card hero-showcase-primary">
+                    <div className="hero-showcase-img-wrap">
+                      <Image
+                        src={videoCardData.posterImage}
+                        alt={videoCardData.title}
+                        fill
+                        sizes="(max-width: 991px) 100vw, 450px"
+                        style={{ objectFit: 'cover' }}
+                        priority
+                      />
+                      <div className="hero-card-overlay" />
+                      <span className="hero-card-badge">{videoCardData.badge}</span>
+                      <button
+                        type="button"
+                        onClick={() => setShowShowreel(true)}
+                        className="hero-card-play-btn"
+                        aria-label="Play showreel"
+                      >
+                        <Play size={16} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '2px' }} />
+                      </button>
+                    </div>
+                    <div className="hero-card-meta">
+                      <div className="hero-card-title">{videoCardData.title}</div>
+                      <div className="hero-card-sub">{videoCardData.subtitle}</div>
+                    </div>
+                  </div>
+
+                  {/* Secondary Floating Card: Experiential & Digital Growth */}
+                  {showSecondaryCard && (
+                    <div className="hero-showcase-card hero-showcase-secondary">
+                      <div className="hero-showcase-img-wrap">
+                        <Image
+                          src={secondaryCardData.image}
+                          alt={secondaryCardData.title}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                        <div className="hero-card-overlay" />
+                        <span className="hero-card-badge">{secondaryCardData.badge}</span>
+                      </div>
+                      <div className="hero-card-meta">
+                        <div className="hero-card-title">{secondaryCardData.title}</div>
+                        <div className="hero-card-sub">{secondaryCardData.subtitle}</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Carousel Navigation Bar (Active only when multi-image banner has >1 slides) */}
+            {slides.length > 1 && (
+              <div
+                className="hero-carousel-bar"
+                style={{
+                  position: 'absolute',
+                  bottom: '1.25rem',
+                  left: 'clamp(1.75rem, 4.5vw, 4.5rem)',
+                  right: 'clamp(1.75rem, 4.5vw, 4.5rem)',
+                  zIndex: 25,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  pointerEvents: 'auto',
+                }}
+              >
+                {/* Active Slide Caption & Index */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    backgroundColor: 'rgba(10, 13, 20, 0.65)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    padding: '0.35rem 0.85rem',
+                    borderRadius: '9999px',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono, monospace)',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      color: '#DE322D',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    0{activeSlideIndex + 1} / 0{slides.length}
+                  </span>
+                  {slides[activeSlideIndex]?.caption && (
+                    <>
+                      <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.4)' }} />
+                      <span
+                        style={{
+                          fontSize: '0.74rem',
+                          color: 'rgba(255, 255, 255, 0.85)',
+                          fontWeight: 500,
+                        }}
+                      >
+                        {slides[activeSlideIndex].caption}
+                      </span>
+                    </>
+                  )}
                 </div>
 
-                {/* Main Card: Commercial Film & Production */}
-                <div className="hero-showcase-card hero-showcase-primary">
-                  <div className="hero-showcase-img-wrap">
-                    <Image
-                      src="/images/case-studies/raysons/neora-1.jpg"
-                      alt="Raysons Group - Commercial Film and Hospitality"
-                      fill
-                      sizes="(max-width: 991px) 100vw, 450px"
-                      style={{ objectFit: 'cover' }}
-                      priority
-                    />
-                    <div className="hero-card-overlay" />
-                    <span className="hero-card-badge">PRODUCTION · 4K FILM</span>
-                    <button
-                      type="button"
-                      onClick={() => setShowShowreel(true)}
-                      className="hero-card-play-btn"
-                      aria-label="Play showreel"
-                    >
-                      <Play size={16} fill="#ffffff" stroke="#ffffff" style={{ marginLeft: '2px' }} />
-                    </button>
-                  </div>
-                  <div className="hero-card-meta">
-                    <div className="hero-card-title">Raysons Group · Neora Deck</div>
-                    <div className="hero-card-sub">Multi-Entity Commercial Film & Social Retainers</div>
-                  </div>
-                </div>
+                {/* Carousel Controls: Arrows + Dots */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    backgroundColor: 'rgba(10, 13, 20, 0.65)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    padding: '0.35rem 0.65rem',
+                    borderRadius: '9999px',
+                  }}
+                >
+                  {/* Prev Button */}
+                  <button
+                    type="button"
+                    onClick={goToPrevSlide}
+                    aria-label="Previous banner slide"
+                    style={{
+                      width: '26px',
+                      height: '26px',
+                      borderRadius: '50%',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      color: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.25)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                    }}
+                  >
+                    <ChevronLeft size={14} />
+                  </button>
 
-                {/* Secondary Floating Card: Experiential & Digital Growth */}
-                <div className="hero-showcase-card hero-showcase-secondary">
-                  <div className="hero-showcase-img-wrap">
-                    <Image
-                      src="/images/reels/misu-reel.jpg"
-                      alt="Misu - Digital Brand Growth & Hospitality"
-                      fill
-                      sizes="240px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                    <div className="hero-card-overlay" />
-                    <span className="hero-card-badge">DIGITAL GROWTH</span>
+                  {/* Indicator Pills */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    {slides.map((_, idx) => {
+                      const isActive = idx === activeSlideIndex;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setActiveSlideIndex(idx)}
+                          aria-label={`Go to slide ${idx + 1}`}
+                          style={{
+                            width: isActive ? '22px' : '6px',
+                            height: '6px',
+                            borderRadius: '9999px',
+                            backgroundColor: isActive ? '#DE322D' : 'rgba(255, 255, 255, 0.35)',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: 0,
+                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                          }}
+                        />
+                      );
+                    })}
                   </div>
-                  <div className="hero-card-meta">
-                    <div className="hero-card-title">Misu Pan-Asian</div>
-                    <div className="hero-card-sub">Social Growth & Dining</div>
-                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    type="button"
+                    onClick={goToNextSlide}
+                    aria-label="Next banner slide"
+                    style={{
+                      width: '26px',
+                      height: '26px',
+                      borderRadius: '50%',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      color: '#ffffff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.25)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
+                    }}
+                  >
+                    <ChevronRight size={14} />
+                  </button>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -446,13 +681,14 @@ export default function Hero() {
               </button>
 
               <video
-                src={videoUrl || '/videos/hero-montage.mp4'}
+                src={videoCardData.videoUrl || videoUrl || '/videos/hero-montage.mp4'}
                 controls
                 autoPlay
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
+                  backgroundColor: '#000000',
                 }}
               />
             </div>

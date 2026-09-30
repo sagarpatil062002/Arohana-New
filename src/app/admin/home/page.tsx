@@ -26,6 +26,7 @@ import {
   Send,
   Sliders,
   Upload,
+  Video,
 } from 'lucide-react';
 
 export default function AdminHomePage() {
@@ -34,6 +35,7 @@ export default function AdminHomePage() {
   const [activeSectionId, setActiveSectionId] = useState<string>('hero');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
   const [brandLogoIndex, setBrandLogoIndex] = useState<number | null>(null);
+  const [heroSlideIndex, setHeroSlideIndex] = useState<number | null>(null);
   const [savedStatus, setSavedStatus] = useState(false);
   const editorScrollRef = useRef<HTMLDivElement>(null);
 
@@ -99,17 +101,14 @@ export default function AdminHomePage() {
   };
 
   const sectionTabs = [
-    { id: 'hero', label: '01 Hero Section', icon: Sparkles, isLive: true },
-    { id: 'army', label: '02 Army Spotlight', icon: Shield, isLive: true },
-    { id: 'pov', label: '03 Point of View', icon: Quote, isLive: true },
-    { id: 'work', label: '04 Selected Work', icon: Briefcase, isLive: true },
-    { id: 'services', label: '05 Capabilities & Numbers', icon: FileText, isLive: true },
-    { id: 'brands', label: '06 Brands Marquee', icon: Layers, isLive: true },
+    { id: 'hero', label: '01 Hero Banner & Carousel', icon: Sparkles, isLive: true },
+    { id: 'pov', label: '02 Point of View', icon: Quote, isLive: true },
+    { id: 'work', label: '03 Selected Work', icon: Briefcase, isLive: true },
+    { id: 'services', label: '04 Practice Areas & Numbers', icon: FileText, isLive: true },
+    { id: 'brands', label: '05 Brands Marquee', icon: Layers, isLive: true },
+    { id: 'army', label: '06 Army Spotlight', icon: Shield, isLive: true },
     { id: 'cta', label: '07 Signature CTA', icon: Send, isLive: true },
     { id: 'order', label: 'Order & Visibility', icon: GripVertical, isLive: true },
-    { id: 'impact', label: 'Archive: Impact', icon: Sliders, isLive: false },
-    { id: 'montage', label: 'Archive: Montage', icon: LayoutGrid, isLive: false },
-    { id: 'tourin', label: 'Archive: Tourin', icon: Compass, isLive: false },
   ];
 
   return (
@@ -319,50 +318,632 @@ export default function AdminHomePage() {
                 />
               </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  BANNER IMAGE (Background Cover)
-                </label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <input
-                    type="text"
-                    value={homeData.hero?.bannerImage || homeData.hero?.posterImage || ''}
-                    onChange={(e) => {
-                      updateField(['hero', 'bannerImage'], e.target.value);
-                      updateField(['hero', 'posterImage'], e.target.value);
-                    }}
-                    style={{ ...inputStyle, flex: 1 }}
-                    placeholder="/images/services/services-hero-collage.png"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setMediaPickerTarget({ path: 'hero.bannerImage', type: 'image' })}
-                    style={mediaBtnStyle}
-                  >
-                    <ImageIcon size={14} /> Pick Image
-                  </button>
+              {/* ── Multi-Image Hero Banner Carousel Manager ── */}
+              <div
+                style={{
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  borderRadius: '12px',
+                  padding: '1.25rem',
+                  backgroundColor: '#F8F9FA',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                      <span style={{ fontSize: '0.86rem', fontWeight: 700, color: '#111113' }}>
+                        Hero Banner Carousel (Multi-Image Slides)
+                      </span>
+                      <span style={{ fontSize: '0.7rem', backgroundColor: '#ECFDF5', color: '#047857', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
+                        {(homeData.hero?.bannerImages?.length || (homeData.hero?.bannerImage ? 1 : 0))} Slides
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.74rem', color: '#71717A', marginTop: '0.2rem' }}>
+                      Add and reorder multiple images. The hero background will smoothly cycle through them with sleek agency controls.
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+                    {/* Banner Clarity selector */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <span style={{ fontSize: '0.72rem', color: '#52525B', fontWeight: 600 }}>Clarity:</span>
+                      <select
+                        value={homeData.hero?.bannerClarity || 'clear'}
+                        onChange={(e) => updateField(['hero', 'bannerClarity'], e.target.value)}
+                        style={{
+                          padding: '0.3rem 0.5rem',
+                          borderRadius: '6px',
+                          border: '1px solid rgba(0,0,0,0.15)',
+                          backgroundColor: '#FFFFFF',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <option value="clear">✨ Clear &amp; Bright (Default)</option>
+                        <option value="balanced">Balanced Studio</option>
+                        <option value="deep">Deep Contrast</option>
+                      </select>
+                    </div>
+
+                    {/* Autoplay interval selector */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <span style={{ fontSize: '0.72rem', color: '#52525B', fontWeight: 600 }}>Duration:</span>
+                      <select
+                        value={homeData.hero?.carouselInterval || 5000}
+                        onChange={(e) => updateField(['hero', 'carouselInterval'], Number(e.target.value))}
+                        style={{
+                          padding: '0.3rem 0.5rem',
+                          borderRadius: '6px',
+                          border: '1px solid rgba(0,0,0,0.15)',
+                          backgroundColor: '#FFFFFF',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <option value={3000}>3 seconds</option>
+                        <option value={4000}>4 seconds</option>
+                        <option value={5000}>5 seconds (Default)</option>
+                        <option value={6000}>6 seconds</option>
+                        <option value={8000}>8 seconds</option>
+                      </select>
+                    </div>
+
+                    {/* Add Slide Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = Array.isArray(homeData.hero?.bannerImages) && homeData.hero.bannerImages.length > 0
+                          ? [...homeData.hero.bannerImages]
+                          : [
+                              {
+                                id: 'slide-1',
+                                image: homeData.hero?.bannerImage || '/images/home/hero-mountain-sky.png',
+                                caption: 'Strategic Landscapes',
+                              },
+                            ];
+                        const newSlide = {
+                          id: `banner-${Date.now()}`,
+                          image: '/images/services/services-hero-collage.png',
+                          caption: 'Creative Direction & Impact',
+                        };
+                        const updated = [...current, newSlide];
+                        updateField(['hero', 'bannerImages'], updated);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
+                        padding: '0.35rem 0.75rem',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Plus size={13} /> Add Slide Image
+                    </button>
+                  </div>
+                </div>
+
+                {/* Slides List */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {(Array.isArray(homeData.hero?.bannerImages) && homeData.hero.bannerImages.length > 0
+                    ? homeData.hero.bannerImages
+                    : [
+                        {
+                          id: 'slide-1',
+                          image: homeData.hero?.bannerImage || homeData.hero?.posterImage || '/images/home/hero-mountain-sky.png',
+                          caption: 'Brand Strategy & Strategic Landscapes',
+                        },
+                      ]
+                  ).map((slide: any, idx: number, arr: any[]) => (
+                    <div
+                      key={slide.id || idx}
+                      style={{
+                        padding: '0.85rem',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(0,0,0,0.08)',
+                        display: 'grid',
+                        gridTemplateColumns: '70px 1.5fr 1fr auto',
+                        gap: '0.75rem',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {/* Slide Thumbnail Preview */}
+                      <div
+                        style={{
+                          width: '70px',
+                          height: '46px',
+                          borderRadius: '6px',
+                          overflow: 'hidden',
+                          backgroundColor: '#0a0d14',
+                          border: '1px solid rgba(0,0,0,0.1)',
+                          position: 'relative',
+                        }}
+                      >
+                        {slide.image ? (
+                          <img
+                            src={slide.image}
+                            alt={`Slide ${idx + 1}`}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71717A' }}>
+                            <ImageIcon size={16} />
+                          </div>
+                        )}
+                        <span
+                          style={{
+                            position: 'absolute',
+                            bottom: '2px',
+                            left: '2px',
+                            backgroundColor: 'rgba(0,0,0,0.7)',
+                            color: '#ffffff',
+                            fontSize: '0.6rem',
+                            fontWeight: 700,
+                            padding: '1px 4px',
+                            borderRadius: '3px',
+                          }}
+                        >
+                          0{idx + 1}
+                        </span>
+                      </div>
+
+                      {/* Image URL & Pick Button */}
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem', fontWeight: 600 }}>
+                          BANNER IMAGE URL / FILE
+                        </span>
+                        <div style={{ display: 'flex', gap: '0.35rem' }}>
+                          <input
+                            type="text"
+                            value={slide.image || ''}
+                            placeholder="/images/home/hero-mountain-sky.png"
+                            onChange={(e) => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], image: e.target.value };
+                              updateField(['hero', 'bannerImages'], list);
+                              if (idx === 0) {
+                                updateField(['hero', 'bannerImage'], e.target.value);
+                                updateField(['hero', 'posterImage'], e.target.value);
+                              }
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem', flex: 1 }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setHeroSlideIndex(idx)}
+                            style={{ ...mediaBtnStyle, padding: '0 0.55rem', fontSize: '0.74rem' }}
+                          >
+                            <ImageIcon size={13} /> Pick
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Slide Caption / Sub-tag */}
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem', fontWeight: 600 }}>
+                          SLIDE CAPTION / TAG (Optional)
+                        </span>
+                        <input
+                          type="text"
+                          value={slide.caption || ''}
+                          placeholder="e.g. Brand Strategy & Execution"
+                          onChange={(e) => {
+                            const list = [...arr];
+                            list[idx] = { ...list[idx], caption: e.target.value };
+                            updateField(['hero', 'bannerImages'], list);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                        />
+                      </div>
+
+                      {/* Actions: Move Up, Move Down, Delete */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          title="Move slide up"
+                          onClick={() => {
+                            if (idx === 0) return;
+                            const list = [...arr];
+                            const temp = list[idx];
+                            list[idx] = list[idx - 1];
+                            list[idx - 1] = temp;
+                            updateField(['hero', 'bannerImages'], list);
+                            updateField(['hero', 'bannerImage'], list[0]?.image || '');
+                          }}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                            padding: '4px',
+                            color: idx === 0 ? '#D4D4D8' : '#52525B',
+                          }}
+                        >
+                          <ChevronUp size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === arr.length - 1}
+                          title="Move slide down"
+                          onClick={() => {
+                            if (idx === arr.length - 1) return;
+                            const list = [...arr];
+                            const temp = list[idx];
+                            list[idx] = list[idx + 1];
+                            list[idx + 1] = temp;
+                            updateField(['hero', 'bannerImages'], list);
+                            updateField(['hero', 'bannerImage'], list[0]?.image || '');
+                          }}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                            padding: '4px',
+                            color: idx === arr.length - 1 ? '#D4D4D8' : '#52525B',
+                          }}
+                        >
+                          <ChevronDown size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={arr.length <= 1}
+                          title="Delete slide"
+                          onClick={() => {
+                            if (arr.length <= 1) return;
+                            const filtered = arr.filter((_: any, i: number) => i !== idx);
+                            updateField(['hero', 'bannerImages'], filtered);
+                            updateField(['hero', 'bannerImage'], filtered[0]?.image || '');
+                          }}
+                          style={{
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: arr.length <= 1 ? 'not-allowed' : 'pointer',
+                            padding: '4px',
+                            color: arr.length <= 1 ? '#D4D4D8' : '#EF4444',
+                          }}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  BACKGROUND VIDEO URL / SHOWREEL (Optional)
-                </label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <input
-                    type="text"
-                    value={homeData.hero?.videoUrl || ''}
-                    onChange={(e) => updateField(['hero', 'videoUrl'], e.target.value)}
-                    style={{ ...inputStyle, flex: 1 }}
-                    placeholder="/videos/hero-montage.mp4"
-                  />
+              {/* ── Banner Video & Floating Showcase Card Controls ── */}
+              <div
+                style={{
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  borderRadius: '12px',
+                  padding: '1.25rem',
+                  backgroundColor: '#F8F9FA',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.25rem',
+                }}
+              >
+                {/* Header with Title and Toggle */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Video size={17} color="#DE322D" />
+                      <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#111113' }}>
+                        Banner Showcase Video Card
+                      </span>
+                      <span
+                        style={{
+                          fontSize: '0.7rem',
+                          backgroundColor: homeData.hero?.showVideoCard ? '#ECFDF5' : '#F4F4F5',
+                          color: homeData.hero?.showVideoCard ? '#047857' : '#71717A',
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {homeData.hero?.showVideoCard ? 'Visible on Banner' : 'Removed from Banner'}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: '0.74rem', color: '#71717A', marginTop: '0.2rem' }}>
+                      Option to add, remove, or replace the floating video showcase card and showreel video on the hero banner.
+                    </div>
+                  </div>
+
+                  {/* Toggle Button */}
                   <button
                     type="button"
-                    onClick={() => setMediaPickerTarget({ path: 'hero.videoUrl', type: 'video' })}
-                    style={mediaBtnStyle}
+                    onClick={() => {
+                      const next = !homeData.hero?.showVideoCard;
+                      updateField(['hero', 'showVideoCard'], next);
+                      if (next && !homeData.hero?.videoCard) {
+                        updateField(['hero', 'videoCard'], {
+                          enabled: true,
+                          videoUrl: '/videos/hero-montage.mp4',
+                          posterImage: '/images/case-studies/raysons/neora-1.jpg',
+                          badge: 'PRODUCTION · 4K FILM',
+                          title: 'Raysons Group · Neora Deck',
+                          subtitle: 'Multi-Entity Commercial Film & Social Retainers',
+                        });
+                      }
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      padding: '0.4rem 0.85rem',
+                      borderRadius: '6px',
+                      border: '1px solid ' + (homeData.hero?.showVideoCard ? '#EF4444' : '#111113'),
+                      backgroundColor: homeData.hero?.showVideoCard ? '#FEF2F2' : '#111113',
+                      color: homeData.hero?.showVideoCard ? '#DC2626' : '#FFFFFF',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                    }}
                   >
-                    <ImageIcon size={14} /> Pick Video
+                    {homeData.hero?.showVideoCard ? (
+                      <>
+                        <EyeOff size={14} /> Remove Video Card from Banner
+                      </>
+                    ) : (
+                      <>
+                        <Plus size={14} /> Add Video Card to Banner
+                      </>
+                    )}
                   </button>
+                </div>
+
+                {!homeData.hero?.showVideoCard ? (
+                  <div
+                    style={{
+                      padding: '0.9rem 1.1rem',
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '8px',
+                      border: '1px dashed rgba(0, 0, 0, 0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '1rem',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <div style={{ fontSize: '0.78rem', color: '#52525B' }}>
+                      <strong>Video Card is currently hidden.</strong> The hero banner displays the full-width photographic carousel banner and editorial statement without video overlay clutter.
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        updateField(['hero', 'showVideoCard'], true);
+                        if (!homeData.hero?.videoCard) {
+                          updateField(['hero', 'videoCard'], {
+                            enabled: true,
+                            videoUrl: '/videos/hero-montage.mp4',
+                            posterImage: '/images/case-studies/raysons/neora-1.jpg',
+                            badge: 'PRODUCTION · 4K FILM',
+                            title: 'Raysons Group · Neora Deck',
+                            subtitle: 'Multi-Entity Commercial Film & Social Retainers',
+                          });
+                        }
+                      }}
+                      style={{
+                        padding: '0.35rem 0.75rem',
+                        borderRadius: '6px',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Enable Video Card
+                    </button>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', backgroundColor: '#FFFFFF', padding: '1rem', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                    {/* Video URL with Replace and Remove buttons */}
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.73rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                        SHOWREEL VIDEO URL / FILE (Plays in Modal on Click)
+                      </label>
+                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                        <input
+                          type="text"
+                          value={homeData.hero?.videoCard?.videoUrl || ''}
+                          onChange={(e) => updateField(['hero', 'videoCard', 'videoUrl'], e.target.value)}
+                          style={{ ...inputStyle, flex: 1, minWidth: '200px' }}
+                          placeholder="/videos/hero-montage.mp4"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setMediaPickerTarget({ path: 'hero.videoCard.videoUrl', type: 'video' })}
+                          style={mediaBtnStyle}
+                        >
+                          <Video size={13} /> {homeData.hero?.videoCard?.videoUrl ? 'Replace Video' : 'Pick Video'}
+                        </button>
+                        {homeData.hero?.videoCard?.videoUrl && (
+                          <button
+                            type="button"
+                            onClick={() => updateField(['hero', 'videoCard', 'videoUrl'], '')}
+                            style={{
+                              padding: '0 0.65rem',
+                              borderRadius: '8px',
+                              backgroundColor: '#FEE2E2',
+                              color: '#DC2626',
+                              border: 'none',
+                              fontSize: '0.74rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            Remove Video
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Video Poster Image & Meta */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '1rem', alignItems: 'center' }}>
+                      <div
+                        style={{
+                          width: '80px',
+                          height: '56px',
+                          borderRadius: '6px',
+                          overflow: 'hidden',
+                          backgroundColor: '#0a0d14',
+                          border: '1px solid rgba(0,0,0,0.1)',
+                          position: 'relative',
+                        }}
+                      >
+                        {homeData.hero?.videoCard?.posterImage ? (
+                          <img
+                            src={homeData.hero?.videoCard?.posterImage}
+                            alt="Video Poster Preview"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71717A' }}>
+                            <ImageIcon size={18} />
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                        <label style={{ fontSize: '0.73rem', fontWeight: 600, color: '#52525B' }}>
+                          VIDEO CARD POSTER / THUMBNAIL
+                        </label>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                          <input
+                            type="text"
+                            value={homeData.hero?.videoCard?.posterImage || ''}
+                            onChange={(e) => updateField(['hero', 'videoCard', 'posterImage'], e.target.value)}
+                            style={{ ...inputStyle, flex: 1 }}
+                            placeholder="/images/case-studies/raysons/neora-1.jpg"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setMediaPickerTarget({ path: 'hero.videoCard.posterImage', type: 'image' })}
+                            style={mediaBtnStyle}
+                          >
+                            <ImageIcon size={13} /> Pick Poster
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Card Title & Badge */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.73rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                          BADGE LABEL
+                        </label>
+                        <input
+                          type="text"
+                          value={homeData.hero?.videoCard?.badge || 'PRODUCTION · 4K FILM'}
+                          onChange={(e) => updateField(['hero', 'videoCard', 'badge'], e.target.value)}
+                          style={inputStyle}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: '0.73rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                          CARD TITLE
+                        </label>
+                        <input
+                          type="text"
+                          value={homeData.hero?.videoCard?.title || 'Raysons Group · Neora Deck'}
+                          onChange={(e) => updateField(['hero', 'videoCard', 'title'], e.target.value)}
+                          style={inputStyle}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.73rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                        CARD SUBTITLE / CONTEXT
+                      </label>
+                      <input
+                        type="text"
+                        value={homeData.hero?.videoCard?.subtitle || 'Multi-Entity Commercial Film & Social Retainers'}
+                        onChange={(e) => updateField(['hero', 'videoCard', 'subtitle'], e.target.value)}
+                        style={inputStyle}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Background Looping Banner Video (Optional Full Canvas Override) ── */}
+                <div
+                  style={{
+                    borderTop: '1px solid rgba(0, 0, 0, 0.08)',
+                    paddingTop: '0.9rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.4rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                      BACKGROUND LOOPING BANNER VIDEO (Overrides Carousel when set)
+                    </label>
+                    {homeData.hero?.videoUrl && (
+                      <span style={{ fontSize: '0.68rem', backgroundColor: '#FEF3C7', color: '#B45309', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>
+                        Active Background Video
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <input
+                      type="text"
+                      value={homeData.hero?.videoUrl || ''}
+                      onChange={(e) => updateField(['hero', 'videoUrl'], e.target.value)}
+                      style={{ ...inputStyle, flex: 1 }}
+                      placeholder="e.g. /videos/banner-loop.mp4 (Leave empty to use multi-image carousel)"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setMediaPickerTarget({ path: 'hero.videoUrl', type: 'video' })}
+                      style={mediaBtnStyle}
+                    >
+                      <Video size={13} /> {homeData.hero?.videoUrl ? 'Replace Video' : 'Pick Video'}
+                    </button>
+                    {homeData.hero?.videoUrl && (
+                      <button
+                        type="button"
+                        onClick={() => updateField(['hero', 'videoUrl'], '')}
+                        style={{
+                          padding: '0 0.75rem',
+                          borderRadius: '8px',
+                          backgroundColor: '#FEE2E2',
+                          color: '#DC2626',
+                          border: 'none',
+                          fontSize: '0.74rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Remove Video
+                      </button>
+                    )}
+                  </div>
+                  <div style={{ fontSize: '0.71rem', color: '#71717A' }}>
+                    Leave this empty to enjoy the multi-image carousel. If a video URL is provided, it plays as the banner background.
+                  </div>
                 </div>
               </div>
 
@@ -844,137 +1425,6 @@ export default function AdminHomePage() {
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════
-              ARCHIVE: REAL-WORLD IMPACT COUNTERS
-             ════════════════════════════════════════════════════════════ */}
-          {activeSectionId === 'impact' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    Impact Counters (Archived Standalone / Integrated in Capabilities)
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Archived Standalone
-                  </span>
-                </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  These 4 counters are now active directly inside Section 05 (Capabilities &amp; Numbers). Editing them here or in Section 05 updates them.
-                </p>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION EYEBROW
-                </label>
-                <input
-                  type="text"
-                  value={homeData.impactStats?.eyebrow || ''}
-                  onChange={(e) => updateField(['impactStats', 'eyebrow'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION HEADING
-                </label>
-                <input
-                  type="text"
-                  value={homeData.impactStats?.heading || ''}
-                  onChange={(e) => updateField(['impactStats', 'heading'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION SUBTITLE
-                </label>
-                <input
-                  type="text"
-                  value={homeData.impactStats?.subtitle || ''}
-                  onChange={(e) => updateField(['impactStats', 'subtitle'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
-                  THE 4 STAT COUNTERS
-                </label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  {(homeData.impactStats?.counters || []).map((cnt: any, idx: number) => (
-                    <div
-                      key={cnt.id || idx}
-                      style={{
-                        padding: '1rem',
-                        borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        backgroundColor: '#F8F8FA',
-                      }}
-                    >
-                      <div style={{ display: 'grid', gridTemplateColumns: '100px 100px 1fr', gap: '0.75rem', marginBottom: '0.65rem' }}>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Number</span>
-                          <input
-                            type="number"
-                            value={cnt.target || 0}
-                            onChange={(e) => {
-                              const updated = [...homeData.impactStats.counters];
-                              updated[idx] = { ...updated[idx], target: parseInt(e.target.value) || 0 };
-                              updateField(['impactStats', 'counters'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Suffix (+, k)</span>
-                          <input
-                            type="text"
-                            value={cnt.suffix || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.impactStats.counters];
-                              updated[idx] = { ...updated[idx], suffix: e.target.value };
-                              updateField(['impactStats', 'counters'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Title / Metric</span>
-                          <input
-                            type="text"
-                            value={cnt.title || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.impactStats.counters];
-                              updated[idx] = { ...updated[idx], title: e.target.value };
-                              updateField(['impactStats', 'counters'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block' }}>Description</span>
-                        <input
-                          type="text"
-                          value={cnt.desc || ''}
-                          onChange={(e) => {
-                            const updated = [...homeData.impactStats.counters];
-                            updated[idx] = { ...updated[idx], desc: e.target.value };
-                            updateField(['impactStats', 'counters'], updated);
-                          }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* ════════════════════════════════════════════════════════════
               SECTION 02: INDIAN ARMY SPOTLIGHT
@@ -1721,322 +2171,9 @@ export default function AdminHomePage() {
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════
-              ARCHIVE: SECTORS & BUILT ENVIRONMENT MONTAGE
-             ════════════════════════════════════════════════════════════ */}
-          {activeSectionId === 'montage' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    Sectors &amp; Built Environment Montage (Archived)
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Archived Section
-                  </span>
-                </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  6 core sectors: Hospitality, Real Estate, Healthcare, Lifestyle, Defence, Travel. Re-enable anytime via Order &amp; Visibility.
-                </p>
-              </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW
-                </label>
-                <input
-                  type="text"
-                  value={homeData.sectorsMontage?.eyebrow || ''}
-                  onChange={(e) => updateField(['sectorsMontage', 'eyebrow'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  HEADLINE
-                </label>
-                <input
-                  type="text"
-                  value={homeData.sectorsMontage?.title || ''}
-                  onChange={(e) => updateField(['sectorsMontage', 'title'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
-                  THE 6 SECTORS
-                </label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  {(homeData.sectorsMontage?.sectors || []).map((sec: any, idx: number) => (
-                    <div
-                      key={sec.id || idx}
-                      style={{
-                        padding: '0.85rem',
-                        borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        backgroundColor: '#F8F8FA',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                      }}
-                    >
-                      <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr 1fr', gap: '0.5rem' }}>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Number</span>
-                          <input
-                            type="text"
-                            value={sec.number || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.sectorsMontage.sectors];
-                              updated[idx] = { ...updated[idx], number: e.target.value };
-                              updateField(['sectorsMontage', 'sectors'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Title</span>
-                          <input
-                            type="text"
-                            value={sec.title || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.sectorsMontage.sectors];
-                              updated[idx] = { ...updated[idx], title: e.target.value };
-                              updateField(['sectorsMontage', 'sectors'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Subtitle</span>
-                          <input
-                            type="text"
-                            value={sec.subtitle || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.sectorsMontage.sectors];
-                              updated[idx] = { ...updated[idx], subtitle: e.target.value };
-                              updateField(['sectorsMontage', 'sectors'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Description</span>
-                        <textarea
-                          rows={2}
-                          value={sec.description || ''}
-                          onChange={(e) => {
-                            const updated = [...homeData.sectorsMontage.sectors];
-                            updated[idx] = { ...updated[idx], description: e.target.value };
-                            updateField(['sectorsMontage', 'sectors'], updated);
-                          }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                        />
-                      </div>
-
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Link</span>
-                          <input
-                            type="text"
-                            value={sec.link || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.sectorsMontage.sectors];
-                              updated[idx] = { ...updated[idx], link: e.target.value };
-                              updateField(['sectorsMontage', 'sectors'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Image Path</span>
-                          <div style={{ display: 'flex', gap: '0.35rem' }}>
-                            <input
-                              type="text"
-                              value={sec.image || ''}
-                              onChange={(e) => {
-                                const updated = [...homeData.sectorsMontage.sectors];
-                                updated[idx] = { ...updated[idx], image: e.target.value };
-                                updateField(['sectorsMontage', 'sectors'], updated);
-                              }}
-                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', flex: 1 }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setMediaPickerTarget({ path: `sectorsMontage.sectors.${idx}.image`, type: 'image' })}
-                              style={{ ...mediaBtnStyle, padding: '0 0.5rem', fontSize: '0.7rem' }}
-                            >
-                              Pick
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ════════════════════════════════════════════════════════════
-              ARCHIVE: TOURIN SPOTLIGHT
-             ════════════════════════════════════════════════════════════ */}
-          {activeSectionId === 'tourin' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    Tourin Experiential Travel Feature (Archived)
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F4F4F5', color: '#71717A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Archived Section
-                  </span>
-                </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Himalayan travel venture spotlight, trekking, homestays and bespoke expeditions. Re-enable anytime via Order &amp; Visibility.
-                </p>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  TAG / BRAND
-                </label>
-                <input
-                  type="text"
-                  value={homeData.tourinSpotlight?.tag || ''}
-                  onChange={(e) => updateField(['tourinSpotlight', 'tag'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  HEADLINE
-                </label>
-                <input
-                  type="text"
-                  value={homeData.tourinSpotlight?.title || ''}
-                  onChange={(e) => updateField(['tourinSpotlight', 'title'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  DESCRIPTION
-                </label>
-                <textarea
-                  rows={2}
-                  value={homeData.tourinSpotlight?.description || ''}
-                  onChange={(e) => updateField(['tourinSpotlight', 'description'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
-                  EXPERIENTIAL CATEGORIES ({homeData.tourinSpotlight?.categories?.length || 0})
-                </label>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  {(homeData.tourinSpotlight?.categories || []).map((cat: any, idx: number) => (
-                    <div
-                      key={cat.id || idx}
-                      style={{
-                        padding: '0.85rem',
-                        borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        backgroundColor: '#F8F8FA',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                      }}
-                    >
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '0.5rem' }}>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category Name</span>
-                          <input
-                            type="text"
-                            value={cat.name || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.tourinSpotlight.categories];
-                              updated[idx] = { ...updated[idx], name: e.target.value };
-                              updateField(['tourinSpotlight', 'categories'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Tagline</span>
-                          <input
-                            type="text"
-                            value={cat.tagline || ''}
-                            onChange={(e) => {
-                              const updated = [...homeData.tourinSpotlight.categories];
-                              updated[idx] = { ...updated[idx], tagline: e.target.value };
-                              updateField(['tourinSpotlight', 'categories'], updated);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Thumbnail Image</span>
-                          <div style={{ display: 'flex', gap: '0.35rem' }}>
-                            <input
-                              type="text"
-                              value={cat.image || ''}
-                              onChange={(e) => {
-                                const updated = [...homeData.tourinSpotlight.categories];
-                                updated[idx] = { ...updated[idx], image: e.target.value };
-                                updateField(['tourinSpotlight', 'categories'], updated);
-                              }}
-                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', flex: 1 }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setMediaPickerTarget({ path: `tourinSpotlight.categories.${idx}.image`, type: 'image' })}
-                              style={{ ...mediaBtnStyle, padding: '0 0.5rem', fontSize: '0.7rem' }}
-                            >
-                              Pick
-                            </button>
-                          </div>
-                        </div>
-
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Hero Background Image</span>
-                          <div style={{ display: 'flex', gap: '0.35rem' }}>
-                            <input
-                              type="text"
-                              value={cat.heroImage || ''}
-                              onChange={(e) => {
-                                const updated = [...homeData.tourinSpotlight.categories];
-                                updated[idx] = { ...updated[idx], heroImage: e.target.value };
-                                updateField(['tourinSpotlight', 'categories'], updated);
-                              }}
-                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', flex: 1 }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setMediaPickerTarget({ path: `tourinSpotlight.categories.${idx}.heroImage`, type: 'image' })}
-                              style={{ ...mediaBtnStyle, padding: '0 0.5rem', fontSize: '0.7rem' }}
-                            >
-                              Pick
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* ════════════════════════════════════════════════════════════
               SECTION 07: INTERACTIVE SIGNATURE CTA
@@ -2133,7 +2270,7 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 11: ORDER & VISIBILITY
+              SECTION: ORDER & VISIBILITY
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'order' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
@@ -2142,12 +2279,14 @@ export default function AdminHomePage() {
                   Section Sequence &amp; Visibility Controls
                 </h3>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Reorder or toggle visibility for each of the 10 homepage sections. Live preview updates instantly.
+                  Reorder or toggle visibility for each of the 7 live homepage sections. Live preview updates instantly.
                 </p>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {(homeData.sections || []).map((sec: any, idx: number) => (
+                {(homeData.sections || [])
+                  .filter((sec: any) => !['impact', 'montage', 'tourin'].includes(sec.id))
+                  .map((sec: any, idx: number, arr: any[]) => (
                   <div
                     key={sec.id}
                     style={{
@@ -2173,15 +2312,15 @@ export default function AdminHomePage() {
                         </button>
                         <button
                           type="button"
-                          disabled={idx === homeData.sections.length - 1}
+                          disabled={idx === arr.length - 1}
                           onClick={() => moveSection(idx, 'down')}
-                          style={{ border: 'none', background: 'transparent', cursor: idx === homeData.sections.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
                         >
-                          <ChevronDown size={14} color={idx === homeData.sections.length - 1 ? '#D4D4D8' : '#71717A'} />
+                          <ChevronDown size={14} color={idx === arr.length - 1 ? '#D4D4D8' : '#71717A'} />
                         </button>
                       </div>
                       <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
-                        {idx + 1 < 10 ? `0${idx + 1}` : idx + 1}
+                        0{idx + 1}
                       </span>
                       <div>
                         <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
@@ -2227,23 +2366,44 @@ export default function AdminHomePage() {
       </div>
 
       {/* Media Picker Modal */}
-      {(mediaPickerTarget || brandLogoIndex !== null) && (
+      {(mediaPickerTarget || brandLogoIndex !== null || heroSlideIndex !== null) && (
         <MediaPickerModal
           isOpen={true}
           onClose={() => {
             setMediaPickerTarget(null);
             setBrandLogoIndex(null);
+            setHeroSlideIndex(null);
           }}
           mediaType={mediaPickerTarget?.type || 'image'}
           initialUrl={
-            brandLogoIndex !== null
+            heroSlideIndex !== null
+              ? homeData.hero?.bannerImages?.[heroSlideIndex]?.image || ''
+              : brandLogoIndex !== null
               ? homeData.brands?.list?.[brandLogoIndex]?.logo || ''
               : mediaPickerTarget
               ? mediaPickerTarget.path.split('.').reduce((acc: any, key: string) => acc?.[key], homeData) || ''
               : ''
           }
           onSelect={(url) => {
-            if (brandLogoIndex !== null) {
+            if (heroSlideIndex !== null) {
+              const currentSlides = Array.isArray(homeData.hero?.bannerImages) && homeData.hero.bannerImages.length > 0
+                ? [...homeData.hero.bannerImages]
+                : [{ id: 'slide-1', image: homeData.hero?.bannerImage || '', caption: '' }];
+              if (currentSlides[heroSlideIndex]) {
+                currentSlides[heroSlideIndex] = {
+                  ...currentSlides[heroSlideIndex],
+                  image: url,
+                };
+              } else {
+                currentSlides.push({ id: `slide-${Date.now()}`, image: url, caption: '' });
+              }
+              updateField(['hero', 'bannerImages'], currentSlides);
+              if (heroSlideIndex === 0) {
+                updateField(['hero', 'bannerImage'], url);
+                updateField(['hero', 'posterImage'], url);
+              }
+              setHeroSlideIndex(null);
+            } else if (brandLogoIndex !== null) {
               const updated = [...(homeData.brands?.list || [])];
               updated[brandLogoIndex] = { ...updated[brandLogoIndex], logo: url };
               updateField(['brands', 'list'], updated);

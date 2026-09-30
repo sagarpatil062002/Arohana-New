@@ -149,8 +149,8 @@ export default function BrandsMarquee() {
         textDecoration: 'none',
         flexShrink: 0,
         minHeight: '80px',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.05)',
-        transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease',
       }}
     >
       {brand.logo ? (
@@ -161,6 +161,7 @@ export default function BrandsMarquee() {
             alignItems: 'center',
             justifyContent: 'center',
             height: '58px',
+            minWidth: '90px',
           }}
         >
           <Image
@@ -168,6 +169,9 @@ export default function BrandsMarquee() {
             alt={brand.name}
             width={220}
             height={58}
+            loading="eager"
+            priority={idx < 8}
+            unoptimized={true}
             style={{
               maxHeight: '56px',
               width: 'auto',
@@ -265,12 +269,13 @@ export default function BrandsMarquee() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .brands-marquee-outer {
           display: flex;
           width: 100%;
           overflow: hidden;
           user-select: none;
+          position: relative;
         }
 
         .brands-marquee-track {
@@ -278,12 +283,21 @@ export default function BrandsMarquee() {
           align-items: center;
           gap: 1.25rem;
           padding-right: 1.25rem;
+          width: max-content;
           flex-shrink: 0;
-          animation: marqueeContinuous 38s linear infinite;
+          animation: brandsMarqueeFlow 35s linear infinite !important;
+          animation-play-state: running !important;
           will-change: transform;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          perspective: 1000px;
         }
 
-        @keyframes marqueeContinuous {
+        .brands-marquee-outer:hover .brands-marquee-track {
+          animation-play-state: running !important;
+        }
+
+        @keyframes brandsMarqueeFlow {
           0% {
             transform: translate3d(0, 0, 0);
           }
@@ -293,9 +307,8 @@ export default function BrandsMarquee() {
         }
 
         .brand-card-item:hover {
-          transform: translateY(-2px);
-          border-color: rgba(0, 0, 0, 0.22) !important;
-          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+          border-color: rgba(0, 0, 0, 0.28) !important;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
         }
 
         .marquee-edge-fade {
@@ -324,7 +337,7 @@ export default function BrandsMarquee() {
           .brands-marquee-track {
             gap: 0.85rem;
             padding-right: 0.85rem;
-            animation-duration: 28s;
+            animation-duration: 25s !important;
           }
         }
       `}</style>
