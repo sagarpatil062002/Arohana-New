@@ -128,14 +128,89 @@ const PARTNER_BRANDS: BrandItem[] = [
 ];
 
 export default function BrandsMarquee() {
-  const [isPaused, setIsPaused] = useState(false);
   const { content } = useCmsContent();
   const brandsCms = content?.home?.brands;
   const activeHeading = brandsCms?.heading || 'Trusted by Brands & Institutions';
   const activeBrands: BrandItem[] = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
 
-  // Seamless loop by duplicating items
-  const marqueeItems = [...activeBrands, ...activeBrands];
+  const renderBrandCard = (brand: BrandItem, idx: number, prefix: string) => (
+    <Link
+      key={`${prefix}-${brand.id}-${idx}`}
+      href={brand.link || '/work'}
+      className="brand-card-item"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: brand.logo ? '0.85rem 2.25rem' : '0.85rem 1.75rem',
+        backgroundColor: '#ffffff',
+        border: '1px solid rgba(0, 0, 0, 0.08)',
+        borderRadius: '4px',
+        textDecoration: 'none',
+        flexShrink: 0,
+        minHeight: '80px',
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.05)',
+        transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+      }}
+    >
+      {brand.logo ? (
+        <div
+          className="brand-logo-container"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '58px',
+          }}
+        >
+          <Image
+            src={brand.logo}
+            alt={brand.name}
+            width={220}
+            height={58}
+            style={{
+              maxHeight: '56px',
+              width: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
+        </div>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div
+            style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '3px',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: '#18181b',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '0.68rem',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+            }}
+          >
+            {brand.monogram}
+          </div>
+          <span
+            style={{
+              fontSize: '0.86rem',
+              fontWeight: 600,
+              color: '#27272a',
+              letterSpacing: '-0.01em',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {brand.name}
+          </span>
+        </div>
+      )}
+    </Link>
+  );
 
   return (
     <section
@@ -168,124 +243,52 @@ export default function BrandsMarquee() {
         </div>
       </div>
 
-      {/* Smooth Marquee Track able to take actual brand logos clearly and bigger */}
+      {/* Continuously Flowing Marquee Track - Never Sticks or Pauses */}
       <div
         className="brands-marquee-outer"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
         style={{
           position: 'relative',
           width: '100%',
           overflow: 'hidden',
           padding: '0.85rem 0',
+          display: 'flex',
         }}
       >
         <div className="marquee-edge-fade marquee-edge-left" />
         <div className="marquee-edge-fade marquee-edge-right" />
 
-        <div className={`brands-marquee-track ${isPaused ? 'paused' : ''}`}>
-          {marqueeItems.map((brand, idx) => (
-            <Link
-              key={`${brand.id}-${idx}`}
-              href={brand.link || '/work'}
-              className="brand-card-item"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: brand.logo ? '0.85rem 2.25rem' : '0.85rem 1.75rem',
-                backgroundColor: '#ffffff',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-                borderRadius: '4px',
-                textDecoration: 'none',
-                flexShrink: 0,
-                minHeight: '80px',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.05)',
-                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-            >
-              {brand.logo ? (
-                /* Actual brand logo displayed clearly and bigger */
-                <div
-                  className="brand-logo-container"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '58px',
-                  }}
-                >
-                  <Image
-                    src={brand.logo}
-                    alt={brand.name}
-                    width={220}
-                    height={58}
-                    style={{
-                      maxHeight: '56px',
-                      width: 'auto',
-                      objectFit: 'contain',
-                      display: 'block',
-                    }}
-                  />
-                </div>
-              ) : (
-                /* Sleek fallback monogram badge + brand name */
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                  <div
-                    style={{
-                      width: '28px',
-                      height: '28px',
-                      borderRadius: '3px',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      backgroundColor: '#18181b',
-                      color: '#ffffff',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.68rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {brand.monogram}
-                  </div>
-                  <span
-                    style={{
-                      fontSize: '0.86rem',
-                      fontWeight: 600,
-                      color: '#27272a',
-                      letterSpacing: '-0.01em',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {brand.name}
-                  </span>
-                </div>
-              )}
-            </Link>
-          ))}
+        <div className="brands-marquee-track">
+          {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 't1'))}
+        </div>
+        <div className="brands-marquee-track" aria-hidden="true">
+          {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 't2'))}
         </div>
       </div>
 
       <style jsx>{`
+        .brands-marquee-outer {
+          display: flex;
+          width: 100%;
+          overflow: hidden;
+          user-select: none;
+        }
+
         .brands-marquee-track {
           display: flex;
           align-items: center;
           gap: 1.25rem;
-          width: max-content;
-          animation: marqueeScroll 40s linear infinite;
+          padding-right: 1.25rem;
+          flex-shrink: 0;
+          animation: marqueeContinuous 38s linear infinite;
+          will-change: transform;
         }
 
-        .brands-marquee-track.paused {
-          animation-play-state: paused;
-        }
-
-        @keyframes marqueeScroll {
+        @keyframes marqueeContinuous {
           0% {
-            transform: translateX(0%);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translate3d(-100%, 0, 0);
           }
         }
 
@@ -320,7 +323,8 @@ export default function BrandsMarquee() {
           }
           .brands-marquee-track {
             gap: 0.85rem;
-            animation-duration: 30s;
+            padding-right: 0.85rem;
+            animation-duration: 28s;
           }
         }
       `}</style>

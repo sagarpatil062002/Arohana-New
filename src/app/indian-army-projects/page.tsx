@@ -321,21 +321,25 @@ export default function IndianArmyProjectsPage() {
                 <span className="meta-tag-pill">{p2.command}</span>
               </div>
               <div className="card-meta-right">
-                <span className="meta-meta-item">
-                  <MapPin size={13} />
-                  {p2.location}
-                </span>
-                <span className="meta-meta-item">
-                  <Calendar size={13} />
-                  {p2.date}
-                </span>
+                {p2.location && (
+                  <span className="meta-meta-item">
+                    <MapPin size={13} />
+                    {p2.location}
+                  </span>
+                )}
+                {p2.date && (
+                  <span className="meta-meta-item">
+                    <Calendar size={13} />
+                    {p2.date}
+                  </span>
+                )}
               </div>
             </div>
 
             {/* Top Row: Text Description + 3D Publications */}
             <div className="card-2-top-grid">
-              <div>
-                <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
+              <div className="card-2-content-col">
+                <h2 className="card-title card-2-title">
                   {p2.title}
                 </h2>
                 <div className="card-subhead">
@@ -354,7 +358,7 @@ export default function IndianArmyProjectsPage() {
                     src={p2.image || '/images/army/14corps-hall-of-fame.jpg'}
                     alt={p2.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, 400px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
                     style={{ objectFit: 'cover' }}
                   />
                   <div className="card-2-photo-caption">14 Corps Field Documentation</div>
@@ -368,7 +372,7 @@ export default function IndianArmyProjectsPage() {
                     src={p2.sidePhotos?.[0] || '/images/army/adgpi-firstvillages.jpg'}
                     alt="First Villages Community Initiative"
                     fill
-                    sizes="180px"
+                    sizes="(max-width: 480px) 90px, (max-width: 768px) 115px, 175px"
                     style={{ objectFit: 'cover' }}
                   />
                   <div className="book-spine-lighting" />
@@ -379,7 +383,7 @@ export default function IndianArmyProjectsPage() {
                     src={p2.sidePhotos?.[1] || '/images/army/firefury-changthang-health.jpg'}
                     alt="SHE Ladakh Outreach"
                     fill
-                    sizes="200px"
+                    sizes="(max-width: 480px) 95px, (max-width: 768px) 120px, 185px"
                     style={{ objectFit: 'cover' }}
                   />
                   <div className="book-spine-lighting" />
@@ -390,7 +394,7 @@ export default function IndianArmyProjectsPage() {
                     src={p2.sidePhotos?.[2] || '/images/army/adgpi-she-thumb-2.jpg'}
                     alt="Women Empowerment Ladakh"
                     fill
-                    sizes="180px"
+                    sizes="(max-width: 480px) 90px, (max-width: 768px) 115px, 175px"
                     style={{ objectFit: 'cover' }}
                   />
                   <div className="book-spine-lighting" />
@@ -398,7 +402,31 @@ export default function IndianArmyProjectsPage() {
               </div>
             </div>
 
-
+            {/* Bottom Row: 3 Sub-sections */}
+            {(p2.scopeOfWork || p2.creativeApproach || p2.productionDiscipline) && (
+              <div className="card-2-bottom-row">
+                <div className="three-subsections-row" style={{ marginTop: '1.5rem' }}>
+                  {p2.scopeOfWork && (
+                    <div className="subsection-box">
+                      <span className="subsection-title">Scope of Work</span>
+                      <p className="subsection-desc">{p2.scopeOfWork}</p>
+                    </div>
+                  )}
+                  {p2.creativeApproach && (
+                    <div className="subsection-box">
+                      <span className="subsection-title">Creative Approach</span>
+                      <p className="subsection-desc">{p2.creativeApproach}</p>
+                    </div>
+                  )}
+                  {p2.productionDiscipline && (
+                    <div className="subsection-box">
+                      <span className="subsection-title">Production Discipline</span>
+                      <p className="subsection-desc">{p2.productionDiscipline}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </article>
         )}
 
@@ -1600,21 +1628,44 @@ export default function IndianArmyProjectsPage() {
 
         .card-2-top-grid {
           display: grid;
-          grid-template-columns: 1fr 1.35fr;
-          gap: clamp(2rem, 4vw, 4rem);
+          grid-template-columns: 1fr 1.25fr;
+          gap: clamp(1.75rem, 3.5vw, 3.5rem);
           align-items: center;
           margin-bottom: 2.5rem;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+
+        .card-2-content-col {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          overflow: visible;
+        }
+
+        .card-2-title {
+          font-size: clamp(1.65rem, 3.2vw, 2.75rem);
+          font-weight: 600;
+          line-height: 1.12;
+          letter-spacing: -0.03em;
+          margin: 0 0 0.85rem 0;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
         }
 
         .card-2-photo-preview,
         .card-2-video-preview {
           position: relative;
+          width: 100%;
+          max-width: 100%;
+          aspect-ratio: 16/9;
           border-radius: 6px;
           border: 1px solid rgba(255, 255, 255, 0.1);
           overflow: hidden;
-          aspect-ratio: 16/9;
           box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
           margin-top: 1.5rem;
+          background: #18191c;
         }
 
         .card-2-photo-caption,
@@ -1637,26 +1688,30 @@ export default function IndianArmyProjectsPage() {
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: clamp(1rem, 2vw, 1.75rem);
-          perspective: 1200px;
+          gap: clamp(0.75rem, 1.8vw, 1.5rem);
+          perspective: 1000px;
           padding: 1rem 0;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
         }
 
         .book-3d-item {
           position: relative;
-          width: clamp(120px, 14vw, 175px);
+          width: clamp(105px, 12.5vw, 155px);
           aspect-ratio: 1 / 1.48;
           border-radius: 6px;
           overflow: hidden;
           box-shadow: -8px 14px 30px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.3);
-          transform: rotateY(-12deg) rotateX(4deg);
+          transform: rotateY(-10deg) rotateX(3deg);
           transition: transform 0.4s ease, box-shadow 0.4s ease;
           background: #18191c;
           border-left: 3px solid rgba(255, 255, 255, 0.3);
+          flex-shrink: 1;
         }
 
         .book-3d-item.featured {
-          transform: rotateY(-8deg) rotateX(2deg) scale(1.05);
+          transform: rotateY(-6deg) rotateX(2deg) scale(1.04);
           z-index: 2;
         }
 
@@ -2243,7 +2298,7 @@ export default function IndianArmyProjectsPage() {
 
 
         /* ---------------- RESPONSIVE MEDIA QUERIES ---------------- */
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
           .hero-grid {
             grid-template-columns: 1fr;
             gap: 3rem;
@@ -2256,21 +2311,37 @@ export default function IndianArmyProjectsPage() {
           .card-3-grid,
           .card-4-grid {
             grid-template-columns: 1fr;
-            gap: 2.5rem;
+            gap: 2.25rem;
+          }
+          .card-2-top-grid {
+            margin-bottom: 2rem;
+          }
+          .card-2-content-col {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+          }
+          .card-2-title {
+            font-size: clamp(1.55rem, 3.2vw, 2.2rem) !important;
+            line-height: 1.15 !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
           }
           .card-2-bottom-row {
             grid-template-columns: 1fr;
+            margin-top: 1.5rem;
           }
           .books-showcase-row {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: clamp(1rem, 2vw, 1.5rem);
+            gap: clamp(1rem, 2.5vw, 1.5rem);
             padding: 1.25rem 0;
             width: 100%;
+            max-width: 100%;
           }
           .book-3d-item {
-            width: clamp(115px, 16vw, 150px);
+            width: clamp(110px, 16vw, 145px);
           }
           .book-composition-wrapper {
             display: flex;
@@ -2378,33 +2449,79 @@ export default function IndianArmyProjectsPage() {
           }
 
           /* Card 2: 3D Books Shelf */
+          .card-2-top-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+            margin-bottom: 1.25rem !important;
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          .card-2-content-col {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+          }
+          .card-2-title {
+            font-size: clamp(1.35rem, 5.5vw, 1.85rem) !important;
+            line-height: 1.15 !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+          }
+          .card-subhead {
+            font-size: 0.88rem !important;
+            line-height: 1.4 !important;
+            margin-bottom: 0.75rem !important;
+          }
+          .card-description {
+            font-size: 0.88rem !important;
+            line-height: 1.55 !important;
+            margin-bottom: 1.25rem !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+          }
           .card-2-photo-preview {
-            height: 220px !important;
-            min-height: 220px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            aspect-ratio: 16 / 9 !important;
+            margin-top: 1.25rem !important;
+            box-sizing: border-box !important;
+          }
+          .card-2-photo-caption {
+            bottom: 8px !important;
+            right: 10px !important;
+            font-size: 0.7rem !important;
+            padding: 3px 8px !important;
+            max-width: calc(100% - 20px) !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
           }
           .books-showcase-row {
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
-            gap: clamp(8px, 2.5vw, 14px) !important;
-            padding: 1.5rem 0.25rem !important;
+            gap: clamp(6px, 2vw, 12px) !important;
+            padding: 1rem 0 !important;
             overflow: visible !important;
             width: 100% !important;
             max-width: 100% !important;
-            perspective: 800px !important;
+            perspective: 500px !important;
+            box-sizing: border-box !important;
           }
           .book-3d-item {
-            flex: 1 1 0 !important;
+            flex: 0 1 auto !important;
             min-width: 0 !important;
-            max-width: clamp(92px, 28vw, 120px) !important;
-            width: auto !important;
+            width: clamp(72px, 26vw, 110px) !important;
+            max-width: 110px !important;
             aspect-ratio: 1 / 1.48 !important;
-            transform: rotateY(-8deg) rotateX(2deg) !important;
-            box-shadow: -4px 8px 18px rgba(0, 0, 0, 0.5) !important;
+            transform: rotateY(-5deg) rotateX(1deg) !important;
+            box-shadow: -4px 8px 16px rgba(0, 0, 0, 0.5) !important;
           }
           .book-3d-item.featured {
-            transform: rotateY(-3deg) rotateX(1deg) scale(1.05) !important;
-            box-shadow: -6px 12px 24px rgba(0, 0, 0, 0.6) !important;
+            transform: rotateY(0deg) scale(1.03) !important;
+            box-shadow: -6px 10px 20px rgba(0, 0, 0, 0.6) !important;
           }
           .card-2-bottom-row {
             margin-top: 1.5rem !important;
@@ -2565,8 +2682,50 @@ export default function IndianArmyProjectsPage() {
           .project-card {
             padding: 1.25rem 0.85rem !important;
           }
-          .card-title {
-            font-size: 1.6rem !important;
+          .card-title,
+          .card-2-title {
+            font-size: clamp(1.25rem, 5.2vw, 1.55rem) !important;
+            line-height: 1.15 !important;
+            margin-bottom: 0.5rem !important;
+          }
+          .card-subhead {
+            font-size: 0.82rem !important;
+            line-height: 1.35 !important;
+            margin-bottom: 0.65rem !important;
+          }
+          .card-description {
+            font-size: 0.84rem !important;
+            line-height: 1.5 !important;
+            margin-bottom: 1rem !important;
+          }
+          .card-2-top-grid {
+            gap: 1.15rem !important;
+          }
+          .card-2-photo-preview {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            aspect-ratio: 16 / 9 !important;
+            border-radius: 6px !important;
+          }
+          .card-2-photo-caption {
+            font-size: 0.65rem !important;
+            padding: 3px 8px !important;
+          }
+          .books-showcase-row {
+            gap: 6px !important;
+            padding: 0.75rem 0 !important;
+            perspective: 400px !important;
+          }
+          .book-3d-item {
+            width: clamp(65px, 27vw, 92px) !important;
+            max-width: 92px !important;
+            transform: rotateY(-3deg) !important;
+            border-radius: 4px !important;
+          }
+          .book-3d-item.featured {
+            transform: rotateY(0deg) scale(1.02) !important;
           }
           .hero-title {
             font-size: 2.2rem !important;
