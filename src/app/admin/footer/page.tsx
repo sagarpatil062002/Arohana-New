@@ -2,13 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCmsContent } from '@/lib/cms/content-context';
-import { Save, Check, ExternalLink } from 'lucide-react';
+import { Save, Check, ExternalLink, X } from 'lucide-react';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 
 export default function AdminFooterPage() {
-  const { content, saveDraft, updateDraftInMemory } = useCmsContent();
+  const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [footerData, setFooterData] = useState<any>(null);
   const [savedStatus, setSavedStatus] = useState(false);
+  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   useEffect(() => {
     if (content.footer) {
@@ -31,11 +37,37 @@ export default function AdminFooterPage() {
     if (ok) {
       setSavedStatus(true);
       setTimeout(() => setSavedStatus(false), 2000);
+      showToast('Footer draft saved.', 'success');
+    } else {
+      showToast('Save failed. Please retry.', 'error');
+    }
+  };
+
+  const handlePublish = async () => {
+    const ok = await publishSection('footer', footerData);
+    if (ok) {
+      showToast('Footer published live!', 'success');
+    } else {
+      showToast('Publish failed. Please retry.', 'error');
     }
   };
 
   return (
     <div style={{ maxWidth: '1600px', margin: '0 auto', paddingBottom: '4rem' }}>
+      {/* TOAST */}
+      {toast && (
+        <div style={{
+          position: 'fixed', top: '1.5rem', right: '1.5rem', zIndex: 9999,
+          padding: '0.85rem 1.35rem', borderRadius: '8px',
+          backgroundColor: toast.type === 'success' ? '#15803D' : '#DC2626',
+          color: '#fff', fontSize: '0.85rem', fontWeight: 600,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+        }}>
+          {toast.type === 'success' ? <Check size={14} /> : <X size={14} />}
+          {toast.msg}
+        </div>
+      )}
       {/* Top Header */}
       <div
         style={{
@@ -114,7 +146,29 @@ export default function AdminFooterPage() {
             }}
           >
             {savedStatus ? <Check size={15} /> : <Save size={15} />}
-            {savedStatus ? 'Saved Successfully' : 'Save Changes'}
+            {savedStatus ? 'Draft Saved!' : 'Save Draft'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handlePublish}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.55rem 1.4rem',
+              borderRadius: '9999px',
+              border: 'none',
+              backgroundColor: '#DE322D',
+              color: '#FFFFFF',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <ExternalLink size={15} />
+            Publish Live
           </button>
         </div>
       </div>

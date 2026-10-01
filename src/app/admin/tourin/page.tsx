@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
@@ -8,14 +8,110 @@ import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import { Plus, Trash2, Eye, EyeOff, Save, Check, Upload, Compass, ChevronUp, ChevronDown } from 'lucide-react';
 
+/**
+ * Reusable enable / disable switch used across every Tourin field.
+ * Every Tourin element is individually controllable from the Admin CRM.
+ */
+function ToggleSwitch({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label?: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      title={label || 'Enable / Disable'}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.4rem',
+        padding: '0.22rem 0.6rem 0.22rem 0.3rem',
+        borderRadius: '9999px',
+        border: `1px solid ${checked ? 'rgba(22,163,74,0.35)' : 'rgba(0,0,0,0.15)'}`,
+        backgroundColor: checked ? 'rgba(22,163,74,0.08)' : '#F4F4F5',
+        color: checked ? '#15803D' : '#8A8A92',
+        fontSize: '0.66rem',
+        fontWeight: 700,
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase',
+        cursor: 'pointer',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      <span
+        style={{
+          width: '30px',
+          height: '16px',
+          borderRadius: '9999px',
+          backgroundColor: checked ? '#16A34A' : '#D4D4D8',
+          position: 'relative',
+          transition: 'background-color 0.2s ease',
+          flexShrink: 0,
+        }}
+      >
+        <span
+          style={{
+            position: 'absolute',
+            top: '2px',
+            left: checked ? '16px' : '2px',
+            width: '12px',
+            height: '12px',
+            borderRadius: '50%',
+            backgroundColor: '#FFFFFF',
+            transition: 'left 0.2s ease',
+          }}
+        />
+      </span>
+      {checked ? 'ON' : 'OFF'}
+    </button>
+  );
+}
+
+/** Field label with an inline Enable / Disable control. */
+function FieldLabel({
+  children,
+  enabled,
+  onToggle,
+}: {
+  children: React.ReactNode;
+  enabled?: boolean;
+  onToggle?: (v: boolean) => void;
+}) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '0.5rem',
+        marginBottom: '0.35rem',
+      }}
+    >
+      <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+        {children}
+      </label>
+      {onToggle && <ToggleSwitch checked={enabled !== false} onChange={onToggle} />}
+    </div>
+  );
+}
+
 export default function AdminTourinPage() {
   const { content, saveDraft, updateDraftInMemory } = useCmsContent();
   const [tourinData, setTourinData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'destination' | 'philosophy' | 'journeys' | 'proof' | 'stats'>('hero');
   const [selectedJourneyId, setSelectedJourneyId] = useState<string | null>('slow-ladakh');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [mediaTarget, setMediaTarget] = useState<'journey' | 'image1' | 'image2' | 'image3' | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [savedStatus, setSavedStatus] = useState(false);
+  const tourinSaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (content.tourin) {
@@ -30,6 +126,30 @@ export default function AdminTourinPage() {
   const selectedJourney =
     tourinData.journeys?.find((j: any) => j.id === selectedJourneyId) || tourinData.journeys?.[0];
 
+  const applyTourinUpdate = (updated: any) => {
+    setTourinData(updated);
+    updateDraftInMemory('tourin', updated);
+
+    // Instant zero-refresh live sync to iframes
+    try {
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((frame) => {
+        try {
+          frame.contentWindow?.postMessage(
+            { type: 'DRAFT_UPDATE', section: 'tourin', data: updated },
+            '*'
+          );
+        } catch (e) {}
+      });
+    } catch (e) {}
+
+    // Debounced draft saving
+    if (tourinSaveTimeout.current) clearTimeout(tourinSaveTimeout.current);
+    tourinSaveTimeout.current = setTimeout(() => {
+      saveDraft('tourin', updated);
+    }, 600);
+  };
+
   const handleHeroChange = (field: string, val: any) => {
     const updated = {
       ...tourinData,
@@ -38,8 +158,22 @@ export default function AdminTourinPage() {
         [field]: val,
       },
     };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
+  };
+
+  // Update a single property of one of the Section 01 images (Image 1 / 2 / 3)
+  const handleHeroImageChange = (key: 'image1' | 'image2' | 'image3', field: string, val: any) => {
+    const updated = {
+      ...tourinData,
+      hero: {
+        ...(tourinData.hero || {}),
+        [key]: {
+          ...(tourinData.hero?.[key] || {}),
+          [field]: val,
+        },
+      },
+    };
+    applyTourinUpdate(updated);
   };
 
   const handleGenesisChange = (field: string, val: any) => {
@@ -50,8 +184,7 @@ export default function AdminTourinPage() {
         [field]: val,
       },
     };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleDestinationChange = (field: string, val: any) => {
@@ -62,8 +195,7 @@ export default function AdminTourinPage() {
         [field]: val,
       },
     };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleJourneysTakenChange = (field: string, val: any) => {
@@ -74,8 +206,7 @@ export default function AdminTourinPage() {
         [field]: val,
       },
     };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleAddPlace = () => {
@@ -87,6 +218,7 @@ export default function AdminTourinPage() {
       regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
       image: '/images/tourin/tourin-hero.jpg',
       isComingSoon: true,
+      enabled: true,
     };
     const currentPlaces = tourinData.destination?.places || [
       {
@@ -96,6 +228,7 @@ export default function AdminTourinPage() {
         subtitle: 'High Passes, Starlit Deserts & Living Monasteries',
         regions: 'Nubra · Sham Valley · Hanle Dark Sky · Zanskar',
         image: '/images/tourin/dest-ladakh.jpg',
+        enabled: true,
       },
       {
         id: 'more-places',
@@ -105,6 +238,7 @@ export default function AdminTourinPage() {
         regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
         image: '/images/tourin/tourin-hero.jpg',
         isComingSoon: true,
+        enabled: true,
       },
     ];
     handleDestinationChange('places', [...currentPlaces, newPlace]);
@@ -131,27 +265,24 @@ export default function AdminTourinPage() {
         [field]: val,
       },
     };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleJourneyChange = (field: string, val: any) => {
     if (!selectedJourney) return;
-    const updatedJourneys = tourinData.journeys.map((j: any) =>
+    const updatedJourneys = (tourinData.journeys || []).map((j: any) =>
       j.id === selectedJourney.id ? { ...j, [field]: val } : j
     );
     const updated = { ...tourinData, journeys: updatedJourneys };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleTogglePublished = (id: string) => {
-    const updatedJourneys = tourinData.journeys.map((j: any) =>
+    const updatedJourneys = (tourinData.journeys || []).map((j: any) =>
       j.id === id ? { ...j, published: !j.published } : j
     );
     const updated = { ...tourinData, journeys: updatedJourneys };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleAddNewJourney = () => {
@@ -170,30 +301,51 @@ export default function AdminTourinPage() {
       ...tourinData,
       journeys: [...(tourinData.journeys || []), newJourney],
     };
-    setTourinData(updated);
     setSelectedJourneyId(newId);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleDeleteJourney = () => {
     if (!deleteTargetId) return;
-    const updatedJourneys = tourinData.journeys.filter((j: any) => j.id !== deleteTargetId);
+    const updatedJourneys = (tourinData.journeys || []).filter((j: any) => j.id !== deleteTargetId);
     const updated = { ...tourinData, journeys: updatedJourneys };
-    setTourinData(updated);
     if (selectedJourneyId === deleteTargetId) {
       setSelectedJourneyId(updatedJourneys[0]?.id || null);
     }
     setDeleteTargetId(null);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
   };
 
   const handleStatChange = (index: number, field: string, val: string) => {
     const updatedStats = [...(tourinData.stats || [])];
-    if (!updatedStats[index]) updatedStats[index] = { value: '', label: '' };
+    if (!updatedStats[index]) updatedStats[index] = { value: '', label: '', enabled: true };
     updatedStats[index] = { ...updatedStats[index], [field]: val };
     const updated = { ...tourinData, stats: updatedStats };
-    setTourinData(updated);
-    updateDraftInMemory('tourin', updated);
+    applyTourinUpdate(updated);
+  };
+
+  const handleToggleStat = (index: number, v: boolean) => {
+    const updatedStats = [...(tourinData.stats || [])];
+    if (!updatedStats[index]) return;
+    updatedStats[index] = { ...updatedStats[index], enabled: v };
+    const updated = { ...tourinData, stats: updatedStats };
+    applyTourinUpdate(updated);
+  };
+
+  const handleAddStat = () => {
+    const newStat = { value: '100%', label: 'New Metric Label', enabled: true };
+    const updated = {
+      ...tourinData,
+      stats: [...(tourinData.stats || []), newStat],
+    };
+    applyTourinUpdate(updated);
+  };
+
+  const handleDeleteStat = (index: number) => {
+    const updatedStats = [...(tourinData.stats || [])];
+    updatedStats.splice(index, 1);
+    const updated = { ...tourinData, stats: updatedStats };
+    applyTourinUpdate(updated);
   };
 
   const handleSave = async () => {
@@ -260,8 +412,8 @@ export default function AdminTourinPage() {
                 <option value="destination">03: Where We Go</option>
                 <option value="philosophy">04: Philosophy</option>
                 <option value="journeys">05: Journeys</option>
-                <option value="journeysTaken">06: Journeys Taken</option>
-                <option value="cta">07: Closing Banner &amp; CTA</option>
+                <option value="proof">06: Journeys Taken (Proof)</option>
+                <option value="stats">07: Operational Readiness Stats</option>
               </select>
             </div>
           </div>
@@ -355,17 +507,34 @@ export default function AdminTourinPage() {
           })}
         </div>
 
-        {/* ─── TAB 01: HERO & STORY ─── */}
+        {/* ─── TAB 01: SECTION 01 — HERO & STORY ─── */}
         {activeTab === 'hero' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Section 01: Hero Editorial Grid &amp; Storytelling
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', paddingBottom: '0.85rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                Section 01: Hero Editorial Grid &amp; Storytelling
+              </div>
+              <ToggleSwitch
+                checked={tourinData.hero?.enabled !== false}
+                onChange={(v) => handleHeroChange('enabled', v)}
+                label="Enable / Disable entire Section 01"
+              />
             </div>
 
+            {tourinData.hero?.enabled === false && (
+              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
+                Section 01 is disabled — it is hidden on the Tourin page. Re-enable it to restore the saved content.
+              </div>
+            )}
+
+            {/* EYEBROW BADGE */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.hero?.eyebrowEnabled !== false}
+                onToggle={(v) => handleHeroChange('eyebrowEnabled', v)}
+              >
                 EYEBROW BADGE
-              </label>
+              </FieldLabel>
               <input
                 type="text"
                 value={tourinData.hero?.eyebrow || ''}
@@ -375,10 +544,14 @@ export default function AdminTourinPage() {
               />
             </div>
 
+            {/* MAIN EDITORIAL HEADLINE */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.hero?.headlineEnabled !== false}
+                onToggle={(v) => handleHeroChange('headlineEnabled', v)}
+              >
                 MAIN EDITORIAL HEADLINE
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.hero?.headline || ''}
@@ -388,10 +561,14 @@ export default function AdminTourinPage() {
               />
             </div>
 
+            {/* SUB-QUOTE / HOOK */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.hero?.quoteEnabled !== false}
+                onToggle={(v) => handleHeroChange('quoteEnabled', v)}
+              >
                 SUB-QUOTE / HOOK
-              </label>
+              </FieldLabel>
               <input
                 type="text"
                 value={tourinData.hero?.quote || ''}
@@ -401,10 +578,14 @@ export default function AdminTourinPage() {
               />
             </div>
 
+            {/* BODY DESCRIPTION */}
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.hero?.descriptionEnabled !== false}
+                onToggle={(v) => handleHeroChange('descriptionEnabled', v)}
+              >
                 BODY DESCRIPTION
-              </label>
+              </FieldLabel>
               <textarea
                 rows={3}
                 value={tourinData.hero?.description || ''}
@@ -414,30 +595,82 @@ export default function AdminTourinPage() {
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  PRIMARY DESTINATION
-                </label>
-                <input
-                  type="text"
-                  value={tourinData.hero?.primaryDestination || ''}
-                  onChange={(e) => handleHeroChange('primaryDestination', e.target.value)}
-                  placeholder="Ladakh, Himalayan Plateau"
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                />
+{/* ── SECTION 01 IMAGES (Image 1 large + Image 2 & Image 3 equal, stacked) ── */}
+            <div style={{ marginTop: '0.25rem', paddingTop: '1.25rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  Section 01 — Images
+                </div>
+                <span style={{ fontSize: '0.68rem', color: '#8A8A92' }}>
+                  Image 2 = Image 3 · Image 2 + gap + Image 3 = Image 1
+                </span>
               </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  OPERATIONAL ELEVATION
-                </label>
-                <input
-                  type="text"
-                  value={tourinData.hero?.elevation || ''}
-                  onChange={(e) => handleHeroChange('elevation', e.target.value)}
-                  placeholder="11,500 – 17,580 FT"
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                />
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem' }}>
+                {(['image1', 'image2', 'image3'] as const).map((key, idx) => {
+                  const img = tourinData.hero?.[key] || {};
+                  return (
+                    <div key={key} style={{ border: '1px solid rgba(0,0,0,0.1)', borderRadius: '10px', overflow: 'hidden', backgroundColor: '#FFFFFF', display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ position: 'relative', width: '100%', height: '118px', backgroundColor: '#F4F4F5' }}>
+                        {img.src ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={img.src}
+                            alt={img.alt || `Section 01 Image ${idx + 1}`}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', opacity: img.enabled === false ? 0.35 : 1 }}
+                          />
+                        ) : (
+                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', color: '#A1A1AA' }}>
+                            No image
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ padding: '0.7rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.4rem' }}>
+                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#111113' }}>
+                            IMAGE {idx + 1}{idx === 0 ? ' · MAIN' : ''}
+                          </span>
+                          <ToggleSwitch
+                            checked={img.enabled !== false}
+                            onChange={(v) => handleHeroImageChange(key, 'enabled', v)}
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMediaTarget(key);
+                            setIsMediaPickerOpen(true);
+                          }}
+                          style={{
+                            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem',
+                            padding: '0.45rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.15)',
+                            backgroundColor: '#FFFFFF', color: '#111113', fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer',
+                          }}
+                        >
+                          <Upload size={13} />
+                          {img.src ? 'Replace / Upload' : 'Upload'}
+                        </button>
+
+                        <input
+                          type="text"
+                          value={img.src || ''}
+                          onChange={(e) => handleHeroImageChange(key, 'src', e.target.value)}
+                          placeholder="/images/... or https://"
+                          style={{ width: '100%', padding: '0.45rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.72rem' }}
+                        />
+                        <input
+                          type="text"
+                          value={img.alt || ''}
+                          onChange={(e) => handleHeroImageChange(key, 'alt', e.target.value)}
+                          placeholder="Alt text"
+                          style={{ width: '100%', padding: '0.45rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.72rem' }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -446,15 +679,36 @@ export default function AdminTourinPage() {
         {/* ─── TAB 02: THE GENESIS ─── */}
         {activeTab === 'genesis' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Section 02: The Genesis (Why Tourin)
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Section 02: The Genesis (Why Tourin)
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#71717A' }}>
+                  Foundational storytelling narrative explaining why Tourin was created.
+                </div>
+              </div>
+              <ToggleSwitch
+                checked={tourinData.genesis?.enabled !== false}
+                onChange={(v) => handleGenesisChange('enabled', v)}
+                label="Section Enabled"
+              />
             </div>
+
+            {tourinData.genesis?.enabled === false && (
+              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
+                Section 02 is disabled and hidden on the website.
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.genesis?.tagEnabled !== false}
+                  onToggle={(v) => handleGenesisChange('tagEnabled', v)}
+                >
                   SECTION TAG
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.genesis?.tag || ''}
@@ -464,9 +718,12 @@ export default function AdminTourinPage() {
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.genesis?.headingEnabled !== false}
+                  onToggle={(v) => handleGenesisChange('headingEnabled', v)}
+                >
                   SECTION HEADING
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.genesis?.heading || ''}
@@ -478,9 +735,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.genesis?.p1Enabled !== false}
+                onToggle={(v) => handleGenesisChange('p1Enabled', v)}
+              >
                 PARAGRAPH 1 (THE REALISATION)
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.genesis?.p1 || ''}
@@ -490,9 +750,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.genesis?.p2Enabled !== false}
+                onToggle={(v) => handleGenesisChange('p2Enabled', v)}
+              >
                 PARAGRAPH 2 (THE PLACE BEHIND)
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.genesis?.p2 || ''}
@@ -502,9 +765,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.genesis?.p3Enabled !== false}
+                onToggle={(v) => handleGenesisChange('p3Enabled', v)}
+              >
                 PARAGRAPH 3 (OUR PURPOSE)
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.genesis?.p3 || ''}
@@ -518,18 +784,36 @@ export default function AdminTourinPage() {
         {/* ─── TAB 03: WHERE WE GO (DESTINATION) ─── */}
         {activeTab === 'destination' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Section 03: Where We Go (Destination Policy)
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Section 03: Where We Go (Destination Policy)
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#71717A' }}>
+                  Destination thinking, region discovery, and expansion routes.
+                </div>
+              </div>
+              <ToggleSwitch
+                checked={tourinData.destination?.enabled !== false}
+                onChange={(v) => handleDestinationChange('enabled', v)}
+                label="Section Enabled"
+              />
             </div>
-            <div style={{ fontSize: '0.78rem', color: '#71717A', lineHeight: 1.5 }}>
-              Currently kept focused exclusively on <strong>Ladakh</strong>. Copy indicates more destinations are being added (coming soon) without displaying placeholder cards.
-            </div>
+
+            {tourinData.destination?.enabled === false && (
+              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
+                Section 03 is disabled and hidden on the website.
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.destination?.tagEnabled !== false}
+                  onToggle={(v) => handleDestinationChange('tagEnabled', v)}
+                >
                   SECTION TAG
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.destination?.tag || ''}
@@ -539,9 +823,12 @@ export default function AdminTourinPage() {
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.destination?.headingEnabled !== false}
+                  onToggle={(v) => handleDestinationChange('headingEnabled', v)}
+                >
                   SECTION HEADING
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.destination?.heading || ''}
@@ -553,9 +840,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.destination?.primaryEnabled !== false}
+                onToggle={(v) => handleDestinationChange('primaryEnabled', v)}
+              >
                 PRIMARY REGION DESCRIPTION (LADAKH)
-              </label>
+              </FieldLabel>
               <textarea
                 rows={3}
                 value={tourinData.destination?.primary || ''}
@@ -566,9 +856,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.destination?.upcomingEnabled !== false}
+                onToggle={(v) => handleDestinationChange('upcomingEnabled', v)}
+              >
                 EXPANSION / COMING SOON COPY
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.destination?.upcoming || ''}
@@ -614,6 +907,7 @@ export default function AdminTourinPage() {
                   subtitle: 'High Passes, Starlit Deserts & Living Monasteries',
                   regions: 'Nubra · Sham Valley · Hanle Dark Sky · Zanskar',
                   image: '/images/tourin/dest-ladakh.jpg',
+                  enabled: true,
                 },
                 {
                   id: 'more-places',
@@ -623,6 +917,7 @@ export default function AdminTourinPage() {
                   regions: 'Carefully scouting new regions with local hosts and unhurried pacing.',
                   image: '/images/tourin/tourin-hero.jpg',
                   isComingSoon: true,
+                  enabled: true,
                 },
               ]).map((place: any, pIdx: number) => (
                 <div
@@ -641,14 +936,21 @@ export default function AdminTourinPage() {
                     <span style={{ fontSize: '0.72rem', fontWeight: 700, color: place.isComingSoon ? '#DE322D' : '#16A34A', textTransform: 'uppercase' }}>
                       {place.status || (place.isComingSoon ? 'Coming Soon' : 'Active')}
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => handleDeletePlace(pIdx)}
-                      title="Delete Place"
-                      style={{ border: 'none', background: 'transparent', color: '#EF4444', cursor: 'pointer', padding: '0.2rem' }}
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <ToggleSwitch
+                        checked={place.enabled !== false}
+                        onChange={(v) => handleUpdatePlace(pIdx, 'enabled', v)}
+                        label="Place Enabled"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleDeletePlace(pIdx)}
+                        title="Delete Place"
+                        style={{ border: 'none', background: 'transparent', color: '#EF4444', cursor: 'pointer', padding: '0.2rem' }}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
@@ -711,15 +1013,36 @@ export default function AdminTourinPage() {
         {/* ─── TAB 04: PHILOSOPHY ─── */}
         {activeTab === 'philosophy' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Section 03: Our Philosophy &amp; Core Belief
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Section 04: Our Philosophy &amp; Core Belief
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#71717A' }}>
+                  Principles, authentic pacing, and core experiential convictions.
+                </div>
+              </div>
+              <ToggleSwitch
+                checked={tourinData.philosophy?.enabled !== false}
+                onChange={(v) => handlePhilosophyChange('enabled', v)}
+                label="Section Enabled"
+              />
             </div>
+
+            {tourinData.philosophy?.enabled === false && (
+              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
+                Section 04 is disabled and hidden on the website.
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.philosophy?.tagEnabled !== false}
+                  onToggle={(v) => handlePhilosophyChange('tagEnabled', v)}
+                >
                   SECTION TAG
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.philosophy?.tag || ''}
@@ -729,9 +1052,12 @@ export default function AdminTourinPage() {
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.philosophy?.headingEnabled !== false}
+                  onToggle={(v) => handlePhilosophyChange('headingEnabled', v)}
+                >
                   SECTION HEADING
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.philosophy?.heading || ''}
@@ -743,9 +1069,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.philosophy?.p1Enabled !== false}
+                onToggle={(v) => handlePhilosophyChange('p1Enabled', v)}
+              >
                 PARAGRAPH 1 (SENSE OF PLACE)
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.philosophy?.p1 || ''}
@@ -755,9 +1084,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.philosophy?.p2Enabled !== false}
+                onToggle={(v) => handlePhilosophyChange('p2Enabled', v)}
+              >
                 PARAGRAPH 2 (IMMERSIVE ACTIONS)
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.philosophy?.p2 || ''}
@@ -767,9 +1099,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.philosophy?.quoteEnabled !== false}
+                onToggle={(v) => handlePhilosophyChange('quoteEnabled', v)}
+              >
                 SIGNATURE QUOTE BLOCK
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.philosophy?.quote || ''}
@@ -795,7 +1130,32 @@ export default function AdminTourinPage() {
                 gap: '0.35rem',
               }}
             >
-              {tourinData.journeys.map((j: any) => {
+              <div
+                style={{
+                  padding: '0.45rem 0.6rem',
+                  borderRadius: '8px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '0.35rem',
+                }}
+              >
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#111113' }}>
+                  SECTION
+                </span>
+                <ToggleSwitch
+                  checked={tourinData.journeysEnabled !== false}
+                  onChange={(v) => {
+                    const updated = { ...tourinData, journeysEnabled: v };
+                    applyTourinUpdate(updated);
+                  }}
+                  label="Section Enabled"
+                />
+              </div>
+
+              {(tourinData.journeys || []).map((j: any) => {
                 const isSelected = j.id === selectedJourney?.id;
                 return (
                   <div
@@ -967,7 +1327,10 @@ export default function AdminTourinPage() {
                         />
                         <button
                           type="button"
-                          onClick={() => setIsMediaPickerOpen(true)}
+                          onClick={() => {
+                            setMediaTarget('journey');
+                            setIsMediaPickerOpen(true);
+                          }}
                           style={{
                             padding: '0.45rem 0.85rem',
                             borderRadius: '8px',
@@ -998,18 +1361,36 @@ export default function AdminTourinPage() {
         {/* ─── TAB 06: JOURNEYS TAKEN (PROOF) ─── */}
         {activeTab === 'proof' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Section 06: Journeys Already Taken (Proof &amp; Track Record)
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Section 06: Journeys Already Taken (Proof &amp; Track Record)
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#71717A' }}>
+                  Focus on depth, execution quality, and medical safety.
+                </div>
+              </div>
+              <ToggleSwitch
+                checked={tourinData.journeysTaken?.enabled !== false}
+                onChange={(v) => handleJourneysTakenChange('enabled', v)}
+                label="Section Enabled"
+              />
             </div>
-            <div style={{ fontSize: '0.78rem', color: '#71717A', lineHeight: 1.5 }}>
-              Focus on depth, execution quality, and medical safety. <em>(Guideline: Avoid arbitrary numbers or metrics in narrative copy).</em>
-            </div>
+
+            {tourinData.journeysTaken?.enabled === false && (
+              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
+                Section 06 is disabled and hidden on the website.
+              </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.journeysTaken?.tagEnabled !== false}
+                  onToggle={(v) => handleJourneysTakenChange('tagEnabled', v)}
+                >
                   SECTION TAG
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.journeysTaken?.tag || ''}
@@ -1019,9 +1400,12 @@ export default function AdminTourinPage() {
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                <FieldLabel
+                  enabled={tourinData.journeysTaken?.headingEnabled !== false}
+                  onToggle={(v) => handleJourneysTakenChange('headingEnabled', v)}
+                >
                   SECTION HEADING
-                </label>
+                </FieldLabel>
                 <input
                   type="text"
                   value={tourinData.journeysTaken?.heading || ''}
@@ -1033,9 +1417,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.journeysTaken?.p1Enabled !== false}
+                onToggle={(v) => handleJourneysTakenChange('p1Enabled', v)}
+              >
                 PRIMARY SUMMARY PARAGRAPH
-              </label>
+              </FieldLabel>
               <textarea
                 rows={3}
                 value={tourinData.journeysTaken?.p1 || ''}
@@ -1046,9 +1433,12 @@ export default function AdminTourinPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+              <FieldLabel
+                enabled={tourinData.journeysTaken?.p2Enabled !== false}
+                onToggle={(v) => handleJourneysTakenChange('p2Enabled', v)}
+              >
                 OPERATIONAL &amp; SAFETY DETAIL PARAGRAPH
-              </label>
+              </FieldLabel>
               <textarea
                 rows={2}
                 value={tourinData.journeysTaken?.p2 || ''}
@@ -1063,14 +1453,75 @@ export default function AdminTourinPage() {
         {/* ─── TAB 07: READINESS STATS ─── */}
         {activeTab === 'stats' && (
           <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Section 05: Operational Readiness &amp; Pacing Stats (4 Metrics)
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Section 07: Operational Readiness Stats
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#71717A' }}>
+                  Key quantitative metrics displayed on the website.
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <button
+                  type="button"
+                  onClick={handleAddStat}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.35rem 0.75rem',
+                    borderRadius: '9999px',
+                    border: '1px solid rgba(0, 0, 0, 0.15)',
+                    backgroundColor: '#FFFFFF',
+                    color: '#111113',
+                    fontSize: '0.74rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Plus size={13} />
+                  Add Metric
+                </button>
+                <ToggleSwitch
+                  checked={tourinData.statsEnabled !== false}
+                  onChange={(v) => {
+                    const updated = { ...tourinData, statsEnabled: v };
+                    applyTourinUpdate(updated);
+                  }}
+                  label="Section Enabled"
+                />
+              </div>
             </div>
+
+            {tourinData.statsEnabled === false && (
+              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
+                Section 07 is disabled and hidden on the website.
+              </div>
+            )}
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              {(tourinData.stats || [{}, {}, {}, {}]).map((stat: any, idx: number) => (
+              {(tourinData.stats || []).map((stat: any, idx: number) => (
                 <div key={idx} style={{ padding: '1rem', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '10px', backgroundColor: '#FAFAFA' }}>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#DE322D', marginBottom: '0.5rem' }}>
-                    METRIC CARD {String(idx + 1).padStart(2, '0')}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#DE322D' }}>
+                      METRIC CARD {String(idx + 1).padStart(2, '0')}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <ToggleSwitch
+                        checked={stat.enabled !== false}
+                        onChange={(v) => handleToggleStat(idx, v)}
+                        label="Metric Enabled"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteStat(idx)}
+                        title="Delete Metric"
+                        style={{ border: 'none', background: 'transparent', color: '#EF4444', cursor: 'pointer', padding: '0.2rem' }}
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
                   </div>
                   <div style={{ marginBottom: '0.75rem' }}>
                     <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
@@ -1111,12 +1562,28 @@ export default function AdminTourinPage() {
       {/* Media Picker Modal */}
       <MediaPickerModal
         isOpen={isMediaPickerOpen}
-        onClose={() => setIsMediaPickerOpen(false)}
-        mediaType="image"
-        initialUrl={selectedJourney?.image || ''}
-        onSelect={(url) => {
-          handleJourneyChange('image', url);
+        onClose={() => {
           setIsMediaPickerOpen(false);
+          setMediaTarget(null);
+        }}
+        mediaType="image"
+        initialUrl={
+          mediaTarget === 'image1'
+            ? tourinData.hero?.image1?.src || ''
+            : mediaTarget === 'image2'
+            ? tourinData.hero?.image2?.src || ''
+            : mediaTarget === 'image3'
+            ? tourinData.hero?.image3?.src || ''
+            : selectedJourney?.image || ''
+        }
+        onSelect={(url) => {
+          if (mediaTarget === 'image1' || mediaTarget === 'image2' || mediaTarget === 'image3') {
+            handleHeroImageChange(mediaTarget, 'src', url);
+          } else {
+            handleJourneyChange('image', url);
+          }
+          setIsMediaPickerOpen(false);
+          setMediaTarget(null);
         }}
       />
 

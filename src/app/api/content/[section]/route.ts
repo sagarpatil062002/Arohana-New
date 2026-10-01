@@ -28,12 +28,29 @@ export async function POST(
   try {
     const { section } = params;
     const body = await req.json();
+    const action = body.action || 'draft';
 
-    // Persist immediately to disk so changes are permanent across server restarts
-    const written = writeContentFile(`${section}.json`, body.data);
-    saveSectionDraft(section, body.data);
-
-    return NextResponse.json({ success: true, written, section, draftSaved: true, saved: true });
+    if (action === 'publish') {
+      const written = writeContentFile(`${section}.json`, body.data);
+      return NextResponse.json({
+        success: true,
+        written,
+        section,
+        published: true,
+        live: true,
+        message: `${section} published live successfully`,
+      });
+    } else {
+      // Save to admin CRM draft store (both memory & content/drafts/)
+      saveSectionDraft(section, body.data);
+      return NextResponse.json({
+        success: true,
+        section,
+        draftSaved: true,
+        published: false,
+        message: `${section} draft saved to Admin CRM`,
+      });
+    }
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

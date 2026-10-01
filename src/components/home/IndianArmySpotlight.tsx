@@ -58,7 +58,13 @@ const ARMY_PROJECT_CARDS: ArmyCard[] = [
 export default function IndianArmySpotlight() {
   const { content } = useCmsContent();
   const armyCms = content?.home?.armySpotlight;
-  const cards: ArmyCard[] = (armyCms?.cards && armyCms.cards.length > 0) ? armyCms.cards : ARMY_PROJECT_CARDS;
+  const isEnabled = armyCms?.enabled !== false;
+  const showEyebrow = armyCms?.showEyebrow !== false;
+  const showHeadline = armyCms?.showHeadline !== false;
+  const showDescription = armyCms?.showDescription !== false;
+
+  const rawCards = (armyCms?.cards && armyCms.cards.length > 0) ? armyCms.cards : ARMY_PROJECT_CARDS;
+  const cards: ArmyCard[] = rawCards.filter((c: any) => c && c.enabled !== false);
 
   // Center card (item 01 at index 2) is initially active
   const [activeIndex, setActiveIndex] = useState(2);
@@ -71,7 +77,7 @@ export default function IndianArmySpotlight() {
   const isMouseDown = useRef(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const total = cards.length;
+  const total = Math.max(cards.length, 1);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -163,6 +169,8 @@ export default function IndianArmySpotlight() {
       mouseStartX.current = null;
     }
   };
+
+  if (!isEnabled) return null;
 
   return (
     <section
@@ -283,18 +291,25 @@ export default function IndianArmySpotlight() {
               <span className="army-mobile-badge-text">INDIAN ARMY PROJECTS</span>
             </div>
 
-            <div className="army-eyebrow-row">
-              <span className="army-eyebrow-text">{armyCms?.eyebrow || 'BRANDING & COMMUNICATION - INSTITUTIONAL'}</span>
-              <span className="army-eyebrow-dash" />
-            </div>
+            {showEyebrow && (
+              <div className="army-eyebrow-row">
+                <span className="army-eyebrow-text">
+                  {(armyCms?.eyebrow || 'BRANDING & COMMUNICATION INSTITUTIONAL').replace(/\s*[-—–]\s*INSTITUTIONAL/i, ' INSTITUTIONAL')}
+                </span>
+              </div>
+            )}
 
-            <h2 className="army-headline">
-              {armyCms?.title || 'Making institutional\nstories matter\ndigitally'}
-            </h2>
+            {showHeadline && (
+              <h2 className="army-headline">
+                {armyCms?.title || 'Making institutional\nstories matter\ndigitally'}
+              </h2>
+            )}
 
-            <p className="army-description">
-              {armyCms?.description || 'Social media content shoot, brand communication, on-ground storytelling designed for defence and institutional organizations'}
-            </p>
+            {showDescription && (
+              <p className="army-description">
+                {armyCms?.description || 'Social media content shoot, brand communication, on-ground storytelling designed for defence and institutional organizations'}
+              </p>
+            )}
           </div>
         </div>
 

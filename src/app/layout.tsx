@@ -41,7 +41,7 @@ export default function RootLayout({
   const initialContent: Record<string, any> = {};
   for (const s of sections) {
     try {
-      const val = getSectionContent(s, true);
+      const val = getSectionContent(s, false);
       if (val) initialContent[s] = val;
     } catch (e) {}
   }

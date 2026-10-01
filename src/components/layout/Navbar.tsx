@@ -84,56 +84,30 @@ export default function Navbar() {
         }}
       >
         {/* Brand / Logo */}
-        {isTourin ? (
-          <Link
-            href="/tourin"
+        <Link
+          href="/"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            zIndex: 2,
+          }}
+        >
+          <Image
+            src="/images/arohana-logo.png"
+            alt="ĀROHANA"
+            width={124}
+            height={22}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              textDecoration: 'none',
-              zIndex: 2,
+              height: '22px',
+              width: 'auto',
+              objectFit: 'contain',
+              filter: isDarkHero ? 'brightness(0) invert(1)' : 'none',
+              transition: 'filter 0.3s ease',
             }}
-          >
-            <Image
-              src="/images/tourin/tourin-logo.png"
-              alt="Tourin by Ārohana"
-              width={120}
-              height={44}
-              style={{
-                height: '44px',
-                width: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-              }}
-              priority
-            />
-          </Link>
-        ) : (
-          <Link
-            href="/"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              textDecoration: 'none',
-              zIndex: 2,
-            }}
-          >
-            <Image
-              src="/images/arohana-logo.png"
-              alt="ĀROHANA"
-              width={124}
-              height={22}
-              style={{
-                height: '22px',
-                width: 'auto',
-                objectFit: 'contain',
-                filter: isDarkHero ? 'brightness(0) invert(1)' : 'none',
-                transition: 'filter 0.3s ease',
-              }}
-              priority
-            />
-          </Link>
-        )}
+            priority
+          />
+        </Link>
 
         {/* Desktop Navigation Links - Centered */}
         <nav

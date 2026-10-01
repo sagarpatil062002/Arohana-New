@@ -773,6 +773,52 @@ button, input, select, textarea {
   max-width: 440px;
 }
 
+/* Primary Destination + Operational Elevation meta row */
+.tourin-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  max-width: 440px;
+  margin-bottom: 34px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.tourin-meta-item,
+.tourin-meta-link {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-decoration: none;
+}
+
+.tourin-meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a8a92;
+}
+
+.tourin-meta-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.92rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: #111111;
+}
+
+.tourin-meta-link .tourin-meta-value {
+  color: #de322d;
+  transition: color 0.2s ease;
+}
+
+.tourin-meta-link:hover .tourin-meta-value {
+  color: #111111;
+}
+
 .tourin-action-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -909,12 +955,27 @@ button, input, select, textarea {
   letter-spacing: -0.01em;
 }
 
-/* Right Column */
+/* Right Column — Image 2 (upper) + Image 3 (lower), exactly equal height */
 .tourin-col-right {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 28px;
+  gap: clamp(16px, 2vw, 28px);
+  height: 100%;
+  min-height: 0;
+}
+
+/* Each stacked image takes an equal share of the right column height:
+   Image 2 height = Image 3 height  AND  Image 2 + gap + Image 3 = Image 1 height */
+.tourin-img-slot {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  border-radius: var(--radius-card, 6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.22);
 }
 
 .tourin-right-upper {
@@ -1063,11 +1124,12 @@ button, input, select, textarea {
   .tourin-col-right {
     grid-column: span 2;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
+    height: auto;
   }
 
-  .tourin-right-lower {
-    max-width: 320px;
+  .tourin-img-slot {
+    min-height: 280px;
   }
 
   .santorini-feature-card {
@@ -1089,10 +1151,11 @@ button, input, select, textarea {
     grid-column: span 1;
     flex-direction: column;
     align-items: stretch;
+    height: auto;
   }
 
-  .tourin-right-lower {
-    max-width: 100%;
+  .tourin-img-slot {
+    min-height: 240px;
   }
 
   .santorini-feature-card {
@@ -1145,8 +1208,9 @@ button, input, select, textarea {
     font-size: 1.75rem;
   }
 
-  .lake-thumbnail-card {
-    height: 160px;
+  .lake-thumbnail-card,
+  .tourin-img-slot {
+    min-height: 180px;
   }
 }
 

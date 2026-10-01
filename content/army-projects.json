@@ -16,10 +16,9 @@
       "title": "Investiture Ceremony",
       "subtitle": "Shoot · Production · Post-production",
       "description": "Ārohana handled the ceremonial shoot, protocol direction, and rapid post-production for the prestigious Western Command Investiture Ceremony in February 2026.",
-      "scopeOfWork": "Coverage of formal investiture protocols, honors and gallantry awards distribution, parade sequences, and master post-production.",
-      "creativeApproach": "Restrained, dignified visual pacing tailored to military protocol and ceremonial integrity.",
-      "productionDiscipline": "Tight turnaround master post-production with multi-track sound engineering and high-definition broadcast mastering.",
-      "videoUrl": "",
+      "videoUrl": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+      "redirectionUrl": "",
+      "thumbnail": "/images/army/western-command-1.jpg",
       "image": "/images/army/western-command-1.jpg",
       "sidePhotos": [
         "/images/army/western-command-official.jpg",
@@ -37,11 +36,37 @@
       "title": "Communication & Production",
       "subtitle": "Design · Scripting · films",
       "description": "Ārohana has undertaken visual communication, editorial design and film production work for 14 Corps Headquarters, including visual campaigns, outreach documentation, and First Villages outreach across border regions.",
-      "scopeOfWork": "Institutional communications campaigns, internal and public-facing visual communication, photo documentation, and community hygiene initiatives.",
-      "creativeApproach": "Authentic high-altitude cinematography paired with authoritative scripting and professional narration.",
-      "productionDiscipline": "Field documentation in sub-zero and remote mountain environments requiring specialised equipment and acclimatised crews.",
+      "caseStudyEnabled": true,
+      "caseStudyUrl": "/work/she",
+      "caseStudyLabel": "View case study ↗",
       "videoUrl": "",
       "image": "/uploads/1790515799187-high-alltitude-1.jpg",
+      "interactiveCards": [
+        {
+          "id": "c1",
+          "title": "First Villages",
+          "description": "Comprehensive outreach documentation across border settlements.",
+          "image": "/images/army/adgpi-firstvillages.jpg",
+          "link": "/work",
+          "enabled": true
+        },
+        {
+          "id": "c2",
+          "title": "SHE Ladakh",
+          "description": "Women empowerment and healthcare visual communications initiative.",
+          "image": "/images/army/firefury-changthang-health.jpg",
+          "link": "/work/she",
+          "enabled": true
+        },
+        {
+          "id": "c3",
+          "title": "Border Health",
+          "description": "On-ground medical support campaigns in remote high-altitude sectors.",
+          "image": "/images/army/adgpi-she-thumb-2.jpg",
+          "link": "/work",
+          "enabled": true
+        }
+      ],
       "sidePhotos": [
         "/images/army/firefury-changthang-health.jpg",
         "/uploads/1790515822524-high-altitude-2.jpg",
@@ -59,9 +84,27 @@
       "title": "Fire & Fury Corps — XIV Corps, Rezang La & 69 Armoured",
       "subtitle": "Collateral designing · Content creation · Publications",
       "description": "Comprehensive institutional communication, editorial publications, and visual documentation uniting XIV Corps Headquarters, 69 Armoured Regiment collateral designing and content creation, and the historic Rezang La War Memorial documentation.",
-      "scopeOfWork": "Coffee table book designs, historical commemorative literature, 69 Armoured Regiment collateral designing & content creation, civil-military partnerships, and editorial photo production.",
-      "creativeApproach": "Balancing military gravitas and historical precision with contemporary editorial typography.",
-      "productionDiscipline": "Seamless integration between on-ground research, military history curation, and museum-grade publication finishing.",
+      "carouselEnabled": true,
+      "carouselImages": [
+        {
+          "id": "1",
+          "image": "/uploads/1790516375474-firefury1.jpg",
+          "caption": "Fire & Fury XIV Corps Publication Architecture",
+          "enabled": true
+        },
+        {
+          "id": "2",
+          "image": "/images/army/69armoured-2.jpg",
+          "caption": "69 Armoured Regiment Alpine Desert Formations",
+          "enabled": true
+        },
+        {
+          "id": "3",
+          "image": "/uploads/1790516827847-rezang-la-memorial.jpg",
+          "caption": "Rezang La Commemorative Archive",
+          "enabled": true
+        }
+      ],
       "videoUrl": "",
       "image": "/uploads/1790516375474-firefury1.jpg",
       "sidePhotos": [
@@ -81,9 +124,9 @@
       "title": "Rezang La War Memorial",
       "subtitle": "Collateral designing | Content production",
       "description": "Coffee table book designs, editorial layouts, commemorative publication architecture, and visual content production for the Rezang La War Memorial honoring the supreme sacrifice of the 114 gallant soldiers in the 1962 Battle of Rezang La.",
-      "scopeOfWork": "Complete coffee table book design, editorial architecture, hardbound cover systems, archival typography, photo restoration, and on-location memorial documentation.",
-      "creativeApproach": "Subtle, dignified layout allowing historical accounts, family tributes, and veteran testimonies to stand out with gravitas.",
-      "productionDiscipline": "High-specification tactile print finishing, custom clothbound styling, and archival reproduction.",
+      "landscapeImage": "/uploads/1790516827847-rezang-la-memorial.jpg",
+      "landscapeImageLink": "",
+      "landscapeImageEnabled": true,
       "videoUrl": "",
       "image": "/uploads/1790516737581-rezangla.jpg",
       "sidePhotos": [

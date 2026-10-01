@@ -8,6 +8,7 @@ interface CmsContextType {
   refreshSection: (section: string) => Promise<void>;
   updateDraftInMemory: (section: string, data: any) => void;
   saveDraft: (section: string, data: any) => Promise<boolean>;
+  publishSection: (section: string, data?: any) => Promise<boolean>;
   publishAll: () => Promise<{ success: boolean; publishedSections: string[] }>;
 }
 
@@ -41,9 +42,14 @@ export function CmsProvider({
 
   // Initial load of sections via single batch endpoint
   useEffect(() => {
-    const cached = getLocalDrafts();
+    const isEditingOrPreview = typeof window !== 'undefined' && (
+      window.location.pathname.startsWith('/admin') ||
+      window.location.search.includes('preview=true')
+    );
+    const cached = isEditingOrPreview ? getLocalDrafts() : {};
+    const batchUrl = isEditingOrPreview ? '/api/content?draft=true' : '/api/content?draft=false';
 
-    fetch('/api/content')
+    fetch(batchUrl)
       .then((r) => r.json())
       .then((res) => {
         if (res.success && res.data) {
@@ -57,7 +63,7 @@ export function CmsProvider({
         const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
         Promise.all(
           sections.map((sec) =>
-            fetch(`/api/content/${sec}`)
+            fetch(`/api/content/${sec}?draft=${isEditingOrPreview}`)
               .then((r) => r.json())
               .then((res) => ({ section: sec, data: res.data }))
               .catch(() => ({ section: sec, data: null }))
@@ -72,23 +78,37 @@ export function CmsProvider({
         });
       });
 
-    // Listen to broadcast messages from admin editor if previewing in another tab/frame
+    // Listen to broadcast messages & postMessage from admin editor
     const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('arohana_cms_preview') : null;
     channelRef.current = channel;
     if (channel) {
       channel.onmessage = (event) => {
-        if (event.data?.type === 'DRAFT_UPDATE' && event.data.section && event.data.data) {
+        if ((event.data?.type === 'DRAFT_UPDATE' || event.data?.type === 'CMS_UPDATE') && event.data.section && event.data.data) {
           setContent((prev) => ({
             ...prev,
             [event.data.section]: event.data.data,
           }));
         }
       };
-      return () => {
+    }
+
+    const handleWindowMessage = (event: MessageEvent) => {
+      if ((event.data?.type === 'DRAFT_UPDATE' || event.data?.type === 'CMS_UPDATE') && event.data.section && event.data.data) {
+        setContent((prev) => ({
+          ...prev,
+          [event.data.section]: event.data.data,
+        }));
+      }
+    };
+    window.addEventListener('message', handleWindowMessage);
+
+    return () => {
+      if (channel) {
         channel.close();
         channelRef.current = null;
-      };
-    }
+      }
+      window.removeEventListener('message', handleWindowMessage);
+    };
   }, []);
 
   const refreshSection = async (section: string) => {
@@ -129,7 +149,7 @@ export function CmsProvider({
       const res = await fetch(`/api/content/${section}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data }),
+        body: JSON.stringify({ data, action: 'draft' }),
       });
       const json = await res.json();
       return !!json.success;
@@ -139,9 +159,37 @@ export function CmsProvider({
     }
   };
 
+  const publishSection = async (section: string, data?: any): Promise<boolean> => {
+    try {
+      const payload = data !== undefined ? data : content[section];
+      updateDraftInMemory(section, payload);
+      const res = await fetch(`/api/content/${section}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: payload, action: 'publish' }),
+      });
+      const json = await res.json();
+      if (json.success && typeof window !== 'undefined') {
+        try {
+          localStorage.removeItem(`arohana_cms_${section}`);
+        } catch (e) {}
+      }
+      return !!json.success;
+    } catch (err) {
+      console.error(`Publish failed for ${section}:`, err);
+      return false;
+    }
+  };
+
   const publishAll = async () => {
     const res = await fetch('/api/content/publish', { method: 'POST' });
     const json = await res.json();
+    if (json.success && typeof window !== 'undefined') {
+      try {
+        const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
+        sections.forEach((s) => localStorage.removeItem(`arohana_cms_${s}`));
+      } catch (e) {}
+    }
     return json;
   };
 
@@ -153,6 +201,7 @@ export function CmsProvider({
         refreshSection,
         updateDraftInMemory,
         saveDraft,
+        publishSection,
         publishAll,
       }}
     >

@@ -2,14 +2,34 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCmsContent } from '@/lib/cms/content-context';
-import { Save, Check, Plus, Trash2, ExternalLink, HelpCircle, Phone, Mail, MapPin, Globe, MessageSquare } from 'lucide-react';
+import { Save, Check, Plus, Trash2, ExternalLink, HelpCircle, Phone, Mail, MapPin, Globe, MessageSquare, Eye, EyeOff, X } from 'lucide-react';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 export default function AdminContactPage() {
-  const { content, saveDraft, updateDraftInMemory } = useCmsContent();
+  const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [contactData, setContactData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'header' | 'channels' | 'callCta' | 'faqs'>('header');
   const [savedStatus, setSavedStatus] = useState(false);
+  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const [deleteFaqIdx, setDeleteFaqIdx] = useState<number | null>(null);
+
+  const showToast = (msg: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3500);
+  };
+
+  const updateField = (path: string[], value: any) => {
+    const updated = JSON.parse(JSON.stringify(contactData));
+    let node: any = updated;
+    for (let i = 0; i < path.length - 1; i++) {
+      if (node[path[i]] === undefined) node[path[i]] = {};
+      node = node[path[i]];
+    }
+    node[path[path.length - 1]] = value;
+    setContactData(updated);
+    updateDraftInMemory('contact', updated);
+  };
 
   useEffect(() => {
     if (content.contact) {
@@ -55,6 +75,7 @@ export default function AdminContactPage() {
     const updated = { ...contactData, faqs: nextFaqs };
     setContactData(updated);
     updateDraftInMemory('contact', updated);
+    showToast('New FAQ added.', 'info');
   };
 
   const handleRemoveFaq = (index: number) => {
@@ -62,6 +83,7 @@ export default function AdminContactPage() {
     const updated = { ...contactData, faqs: nextFaqs };
     setContactData(updated);
     updateDraftInMemory('contact', updated);
+    showToast('FAQ deleted.', 'success');
   };
 
   const handleSave = async () => {
@@ -69,6 +91,18 @@ export default function AdminContactPage() {
     if (ok) {
       setSavedStatus(true);
       setTimeout(() => setSavedStatus(false), 2000);
+      showToast('Draft saved successfully.', 'success');
+    } else {
+      showToast('Failed to save draft. Please retry.', 'error');
+    }
+  };
+
+  const handlePublish = async () => {
+    const ok = await publishSection('contact', contactData);
+    if (ok) {
+      showToast('Contact page published live!', 'success');
+    } else {
+      showToast('Publish failed. Please retry.', 'error');
     }
   };
 
@@ -81,6 +115,32 @@ export default function AdminContactPage() {
 
   return (
     <div style={{ maxWidth: '1600px', margin: '0 auto', paddingBottom: '4rem' }}>
+      {/* TOAST */}
+      {toast && (
+        <div style={{
+          position: 'fixed', top: '1.5rem', right: '1.5rem', zIndex: 9999,
+          padding: '0.85rem 1.35rem', borderRadius: '8px',
+          backgroundColor: toast.type === 'success' ? '#15803D' : toast.type === 'error' ? '#DC2626' : '#2563EB',
+          color: '#fff', fontSize: '0.85rem', fontWeight: 600,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+        }}>
+          {toast.type === 'success' ? <Check size={14} /> : <X size={14} />}
+          {toast.msg}
+        </div>
+      )}
+
+      {/* ConfirmDialog for FAQ deletion */}
+      <ConfirmDialog
+        isOpen={deleteFaqIdx !== null}
+        title="Delete FAQ"
+        message={`Delete FAQ #${(deleteFaqIdx ?? 0) + 1}? This cannot be undone.`}
+        onConfirm={() => {
+          if (deleteFaqIdx !== null) handleRemoveFaq(deleteFaqIdx);
+          setDeleteFaqIdx(null);
+        }}
+        onCancel={() => setDeleteFaqIdx(null)}
+      />
       {/* Top Header */}
       <div
         style={{
@@ -159,7 +219,29 @@ export default function AdminContactPage() {
             }}
           >
             {savedStatus ? <Check size={15} /> : <Save size={15} />}
-            {savedStatus ? 'Saved Successfully' : 'Save Changes'}
+            {savedStatus ? 'Draft Saved!' : 'Save Draft'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handlePublish}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.55rem 1.4rem',
+              borderRadius: '9999px',
+              border: 'none',
+              backgroundColor: '#DE322D',
+              color: '#FFFFFF',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+          >
+            <ExternalLink size={15} />
+            Publish Live
           </button>
         </div>
       </div>
@@ -221,6 +303,23 @@ export default function AdminContactPage() {
           {/* TAB 1: HEADER & INTRO */}
           {activeTab === 'header' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {/* Section Toggle Bar */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '0.75rem 1rem', borderRadius: '8px',
+                backgroundColor: contactData.headerEnabled !== false ? '#F0FDF4' : '#FEF2F2',
+                borderBottom: contactData.headerEnabled !== false ? '1px solid #BBF7D0' : '1px solid #FECACA',
+              }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: contactData.headerEnabled !== false ? '#15803D' : '#B91C1C' }}>
+                  Header Section: {contactData.headerEnabled !== false ? 'ENABLED' : 'DISABLED'}
+                </span>
+                <button type="button" onClick={() => { const cur = contactData.headerEnabled !== false; updateField(['headerEnabled'], !cur); showToast(`Header ${cur ? 'disabled' : 'enabled'}.`, 'info'); }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.9rem', borderRadius: '5px', border: 'none', backgroundColor: contactData.headerEnabled !== false ? '#DC2626' : '#16A34A', color: '#fff', fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer' }}>
+                  {contactData.headerEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
+                  {contactData.headerEnabled !== false ? 'Disable' : 'Enable'}
+                </button>
+              </div>
+
               <div>
                 <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111' }}>
                   Header &amp; Page Introduction
@@ -291,6 +390,23 @@ export default function AdminContactPage() {
           {/* TAB 2: CHANNELS & OFFICE */}
           {activeTab === 'channels' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {/* Section Toggle Bar */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '0.75rem 1rem', borderRadius: '8px',
+                backgroundColor: contactData.channelsEnabled !== false ? '#F0FDF4' : '#FEF2F2',
+                borderBottom: contactData.channelsEnabled !== false ? '1px solid #BBF7D0' : '1px solid #FECACA',
+              }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 700, color: contactData.channelsEnabled !== false ? '#15803D' : '#B91C1C' }}>
+                  Channels Section: {contactData.channelsEnabled !== false ? 'ENABLED' : 'DISABLED'}
+                </span>
+                <button type="button" onClick={() => { const cur = contactData.channelsEnabled !== false; updateField(['channelsEnabled'], !cur); showToast(`Channels section ${cur ? 'disabled' : 'enabled'}.`, 'info'); }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.9rem', borderRadius: '5px', border: 'none', backgroundColor: contactData.channelsEnabled !== false ? '#DC2626' : '#16A34A', color: '#fff', fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer' }}>
+                  {contactData.channelsEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
+                  {contactData.channelsEnabled !== false ? 'Disable' : 'Enable'}
+                </button>
+              </div>
+
               <div>
                 <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111' }}>
                   Direct Channels, Office &amp; Socials
@@ -626,7 +742,7 @@ export default function AdminContactPage() {
                       </span>
                       <button
                         type="button"
-                        onClick={() => handleRemoveFaq(idx)}
+                        onClick={() => setDeleteFaqIdx(idx)}
                         style={{
                           background: 'none',
                           border: 'none',

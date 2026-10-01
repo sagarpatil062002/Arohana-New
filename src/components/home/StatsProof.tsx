@@ -5,24 +5,19 @@ import React from 'react';
 export default function StatsProof() {
   const stats = [
     {
-      num: '06',
-      label: 'Verified Case Studies',
-      desc: 'In-depth problem, approach, evidence and outcome narratives without marketing fluff.',
-    },
-    {
-      num: '15+',
-      label: 'Ladakh Journeys Executed',
-      desc: 'Through Tourin, delivering experiential travel from individuals to 20-biker expeditions.',
+      num: '25+',
+      label: 'Commercial Engagements',
+      desc: 'Direct partnerships across hospitality, enterprise and consumer brands.',
     },
     {
       num: '10+',
-      label: 'Years Operational Practice',
-      desc: 'Deep commercial experience in hospitality, industrial manufacturing, and media.',
+      label: 'Industry Sectors',
+      desc: 'Deep commercial experience in hospitality, real estate, healthcare, media and defence.',
     },
     {
-      num: '0',
-      label: 'Vanity Metrics Claimed',
-      desc: 'No fabricated awards, fake performance statistics, or generated client testimonials.',
+      num: '15+',
+      label: 'Himalayan Expeditions',
+      desc: 'Through Tourin, delivering experiential travel from individuals to expeditions.',
     },
   ];
 

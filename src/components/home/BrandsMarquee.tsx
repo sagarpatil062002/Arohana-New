@@ -130,8 +130,11 @@ const PARTNER_BRANDS: BrandItem[] = [
 export default function BrandsMarquee() {
   const { content } = useCmsContent();
   const brandsCms = content?.home?.brands;
+  const isEnabled = brandsCms?.enabled !== false;
+  const showHeading = brandsCms?.showHeading !== false;
   const activeHeading = brandsCms?.heading || 'Trusted by Brands & Institutions';
-  const activeBrands: BrandItem[] = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
+  const rawBrands: BrandItem[] = (brandsCms?.list && brandsCms.list.length > 0) ? brandsCms.list : PARTNER_BRANDS;
+  const activeBrands: BrandItem[] = rawBrands.filter((b: any) => b && b.enabled !== false);
 
   const renderBrandCard = (brand: BrandItem, idx: number, prefix: string) => (
     <Link
@@ -216,6 +219,8 @@ export default function BrandsMarquee() {
     </Link>
   );
 
+  if (!isEnabled || activeBrands.length === 0) return null;
+
   return (
     <section
       id="trusted-by"
@@ -230,22 +235,24 @@ export default function BrandsMarquee() {
         position: 'relative',
       }}
     >
-      <div className="padding-global container-large" style={{ marginBottom: '2.25rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-          <h3
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(1.5rem, 2.5vw, 2.15rem)',
-              fontWeight: 600,
-              letterSpacing: '-0.025em',
-              color: '#18181b',
-              margin: 0,
-            }}
-          >
-            {activeHeading}
-          </h3>
+      {showHeading && (
+        <div className="padding-global container-large" style={{ marginBottom: '2.25rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <h3
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.5rem, 2.5vw, 2.15rem)',
+                fontWeight: 600,
+                letterSpacing: '-0.025em',
+                color: '#18181b',
+                margin: 0,
+              }}
+            >
+              {activeHeading}
+            </h3>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Continuously Flowing Marquee Track - Never Sticks or Pauses */}
       <div

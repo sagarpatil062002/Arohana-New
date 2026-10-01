@@ -1,0 +1,170 @@
+{
+  "results": [
+    {
+      "id": "TC-HOME-01",
+      "category": "Home Page",
+      "name": "Hero dash removal",
+      "passed": true,
+      "details": "Dash cleanly removed; clean tag present"
+    },
+    {
+      "id": "TC-HOME-02",
+      "category": "Home Page",
+      "name": "POV buttons removed from website",
+      "passed": true,
+      "details": "Both buttons completely absent from DOM"
+    },
+    {
+      "id": "TC-HOME-03",
+      "category": "Home Page",
+      "name": "Work Proof red dash & subtitle removal",
+      "passed": true,
+      "details": "Work proof dash present: false, subtitle present: false"
+    },
+    {
+      "id": "TC-HOME-04",
+      "category": "Home Page",
+      "name": "Statistics section count is exactly 3",
+      "passed": true,
+      "details": "Configured statistics count: 3 (Expected 3)"
+    },
+    {
+      "id": "TC-HOME-05",
+      "category": "Home Page",
+      "name": "Branding & Communication dash removal",
+      "passed": true,
+      "details": "Dash after BRANDING & COMMUNICATION present: false"
+    },
+    {
+      "id": "TC-STUDIO-01",
+      "category": "Studio Page",
+      "name": "Studio hero dash & CTA location removal",
+      "passed": true,
+      "details": "Hero dash present: false, CTA location present: false"
+    },
+    {
+      "id": "TC-PARITY-01",
+      "category": "Parity & Persistence",
+      "name": "Hero headline edit reflect on website",
+      "passed": true,
+      "details": "Successfully matched 'QA TEST HEADLINE - DO NOT KEEP' on website"
+    },
+    {
+      "id": "TC-PARITY-02",
+      "category": "Parity & Persistence",
+      "name": "Hero headline restored to original",
+      "passed": true,
+      "details": "Original hero headline restored cleanly"
+    },
+    {
+      "id": "TC-VISIBILITY-01",
+      "category": "Visibility Control",
+      "name": "Disable Statistic 1 hides it from website",
+      "passed": true,
+      "details": "Stat 1 label 'Commercial Engagements' is hidden from rendered DOM"
+    },
+    {
+      "id": "TC-VISIBILITY-02",
+      "category": "Visibility Control",
+      "name": "Re-enable Statistic 1 restores it to website",
+      "passed": true,
+      "details": "Stat 1 label 'Commercial Engagements' restored to website"
+    },
+    {
+      "id": "TC-STUDIO-02",
+      "category": "Studio Page",
+      "name": "Team member sequence reordering",
+      "passed": true,
+      "details": "Member 'Neha Mehta' appears before 'Abijitha'"
+    },
+    {
+      "id": "TC-LAYOUT-01",
+      "category": "Case Studies",
+      "name": "Layout 1 rendered",
+      "passed": true,
+      "details": "Layout 1 class applied"
+    },
+    {
+      "id": "TC-LAYOUT-02",
+      "category": "Case Studies",
+      "name": "Layout 2 rendered",
+      "passed": true,
+      "details": "Layout 2 class applied"
+    },
+    {
+      "id": "TC-LAYOUT-03",
+      "category": "Case Studies",
+      "name": "Layout 3 rendered",
+      "passed": true,
+      "details": "Layout 3 class applied"
+    },
+    {
+      "id": "TC-SCOPE-01",
+      "category": "Case Studies",
+      "name": "Core Scope disabled hides section completely",
+      "passed": true,
+      "details": "CORE SCOPE not present on case study page"
+    },
+    {
+      "id": "TC-SCOPE-02",
+      "category": "Case Studies",
+      "name": "Core Scope re-enabled restores section",
+      "passed": true,
+      "details": "CORE SCOPE rendered on case study page"
+    },
+    {
+      "id": "TC-PROJ-01",
+      "category": "Project Creation",
+      "name": "New project fields rendered on website",
+      "passed": true,
+      "details": "All test fields accurately displayed on website"
+    },
+    {
+      "id": "TC-PROJ-02",
+      "category": "Project Creation",
+      "name": "Disable project hides it from website",
+      "passed": true,
+      "details": "Project card is omitted from rendered DOM"
+    },
+    {
+      "id": "TC-PROJ-03",
+      "category": "Project Fields",
+      "name": "Removed legacy fields absent from website",
+      "passed": true,
+      "details": "Scope: false, Approach: false, Discipline: false"
+    },
+    {
+      "id": "TC-REZANG-01",
+      "category": "Rezang La Memorial",
+      "name": "Single landscape image configured & displayed",
+      "passed": true,
+      "details": "Landscape image: /uploads/1790516827847-rezang-la-memorial.jpg, in DOM: true"
+    },
+    {
+      "id": "TC-FIREFURY-01",
+      "category": "Firefury Corps",
+      "name": "Carousel image limits (min 2, max 5)",
+      "passed": true,
+      "details": "Configured carousel image count: 3"
+    },
+    {
+      "id": "TC-AUTOSCROLL-01",
+      "category": "Work Page",
+      "name": "AutoScroll component markup and script initialized",
+      "passed": true,
+      "details": "Reels track container rendered in DOM"
+    },
+    {
+      "id": "TC-COMMS-01",
+      "category": "Communication & Production",
+      "name": "3 interactive cards configured",
+      "passed": true,
+      "details": "Card count: 3"
+    }
+  ],
+  "summary": {
+    "total": 23,
+    "passed": 23,
+    "failed": 0
+  }
+}

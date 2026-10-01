@@ -30,13 +30,15 @@ import {
 } from 'lucide-react';
 
 export default function AdminHomePage() {
-  const { content, saveDraft, updateDraftInMemory } = useCmsContent();
+  const { content, saveDraft, publishSection, updateDraftInMemory } = useCmsContent();
   const [homeData, setHomeData] = useState<any>(null);
   const [activeSectionId, setActiveSectionId] = useState<string>('hero');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
   const [brandLogoIndex, setBrandLogoIndex] = useState<number | null>(null);
   const [heroSlideIndex, setHeroSlideIndex] = useState<number | null>(null);
-  const [savedStatus, setSavedStatus] = useState(false);
+  const [draftSavedStatus, setDraftSavedStatus] = useState(false);
+  const [publishedStatus, setPublishedStatus] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
   const editorScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,11 +73,163 @@ export default function AdminHomePage() {
     updateDraftInMemory('home', updated);
   };
 
+  // Atomic toggle for Hero section keeping hero.enabled and sections list in sync
+  const toggleHeroSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.hero?.enabled !== false;
+    const next = !current;
+    if (!updated.hero) updated.hero = {};
+    updated.hero.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'hero' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Hero Section is now Active' : '✕ Hero Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for Point of View section keeping pov.enabled and sections list in sync
+  const togglePovSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.pov?.enabled !== false;
+    const next = !current;
+    if (!updated.pov) updated.pov = {};
+    updated.pov.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'pov' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Point of View Section is now Active' : '✕ Point of View Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for Selected Work section
+  const toggleWorkSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.selectedWork?.enabled !== false;
+    const next = !current;
+    if (!updated.selectedWork) updated.selectedWork = {};
+    updated.selectedWork.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'work' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Selected Work Section is now Active' : '✕ Selected Work Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for Capabilities & Numbers section
+  const toggleServicesSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.services?.enabled !== false;
+    const next = !current;
+    if (!updated.services) updated.services = {};
+    updated.services.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'services' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Capabilities & Numbers Section is now Active' : '✕ Capabilities & Numbers Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for Brands Marquee section
+  const toggleBrandsSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.brands?.enabled !== false;
+    const next = !current;
+    if (!updated.brands) updated.brands = {};
+    updated.brands.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'brands' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Brands Marquee Section is now Active' : '✕ Brands Marquee Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for Indian Army Spotlight section
+  const toggleArmySection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.armySpotlight?.enabled !== false;
+    const next = !current;
+    if (!updated.armySpotlight) updated.armySpotlight = {};
+    updated.armySpotlight.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'army' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Indian Army Spotlight Section is now Active' : '✕ Indian Army Spotlight Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for Signature CTA section
+  const toggleCtaSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.cta?.enabled !== false;
+    const next = !current;
+    if (!updated.cta) updated.cta = {};
+    updated.cta.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'cta' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ Signature CTA Section is now Active' : '✕ Signature CTA Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
   const handleSectionVisibility = (id: string) => {
-    const updatedSections = (homeData.sections || []).map((sec: any) =>
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const updatedSections = (updated.sections || []).map((sec: any) =>
       sec.id === id ? { ...sec, visible: !sec.visible } : sec
     );
-    const updated = { ...homeData, sections: updatedSections };
+    updated.sections = updatedSections;
+    const targetSec = updatedSections.find((s: any) => s.id === id);
+    if (targetSec) {
+      if (id === 'hero') {
+        if (!updated.hero) updated.hero = {};
+        updated.hero.enabled = targetSec.visible;
+      } else if (id === 'pov') {
+        if (!updated.pov) updated.pov = {};
+        updated.pov.enabled = targetSec.visible;
+      } else if (id === 'work') {
+        if (!updated.selectedWork) updated.selectedWork = {};
+        updated.selectedWork.enabled = targetSec.visible;
+      } else if (id === 'services') {
+        if (!updated.services) updated.services = {};
+        updated.services.enabled = targetSec.visible;
+      } else if (id === 'brands') {
+        if (!updated.brands) updated.brands = {};
+        updated.brands.enabled = targetSec.visible;
+      } else if (id === 'army') {
+        if (!updated.armySpotlight) updated.armySpotlight = {};
+        updated.armySpotlight.enabled = targetSec.visible;
+      } else if (id === 'cta') {
+        if (!updated.cta) updated.cta = {};
+        updated.cta.enabled = targetSec.visible;
+      }
+    }
     setHomeData(updated);
     updateDraftInMemory('home', updated);
   };
@@ -92,11 +246,23 @@ export default function AdminHomePage() {
     updateDraftInMemory('home', updated);
   };
 
-  const handleSave = async () => {
+  const handleSaveDraft = async () => {
     const ok = await saveDraft('home', homeData);
     if (ok) {
-      setSavedStatus(true);
-      setTimeout(() => setSavedStatus(false), 2200);
+      setDraftSavedStatus(true);
+      setToastMessage('✓ Draft saved to Admin CRM! Click "Publish Live" to make changes live on the website.');
+      setTimeout(() => setDraftSavedStatus(false), 2400);
+      setTimeout(() => setToastMessage(''), 5000);
+    }
+  };
+
+  const handlePublishLive = async () => {
+    const ok = await publishSection('home', homeData);
+    if (ok) {
+      setPublishedStatus(true);
+      setToastMessage('🚀 Homepage Published Live! Changes are now live on the website.');
+      setTimeout(() => setPublishedStatus(false), 2400);
+      setTimeout(() => setToastMessage(''), 5000);
     }
   };
 
@@ -179,28 +345,96 @@ export default function AdminHomePage() {
               </select>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleSave}
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            {/* Save Draft Button (Saves to Admin CRM side) */}
+            <button
+              type="button"
+              onClick={handleSaveDraft}
+              title="Save draft to Admin CRM without pushing live"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.5rem 1rem',
+                borderRadius: '9999px',
+                border: '1px solid rgba(0, 0, 0, 0.15)',
+                backgroundColor: draftSavedStatus ? '#F0FDF4' : '#FFFFFF',
+                color: draftSavedStatus ? '#16A34A' : '#18181B',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+              }}
+            >
+              {draftSavedStatus ? <Check size={14} /> : <Save size={14} />}
+              {draftSavedStatus ? 'Draft Saved' : 'Save Draft'}
+            </button>
+
+            {/* Publish Live Button (Makes changes live on website) */}
+            <button
+              type="button"
+              onClick={handlePublishLive}
+              title="Publish all changes live to the website"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.5rem 1.25rem',
+                borderRadius: '9999px',
+                border: 'none',
+                backgroundColor: publishedStatus ? '#16A34A' : '#DE322D',
+                color: '#FFFFFF',
+                fontSize: '0.82rem',
+                fontWeight: 650,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
+              }}
+            >
+              {publishedStatus ? <Check size={15} /> : <Upload size={15} />}
+              {publishedStatus ? 'Published Live!' : 'Publish Live'}
+            </button>
+          </div>
+        </div>
+
+        {/* Global Admin CRM Notification Toast */}
+        {toastMessage && (
+          <div
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.45rem',
-              padding: '0.5rem 1.25rem',
-              borderRadius: '9999px',
-              border: 'none',
-              backgroundColor: savedStatus ? '#16A34A' : '#111113',
+              padding: '0.65rem 1.4rem',
+              backgroundColor: '#111113',
               color: '#FFFFFF',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              fontSize: '0.78rem',
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '1rem',
+              borderBottom: '1px solid rgba(255,255,255,0.1)',
             }}
           >
-            {savedStatus ? <Check size={15} /> : <Save size={15} />}
-            {savedStatus ? 'Saved Draft' : 'Save Changes'}
-          </button>
-        </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ color: '#4ADE80', fontWeight: 700 }}>●</span>
+              <span>{toastMessage}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setToastMessage('')}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#A1A1AA',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                padding: '0 4px',
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
         {/* Section Navigation Tabs (Horizontal Pill Selector with hidden scrollbar) */}
         <div
@@ -273,19 +507,62 @@ export default function AdminHomePage() {
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'hero' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Hero Banner &amp; Messaging
-                </h3>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Manage the creative agency photographic hero banner, typography, and dynamic action buttons.
-                </p>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    Hero Banner &amp; Messaging
+                  </h3>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                    Manage the creative agency photographic hero banner, typography, and dynamic action buttons.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={toggleHeroSection}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '6px',
+                    border: '1px solid ' + (homeData.hero?.enabled === false ? '#EF4444' : 'rgba(0,0,0,0.12)'),
+                    backgroundColor: homeData.hero?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                    color: homeData.hero?.enabled === false ? '#DC2626' : '#047857',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {homeData.hero?.enabled === false ? <EyeOff size={13} /> : <Eye size={13} />}
+                  {homeData.hero?.enabled === false ? 'Hero Section Hidden' : 'Hero Section Active'}
+                </button>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW BADGE / TAG
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    EYEBROW BADGE / TAG
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['hero', 'eyebrowEnabled'], homeData.hero?.eyebrowEnabled === false ? true : false)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.hero?.eyebrowEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.hero?.eyebrowEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.hero?.eyebrowEnabled === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.hero?.badge || ''}
@@ -295,9 +572,30 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  MAIN HEADLINE (Use Enter for line breaks)
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    MAIN HEADLINE (Use Enter for line breaks)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['hero', 'headlineEnabled'], homeData.hero?.headlineEnabled === false ? true : false)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.hero?.headlineEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.hero?.headlineEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.hero?.headlineEnabled === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={3}
                   value={homeData.hero?.headline || ''}
@@ -307,9 +605,30 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SUBHEADLINE / INTRO STATEMENT
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SUBHEADLINE / INTRO STATEMENT
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['hero', 'subheadlineEnabled'], homeData.hero?.subheadlineEnabled === false ? true : false)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.hero?.subheadlineEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.hero?.subheadlineEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.hero?.subheadlineEnabled === false ? 'Subheadline Hidden' : 'Subheadline Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={3}
                   value={homeData.hero?.subheadline || ''}
@@ -400,18 +719,46 @@ export default function AdminHomePage() {
                           ? [...homeData.hero.bannerImages]
                           : [
                               {
-                                id: 'slide-1',
+                                id: 'banner-1',
                                 image: homeData.hero?.bannerImage || '/images/home/hero-mountain-sky.png',
-                                caption: 'Strategic Landscapes',
+                                badge: 'STRATEGY · COMMUNICATION · EXECUTION',
+                                badgeEnabled: true,
+                                headline: 'We build brands,\nbusinesses &\nexperiences.',
+                                headlineEnabled: true,
+                                subheadline: 'Ārohana brings together business thinking, creative communication and execution across sectors.',
+                                subheadlineEnabled: true,
+                                clickableUrl: '/work',
+                                isImageClickable: true,
+                                buttonLabel: 'Explore Our Work',
+                                buttonUrl: '/work',
+                                buttonEnabled: true,
+                                imageEnabled: true,
+                                enabled: true,
                               },
                             ];
+                        const newBannerNumber = current.length + 1;
                         const newSlide = {
                           id: `banner-${Date.now()}`,
                           image: '/images/services/services-hero-collage.png',
                           caption: 'Creative Direction & Impact',
+                          badge: 'STRATEGY · COMMUNICATION · EXECUTION',
+                          badgeEnabled: true,
+                          headline: 'We build brands,\nbusinesses &\nexperiences.',
+                          headlineEnabled: true,
+                          subheadline: 'Ārohana brings together business thinking, creative communication and execution across sectors.',
+                          subheadlineEnabled: true,
+                          clickableUrl: '/work',
+                          isImageClickable: true,
+                          buttonLabel: 'Explore Capabilities',
+                          buttonUrl: '/work',
+                          buttonEnabled: true,
+                          imageEnabled: true,
+                          enabled: true,
                         };
                         const updated = [...current, newSlide];
                         updateField(['hero', 'bannerImages'], updated);
+                        setToastMessage(`✓ New Banner #${newBannerNumber} added to Hero Carousel with all fields ready to edit!`);
+                        setTimeout(() => setToastMessage(''), 4500);
                       }}
                       style={{
                         display: 'inline-flex',
@@ -427,195 +774,440 @@ export default function AdminHomePage() {
                         cursor: 'pointer',
                       }}
                     >
-                      <Plus size={13} /> Add Slide Image
+                      <Plus size={13} /> Add New Banner Slide
                     </button>
                   </div>
                 </div>
 
-                {/* Slides List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {/* Slides List with Full Independent Controls */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {(Array.isArray(homeData.hero?.bannerImages) && homeData.hero.bannerImages.length > 0
                     ? homeData.hero.bannerImages
                     : [
                         {
-                          id: 'slide-1',
-                          image: homeData.hero?.bannerImage || homeData.hero?.posterImage || '/images/home/hero-mountain-sky.png',
-                          caption: 'Brand Strategy & Strategic Landscapes',
+                          id: 'banner-1',
+                          image: homeData.hero?.bannerImage || '/images/home/hero-mountain-sky.png',
+                          badge: 'STRATEGY · COMMUNICATION · EXECUTION',
+                          headline: 'We build brands,\nbusinesses &\nexperiences.',
+                          subheadline: 'Ārohana brings together business thinking, creative communication and execution across sectors.',
+                          clickableUrl: '',
+                          buttonLabel: 'Explore Our Work',
+                          buttonUrl: '/work',
+                          buttonEnabled: true,
+                          imageEnabled: true,
+                          enabled: true,
                         },
                       ]
                   ).map((slide: any, idx: number, arr: any[]) => (
                     <div
                       key={slide.id || idx}
                       style={{
-                        padding: '0.85rem',
+                        padding: '1.1rem',
                         backgroundColor: '#FFFFFF',
-                        borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        display: 'grid',
-                        gridTemplateColumns: '70px 1.5fr 1fr auto',
-                        gap: '0.75rem',
-                        alignItems: 'center',
+                        borderRadius: '12px',
+                        border: '1px solid ' + (slide.enabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0,0,0,0.08)'),
+                        opacity: slide.enabled === false ? 0.7 : 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.85rem',
                       }}
                     >
-                      {/* Slide Thumbnail Preview */}
-                      <div
-                        style={{
-                          width: '70px',
-                          height: '46px',
-                          borderRadius: '6px',
-                          overflow: 'hidden',
-                          backgroundColor: '#0a0d14',
-                          border: '1px solid rgba(0,0,0,0.1)',
-                          position: 'relative',
-                        }}
-                      >
-                        {slide.image ? (
-                          <img
-                            src={slide.image}
-                            alt={`Slide ${idx + 1}`}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71717A' }}>
-                            <ImageIcon size={16} />
-                          </div>
-                        )}
-                        <span
-                          style={{
-                            position: 'absolute',
-                            bottom: '2px',
-                            left: '2px',
-                            backgroundColor: 'rgba(0,0,0,0.7)',
-                            color: '#ffffff',
-                            fontSize: '0.6rem',
-                            fontWeight: 700,
-                            padding: '1px 4px',
-                            borderRadius: '3px',
-                          }}
-                        >
-                          0{idx + 1}
-                        </span>
-                      </div>
-
-                      {/* Image URL & Pick Button */}
-                      <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem', fontWeight: 600 }}>
-                          BANNER IMAGE URL / FILE
-                        </span>
-                        <div style={{ display: 'flex', gap: '0.35rem' }}>
-                          <input
-                            type="text"
-                            value={slide.image || ''}
-                            placeholder="/images/home/hero-mountain-sky.png"
-                            onChange={(e) => {
-                              const list = [...arr];
-                              list[idx] = { ...list[idx], image: e.target.value };
-                              updateField(['hero', 'bannerImages'], list);
-                              if (idx === 0) {
-                                updateField(['hero', 'bannerImage'], e.target.value);
-                                updateField(['hero', 'posterImage'], e.target.value);
-                              }
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem', flex: 1 }}
-                          />
+                      {/* Top Bar: Slide Index, Visibility Toggle, Ordering & Delete */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.65rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, backgroundColor: '#111113', color: '#FFFFFF', padding: '2px 8px', borderRadius: '4px' }}>
+                            Banner #{idx + 1}
+                          </span>
                           <button
                             type="button"
-                            onClick={() => setHeroSlideIndex(idx)}
-                            style={{ ...mediaBtnStyle, padding: '0 0.55rem', fontSize: '0.74rem' }}
+                            onClick={() => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], enabled: list[idx].enabled === false ? true : false };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              padding: '2px 8px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              backgroundColor: slide.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                              color: slide.enabled === false ? '#DC2626' : '#047857',
+                              fontSize: '0.72rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
                           >
-                            <ImageIcon size={13} /> Pick
+                            {slide.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
+                            {slide.enabled === false ? 'Disabled' : 'Active Banner'}
+                          </button>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            title="Move banner up"
+                            onClick={() => {
+                              if (idx === 0) return;
+                              const list = [...arr];
+                              const temp = list[idx];
+                              list[idx] = list[idx - 1];
+                              list[idx - 1] = temp;
+                              updateField(['hero', 'bannerImages'], list);
+                              if (idx === 1) updateField(['hero', 'bannerImage'], list[0]?.image || '');
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              borderRadius: '4px',
+                              background: '#F8F8FA',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              padding: '3px 6px',
+                              color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronUp size={14} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === arr.length - 1}
+                            title="Move banner down"
+                            onClick={() => {
+                              if (idx === arr.length - 1) return;
+                              const list = [...arr];
+                              const temp = list[idx];
+                              list[idx] = list[idx + 1];
+                              list[idx + 1] = temp;
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              borderRadius: '4px',
+                              background: '#F8F8FA',
+                              cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                              padding: '3px 6px',
+                              color: idx === arr.length - 1 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronDown size={14} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={arr.length <= 1}
+                            title="Delete banner"
+                            onClick={() => {
+                              if (arr.length <= 1) return;
+                              const filtered = arr.filter((_: any, i: number) => i !== idx);
+                              updateField(['hero', 'bannerImages'], filtered);
+                              updateField(['hero', 'bannerImage'], filtered[0]?.image || '');
+                            }}
+                            style={{
+                              border: 'none',
+                              background: 'transparent',
+                              cursor: arr.length <= 1 ? 'not-allowed' : 'pointer',
+                              padding: '3px 6px',
+                              color: arr.length <= 1 ? '#D4D4D8' : '#EF4444',
+                            }}
+                          >
+                            <Trash2 size={14} />
                           </button>
                         </div>
                       </div>
 
-                      {/* Slide Caption / Sub-tag */}
+                      {/* Eyebrow Badge + Visibility */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.65rem', alignItems: 'flex-end' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                            BANNER EYEBROW BADGE
+                          </label>
+                          <input
+                            type="text"
+                            value={slide.badge ?? slide.eyebrow ?? ''}
+                            placeholder="STRATEGY · COMMUNICATION · EXECUTION"
+                            onChange={(e) => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], badge: e.target.value, eyebrow: e.target.value };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const list = [...arr];
+                            list[idx] = { ...list[idx], badgeEnabled: list[idx].badgeEnabled === false ? true : false };
+                            updateField(['hero', 'bannerImages'], list);
+                          }}
+                          style={{
+                            padding: '0.4rem 0.65rem',
+                            borderRadius: '6px',
+                            border: '1px solid rgba(0,0,0,0.12)',
+                            backgroundColor: slide.badgeEnabled === false ? '#FEE2E2' : '#F4F4F5',
+                            color: slide.badgeEnabled === false ? '#DC2626' : '#52525B',
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {slide.badgeEnabled === false ? 'Badge Hidden' : 'Badge Visible'}
+                        </button>
+                      </div>
+
+                      {/* Main Headline */}
                       <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem', fontWeight: 600 }}>
-                          SLIDE CAPTION / TAG (Optional)
-                        </span>
-                        <input
-                          type="text"
-                          value={slide.caption || ''}
-                          placeholder="e.g. Brand Strategy & Execution"
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                          <label style={{ fontSize: '0.7rem', fontWeight: 600, color: '#52525B' }}>
+                            MAIN HEADLINE (Enter for line breaks)
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], headlineEnabled: list[idx].headlineEnabled === false ? true : false };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{
+                              padding: '2px 7px',
+                              borderRadius: '4px',
+                              border: '1px solid rgba(0,0,0,0.08)',
+                              backgroundColor: slide.headlineEnabled === false ? '#FEE2E2' : '#F4F4F5',
+                              color: slide.headlineEnabled === false ? '#DC2626' : '#52525B',
+                              fontSize: '0.68rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {slide.headlineEnabled === false ? 'Headline Hidden' : 'Headline Visible'}
+                          </button>
+                        </div>
+                        <textarea
+                          rows={2}
+                          value={slide.headline || ''}
+                          placeholder="We build brands,\nbusinesses &\nexperiences."
                           onChange={(e) => {
                             const list = [...arr];
-                            list[idx] = { ...list[idx], caption: e.target.value };
+                            list[idx] = { ...list[idx], headline: e.target.value };
                             updateField(['hero', 'bannerImages'], list);
+                            if (idx === 0) updateField(['hero', 'headline'], e.target.value);
                           }}
                           style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
                         />
                       </div>
 
-                      {/* Actions: Move Up, Move Down, Delete */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <button
-                          type="button"
-                          disabled={idx === 0}
-                          title="Move slide up"
-                          onClick={() => {
-                            if (idx === 0) return;
+                      {/* Subheadline */}
+                      <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                          <label style={{ fontSize: '0.7rem', fontWeight: 600, color: '#52525B' }}>
+                            SUBHEADLINE / STATEMENT
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], subheadlineEnabled: list[idx].subheadlineEnabled === false ? true : false };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{
+                              padding: '2px 7px',
+                              borderRadius: '4px',
+                              border: '1px solid rgba(0,0,0,0.08)',
+                              backgroundColor: slide.subheadlineEnabled === false ? '#FEE2E2' : '#F4F4F5',
+                              color: slide.subheadlineEnabled === false ? '#DC2626' : '#52525B',
+                              fontSize: '0.68rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {slide.subheadlineEnabled === false ? 'Subheadline Hidden' : 'Subheadline Visible'}
+                          </button>
+                        </div>
+                        <textarea
+                          rows={2}
+                          value={slide.subheadline || ''}
+                          placeholder="Ārohana brings together business thinking, creative communication and execution across sectors."
+                          onChange={(e) => {
                             const list = [...arr];
-                            const temp = list[idx];
-                            list[idx] = list[idx - 1];
-                            list[idx - 1] = temp;
+                            list[idx] = { ...list[idx], subheadline: e.target.value };
                             updateField(['hero', 'bannerImages'], list);
-                            updateField(['hero', 'bannerImage'], list[0]?.image || '');
+                            if (idx === 0) updateField(['hero', 'subheadline'], e.target.value);
                           }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                        />
+                      </div>
+
+                      {/* Image Upload, Replace, Enable/Disable, Clickable URL */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '70px 1.2fr 1.2fr auto', gap: '0.65rem', alignItems: 'center' }}>
+                        <div
                           style={{
-                            border: 'none',
-                            background: 'transparent',
-                            cursor: idx === 0 ? 'not-allowed' : 'pointer',
-                            padding: '4px',
-                            color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            width: '70px',
+                            height: '46px',
+                            borderRadius: '6px',
+                            overflow: 'hidden',
+                            backgroundColor: '#0a0d14',
+                            border: '1px solid rgba(0,0,0,0.1)',
+                            position: 'relative',
                           }}
                         >
-                          <ChevronUp size={15} />
-                        </button>
+                          {slide.image ? (
+                            <img
+                              src={slide.image}
+                              alt={`Banner ${idx + 1}`}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          ) : (
+                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71717A' }}>
+                              <ImageIcon size={16} />
+                            </div>
+                          )}
+                        </div>
+
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A', fontWeight: 600 }}>
+                              IMAGE URL / UPLOAD
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], imageEnabled: list[idx].imageEnabled === false ? true : false };
+                                updateField(['hero', 'bannerImages'], list);
+                              }}
+                              style={{
+                                padding: '1px 6px',
+                                borderRadius: '3px',
+                                border: 'none',
+                                backgroundColor: slide.imageEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                                color: slide.imageEnabled === false ? '#DC2626' : '#047857',
+                                fontSize: '0.66rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {slide.imageEnabled === false ? 'Image Hidden' : 'Image Visible'}
+                            </button>
+                          </div>
+                          <div style={{ display: 'flex', gap: '0.35rem' }}>
+                            <input
+                              type="text"
+                              value={slide.image || ''}
+                              placeholder="/images/home/hero-mountain-sky.png"
+                              onChange={(e) => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], image: e.target.value };
+                                updateField(['hero', 'bannerImages'], list);
+                                if (idx === 0) updateField(['hero', 'bannerImage'], e.target.value);
+                              }}
+                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem', flex: 1 }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setHeroSlideIndex(idx)}
+                              style={{ ...mediaBtnStyle, padding: '0 0.55rem', fontSize: '0.74rem' }}
+                            >
+                              <ImageIcon size={13} /> Pick
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem', fontWeight: 600 }}>
+                            URL LINK
+                          </span>
+                          <input
+                            type="text"
+                            value={slide.clickableUrl || ''}
+                            placeholder="e.g. /work or https://..."
+                            onChange={(e) => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], clickableUrl: e.target.value };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                          />
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', paddingTop: '0.9rem' }}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], isImageClickable: list[idx].isImageClickable === false ? true : false };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            title="Make image clickable through URL link"
+                            style={{
+                              padding: '0.35rem 0.65rem',
+                              borderRadius: '6px',
+                              border: '1px solid rgba(0,0,0,0.12)',
+                              backgroundColor: slide.isImageClickable === false ? '#F4F4F5' : '#EFF6FF',
+                              color: slide.isImageClickable === false ? '#71717A' : '#1D4ED8',
+                              fontSize: '0.72rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {slide.isImageClickable === false ? 'Image Not Clickable' : '✓ Clickable Image'}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Button Controls: Label, URL, Enable/Disable */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.2fr auto', gap: '0.65rem', alignItems: 'flex-end', paddingTop: '0.5rem', borderTop: '1px dashed rgba(0,0,0,0.06)' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                            BUTTON LABEL
+                          </label>
+                          <input
+                            type="text"
+                            value={slide.buttonLabel || ''}
+                            placeholder="Explore Our Work"
+                            onChange={(e) => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], buttonLabel: e.target.value };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                            BUTTON URL
+                          </label>
+                          <input
+                            type="text"
+                            value={slide.buttonUrl || ''}
+                            placeholder="/work"
+                            onChange={(e) => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], buttonUrl: e.target.value };
+                              updateField(['hero', 'bannerImages'], list);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                          />
+                        </div>
                         <button
                           type="button"
-                          disabled={idx === arr.length - 1}
-                          title="Move slide down"
                           onClick={() => {
-                            if (idx === arr.length - 1) return;
                             const list = [...arr];
-                            const temp = list[idx];
-                            list[idx] = list[idx + 1];
-                            list[idx + 1] = temp;
+                            list[idx] = { ...list[idx], buttonEnabled: list[idx].buttonEnabled === false ? true : false };
                             updateField(['hero', 'bannerImages'], list);
-                            updateField(['hero', 'bannerImage'], list[0]?.image || '');
                           }}
                           style={{
-                            border: 'none',
-                            background: 'transparent',
-                            cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
-                            padding: '4px',
-                            color: idx === arr.length - 1 ? '#D4D4D8' : '#52525B',
+                            padding: '0.4rem 0.65rem',
+                            borderRadius: '6px',
+                            border: '1px solid rgba(0,0,0,0.12)',
+                            backgroundColor: slide.buttonEnabled === false ? '#FEE2E2' : '#F4F4F5',
+                            color: slide.buttonEnabled === false ? '#DC2626' : '#52525B',
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
                           }}
                         >
-                          <ChevronDown size={15} />
-                        </button>
-                        <button
-                          type="button"
-                          disabled={arr.length <= 1}
-                          title="Delete slide"
-                          onClick={() => {
-                            if (arr.length <= 1) return;
-                            const filtered = arr.filter((_: any, i: number) => i !== idx);
-                            updateField(['hero', 'bannerImages'], filtered);
-                            updateField(['hero', 'bannerImage'], filtered[0]?.image || '');
-                          }}
-                          style={{
-                            border: 'none',
-                            background: 'transparent',
-                            cursor: arr.length <= 1 ? 'not-allowed' : 'pointer',
-                            padding: '4px',
-                            color: arr.length <= 1 ? '#D4D4D8' : '#EF4444',
-                          }}
-                        >
-                          <Trash2 size={15} />
+                          {slide.buttonEnabled === false ? 'Button Hidden' : 'Button Enabled'}
                         </button>
                       </div>
                     </div>
@@ -1140,24 +1732,66 @@ export default function AdminHomePage() {
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'brands' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    06 Selected Brands &amp; Organisations Marquee
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Live Flow
-                  </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      06 Selected Brands &amp; Organisations Marquee
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                    Configure client logos, names, fallback monograms, and links. Positioned right above the Signature CTA.
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Configure client logos, names, fallback monograms, and links. Positioned right above the Signature CTA.
-                </p>
+
+                {/* Section Level Enable/Disable Toggle */}
+                <button
+                  type="button"
+                  onClick={toggleBrandsSection}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '6px',
+                    border: '1px solid ' + (homeData.brands?.enabled === false ? '#EF4444' : 'rgba(0,0,0,0.12)'),
+                    backgroundColor: homeData.brands?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                    color: homeData.brands?.enabled === false ? '#DC2626' : '#047857',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {homeData.brands?.enabled === false ? <EyeOff size={13} /> : <Eye size={13} />}
+                  {homeData.brands?.enabled === false ? 'Section Hidden' : 'Section Active'}
+                </button>
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION EYEBROW
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION EYEBROW
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['brands', 'eyebrowEnabled'], homeData.brands?.eyebrowEnabled === false ? true : false)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.brands?.eyebrowEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.brands?.eyebrowEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.brands?.eyebrowEnabled === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.brands?.eyebrow || ''}
@@ -1167,9 +1801,27 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION HEADING
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION HEADING
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['brands', 'headingEnabled'], homeData.brands?.headingEnabled === false ? true : false)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.brands?.headingEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.brands?.headingEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.brands?.headingEnabled === false ? 'Heading Hidden' : 'Heading Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.brands?.heading || ''}
@@ -1189,13 +1841,20 @@ export default function AdminHomePage() {
                       const newList = [...(homeData.brands?.list || [])];
                       newList.push({
                         id: `brand-${Date.now()}`,
-                        name: 'New Partner',
+                        name: 'New Partner Brand',
                         monogram: 'NP',
                         badgeBg: '#111113',
                         badgeColor: '#ffffff',
                         link: '/work',
+                        enabled: true,
+                        nameEnabled: true,
+                        monogramEnabled: true,
+                        linkEnabled: true,
+                        logoEnabled: true,
                       });
                       updateField(['brands', 'list'], newList);
+                      setToastMessage(`✓ New Partner Brand #${newList.length} added successfully!`);
+                      setTimeout(() => setToastMessage(''), 4000);
                     }}
                     style={{
                       display: 'inline-flex',
@@ -1215,33 +1874,158 @@ export default function AdminHomePage() {
                   </button>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {(homeData.brands?.list || []).map((brand: any, idx: number) => (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                  {(homeData.brands?.list || []).map((brand: any, idx: number, arr: any[]) => (
                     <div
                       key={brand.id || idx}
                       style={{
                         padding: '1rem',
                         borderRadius: '12px',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        backgroundColor: '#F8F8FA',
+                        border: '1px solid ' + (brand.enabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0,0,0,0.08)'),
+                        backgroundColor: brand.enabled === false ? '#FFF5F5' : '#F8F8FA',
+                        opacity: brand.enabled === false ? 0.75 : 1,
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '0.85rem',
                       }}
                     >
-                      {/* Top Row: Name, Monogram, Link, Delete */}
+                      {/* Top Bar: Brand Index, Visibility Toggle, Ordering & Delete */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, backgroundColor: '#111113', color: '#FFFFFF', padding: '2px 8px', borderRadius: '4px' }}>
+                            Brand #{idx + 1}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], enabled: list[idx].enabled === false ? true : false };
+                              updateField(['brands', 'list'], list);
+                            }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              padding: '2px 8px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              backgroundColor: brand.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                              color: brand.enabled === false ? '#DC2626' : '#047857',
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {brand.enabled === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                            {brand.enabled === false ? 'Brand Disabled' : 'Brand Active'}
+                          </button>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            title="Move brand up"
+                            onClick={() => {
+                              if (idx === 0) return;
+                              const list = [...arr];
+                              const temp = list[idx];
+                              list[idx] = list[idx - 1];
+                              list[idx - 1] = temp;
+                              updateField(['brands', 'list'], list);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              borderRadius: '4px',
+                              background: '#FFFFFF',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              padding: '2px 6px',
+                              color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronUp size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === arr.length - 1}
+                            title="Move brand down"
+                            onClick={() => {
+                              if (idx === arr.length - 1) return;
+                              const list = [...arr];
+                              const temp = list[idx];
+                              list[idx] = list[idx + 1];
+                              list[idx + 1] = temp;
+                              updateField(['brands', 'list'], list);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              borderRadius: '4px',
+                              background: '#FFFFFF',
+                              cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                              padding: '2px 6px',
+                              color: idx === arr.length - 1 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronDown size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            title="Delete brand"
+                            onClick={() => {
+                              const brandName = brand.name || `Brand #${idx + 1}`;
+                              const updated = homeData.brands.list.filter((_: any, i: number) => i !== idx);
+                              updateField(['brands', 'list'], updated);
+                              setToastMessage(`✓ "${brandName}" deleted successfully`);
+                              setTimeout(() => setToastMessage(''), 4000);
+                            }}
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: '#EF4444',
+                              cursor: 'pointer',
+                              padding: '2px 6px',
+                            }}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Fields Row: Name, Monogram, Link */}
                       <div
                         style={{
                           display: 'grid',
-                          gridTemplateColumns: '1.2fr 0.8fr 1fr 36px',
+                          gridTemplateColumns: '1.2fr 0.8fr 1fr',
                           gap: '0.65rem',
-                          alignItems: 'center',
+                          alignItems: 'flex-start',
                         }}
                       >
                         <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            BRAND NAME
-                          </span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                              BRAND NAME
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], nameEnabled: list[idx].nameEnabled === false ? true : false };
+                                updateField(['brands', 'list'], list);
+                              }}
+                              style={{
+                                padding: '1px 6px',
+                                borderRadius: '3px',
+                                border: 'none',
+                                backgroundColor: brand.nameEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                                color: brand.nameEnabled === false ? '#DC2626' : '#047857',
+                                fontSize: '0.66rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {brand.nameEnabled === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={brand.name || ''}
@@ -1254,10 +2038,33 @@ export default function AdminHomePage() {
                             style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.82rem' }}
                           />
                         </div>
+
                         <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            MONOGRAM (FALLBACK)
-                          </span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                              MONOGRAM (FALLBACK)
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], monogramEnabled: list[idx].monogramEnabled === false ? true : false };
+                                updateField(['brands', 'list'], list);
+                              }}
+                              style={{
+                                padding: '1px 6px',
+                                borderRadius: '3px',
+                                border: 'none',
+                                backgroundColor: brand.monogramEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                                color: brand.monogramEnabled === false ? '#DC2626' : '#047857',
+                                fontSize: '0.66rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {brand.monogramEnabled === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={brand.monogram || ''}
@@ -1270,10 +2077,33 @@ export default function AdminHomePage() {
                             style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.82rem' }}
                           />
                         </div>
+
                         <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            TARGET LINK
-                          </span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                              TARGET LINK
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], linkEnabled: list[idx].linkEnabled === false ? true : false };
+                                updateField(['brands', 'list'], list);
+                              }}
+                              style={{
+                                padding: '1px 6px',
+                                borderRadius: '3px',
+                                border: 'none',
+                                backgroundColor: brand.linkEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                                color: brand.linkEnabled === false ? '#DC2626' : '#047857',
+                                fontSize: '0.66rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {brand.linkEnabled === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={brand.link || ''}
@@ -1285,30 +2115,6 @@ export default function AdminHomePage() {
                             }}
                             style={{ ...inputStyle, padding: '0.4rem 0.65rem', fontSize: '0.82rem' }}
                           />
-                        </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '0.85rem' }}>
-                          <button
-                            type="button"
-                            title="Delete brand"
-                            onClick={() => {
-                              const updated = homeData.brands.list.filter((_: any, i: number) => i !== idx);
-                              updateField(['brands', 'list'], updated);
-                            }}
-                            style={{
-                              height: '32px',
-                              width: '32px',
-                              border: 'none',
-                              backgroundColor: 'transparent',
-                              color: '#EF4444',
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              borderRadius: '6px',
-                            }}
-                          >
-                            <Trash2 size={15} />
-                          </button>
                         </div>
                       </div>
 
@@ -1365,7 +2171,7 @@ export default function AdminHomePage() {
                           </div>
                         </div>
 
-                        {/* Logo URL Input & Actions */}
+                        {/* Logo URL Input & Actions with Toggle */}
                         <div style={{ flex: 1, minWidth: '220px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <input
                             type="text"
@@ -1390,6 +2196,28 @@ export default function AdminHomePage() {
                           >
                             <Upload size={12} /> Upload
                           </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const list = [...arr];
+                              list[idx] = { ...list[idx], logoEnabled: list[idx].logoEnabled === false ? true : false };
+                              updateField(['brands', 'list'], list);
+                            }}
+                            style={{
+                              padding: '0 0.65rem',
+                              borderRadius: '6px',
+                              border: 'none',
+                              backgroundColor: brand.logoEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                              color: brand.logoEnabled === false ? '#DC2626' : '#047857',
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              height: '32px',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {brand.logoEnabled === false ? 'Logo Hidden' : 'Logo Visible'}
+                          </button>
                           {brand.logo && (
                             <button
                               type="button"
@@ -1399,6 +2227,8 @@ export default function AdminHomePage() {
                                 const { logo, ...rest } = updated[idx];
                                 updated[idx] = rest;
                                 updateField(['brands', 'list'], updated);
+                                setToastMessage(`✓ Removed logo for "${brand.name || 'brand'}", now using monogram.`);
+                                setTimeout(() => setToastMessage(''), 3500);
                               }}
                               style={{
                                 padding: '0.4rem 0.65rem',
@@ -1431,24 +2261,74 @@ export default function AdminHomePage() {
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'army' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    02 Indian Army Projects Spotlight
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Live Flow
-                  </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      06 Indian Army Projects Spotlight
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                    Showcase of defence briefs, authentic imagery and verified credentials in clean editorial presentation.
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  Showcase of defence briefs, authentic imagery and verified credentials in clean editorial presentation.
-                </p>
+
+                {/* Section Level Enable / Disable Toggle */}
+                <button
+                  type="button"
+                  onClick={toggleArmySection}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: homeData.armySpotlight?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                    color: homeData.armySpotlight?.enabled === false ? '#DC2626' : '#047857',
+                    fontSize: '0.76rem',
+                    fontWeight: 650,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {homeData.armySpotlight?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
+                  {homeData.armySpotlight?.enabled === false ? 'Section Hidden' : 'Section Active'}
+                </button>
               </div>
 
+              {/* Eyebrow with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW TAG
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    EYEBROW TAG
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.armySpotlight?.showEyebrow !== false;
+                      updateField(['armySpotlight', 'showEyebrow'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.armySpotlight?.showEyebrow === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.armySpotlight?.showEyebrow === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.armySpotlight?.showEyebrow === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.armySpotlight?.showEyebrow === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.armySpotlight?.eyebrow || ''}
@@ -1457,10 +2337,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Headline with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  HEADLINE
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    HEADLINE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.armySpotlight?.showHeadline !== false;
+                      updateField(['armySpotlight', 'showHeadline'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.armySpotlight?.showHeadline === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.armySpotlight?.showHeadline === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.armySpotlight?.showHeadline === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.armySpotlight?.showHeadline === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.armySpotlight?.title || ''}
@@ -1469,10 +2375,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Description with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  DESCRIPTION
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    DESCRIPTION
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.armySpotlight?.showDescription !== false;
+                      updateField(['armySpotlight', 'showDescription'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.armySpotlight?.showDescription === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.armySpotlight?.showDescription === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.armySpotlight?.showDescription === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.armySpotlight?.showDescription === false ? 'Description Hidden' : 'Description Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={2}
                   value={homeData.armySpotlight?.description || ''}
@@ -1481,10 +2413,50 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Army Carousel Cards with Add, Reorder, Enable/Disable, and Delete */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
-                  ARMY CAROUSEL CARDS ({homeData.armySpotlight?.cards?.length || 0})
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B', margin: 0 }}>
+                    ARMY CAROUSEL CARDS ({homeData.armySpotlight?.cards?.length || 0})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cards = [...(homeData.armySpotlight?.cards || [])];
+                      cards.push({
+                        id: `army-card-${Date.now()}`,
+                        category: 'Defence Brief',
+                        title: 'New Army Project',
+                        location: 'NORTHERN SECTOR',
+                        image: '/images/army/western-command-1.jpg',
+                        enabled: true,
+                        showCategory: true,
+                        showTitle: true,
+                        showLocation: true,
+                        showImage: true,
+                      });
+                      updateField(['armySpotlight', 'cards'], cards);
+                      setToastMessage('✓ New Army Project Card added successfully!');
+                      setTimeout(() => setToastMessage(''), 3500);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '0.35rem 0.75rem',
+                      borderRadius: '6px',
+                      border: 'none',
+                      backgroundColor: '#111113',
+                      color: '#FFFFFF',
+                      fontSize: '0.74rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Plus size={13} /> Add Card
+                  </button>
+                </div>
+
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {(homeData.armySpotlight?.cards || []).map((card: any, idx: number) => (
                     <div
@@ -1492,16 +2464,147 @@ export default function AdminHomePage() {
                       style={{
                         padding: '0.85rem',
                         borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
+                        border: '1px solid ' + (card.enabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0,0,0,0.08)'),
                         backgroundColor: '#F8F8FA',
+                        opacity: card.enabled === false ? 0.7 : 1,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.5rem',
+                        gap: '0.65rem',
                       }}
                     >
+                      {/* Card Header with Enable/Disable, Move, and Delete */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.45rem' }}>
+                        <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113' }}>
+                          Card #{idx + 1}: {card.title || 'Untitled Card'}
+                        </span>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          {/* Card Enable/Disable */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...homeData.armySpotlight.cards];
+                              updated[idx] = { ...updated[idx], enabled: updated[idx].enabled === false ? true : false };
+                              updateField(['armySpotlight', 'cards'], updated);
+                              setToastMessage(updated[idx].enabled ? `✓ Card #${idx + 1} enabled` : `✕ Card #${idx + 1} disabled`);
+                              setTimeout(() => setToastMessage(''), 3000);
+                            }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              padding: '2px 7px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              backgroundColor: card.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                              color: card.enabled === false ? '#DC2626' : '#047857',
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {card.enabled === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                            {card.enabled === false ? 'Disabled' : 'Enabled'}
+                          </button>
+
+                          {/* Move Up */}
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => {
+                              if (idx === 0) return;
+                              const updated = [...homeData.armySpotlight.cards];
+                              const temp = updated[idx];
+                              updated[idx] = updated[idx - 1];
+                              updated[idx - 1] = temp;
+                              updateField(['armySpotlight', 'cards'], updated);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              background: '#FFFFFF',
+                              borderRadius: '4px',
+                              padding: '2px 5px',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronUp size={13} />
+                          </button>
+
+                          {/* Move Down */}
+                          <button
+                            type="button"
+                            disabled={idx === (homeData.armySpotlight?.cards?.length || 0) - 1}
+                            onClick={() => {
+                              if (idx === (homeData.armySpotlight?.cards?.length || 0) - 1) return;
+                              const updated = [...homeData.armySpotlight.cards];
+                              const temp = updated[idx];
+                              updated[idx] = updated[idx + 1];
+                              updated[idx + 1] = temp;
+                              updateField(['armySpotlight', 'cards'], updated);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              background: '#FFFFFF',
+                              borderRadius: '4px',
+                              padding: '2px 5px',
+                              cursor: idx === (homeData.armySpotlight?.cards?.length || 0) - 1 ? 'not-allowed' : 'pointer',
+                              color: idx === (homeData.armySpotlight?.cards?.length || 0) - 1 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronDown size={13} />
+                          </button>
+
+                          {/* Delete Card */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const deletedTitle = card.title || `Card #${idx + 1}`;
+                              const updated = (homeData.armySpotlight?.cards || []).filter((_: any, i: number) => i !== idx);
+                              updateField(['armySpotlight', 'cards'], updated);
+                              setToastMessage(`✓ ${deletedTitle} deleted successfully.`);
+                              setTimeout(() => setToastMessage(''), 3500);
+                            }}
+                            style={{
+                              border: '1px solid #FECACA',
+                              background: '#FEF2F2',
+                              borderRadius: '4px',
+                              padding: '2px 6px',
+                              cursor: 'pointer',
+                              color: '#DC2626',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                            }}
+                            title="Delete this card"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </div>
+
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.armySpotlight.cards];
+                                updated[idx] = { ...updated[idx], showCategory: updated[idx].showCategory === false ? true : false };
+                                updateField(['armySpotlight', 'cards'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: card.showCategory === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {card.showCategory === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={card.category || ''}
@@ -1514,7 +2617,27 @@ export default function AdminHomePage() {
                           />
                         </div>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Title</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Title</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.armySpotlight.cards];
+                                updated[idx] = { ...updated[idx], showTitle: updated[idx].showTitle === false ? true : false };
+                                updateField(['armySpotlight', 'cards'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: card.showTitle === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {card.showTitle === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={card.title || ''}
@@ -1530,7 +2653,27 @@ export default function AdminHomePage() {
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Location / Formations</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Location / Formations</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.armySpotlight.cards];
+                                updated[idx] = { ...updated[idx], showLocation: updated[idx].showLocation === false ? true : false };
+                                updateField(['armySpotlight', 'cards'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: card.showLocation === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {card.showLocation === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={card.location || ''}
@@ -1543,7 +2686,27 @@ export default function AdminHomePage() {
                           />
                         </div>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Image Path</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Image Path</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.armySpotlight.cards];
+                                updated[idx] = { ...updated[idx], showImage: updated[idx].showImage === false ? true : false };
+                                updateField(['armySpotlight', 'cards'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: card.showImage === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {card.showImage === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <div style={{ display: 'flex', gap: '0.35rem' }}>
                             <input
                               type="text"
@@ -1577,18 +2740,42 @@ export default function AdminHomePage() {
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'pov' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    03 Editorial Intro &amp; A Point of View
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Live Flow
-                  </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      03 Editorial Intro &amp; A Point of View
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                    The foundational philosophy, founder portrait collage, and business-first perspective.
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  The foundational philosophy, founder portrait collage, and business-first perspective.
-                </p>
+
+                {/* Section Level Enable/Disable Toggle */}
+                <button
+                  type="button"
+                  onClick={togglePovSection}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '6px',
+                    border: '1px solid ' + (homeData.pov?.enabled === false ? '#EF4444' : 'rgba(0,0,0,0.12)'),
+                    backgroundColor: homeData.pov?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                    color: homeData.pov?.enabled === false ? '#DC2626' : '#047857',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {homeData.pov?.enabled === false ? <EyeOff size={13} /> : <Eye size={13} />}
+                  {homeData.pov?.enabled === false ? 'Section Hidden' : 'Section Active'}
+                </button>
               </div>
 
               {/* Founder Portrait & Profile Card (Live on Homepage Right Column) */}
@@ -1596,27 +2783,69 @@ export default function AdminHomePage() {
                 style={{
                   padding: '1rem',
                   borderRadius: '10px',
-                  border: '1px solid rgba(0, 0, 0, 0.08)',
-                  backgroundColor: '#F8F8FA',
+                  border: '1px solid ' + (homeData.pov?.founderCardEnabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0, 0, 0, 0.08)'),
+                  backgroundColor: homeData.pov?.founderCardEnabled === false ? '#FFF5F5' : '#F8F8FA',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '0.85rem',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
-                    FOUNDER PORTRAIT &amp; IDENTITY CARD
-                  </span>
-                  <span style={{ fontSize: '0.68rem', color: '#71717A', backgroundColor: '#FFFFFF', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.06)' }}>
-                    Live Right Column Component
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
+                      FOUNDER PORTRAIT &amp; IDENTITY CARD
+                    </span>
+                    <span style={{ fontSize: '0.68rem', color: '#71717A', backgroundColor: '#FFFFFF', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      Live Right Column Component
+                    </span>
+                  </div>
+
+                  {/* Card Enable/Disable Toggle */}
+                  <button
+                    type="button"
+                    onClick={() => updateField(['pov', 'founderCardEnabled'], homeData.pov?.founderCardEnabled === false ? true : false)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.pov?.founderCardEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.pov?.founderCardEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.pov?.founderCardEnabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
+                    {homeData.pov?.founderCardEnabled === false ? 'Card Disabled' : 'Card Enabled'}
+                  </button>
                 </div>
 
                 {/* Founder Image Picker */}
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    Founder Portrait Photo (Madhura Hawal)
-                  </span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                      Founder Portrait Photo (Madhura Hawal)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => updateField(['pov', 'founderPhotoEnabled'], homeData.pov?.founderPhotoEnabled === false ? true : false)}
+                      style={{
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        backgroundColor: homeData.pov?.founderPhotoEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                        color: homeData.pov?.founderPhotoEnabled === false ? '#DC2626' : '#047857',
+                        fontSize: '0.7rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {homeData.pov?.founderPhotoEnabled === false ? 'Photo Hidden' : 'Photo Visible'}
+                    </button>
+                  </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div
                       style={{
@@ -1659,9 +2888,27 @@ export default function AdminHomePage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      FOUNDER NAME
-                    </label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                      <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                        FOUNDER NAME
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => updateField(['pov', 'founderNameEnabled'], homeData.pov?.founderNameEnabled === false ? true : false)}
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          border: 'none',
+                          backgroundColor: homeData.pov?.founderNameEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                          color: homeData.pov?.founderNameEnabled === false ? '#DC2626' : '#047857',
+                          fontSize: '0.7rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {homeData.pov?.founderNameEnabled === false ? 'Name Hidden' : 'Name Visible'}
+                      </button>
+                    </div>
                     <input
                       type="text"
                       value={homeData.pov?.founderName || ''}
@@ -1671,9 +2918,27 @@ export default function AdminHomePage() {
                     />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      FOUNDER ROLE / BADGE
-                    </label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                      <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                        FOUNDER ROLE / BADGE
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => updateField(['pov', 'founderRoleEnabled'], homeData.pov?.founderRoleEnabled === false ? true : false)}
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: '4px',
+                          border: 'none',
+                          backgroundColor: homeData.pov?.founderRoleEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                          color: homeData.pov?.founderRoleEnabled === false ? '#DC2626' : '#047857',
+                          fontSize: '0.7rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {homeData.pov?.founderRoleEnabled === false ? 'Role Hidden' : 'Role Visible'}
+                      </button>
+                    </div>
                     <input
                       type="text"
                       value={homeData.pov?.founderRole || ''}
@@ -1685,9 +2950,27 @@ export default function AdminHomePage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    FOUNDER BIO / CARD DESCRIPTION
-                  </label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                      FOUNDER BIO / CARD DESCRIPTION
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => updateField(['pov', 'founderDescEnabled'], homeData.pov?.founderDescEnabled === false ? true : false)}
+                      style={{
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        backgroundColor: homeData.pov?.founderDescEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                        color: homeData.pov?.founderDescEnabled === false ? '#DC2626' : '#047857',
+                        fontSize: '0.7rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {homeData.pov?.founderDescEnabled === false ? 'Bio Hidden' : 'Bio Visible'}
+                    </button>
+                  </div>
                   <textarea
                     rows={2}
                     value={homeData.pov?.founderDesc || ''}
@@ -1698,9 +2981,27 @@ export default function AdminHomePage() {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    FOUNDER BUTTON LINK (ARROW)
-                  </label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                      FOUNDER BUTTON LINK (ARROW)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => updateField(['pov', 'founderLinkEnabled'], homeData.pov?.founderLinkEnabled === false ? true : false)}
+                      style={{
+                        padding: '2px 8px',
+                        borderRadius: '4px',
+                        border: 'none',
+                        backgroundColor: homeData.pov?.founderLinkEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                        color: homeData.pov?.founderLinkEnabled === false ? '#DC2626' : '#047857',
+                        fontSize: '0.7rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {homeData.pov?.founderLinkEnabled === false ? 'Link Hidden' : 'Link Visible'}
+                    </button>
+                  </div>
                   <input
                     type="text"
                     value={homeData.pov?.founderLink || ''}
@@ -1712,9 +3013,27 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    EYEBROW
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['pov', 'eyebrowEnabled'], homeData.pov?.eyebrowEnabled === false ? true : false)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.pov?.eyebrowEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.pov?.eyebrowEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.pov?.eyebrowEnabled === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.pov?.eyebrow || ''}
@@ -1724,9 +3043,27 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  MAIN EDITORIAL HEADLINE
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    MAIN EDITORIAL HEADLINE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['pov', 'headlineEnabled'], homeData.pov?.headlineEnabled === false ? true : false)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.pov?.headlineEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.pov?.headlineEnabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.pov?.headlineEnabled === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={2}
                   value={homeData.pov?.headline || ''}
@@ -1736,9 +3073,27 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  PARAGRAPH 1 (Core statement)
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    PARAGRAPH 1 (Core statement)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['pov', 'paragraph1Enabled'], homeData.pov?.paragraph1Enabled === false ? true : false)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.pov?.paragraph1Enabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.pov?.paragraph1Enabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.pov?.paragraph1Enabled === false ? 'Paragraph 1 Hidden' : 'Paragraph 1 Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={3}
                   value={homeData.pov?.paragraph1 || ''}
@@ -1748,87 +3103,31 @@ export default function AdminHomePage() {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  PARAGRAPH 2 (Execution breadth)
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    PARAGRAPH 2 (Execution breadth)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => updateField(['pov', 'paragraph2Enabled'], homeData.pov?.paragraph2Enabled === false ? true : false)}
+                    style={{
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.pov?.paragraph2Enabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.pov?.paragraph2Enabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.pov?.paragraph2Enabled === false ? 'Paragraph 2 Hidden' : 'Paragraph 2 Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={3}
                   value={homeData.pov?.paragraph2 || ''}
                   onChange={(e) => updateField(['pov', 'paragraph2'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    BUTTON 1 LABEL
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.pov?.btnPrimaryText || ''}
-                    onChange={(e) => updateField(['pov', 'btnPrimaryText'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    BUTTON 1 LINK
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.pov?.btnPrimaryLink || ''}
-                    onChange={(e) => updateField(['pov', 'btnPrimaryLink'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    BUTTON 2 LABEL
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.pov?.btnSecondaryText || ''}
-                    onChange={(e) => updateField(['pov', 'btnSecondaryText'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    BUTTON 2 LINK
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.pov?.btnSecondaryLink || ''}
-                    onChange={(e) => updateField(['pov', 'btnSecondaryLink'], e.target.value)}
-                    style={inputStyle}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  FOUNDER QUOTE
-                </label>
-                <input
-                  type="text"
-                  value={homeData.pov?.quote || ''}
-                  onChange={(e) => updateField(['pov', 'quote'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  QUOTE ATTRIBUTION
-                </label>
-                <input
-                  type="text"
-                  value={homeData.pov?.attribution || ''}
-                  onChange={(e) => updateField(['pov', 'attribution'], e.target.value)}
                   style={inputStyle}
                 />
               </div>
@@ -1840,24 +3139,74 @@ export default function AdminHomePage() {
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'work' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    04 Selected Work 3D Coverflow Showcase
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Live Flow
-                  </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      03 Selected Work 3D Coverflow Showcase
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                    The work is the proof: featured case study cards displayed on the homepage.
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  The work is the proof: featured case study cards displayed on the homepage.
-                </p>
+
+                {/* Section Level Enable / Disable Toggle */}
+                <button
+                  type="button"
+                  onClick={toggleWorkSection}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: homeData.selectedWork?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                    color: homeData.selectedWork?.enabled === false ? '#DC2626' : '#047857',
+                    fontSize: '0.76rem',
+                    fontWeight: 650,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {homeData.selectedWork?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
+                  {homeData.selectedWork?.enabled === false ? 'Section Hidden' : 'Section Active'}
+                </button>
               </div>
 
+              {/* Eyebrow with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    EYEBROW
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.selectedWork?.showEyebrow !== false;
+                      updateField(['selectedWork', 'showEyebrow'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.selectedWork?.showEyebrow === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.selectedWork?.showEyebrow === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.selectedWork?.showEyebrow === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.selectedWork?.showEyebrow === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.selectedWork?.eyebrow || ''}
@@ -1866,10 +3215,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Headline with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  HEADLINE
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    HEADLINE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.selectedWork?.showHeadline !== false;
+                      updateField(['selectedWork', 'showHeadline'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.selectedWork?.showHeadline === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.selectedWork?.showHeadline === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.selectedWork?.showHeadline === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.selectedWork?.showHeadline === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.selectedWork?.title || ''}
@@ -1878,22 +3253,51 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Showcase Projects with Add, Reorder, Enable/Disable, and Working Delete */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SUBTITLE
-                </label>
-                <input
-                  type="text"
-                  value={homeData.selectedWork?.subtitle || ''}
-                  onChange={(e) => updateField(['selectedWork', 'subtitle'], e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B', margin: 0 }}>
+                    SHOWCASE PROJECTS ({homeData.selectedWork?.projects?.length || 0})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const projects = [...(homeData.selectedWork?.projects || [])];
+                      projects.push({
+                        id: `proj-${Date.now()}`,
+                        index: String(projects.length + 1).padStart(2, '0'),
+                        title: 'New Showcase Project',
+                        category: 'Commercial',
+                        link: '/work',
+                        image: '/images/case-studies/raysons/neora-1.jpg',
+                        enabled: true,
+                        showTitle: true,
+                        showCategory: true,
+                        showLink: true,
+                        showImage: true,
+                      });
+                      updateField(['selectedWork', 'projects'], projects);
+                      setToastMessage('✓ New Showcase Project added successfully!');
+                      setTimeout(() => setToastMessage(''), 3500);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '0.35rem 0.75rem',
+                      borderRadius: '6px',
+                      border: 'none',
+                      backgroundColor: '#111113',
+                      color: '#FFFFFF',
+                      fontSize: '0.74rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Plus size={13} /> Add Project
+                  </button>
+                </div>
 
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
-                  SHOWCASE PROJECTS ({homeData.selectedWork?.projects?.length || 0})
-                </label>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {(homeData.selectedWork?.projects || []).map((proj: any, idx: number) => (
                     <div
@@ -1901,16 +3305,147 @@ export default function AdminHomePage() {
                       style={{
                         padding: '0.85rem',
                         borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
+                        border: '1px solid ' + (proj.enabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0,0,0,0.08)'),
                         backgroundColor: '#F8F8FA',
+                        opacity: proj.enabled === false ? 0.7 : 1,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.5rem',
+                        gap: '0.65rem',
                       }}
                     >
+                      {/* Project Header with Enable/Disable, Move, and Delete */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.45rem' }}>
+                        <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113' }}>
+                          Project #{idx + 1}: {proj.title || 'Untitled Project'}
+                        </span>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          {/* Enable/Disable Toggle */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...homeData.selectedWork.projects];
+                              updated[idx] = { ...updated[idx], enabled: updated[idx].enabled === false ? true : false };
+                              updateField(['selectedWork', 'projects'], updated);
+                              setToastMessage(updated[idx].enabled ? `✓ Project #${idx + 1} enabled` : `✕ Project #${idx + 1} disabled`);
+                              setTimeout(() => setToastMessage(''), 3000);
+                            }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              padding: '2px 7px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              backgroundColor: proj.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                              color: proj.enabled === false ? '#DC2626' : '#047857',
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {proj.enabled === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                            {proj.enabled === false ? 'Disabled' : 'Enabled'}
+                          </button>
+
+                          {/* Move Up */}
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => {
+                              if (idx === 0) return;
+                              const updated = [...homeData.selectedWork.projects];
+                              const temp = updated[idx];
+                              updated[idx] = updated[idx - 1];
+                              updated[idx - 1] = temp;
+                              updateField(['selectedWork', 'projects'], updated);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              background: '#FFFFFF',
+                              borderRadius: '4px',
+                              padding: '2px 5px',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronUp size={13} />
+                          </button>
+
+                          {/* Move Down */}
+                          <button
+                            type="button"
+                            disabled={idx === (homeData.selectedWork?.projects?.length || 0) - 1}
+                            onClick={() => {
+                              if (idx === (homeData.selectedWork?.projects?.length || 0) - 1) return;
+                              const updated = [...homeData.selectedWork.projects];
+                              const temp = updated[idx];
+                              updated[idx] = updated[idx + 1];
+                              updated[idx + 1] = temp;
+                              updateField(['selectedWork', 'projects'], updated);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              background: '#FFFFFF',
+                              borderRadius: '4px',
+                              padding: '2px 5px',
+                              cursor: idx === (homeData.selectedWork?.projects?.length || 0) - 1 ? 'not-allowed' : 'pointer',
+                              color: idx === (homeData.selectedWork?.projects?.length || 0) - 1 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronDown size={13} />
+                          </button>
+
+                          {/* Delete Project */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const deletedTitle = proj.title || `Project #${idx + 1}`;
+                              const updated = (homeData.selectedWork?.projects || []).filter((_: any, i: number) => i !== idx);
+                              updateField(['selectedWork', 'projects'], updated);
+                              setToastMessage(`✓ ${deletedTitle} deleted successfully.`);
+                              setTimeout(() => setToastMessage(''), 3500);
+                            }}
+                            style={{
+                              border: '1px solid #FECACA',
+                              background: '#FEF2F2',
+                              borderRadius: '4px',
+                              padding: '2px 6px',
+                              cursor: 'pointer',
+                              color: '#DC2626',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                            }}
+                            title="Delete this project"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </div>
+
                       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Project Title</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Project Title</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.selectedWork.projects];
+                                updated[idx] = { ...updated[idx], showTitle: updated[idx].showTitle === false ? true : false };
+                                updateField(['selectedWork', 'projects'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: proj.showTitle === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {proj.showTitle === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={proj.title || ''}
@@ -1923,7 +3458,27 @@ export default function AdminHomePage() {
                           />
                         </div>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.selectedWork.projects];
+                                updated[idx] = { ...updated[idx], showCategory: updated[idx].showCategory === false ? true : false };
+                                updateField(['selectedWork', 'projects'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: proj.showCategory === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {proj.showCategory === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={proj.category || ''}
@@ -1939,7 +3494,27 @@ export default function AdminHomePage() {
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Link URL</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Link URL</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.selectedWork.projects];
+                                updated[idx] = { ...updated[idx], showLink: updated[idx].showLink === false ? true : false };
+                                updateField(['selectedWork', 'projects'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: proj.showLink === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {proj.showLink === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={proj.link || ''}
@@ -1952,7 +3527,27 @@ export default function AdminHomePage() {
                           />
                         </div>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Image Path</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Image Path</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.selectedWork.projects];
+                                updated[idx] = { ...updated[idx], showImage: updated[idx].showImage === false ? true : false };
+                                updateField(['selectedWork', 'projects'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: proj.showImage === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {proj.showImage === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <div style={{ display: 'flex', gap: '0.35rem' }}>
                             <input
                               type="text"
@@ -1986,24 +3581,74 @@ export default function AdminHomePage() {
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'services' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    05 Capabilities &amp; Sharp Metric Numbers
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Live Flow
-                  </span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      04 Capabilities &amp; Sharp Metric Numbers
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.25rem 0 0 0' }}>
+                    &ldquo;Three distinct capabilities. One strategic spine.&rdquo; &bull; Controls capabilities headline, sharp flipping metric numbers, and practice areas.
+                  </p>
                 </div>
-                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.25rem 0 0 0' }}>
-                  &ldquo;Three distinct capabilities. One strategic spine.&rdquo; &bull; Controls capabilities headline, 4 sharp flipping metric numbers, and practice areas.
-                </p>
+
+                {/* Section Level Enable / Disable Toggle */}
+                <button
+                  type="button"
+                  onClick={toggleServicesSection}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '5px',
+                    padding: '0.4rem 0.85rem',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: homeData.services?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                    color: homeData.services?.enabled === false ? '#DC2626' : '#047857',
+                    fontSize: '0.76rem',
+                    fontWeight: 650,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {homeData.services?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
+                  {homeData.services?.enabled === false ? 'Section Hidden' : 'Section Active'}
+                </button>
               </div>
 
+              {/* Eyebrow with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION EYEBROW
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION EYEBROW
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.services?.showEyebrow !== false;
+                      updateField(['services', 'showEyebrow'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.services?.showEyebrow === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.services?.showEyebrow === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.services?.showEyebrow === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.services?.showEyebrow === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.services?.eyebrow || ''}
@@ -2013,10 +3658,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Headline with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION HEADLINE
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION HEADLINE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.services?.showHeadline !== false;
+                      updateField(['services', 'showHeadline'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.services?.showHeadline === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.services?.showHeadline === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.services?.showHeadline === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.services?.showHeadline === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.services?.title || ''}
@@ -2026,10 +3697,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Intro Copy with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SECTION INTRO COPY
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION INTRO COPY
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.services?.showDescription !== false;
+                      updateField(['services', 'showDescription'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.services?.showDescription === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.services?.showDescription === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.services?.showDescription === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.services?.showDescription === false ? 'Intro Hidden' : 'Intro Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={2}
                   value={homeData.services?.description || ''}
@@ -2039,139 +3736,435 @@ export default function AdminHomePage() {
                 />
               </div>
 
-              {/* ─── 4 SHARP FLIPPING METRIC NUMBERS ─── */}
+              {/* ─── 3 SHARP METRIC NUMBERS ─── */}
               <div style={{ padding: '1.1rem', backgroundColor: '#F8F8FA', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
                   <div>
                     <h4 style={{ fontSize: '0.88rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                      Sharp Flipping Metric Numbers (4 Stats)
+                      Statistics Section (3 Statistics)
                     </h4>
                     <span style={{ fontSize: '0.72rem', color: '#71717A' }}>
-                      Live 3D flipping linear numerals animated every time the section scrolls into view.
+                      Editable statistic numbers, labels, enable/disable toggles, and reordering.
                     </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                    {/* Subsection toggle */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = homeData.impactStats?.enabled !== false;
+                        updateField(['impactStats', 'enabled'], !cur);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '0.35rem 0.65rem',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: homeData.impactStats?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                        color: homeData.impactStats?.enabled === false ? '#DC2626' : '#047857',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {homeData.impactStats?.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
+                      {homeData.impactStats?.enabled === false ? 'Stats Block Hidden' : 'Stats Block Active'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const counters = [...(homeData.impactStats?.counters || [])];
+                        counters.push({
+                          id: `stat-${Date.now()}`,
+                          target: 10,
+                          suffix: '+',
+                          title: 'New Metric',
+                          desc: 'Strategic impact across sectors',
+                          enabled: true,
+                          showTarget: true,
+                          showSuffix: true,
+                          showTitle: true,
+                          showDesc: true,
+                        });
+                        updateField(['impactStats', 'counters'], counters);
+                        setToastMessage('✓ New Statistic added successfully!');
+                        setTimeout(() => setToastMessage(''), 3500);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '0.35rem 0.75rem',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        fontSize: '0.74rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Plus size={13} /> Add Stat
+                    </button>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {(homeData.impactStats?.counters || [
-                    { id: 'commercial', target: 25, suffix: '+', title: 'Commercial Engagements', desc: 'Hospitality, enterprise & consumer brands' },
-                    { id: 'sectors', target: 6, twoDigits: true, title: 'Industry Sectors', desc: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence' },
-                    { id: 'cases', target: 8, twoDigits: true, title: 'Featured Case Studies', desc: 'Multi-entity retainers and technical production' },
-                    { id: 'expeditions', target: 15, suffix: '+', title: 'Himalayan Expeditions', desc: 'Curated mountain journeys and border initiatives' },
-                  ]).map((cnt: any, idx: number) => (
-                    <div
-                      key={cnt.id || idx}
-                      style={{
-                        padding: '0.85rem',
-                        borderRadius: '8px',
-                        backgroundColor: '#FFFFFF',
-                        border: '1px solid rgba(0,0,0,0.08)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                      }}
-                    >
-                      <div style={{ display: 'grid', gridTemplateColumns: '85px 65px 120px 1fr', gap: '0.5rem', alignItems: 'center' }}>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            TARGET
-                          </span>
-                          <input
-                            type="number"
-                            value={cnt.target ?? 0}
-                            onChange={(e) => {
-                              const counters = [...(homeData.impactStats?.counters || [])];
-                              counters[idx] = { ...counters[idx], target: parseInt(e.target.value) || 0 };
-                              updateField(['impactStats', 'counters'], counters);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            SUFFIX
-                          </span>
-                          <input
-                            type="text"
-                            value={cnt.suffix || ''}
-                            placeholder="+"
-                            onChange={(e) => {
-                              const counters = [...(homeData.impactStats?.counters || [])];
-                              counters[idx] = { ...counters[idx], suffix: e.target.value };
-                              updateField(['impactStats', 'counters'], counters);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            FORMATTING
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const counters = [...(homeData.impactStats?.counters || [])];
-                              counters[idx] = { ...counters[idx], twoDigits: !counters[idx].twoDigits };
-                              updateField(['impactStats', 'counters'], counters);
-                            }}
-                            style={{
-                              ...inputStyle,
-                              padding: '0.35rem 0.55rem',
-                              textAlign: 'center',
-                              cursor: 'pointer',
-                              backgroundColor: cnt.twoDigits ? '#111113' : '#F4F4F5',
-                              color: cnt.twoDigits ? '#FFFFFF' : '#71717A',
-                              fontWeight: 600,
-                              fontSize: '0.74rem',
-                            }}
-                          >
-                            {cnt.twoDigits ? '0X (e.g. 06)' : 'Standard'}
-                          </button>
-                        </div>
-                        <div>
-                          <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                            METRIC TITLE
-                          </span>
-                          <input
-                            type="text"
-                            value={cnt.title || cnt.label || ''}
-                            placeholder="e.g. Commercial Engagements"
-                            onChange={(e) => {
-                              const counters = [...(homeData.impactStats?.counters || [])];
-                              counters[idx] = { ...counters[idx], title: e.target.value, label: e.target.value };
-                              updateField(['impactStats', 'counters'], counters);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                          />
-                        </div>
-                      </div>
+                  {(() => {
+                    const defaultStats = [
+                      { id: 'commercial', target: 25, suffix: '+', title: 'Commercial Engagements', desc: 'Hospitality, enterprise & consumer brands', enabled: true },
+                      { id: 'sectors', target: 6, suffix: '', title: 'Industry Sectors', desc: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence', enabled: true },
+                      { id: 'expeditions', target: 15, suffix: '+', title: 'Himalayan Expeditions', desc: 'Curated mountain journeys and border initiatives', enabled: true },
+                    ];
+                    const rawList = homeData.impactStats?.counters && homeData.impactStats.counters.length > 0
+                      ? homeData.impactStats.counters
+                      : defaultStats;
+                    const list = rawList;
 
-                      <div>
-                        <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>
-                          SUBTITLE / CONTEXT DETAIL
-                        </span>
-                        <input
-                          type="text"
-                          value={cnt.desc || cnt.detail || ''}
-                          placeholder="e.g. Hospitality, enterprise & consumer brands"
-                          onChange={(e) => {
-                            const counters = [...(homeData.impactStats?.counters || [])];
-                            counters[idx] = { ...counters[idx], desc: e.target.value, detail: e.target.value };
-                            updateField(['impactStats', 'counters'], counters);
-                          }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                        />
+                    return list.map((cnt: any, idx: number) => (
+                      <div
+                        key={cnt.id || idx}
+                        style={{
+                          padding: '0.85rem',
+                          borderRadius: '8px',
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid ' + (cnt.enabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0,0,0,0.08)'),
+                          opacity: cnt.enabled === false ? 0.7 : 1,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.5rem',
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113' }}>
+                            Statistic #{idx + 1}: {cnt.title || cnt.label || 'Metric'}
+                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const counters = [...list];
+                                counters[idx] = { ...counters[idx], enabled: counters[idx].enabled === false ? true : false };
+                                updateField(['impactStats', 'counters'], counters);
+                                setToastMessage(counters[idx].enabled ? `✓ Statistic #${idx + 1} enabled` : `✕ Statistic #${idx + 1} disabled`);
+                                setTimeout(() => setToastMessage(''), 3000);
+                              }}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                padding: '2px 7px',
+                                borderRadius: '4px',
+                                border: 'none',
+                                backgroundColor: cnt.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                                color: cnt.enabled === false ? '#DC2626' : '#047857',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              {cnt.enabled === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                              {cnt.enabled === false ? 'Disabled' : 'Enabled'}
+                            </button>
+                            <button
+                              type="button"
+                              disabled={idx === 0}
+                              onClick={() => {
+                                if (idx === 0) return;
+                                const counters = [...list];
+                                const temp = counters[idx];
+                                counters[idx] = counters[idx - 1];
+                                counters[idx - 1] = temp;
+                                updateField(['impactStats', 'counters'], counters);
+                              }}
+                              style={{
+                                border: '1px solid rgba(0,0,0,0.1)',
+                                background: '#F8F8FA',
+                                borderRadius: '4px',
+                                padding: '2px 5px',
+                                cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                                color: idx === 0 ? '#D4D4D8' : '#52525B',
+                              }}
+                            >
+                              <ChevronUp size={13} />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={idx === list.length - 1}
+                              onClick={() => {
+                                if (idx === list.length - 1) return;
+                                const counters = [...list];
+                                const temp = counters[idx];
+                                counters[idx] = counters[idx + 1];
+                                counters[idx + 1] = temp;
+                                updateField(['impactStats', 'counters'], counters);
+                              }}
+                              style={{
+                                border: '1px solid rgba(0,0,0,0.1)',
+                                background: '#F8F8FA',
+                                borderRadius: '4px',
+                                padding: '2px 5px',
+                                cursor: idx === list.length - 1 ? 'not-allowed' : 'pointer',
+                                color: idx === list.length - 1 ? '#D4D4D8' : '#52525B',
+                              }}
+                            >
+                              <ChevronDown size={13} />
+                            </button>
+                            {/* Working Delete Button */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const deletedLabel = cnt.title || cnt.label || `Statistic #${idx + 1}`;
+                                const counters = list.filter((_: any, i: number) => i !== idx);
+                                updateField(['impactStats', 'counters'], counters);
+                                setToastMessage(`✓ ${deletedLabel} deleted successfully.`);
+                                setTimeout(() => setToastMessage(''), 3500);
+                              }}
+                              style={{
+                                border: '1px solid #FECACA',
+                                background: '#FEF2F2',
+                                borderRadius: '4px',
+                                padding: '2px 6px',
+                                cursor: 'pointer',
+                                color: '#DC2626',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                              }}
+                              title="Delete statistic"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '95px 75px 1fr', gap: '0.5rem', alignItems: 'center' }}>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                              <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                                NUMBER
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const counters = [...list];
+                                  counters[idx] = { ...counters[idx], showTarget: counters[idx].showTarget === false ? true : false };
+                                  updateField(['impactStats', 'counters'], counters);
+                                }}
+                                style={{
+                                  fontSize: '0.65rem',
+                                  border: 'none',
+                                  background: 'transparent',
+                                  color: cnt.showTarget === false ? '#DC2626' : '#047857',
+                                  cursor: 'pointer',
+                                  fontWeight: 650,
+                                }}
+                              >
+                                {cnt.showTarget === false ? 'Hidden' : 'Visible'}
+                              </button>
+                            </div>
+                            <input
+                              type="number"
+                              value={cnt.target ?? 0}
+                              onChange={(e) => {
+                                const counters = [...list];
+                                counters[idx] = { ...counters[idx], target: parseInt(e.target.value) || 0 };
+                                updateField(['impactStats', 'counters'], counters);
+                              }}
+                              style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                            />
+                          </div>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                              <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                                SUFFIX
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const counters = [...list];
+                                  counters[idx] = { ...counters[idx], showSuffix: counters[idx].showSuffix === false ? true : false };
+                                  updateField(['impactStats', 'counters'], counters);
+                                }}
+                                style={{
+                                  fontSize: '0.65rem',
+                                  border: 'none',
+                                  background: 'transparent',
+                                  color: cnt.showSuffix === false ? '#DC2626' : '#047857',
+                                  cursor: 'pointer',
+                                  fontWeight: 650,
+                                }}
+                              >
+                                {cnt.showSuffix === false ? 'Hidden' : 'Visible'}
+                              </button>
+                            </div>
+                            <input
+                              type="text"
+                              value={cnt.suffix || ''}
+                              placeholder="+"
+                              onChange={(e) => {
+                                const counters = [...list];
+                                counters[idx] = { ...counters[idx], suffix: e.target.value };
+                                updateField(['impactStats', 'counters'], counters);
+                              }}
+                              style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                            />
+                          </div>
+                          <div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                              <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                                STATISTIC LABEL
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const counters = [...list];
+                                  counters[idx] = { ...counters[idx], showTitle: counters[idx].showTitle === false ? true : false };
+                                  updateField(['impactStats', 'counters'], counters);
+                                }}
+                                style={{
+                                  fontSize: '0.65rem',
+                                  border: 'none',
+                                  background: 'transparent',
+                                  color: cnt.showTitle === false ? '#DC2626' : '#047857',
+                                  cursor: 'pointer',
+                                  fontWeight: 650,
+                                }}
+                              >
+                                {cnt.showTitle === false ? 'Hidden' : 'Visible'}
+                              </button>
+                            </div>
+                            <input
+                              type="text"
+                              value={cnt.title || cnt.label || ''}
+                              placeholder="e.g. Commercial Engagements"
+                              onChange={(e) => {
+                                const counters = [...list];
+                                counters[idx] = { ...counters[idx], title: e.target.value, label: e.target.value };
+                                updateField(['impactStats', 'counters'], counters);
+                              }}
+                              style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 600, color: '#71717A' }}>
+                              SUPPORTING CONTEXT
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const counters = [...list];
+                                counters[idx] = { ...counters[idx], showDesc: counters[idx].showDesc === false ? true : false };
+                                updateField(['impactStats', 'counters'], counters);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: cnt.showDesc === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {cnt.showDesc === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
+                          <input
+                            type="text"
+                            value={cnt.desc || cnt.detail || ''}
+                            placeholder="e.g. Hospitality, enterprise & consumer brands"
+                            onChange={(e) => {
+                              const counters = [...list];
+                              counters[idx] = { ...counters[idx], desc: e.target.value, detail: e.target.value };
+                              updateField(['impactStats', 'counters'], counters);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ));
+                  })()}
                 </div>
               </div>
 
               {/* ─── 3 PRACTICE PILLARS ─── */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.65rem' }}>
-                  PRACTICE PILLARS ({homeData.services?.items?.length || 0})
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B', margin: 0 }}>
+                    PRACTICE PILLARS ({homeData.services?.items?.length || 0})
+                  </label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = homeData.services?.pillarsEnabled !== false;
+                        updateField(['services', 'pillarsEnabled'], !cur);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '0.35rem 0.65rem',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: homeData.services?.pillarsEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                        color: homeData.services?.pillarsEnabled === false ? '#DC2626' : '#047857',
+                        fontSize: '0.72rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {homeData.services?.pillarsEnabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
+                      {homeData.services?.pillarsEnabled === false ? 'Pillars Block Hidden' : 'Pillars Block Active'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const items = [...(homeData.services?.items || [])];
+                        items.push({
+                          num: String(items.length + 1).padStart(2, '0'),
+                          title: 'New Practice Pillar',
+                          description: 'Strategic branding and execution across multi-channel environments.',
+                          tags: ['Brand Strategy', 'Creative Direction', 'Platforms'],
+                          href: '/services',
+                          image: '/images/services/digital-growth.jpg',
+                          enabled: true,
+                          showNum: true,
+                          showTitle: true,
+                          showDescription: true,
+                          showTags: true,
+                          showHref: true,
+                          showImage: true,
+                        });
+                        updateField(['services', 'items'], items);
+                        setToastMessage('✓ New Practice Pillar added successfully!');
+                        setTimeout(() => setToastMessage(''), 3500);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '0.35rem 0.75rem',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        fontSize: '0.74rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Plus size={13} /> Add Pillar
+                    </button>
+                  </div>
+                </div>
+
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                   {(homeData.services?.items || []).map((srv: any, idx: number) => (
                     <div
@@ -2179,16 +4172,147 @@ export default function AdminHomePage() {
                       style={{
                         padding: '0.85rem',
                         borderRadius: '10px',
-                        border: '1px solid rgba(0,0,0,0.08)',
+                        border: '1px solid ' + (srv.enabled === false ? 'rgba(239, 68, 68, 0.3)' : 'rgba(0,0,0,0.08)'),
                         backgroundColor: '#F8F8FA',
+                        opacity: srv.enabled === false ? 0.7 : 1,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.5rem',
+                        gap: '0.65rem',
                       }}
                     >
+                      {/* Header with Enable/Disable, Move, and Delete */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.45rem' }}>
+                        <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113' }}>
+                          Pillar #{idx + 1}: {srv.title || 'Untitled Pillar'}
+                        </span>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          {/* Enable/Disable Toggle */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...homeData.services.items];
+                              updated[idx] = { ...updated[idx], enabled: updated[idx].enabled === false ? true : false };
+                              updateField(['services', 'items'], updated);
+                              setToastMessage(updated[idx].enabled ? `✓ Pillar #${idx + 1} enabled` : `✕ Pillar #${idx + 1} disabled`);
+                              setTimeout(() => setToastMessage(''), 3000);
+                            }}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              padding: '2px 7px',
+                              borderRadius: '4px',
+                              border: 'none',
+                              backgroundColor: srv.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                              color: srv.enabled === false ? '#DC2626' : '#047857',
+                              fontSize: '0.7rem',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {srv.enabled === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                            {srv.enabled === false ? 'Disabled' : 'Enabled'}
+                          </button>
+
+                          {/* Move Up */}
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => {
+                              if (idx === 0) return;
+                              const updated = [...homeData.services.items];
+                              const temp = updated[idx];
+                              updated[idx] = updated[idx - 1];
+                              updated[idx - 1] = temp;
+                              updateField(['services', 'items'], updated);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              background: '#FFFFFF',
+                              borderRadius: '4px',
+                              padding: '2px 5px',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronUp size={13} />
+                          </button>
+
+                          {/* Move Down */}
+                          <button
+                            type="button"
+                            disabled={idx === (homeData.services?.items?.length || 0) - 1}
+                            onClick={() => {
+                              if (idx === (homeData.services?.items?.length || 0) - 1) return;
+                              const updated = [...homeData.services.items];
+                              const temp = updated[idx];
+                              updated[idx] = updated[idx + 1];
+                              updated[idx + 1] = temp;
+                              updateField(['services', 'items'], updated);
+                            }}
+                            style={{
+                              border: '1px solid rgba(0,0,0,0.1)',
+                              background: '#FFFFFF',
+                              borderRadius: '4px',
+                              padding: '2px 5px',
+                              cursor: idx === (homeData.services?.items?.length || 0) - 1 ? 'not-allowed' : 'pointer',
+                              color: idx === (homeData.services?.items?.length || 0) - 1 ? '#D4D4D8' : '#52525B',
+                            }}
+                          >
+                            <ChevronDown size={13} />
+                          </button>
+
+                          {/* Delete Pillar */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const deletedTitle = srv.title || `Pillar #${idx + 1}`;
+                              const updated = (homeData.services?.items || []).filter((_: any, i: number) => i !== idx);
+                              updateField(['services', 'items'], updated);
+                              setToastMessage(`✓ ${deletedTitle} deleted successfully.`);
+                              setTimeout(() => setToastMessage(''), 3500);
+                            }}
+                            style={{
+                              border: '1px solid #FECACA',
+                              background: '#FEF2F2',
+                              borderRadius: '4px',
+                              padding: '2px 6px',
+                              cursor: 'pointer',
+                              color: '#DC2626',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                            }}
+                            title="Delete this pillar"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+                      </div>
+
                       <div style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Number</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Number</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.services.items];
+                                updated[idx] = { ...updated[idx], showNum: updated[idx].showNum === false ? true : false };
+                                updateField(['services', 'items'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: srv.showNum === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {srv.showNum === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={srv.num || ''}
@@ -2201,7 +4325,27 @@ export default function AdminHomePage() {
                           />
                         </div>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Title</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Title</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.services.items];
+                                updated[idx] = { ...updated[idx], showTitle: updated[idx].showTitle === false ? true : false };
+                                updateField(['services', 'items'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: srv.showTitle === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {srv.showTitle === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={srv.title || ''}
@@ -2216,7 +4360,27 @@ export default function AdminHomePage() {
                       </div>
 
                       <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Description</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Description</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...homeData.services.items];
+                              updated[idx] = { ...updated[idx], showDescription: updated[idx].showDescription === false ? true : false };
+                              updateField(['services', 'items'], updated);
+                            }}
+                            style={{
+                              fontSize: '0.65rem',
+                              border: 'none',
+                              background: 'transparent',
+                              color: srv.showDescription === false ? '#DC2626' : '#047857',
+                              cursor: 'pointer',
+                              fontWeight: 650,
+                            }}
+                          >
+                            {srv.showDescription === false ? 'Hidden' : 'Visible'}
+                          </button>
+                        </div>
                         <textarea
                           rows={2}
                           value={srv.description || ''}
@@ -2230,7 +4394,27 @@ export default function AdminHomePage() {
                       </div>
 
                       <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Tags (comma-separated pills)</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Tags (comma-separated pills)</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...homeData.services.items];
+                              updated[idx] = { ...updated[idx], showTags: updated[idx].showTags === false ? true : false };
+                              updateField(['services', 'items'], updated);
+                            }}
+                            style={{
+                              fontSize: '0.65rem',
+                              border: 'none',
+                              background: 'transparent',
+                              color: srv.showTags === false ? '#DC2626' : '#047857',
+                              cursor: 'pointer',
+                              fontWeight: 650,
+                            }}
+                          >
+                            {srv.showTags === false ? 'Hidden' : 'Visible'}
+                          </button>
+                        </div>
                         <input
                           type="text"
                           value={Array.isArray(srv.tags) ? srv.tags.join(', ') : (srv.tags || '')}
@@ -2249,7 +4433,27 @@ export default function AdminHomePage() {
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Link / Anchor</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Link / Anchor</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.services.items];
+                                updated[idx] = { ...updated[idx], showHref: updated[idx].showHref === false ? true : false };
+                                updateField(['services', 'items'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: srv.showHref === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {srv.showHref === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <input
                             type="text"
                             value={srv.href || ''}
@@ -2262,7 +4466,27 @@ export default function AdminHomePage() {
                           />
                         </div>
                         <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Cover Image</span>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Cover Image</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...homeData.services.items];
+                                updated[idx] = { ...updated[idx], showImage: updated[idx].showImage === false ? true : false };
+                                updateField(['services', 'items'], updated);
+                              }}
+                              style={{
+                                fontSize: '0.65rem',
+                                border: 'none',
+                                background: 'transparent',
+                                color: srv.showImage === false ? '#DC2626' : '#047857',
+                                cursor: 'pointer',
+                                fontWeight: 650,
+                              }}
+                            >
+                              {srv.showImage === false ? 'Hidden' : 'Visible'}
+                            </button>
+                          </div>
                           <div style={{ display: 'flex', gap: '0.35rem' }}>
                             <input
                               type="text"
@@ -2291,33 +4515,331 @@ export default function AdminHomePage() {
             </div>
           )}
 
-
-
-
-
           {/* ════════════════════════════════════════════════════════════
               SECTION 07: INTERACTIVE SIGNATURE CTA
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'cta' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
               <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                    07 Signature Mouse-Trail Interactive CTA
-                  </h3>
-                  <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
-                    Live Flow
-                  </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      07 Signature Last CTA Section
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+
+                  {/* Section Enable/Disable toggle */}
+                  <button
+                    type="button"
+                    onClick={toggleCtaSection}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      padding: '0.4rem 0.85rem',
+                      borderRadius: '6px',
+                      border: 'none',
+                      backgroundColor: homeData.cta?.enabled === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.cta?.enabled === false ? '#DC2626' : '#047857',
+                      fontSize: '0.76rem',
+                      fontWeight: 650,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.cta?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
+                    {homeData.cta?.enabled === false ? 'Section Hidden' : 'Section Active'}
+                  </button>
                 </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
-                  The large dark closing CTA with cursor-following interactive cards.
+                  Control the closing CTA section, background image, copy, links, and element visibility.
                 </p>
               </div>
 
+              {/* ── MOUSE HOVER TRAIL IMAGES (SIGNATURE CURSOR EFFECT) ── */}
+              <div style={{ padding: '1.15rem', backgroundColor: '#F8F8FA', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)', display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#111113', letterSpacing: '0.02em' }}>
+                        MOUSE HOVER TRAIL IMAGES (SIGNATURE EFFECT)
+                      </span>
+                      <span style={{ fontSize: '0.68rem', backgroundColor: '#EFF6FF', color: '#1D4ED8', padding: '2px 6px', borderRadius: '4px', fontWeight: 600 }}>
+                        Cursor Hover
+                      </span>
+                    </div>
+                    <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.72rem', color: '#71717A' }}>
+                      Select images displayed in floating cards as visitors move their mouse across the Last CTA section.
+                    </p>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const cur = homeData.cta?.hoverImagesEnabled !== false;
+                        updateField(['cta', 'hoverImagesEnabled'], !cur);
+                        setToastMessage(cur ? '✕ Cursor hover effect disabled' : '✓ Cursor hover effect enabled');
+                        setTimeout(() => setToastMessage(''), 3500);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '4px 9px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: homeData.cta?.hoverImagesEnabled === false ? '#FEE2E2' : '#ECFDF5',
+                        color: homeData.cta?.hoverImagesEnabled === false ? '#DC2626' : '#047857',
+                        fontSize: '0.72rem',
+                        fontWeight: 650,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {homeData.cta?.hoverImagesEnabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
+                      {homeData.cta?.hoverImagesEnabled === false ? 'Hover Trail Disabled' : 'Hover Trail Active'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const defaultSeven = [
+                          { id: '1', image: '/images/case-studies/raysons/casting-hero.jpg', title: 'Raysons Group', enabled: true },
+                          { id: '2', image: '/images/case-studies/loom/loom-hero.jpg', title: 'Loom Crafts', enabled: true },
+                          { id: '3', image: '/images/case-studies/picturetime/picturetime-hero.jpg', title: 'PictureTime', enabled: true },
+                          { id: '4', image: '/images/case-studies/she/she-hero.jpg', title: 'Project SHE', enabled: true },
+                          { id: '5', image: '/images/case-studies/misu/misu-hero.jpg', title: 'Misu Dining', enabled: true },
+                          { id: '6', image: '/images/case-studies/rrskins/rrskins-hero.jpg', title: 'RR Skins', enabled: true },
+                          { id: '7', image: '/images/tourin/tourin-hero.jpg', title: 'Tourin Expeditions', enabled: true },
+                        ];
+                        const currentList = Array.isArray(homeData.cta?.hoverImages) && homeData.cta.hoverImages.length > 0
+                          ? [...homeData.cta.hoverImages]
+                          : defaultSeven;
+                        const newItem = {
+                          id: String(Date.now()),
+                          image: '/images/case-studies/raysons/neora-1.jpg',
+                          title: `Hover Card 0${currentList.length + 1}`,
+                          enabled: true,
+                        };
+                        const updated = [...currentList, newItem];
+                        updateField(['cta', 'hoverImages'], updated);
+                        setToastMessage('✓ New hover image added to CTA trail');
+                        setTimeout(() => setToastMessage(''), 3500);
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(0,0,0,0.12)',
+                        backgroundColor: '#FFFFFF',
+                        color: '#111113',
+                        fontSize: '0.72rem',
+                        fontWeight: 650,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Plus size={12} /> Add Hover Image
+                    </button>
+                  </div>
+                </div>
+
+                {/* Hover Images List */}
+                {(() => {
+                  const defaultSeven = [
+                    { id: '1', image: '/images/case-studies/raysons/casting-hero.jpg', title: 'Raysons Group', enabled: true },
+                    { id: '2', image: '/images/case-studies/loom/loom-hero.jpg', title: 'Loom Crafts', enabled: true },
+                    { id: '3', image: '/images/case-studies/picturetime/picturetime-hero.jpg', title: 'PictureTime', enabled: true },
+                    { id: '4', image: '/images/case-studies/she/she-hero.jpg', title: 'Project SHE', enabled: true },
+                    { id: '5', image: '/images/case-studies/misu/misu-hero.jpg', title: 'Misu Dining', enabled: true },
+                    { id: '6', image: '/images/case-studies/rrskins/rrskins-hero.jpg', title: 'RR Skins', enabled: true },
+                    { id: '7', image: '/images/tourin/tourin-hero.jpg', title: 'Tourin Expeditions', enabled: true },
+                  ];
+                  const rawList = homeData.cta?.hoverImages;
+                  const list = (Array.isArray(rawList) && rawList.length > 0)
+                    ? rawList
+                    : defaultSeven;
+
+                  return (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                      {list.map((item: any, idx: number) => {
+                        const imgUrl = typeof item === 'string' ? item : item.image;
+                        const isItemEnabled = typeof item === 'object' ? item.enabled !== false : true;
+                        const itemTitle = typeof item === 'object' ? item.title || `Hover Card 0${idx + 1}` : `Hover Card 0${idx + 1}`;
+
+                        return (
+                          <div
+                            key={item.id || idx}
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '70px 1fr auto',
+                              gap: '0.75rem',
+                              alignItems: 'center',
+                              padding: '0.65rem 0.75rem',
+                              borderRadius: '8px',
+                              backgroundColor: '#FFFFFF',
+                              border: isItemEnabled ? '1px solid rgba(0,0,0,0.08)' : '1px solid #FECACA',
+                              opacity: isItemEnabled ? 1 : 0.6,
+                            }}
+                          >
+                            {/* Thumbnail Preview */}
+                            <div
+                              style={{
+                                width: '70px',
+                                height: '48px',
+                                borderRadius: '5px',
+                                overflow: 'hidden',
+                                backgroundColor: '#111113',
+                                position: 'relative',
+                                border: '1px solid rgba(0,0,0,0.1)',
+                              }}
+                            >
+                              {imgUrl ? (
+                                <img
+                                  src={imgUrl}
+                                  alt={itemTitle}
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                />
+                              ) : (
+                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#71717A' }}>
+                                  <ImageIcon size={16} />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Inputs: URL & Title */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                              <div style={{ display: 'flex', gap: '0.4rem' }}>
+                                <input
+                                  type="text"
+                                  value={imgUrl || ''}
+                                  placeholder="/images/case-studies/..."
+                                  onChange={(e) => {
+                                    const next = [...list];
+                                    if (typeof next[idx] === 'object') {
+                                      next[idx] = { ...next[idx], image: e.target.value };
+                                    } else {
+                                      next[idx] = { id: String(Date.now()), image: e.target.value, enabled: true };
+                                    }
+                                    updateField(['cta', 'hoverImages'], next);
+                                  }}
+                                  style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.76rem', flex: 1 }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setMediaPickerTarget({ path: `cta.hoverImages.${idx}.image`, type: 'image' })}
+                                  style={mediaBtnStyle}
+                                >
+                                  <ImageIcon size={12} /> {imgUrl ? 'Replace' : 'Upload / Pick'}
+                                </button>
+                              </div>
+                              <input
+                                type="text"
+                                value={itemTitle}
+                                placeholder="Card description or project name"
+                                onChange={(e) => {
+                                  const next = [...list];
+                                  if (typeof next[idx] === 'object') {
+                                    next[idx] = { ...next[idx], title: e.target.value };
+                                  } else {
+                                    next[idx] = { id: String(Date.now()), image: imgUrl, title: e.target.value, enabled: true };
+                                  }
+                                  updateField(['cta', 'hoverImages'], next);
+                                }}
+                                style={{ ...inputStyle, padding: '0.3rem 0.55rem', fontSize: '0.72rem', color: '#71717A' }}
+                              />
+                            </div>
+
+                            {/* Action Buttons: Enable/Disable & Delete */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                              <button
+                                type="button"
+                                title={isItemEnabled ? 'Disable this hover card' : 'Enable this hover card'}
+                                onClick={() => {
+                                  const next = [...list];
+                                  if (typeof next[idx] === 'object') {
+                                    next[idx] = { ...next[idx], enabled: !isItemEnabled };
+                                  } else {
+                                    next[idx] = { id: String(Date.now()), image: imgUrl, enabled: !isItemEnabled };
+                                  }
+                                  updateField(['cta', 'hoverImages'], next);
+                                  setToastMessage(isItemEnabled ? `✕ Card 0${idx + 1} disabled` : `✓ Card 0${idx + 1} enabled`);
+                                  setTimeout(() => setToastMessage(''), 3500);
+                                }}
+                                style={{
+                                  padding: '0.35rem',
+                                  borderRadius: '5px',
+                                  border: '1px solid rgba(0,0,0,0.1)',
+                                  backgroundColor: isItemEnabled ? '#F4F4F5' : '#FEE2E2',
+                                  color: isItemEnabled ? '#52525B' : '#DC2626',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                {isItemEnabled ? <Eye size={13} /> : <EyeOff size={13} />}
+                              </button>
+
+                              <button
+                                type="button"
+                                title="Delete this hover image"
+                                onClick={() => {
+                                  const next = list.filter((_: any, i: number) => i !== idx);
+                                  updateField(['cta', 'hoverImages'], next);
+                                  setToastMessage('✓ Hover image deleted');
+                                  setTimeout(() => setToastMessage(''), 3500);
+                                }}
+                                style={{
+                                  padding: '0.35rem',
+                                  borderRadius: '5px',
+                                  border: '1px solid #FECACA',
+                                  backgroundColor: '#FEF2F2',
+                                  color: '#DC2626',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Eyebrow with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  EYEBROW
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    EYEBROW
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.cta?.showEyebrow !== false;
+                      updateField(['cta', 'showEyebrow'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.cta?.showEyebrow === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.cta?.showEyebrow === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.cta?.showEyebrow === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.cta?.showEyebrow === false ? 'Eyebrow Hidden' : 'Eyebrow Visible'}
+                  </button>
+                </div>
                 <input
                   type="text"
                   value={homeData.cta?.eyebrow || ''}
@@ -2326,10 +4848,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Headline with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  MAIN HEADLINE
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    MAIN HEADLINE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.cta?.showHeadline !== false;
+                      updateField(['cta', 'showHeadline'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.cta?.showHeadline === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.cta?.showHeadline === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.cta?.showHeadline === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.cta?.showHeadline === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={2}
                   value={homeData.cta?.headline || ''}
@@ -2338,10 +4886,36 @@ export default function AdminHomePage() {
                 />
               </div>
 
+              {/* Description with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  SUBTITLE / SUPPORTING COPY
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SUBTITLE / SUPPORTING COPY
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.cta?.showDescription !== false;
+                      updateField(['cta', 'showDescription'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.cta?.showDescription === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.cta?.showDescription === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.cta?.showDescription === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.cta?.showDescription === false ? 'Copy Hidden' : 'Copy Visible'}
+                  </button>
+                </div>
                 <textarea
                   rows={3}
                   value={homeData.cta?.description || ''}
@@ -2350,35 +4924,88 @@ export default function AdminHomePage() {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    PRIMARY BUTTON LABEL
+              {/* Button with Enable/Disable */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    ACTION BUTTON
                   </label>
-                  <input
-                    type="text"
-                    value={homeData.cta?.buttonLabel || ''}
-                    onChange={(e) => updateField(['cta', 'buttonLabel'], e.target.value)}
-                    style={inputStyle}
-                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.cta?.showButton !== false;
+                      updateField(['cta', 'showButton'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.cta?.showButton === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.cta?.showButton === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.cta?.showButton === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.cta?.showButton === false ? 'Button Hidden' : 'Button Visible'}
+                  </button>
                 </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    BUTTON DESTINATION LINK
-                  </label>
-                  <input
-                    type="text"
-                    value={homeData.cta?.buttonLink || ''}
-                    onChange={(e) => updateField(['cta', 'buttonLink'], e.target.value)}
-                    style={inputStyle}
-                  />
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
+                  <div>
+                    <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>Button Label</span>
+                    <input
+                      type="text"
+                      value={homeData.cta?.buttonLabel || ''}
+                      onChange={(e) => updateField(['cta', 'buttonLabel'], e.target.value)}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem' }}>Destination Link</span>
+                    <input
+                      type="text"
+                      value={homeData.cta?.buttonLink || ''}
+                      onChange={(e) => updateField(['cta', 'buttonLink'], e.target.value)}
+                      style={inputStyle}
+                    />
+                  </div>
                 </div>
               </div>
 
+              {/* Direct Inquiry Email with Enable/Disable */}
               <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  DIRECT INQUIRY EMAIL ADDRESS
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    DIRECT INQUIRY EMAIL ADDRESS
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.cta?.showEmail !== false;
+                      updateField(['cta', 'showEmail'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.cta?.showEmail === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.cta?.showEmail === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.cta?.showEmail === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.cta?.showEmail === false ? 'Email Hidden' : 'Email Visible'}
+                  </button>
+                </div>
                 <input
                   type="email"
                   value={homeData.cta?.email || ''}

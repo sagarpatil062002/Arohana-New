@@ -23,6 +23,12 @@ export default function LivePreviewPanel({ previewUrl = '/', title }: LivePrevie
     }
   };
 
+  const normalizedPreviewUrl = React.useMemo(() => {
+    if (!previewUrl) return '/?preview=true';
+    if (previewUrl.includes('preview=true')) return previewUrl;
+    return previewUrl.includes('?') ? `${previewUrl}&preview=true` : `${previewUrl}?preview=true`;
+  }, [previewUrl]);
+
   return (
     <div
       style={{
@@ -211,7 +217,7 @@ export default function LivePreviewPanel({ previewUrl = '/', title }: LivePrevie
         >
           <iframe
             key={key}
-            src={previewUrl}
+            src={normalizedPreviewUrl}
             title="Ārohana Live Website Preview"
             style={{
               width: '100%',

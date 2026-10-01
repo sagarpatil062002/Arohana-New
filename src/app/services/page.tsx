@@ -73,6 +73,12 @@ export default function ServicesPage() {
   const servicesCms = content?.services;
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const practiceAreasEnabled = servicesCms?.practiceAreasEnabled !== false;
+  const servicesList = (servicesCms?.services || []).filter((s: any) => s && s.published !== false && s.enabled !== false);
+  const digitalService = servicesList.find((s: any) => s.id === 'digital-marketing' || s.id?.includes('digital') || s.num === '01') || (servicesList.length > 0 ? servicesList[0] : null);
+  const hospitalityService = servicesList.find((s: any) => s.id === 'hospitality' || s.num === '02') || (servicesList.length > 1 ? servicesList[1] : null);
+  const productionService = servicesList.find((s: any) => s.id === 'production' || s.id?.includes('production') || s.id?.includes('content') || s.num === '03') || (servicesList.length > 2 ? servicesList[2] : null);
+
   /* GSAP scroll reveal animations */
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -110,385 +116,437 @@ export default function ServicesPage() {
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 1: HERO SECTION
             ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          style={{
-            minHeight: 'calc(100vh - 76px)',
-            paddingTop: 'clamp(5.5rem, 8vw, 7.5rem)',
-            paddingBottom: 'clamp(3rem, 5vw, 5rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div
+        {servicesCms?.heroEnabled !== false && (
+          <section
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
+              minHeight: 'calc(100vh - 76px)',
+              paddingTop: 'clamp(5.5rem, 8vw, 7.5rem)',
+              paddingBottom: 'clamp(3rem, 5vw, 5rem)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
             }}
           >
-            {/* Left Column: Heading & Narrative */}
-            <div>
-              {/* Main Headline */}
-              <h1
-                style={{
-                  fontSize: 'clamp(2.8rem, 5.8vw, 5.8rem)',
-                  lineHeight: 1.04,
-                  letterSpacing: '-0.04em',
-                  fontWeight: 650,
-                  color: DARK,
-                  marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
-                }}
-              >
-                What
-                <br />
-                We Do<span style={{ color: RED }}>.</span>
-              </h1>
-
-              {/* Paragraph */}
-              <p
-                style={{
-                  maxWidth: '540px',
-                  fontSize: 'clamp(0.98rem, 1.25vw, 1.15rem)',
-                  lineHeight: 1.65,
-                  color: BODY_TEXT,
-                  fontWeight: 450,
-                }}
-              >
-                We help businesses build stronger brands, communicate better and grow through digitally.
-                <br /><br />
-                Our work spans digital brand growth, hospitality consulting and content & brand production — bringing strategy, creativity and execution together to meet the needs of each business.
-              </p>
-            </div>
-
-            {/* Right Column: Architectural Mountain Collage */}
             <div
               style={{
-                position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 480px), 1fr))',
+                gap: 'clamp(2.5rem, 5vw, 5rem)',
                 alignItems: 'center',
-                width: '100%',
               }}
             >
-              <div
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  maxWidth: '520px',
-                  aspectRatio: '223 / 180',
-                  boxShadow: '0 20px 45px -10px rgba(0, 0, 0, 0.12)',
-                  borderRadius: '6px',
-                  overflow: 'hidden',
-                  transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                <Image
-                  src={servicesCms?.heroImage || '/images/services/services-hero-collage.png'}
-                  alt="Arohana practice areas — Strategy, Creative, Execution"
-                  fill
-                  priority
-                  style={{ objectFit: 'contain' }}
-                  sizes="(max-width: 768px) 92vw, 520px"
-                />
+              {/* Left Column: Heading & Narrative */}
+              <div>
+                {/* Main Headline */}
+                {servicesCms?.showHeadline !== false && (
+                  <h1
+                    style={{
+                      fontSize: 'clamp(2.8rem, 5.8vw, 5.8rem)',
+                      lineHeight: 1.04,
+                      letterSpacing: '-0.04em',
+                      fontWeight: 650,
+                      color: DARK,
+                      marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+                    }}
+                  >
+                    {servicesCms?.headline || (
+                      <>
+                        What
+                        <br />
+                        We Do<span style={{ color: RED }}>.</span>
+                      </>
+                    )}
+                  </h1>
+                )}
+
+                {/* Paragraph */}
+                {servicesCms?.showDescription !== false && (
+                  <p
+                    style={{
+                      maxWidth: '540px',
+                      fontSize: 'clamp(0.98rem, 1.25vw, 1.15rem)',
+                      lineHeight: 1.65,
+                      color: BODY_TEXT,
+                      fontWeight: 450,
+                    }}
+                  >
+                    {servicesCms?.description || (
+                      <>
+                        We help businesses build stronger brands, communicate better and grow through digitally.
+                        <br /><br />
+                        Our work spans digital brand growth, hospitality consulting and content & brand production — bringing strategy, creativity and execution together to meet the needs of each business.
+                      </>
+                    )}
+                  </p>
+                )}
               </div>
+
+              {/* Right Column: Architectural Mountain Collage */}
+              {servicesCms?.showHeroImage !== false && (
+                <div
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      maxWidth: '520px',
+                      aspectRatio: '223 / 180',
+                      boxShadow: '0 20px 45px -10px rgba(0, 0, 0, 0.12)',
+                      borderRadius: '6px',
+                      overflow: 'hidden',
+                      transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <Image
+                      src={servicesCms?.heroImage || '/images/services/services-hero-collage.png'}
+                      alt="Arohana practice areas — Strategy, Creative, Execution"
+                      fill
+                      priority
+                      style={{ objectFit: 'contain' }}
+                      sizes="(max-width: 768px) 92vw, 520px"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 2: DIGITAL BRAND GROWTH (01)
             ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          id="digital-growth"
-          style={{
-            paddingTop: 'clamp(4rem, 6.5vw, 6.5rem)',
-            paddingBottom: 'clamp(4rem, 6.5vw, 6.5rem)',
-            borderTop: BORDER,
-          }}
-        >
-          <div
+        {practiceAreasEnabled && digitalService && (
+          <section
+            id="digital-growth"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'start',
+              paddingTop: 'clamp(4rem, 6.5vw, 6.5rem)',
+              paddingBottom: 'clamp(4rem, 6.5vw, 6.5rem)',
+              borderTop: BORDER,
             }}
           >
-            {/* Left Column: Title & Image */}
-            <div>
-              {/* Category Tag */}
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.18em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '0.85rem',
-                }}
-              >
-                DIGITAL BRAND GROWTH
-              </div>
-
-              {/* Headline */}
-              <h2
-                style={{
-                  fontSize: 'clamp(1.75rem, 2.6vw, 2.5rem)',
-                  lineHeight: 1.15,
-                  letterSpacing: '-0.03em',
-                  fontWeight: 650,
-                  color: DARK,
-                  marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
-                  maxWidth: '24ch',
-                }}
-              >
-                Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.
-              </h2>
-
-              {/* Rectangular Image */}
-              <div
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  aspectRatio: '16 / 9',
-                  borderRadius: '6px',
-                  border: '1px solid rgba(0, 0, 0, 0.08)',
-                  overflow: 'hidden',
-                  boxShadow: '0 12px 32px -8px rgba(0, 0, 0, 0.08)',
-                }}
-              >
-                <Image
-                  src="/uploads/1790518970031-raysons2.jpg"
-                  alt="Digital brand growth & social media management"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 520px"
-                  style={{ objectFit: 'cover', objectPosition: 'center 45%' }}
-                />
-              </div>
-            </div>
-
-            {/* Right Column: Deliverables List */}
-            <div style={{ paddingTop: 'clamp(0.5rem, 2vw, 2rem)' }}>
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.2em',
-                  color: MUTED,
-                  fontWeight: 700,
-                  marginBottom: '1.25rem',
-                  paddingBottom: '0.75rem',
-                }}
-              >
-                WHAT WE DELIVER
-              </div>
-
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {DIGITAL_DELIVERABLES.map((item) => (
-                  <div
-                    key={item.num}
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '26px 1fr',
-                      alignItems: 'center',
-                      padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
-                      borderTop: '1px solid rgba(0, 0, 0, 0.07)',
-                      transition: 'all 0.25s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.paddingLeft = '8px';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.paddingLeft = '0';
-                    }}
-                  >
-                    <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
-                      ●
-                    </span>
-                    <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 500, color: '#222225' }}>
-                      {item.title}
-                    </span>
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.07)' }} />
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════════════
-          SECTION 3: HOSPITALITY CONSULTING (02) — FULL-WIDTH DARK BAND
-          ═══════════════════════════════════════════════════════════════════ */}
-      <section
-        id="hospitality-consulting"
-        style={{
-          backgroundColor: '#111113',
-          color: '#ffffff',
-          paddingTop: 'clamp(4.5rem, 7.5vw, 7.5rem)',
-          paddingBottom: 'clamp(4.5rem, 7.5vw, 7.5rem)',
-          position: 'relative',
-        }}
-      >
-        <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
-              gap: 'clamp(2.5rem, 5vw, 5rem)',
-              alignItems: 'center',
-            }}
-          >
-            {/* Left Column: Title & Deliverables */}
-            <div>
-              {/* Category Tag */}
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.65rem',
-                  letterSpacing: '0.18em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '0.85rem',
-                }}
-              >
-                HOSPITALITY CONSULTING
-              </div>
-
-              {/* Headline */}
-              <h2
-                style={{
-                  fontSize: 'clamp(1.75rem, 2.6vw, 2.5rem)',
-                  lineHeight: 1.15,
-                  letterSpacing: '-0.03em',
-                  fontWeight: 650,
-                  color: '#ffffff',
-                  marginBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
-                  maxWidth: '22ch',
-                }}
-              >
-                Restaurant fundamentals, guest experience & repeat visits.
-              </h2>
-
-              {/* Deliverables List on Dark */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+                gap: 'clamp(2.5rem, 5vw, 5rem)',
+                alignItems: 'start',
+              }}
+            >
+              {/* Left Column: Title & Image */}
               <div>
+                {/* Category Tag */}
+                <div
+                  className="tag-mono"
+                  style={{
+                    fontSize: '0.65rem',
+                    letterSpacing: '0.18em',
+                    color: RED,
+                    fontWeight: 700,
+                    marginBottom: '0.85rem',
+                  }}
+                >
+                  {digitalService.shortTitle?.toUpperCase() || 'DIGITAL BRAND GROWTH'}
+                </div>
+
+                {/* Headline: FULL PRACTICE TITLE (Bigger) */}
+                <h2
+                  style={{
+                    fontSize: 'clamp(2.2rem, 3.4vw, 3.2rem)',
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.03em',
+                    fontWeight: 700,
+                    color: DARK,
+                    marginBottom: '0.75rem',
+                    maxWidth: '24ch',
+                  }}
+                >
+                  {digitalService.title || 'Digital Brand Growth'}
+                </h2>
+
+                {/* PRACTICE DESCRIPTION (Smaller) */}
+                <p
+                  style={{
+                    fontSize: 'clamp(0.92rem, 1.1vw, 1.05rem)',
+                    lineHeight: 1.6,
+                    color: '#52525B',
+                    marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+                    maxWidth: '48ch',
+                  }}
+                >
+                  {digitalService.description || 'Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.'}
+                </p>
+
+                {/* Rectangular Image */}
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '16 / 9',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    overflow: 'hidden',
+                    boxShadow: '0 12px 32px -8px rgba(0, 0, 0, 0.08)',
+                  }}
+                >
+                  <Image
+                    src={digitalService.image || '/uploads/1790518970031-raysons2.jpg'}
+                    alt={digitalService.title || 'Digital brand growth & social media management'}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 520px"
+                    style={{ objectFit: 'cover', objectPosition: 'center 45%' }}
+                  />
+                </div>
+              </div>
+
+              {/* Right Column: Deliverables List */}
+              <div style={{ paddingTop: 'clamp(0.5rem, 2vw, 2rem)' }}>
                 <div
                   className="tag-mono"
                   style={{
                     fontSize: '0.65rem',
                     letterSpacing: '0.2em',
-                    color: 'rgba(255, 255, 255, 0.45)',
+                    color: MUTED,
                     fontWeight: 700,
-                    marginBottom: '1rem',
+                    marginBottom: '1.25rem',
+                    paddingBottom: '0.75rem',
                   }}
                 >
                   WHAT WE DELIVER
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  {HOSPITALITY_DELIVERABLES.map((item) => (
-                    <div
-                      key={item.num}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '26px 1fr',
-                        alignItems: 'center',
-                        padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
-                        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                        transition: 'all 0.25s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.paddingLeft = '8px';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.paddingLeft = '0';
-                      }}
-                    >
-                      <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
-                        ●
-                      </span>
-                      <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 450, color: 'rgba(255, 255, 255, 0.92)' }}>
-                        {item.title}
-                      </span>
-                    </div>
-                  ))}
-                  <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }} />
+                  {(digitalService.capabilities && digitalService.capabilities.length > 0 ? digitalService.capabilities : DIGITAL_DELIVERABLES.map((d: any) => d.title)).map((item: any, idx: number) => {
+                    const itemTitle = typeof item === 'string' ? item : item.title;
+                    return (
+                      <div
+                        key={idx}
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '26px 1fr',
+                          alignItems: 'center',
+                          padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
+                          borderTop: '1px solid rgba(0, 0, 0, 0.07)',
+                          transition: 'all 0.25s ease',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.paddingLeft = '8px';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.paddingLeft = '0';
+                        }}
+                      >
+                        <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
+                          ●
+                        </span>
+                        <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 500, color: '#222225' }}>
+                          {itemTitle}
+                        </span>
+                      </div>
+                    );
+                  })}
+                  <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.07)' }} />
                 </div>
               </div>
             </div>
+          </section>
+        )}
+      </div>
 
-            {/* Right Column: Atmospheric Dining Photo with Red Box Accent */}
+      {/* ═══════════════════════════════════════════════════════════════════
+          SECTION 3: HOSPITALITY CONSULTING (02) — FULL-WIDTH DARK BAND
+          ═══════════════════════════════════════════════════════════════════ */}
+      {practiceAreasEnabled && hospitalityService && (
+        <section
+          id="hospitality-consulting"
+          style={{
+            backgroundColor: '#111113',
+            color: '#ffffff',
+            paddingTop: 'clamp(4.5rem, 7.5vw, 7.5rem)',
+            paddingBottom: 'clamp(4.5rem, 7.5vw, 7.5rem)',
+            position: 'relative',
+          }}
+        >
+          <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
             <div
               style={{
-                position: 'relative',
-                padding: 'clamp(0.5rem, 2vw, 2rem)',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 460px), 1fr))',
+                gap: 'clamp(2.5rem, 5vw, 5rem)',
+                alignItems: 'center',
               }}
             >
-              {/* Outer architectural wireframe box accent */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '92%',
-                  height: '92%',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  borderRadius: '6px',
-                  pointerEvents: 'none',
-                  zIndex: 1,
-                }}
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '18%',
-                  left: 0,
-                  width: '28px',
-                  height: '2px',
-                  backgroundColor: RED,
-                  zIndex: 3,
-                }}
-              />
+              {/* Left Column: Title & Deliverables */}
+              <div>
+                {/* Category Tag */}
+                <div
+                  className="tag-mono"
+                  style={{
+                    fontSize: '0.65rem',
+                    letterSpacing: '0.18em',
+                    color: RED,
+                    fontWeight: 700,
+                    marginBottom: '0.85rem',
+                  }}
+                >
+                  {hospitalityService.shortTitle?.toUpperCase() || 'HOSPITALITY CONSULTING'}
+                </div>
 
-              {/* Photo Container */}
+                {/* Headline: FULL PRACTICE TITLE (Bigger) */}
+                <h2
+                  style={{
+                    fontSize: 'clamp(2.2rem, 3.4vw, 3.2rem)',
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.03em',
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    marginBottom: '0.75rem',
+                    maxWidth: '22ch',
+                  }}
+                >
+                  {hospitalityService.title || 'Hospitality Consulting'}
+                </h2>
+
+                {/* PRACTICE DESCRIPTION (Smaller) */}
+                <p
+                  style={{
+                    fontSize: 'clamp(0.92rem, 1.1vw, 1.05rem)',
+                    lineHeight: 1.6,
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+                    maxWidth: '48ch',
+                  }}
+                >
+                  {hospitalityService.description || hospitalityService.tagline || 'Restaurant fundamentals, guest experience & repeat visits.'}
+                </p>
+
+                {/* Deliverables List on Dark */}
+                <div>
+                  <div
+                    className="tag-mono"
+                    style={{
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.2em',
+                      color: 'rgba(255, 255, 255, 0.45)',
+                      fontWeight: 700,
+                      marginBottom: '1rem',
+                    }}
+                  >
+                    WHAT WE DELIVER
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {(hospitalityService.capabilities && hospitalityService.capabilities.length > 0 ? hospitalityService.capabilities : HOSPITALITY_DELIVERABLES.map((d: any) => d.title)).map((item: any, idx: number) => {
+                      const itemTitle = typeof item === 'string' ? item : item.title;
+                      return (
+                        <div
+                          key={idx}
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '26px 1fr',
+                            alignItems: 'center',
+                            padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
+                            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                            transition: 'all 0.25s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.paddingLeft = '8px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.paddingLeft = '0';
+                          }}
+                        >
+                          <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
+                            ●
+                          </span>
+                          <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 450, color: 'rgba(255, 255, 255, 0.92)' }}>
+                            {itemTitle}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Atmospheric Dining Photo with Red Box Accent */}
               <div
                 style={{
                   position: 'relative',
-                  zIndex: 2,
-                  width: '100%',
-                  aspectRatio: '16 / 10',
-                  borderRadius: '6px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  overflow: 'hidden',
-                  boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+                  padding: 'clamp(0.5rem, 2vw, 2rem)',
                 }}
               >
-                <Image
-                  src="/images/case-studies/raysons/neora-1.jpg"
-                  alt="Neora Deck experiential dining and rooftop atmosphere"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 560px"
-                  style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+                {/* Outer architectural wireframe box accent */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '92%',
+                    height: '92%',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    borderRadius: '6px',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
                 />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '18%',
+                    left: 0,
+                    width: '28px',
+                    height: '2px',
+                    backgroundColor: RED,
+                    zIndex: 3,
+                  }}
+                />
+
+                {/* Photo Container */}
+                <div
+                  style={{
+                    position: 'relative',
+                    zIndex: 2,
+                    width: '100%',
+                    aspectRatio: '16 / 10',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    overflow: 'hidden',
+                    boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
+                  }}
+                >
+                  <Image
+                    src={hospitalityService.image || '/images/case-studies/raysons/neora-1.jpg'}
+                    alt={hospitalityService.title || 'Neora Deck experiential dining and rooftop atmosphere'}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 560px"
+                    style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 4: CONTENT & BRAND PRODUCTION (03)
             ═══════════════════════════════════════════════════════════════════ */}
-        <section
+        {practiceAreasEnabled && productionService && (<section
           id="brand-production"
           style={{
             paddingTop: 'clamp(4.5rem, 7vw, 7rem)',
@@ -516,23 +574,36 @@ export default function ServicesPage() {
                   marginBottom: '0.85rem',
                 }}
               >
-                CONTENT & BRAND PRODUCTION
+                {productionService.shortTitle?.toUpperCase() || productionService.title?.toUpperCase() || 'CONTENT & BRAND PRODUCTION'}
               </div>
 
-              {/* Headline */}
+              {/* Headline: FULL PRACTICE TITLE (Bigger) */}
               <h2
                 style={{
-                  fontSize: 'clamp(1.75rem, 2.6vw, 2.5rem)',
-                  lineHeight: 1.15,
+                  fontSize: 'clamp(2.2rem, 3.4vw, 3.2rem)',
+                  lineHeight: 1.1,
                   letterSpacing: '-0.03em',
-                  fontWeight: 650,
+                  fontWeight: 700,
                   color: DARK,
-                  marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+                  marginBottom: '0.75rem',
                   maxWidth: '24ch',
                 }}
               >
-                Taking Brand stories from concept and scripting to production and communication.
+                {productionService.title || 'Content & Brand Production'}
               </h2>
+
+              {/* PRACTICE DESCRIPTION (Smaller) */}
+              <p
+                style={{
+                  fontSize: 'clamp(0.92rem, 1.1vw, 1.05rem)',
+                  lineHeight: 1.6,
+                  color: '#52525B',
+                  marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+                  maxWidth: '48ch',
+                }}
+              >
+                {productionService.description || productionService.tagline || 'Taking Brand stories from concept and scripting to production and communication.'}
+              </p>
 
               {/* Rectangular Image */}
               <div
@@ -547,8 +618,8 @@ export default function ServicesPage() {
                 }}
               >
                 <Image
-                  src="/uploads/1790516827847-rezang-la-memorial.jpg"
-                  alt="Cinematic production and on-ground brand storytelling"
+                  src={productionService.image || '/uploads/1790516827847-rezang-la-memorial.jpg'}
+                  alt={productionService.title || 'Cinematic production and on-ground brand storytelling'}
                   fill
                   sizes="(max-width: 768px) 100vw, 520px"
                   style={{ objectFit: 'cover', objectPosition: 'center 45%' }}
@@ -573,42 +644,48 @@ export default function ServicesPage() {
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {PRODUCTION_DELIVERABLES.map((item) => (
-                  <div
-                    key={item.num}
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: '26px 1fr',
-                      alignItems: 'center',
-                      padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
-                      borderTop: '1px solid rgba(0, 0, 0, 0.07)',
-                      transition: 'all 0.25s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.paddingLeft = '8px';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.paddingLeft = '0';
-                    }}
-                  >
-                    <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
-                      ●
-                    </span>
-                    <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 500, color: '#222225' }}>
-                      {item.title}
-                    </span>
-                  </div>
-                ))}
+                {(productionService.capabilities && productionService.capabilities.length > 0
+                  ? productionService.capabilities
+                  : PRODUCTION_DELIVERABLES.map((d: any) => d.title)
+                ).map((item: any, idx: number) => {
+                  const itemTitle = typeof item === 'string' ? item : item.title;
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '26px 1fr',
+                        alignItems: 'center',
+                        padding: 'clamp(0.85rem, 1.25vw, 1.15rem) 0',
+                        borderTop: '1px solid rgba(0, 0, 0, 0.07)',
+                        transition: 'all 0.25s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.paddingLeft = '8px';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.paddingLeft = '0';
+                      }}
+                    >
+                      <span style={{ fontSize: '0.85rem', color: RED, display: 'inline-flex', alignItems: 'center' }}>
+                        ●
+                      </span>
+                      <span style={{ fontSize: 'clamp(0.92rem, 1.15vw, 1.05rem)', fontWeight: 500, color: '#222225' }}>
+                        {itemTitle}
+                      </span>
+                    </div>
+                  );
+                })}
                 <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.07)' }} />
               </div>
             </div>
           </div>
-        </section>
+        </section>)}
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 6: TEAM STRUCTURE ("Assembled around the brief.")
             ═══════════════════════════════════════════════════════════════════ */}
-        <section
+        {servicesCms?.teamStructureEnabled !== false && (<section
           style={{
             paddingTop: 'clamp(4rem, 6.5vw, 6.5rem)',
             paddingBottom: 'clamp(4rem, 6.5vw, 6.5rem)',
@@ -625,6 +702,7 @@ export default function ServicesPage() {
           >
             {/* Left Column: Heading & Copy */}
             <div>
+              {servicesCms?.teamStructure?.showEyebrow !== false && (
               <div
                 className="tag-mono"
                 style={{
@@ -635,9 +713,11 @@ export default function ServicesPage() {
                   marginBottom: '0.85rem',
                 }}
               >
-                TEAM STRUCTURE
+                {servicesCms?.teamStructure?.eyebrow || 'TEAM STRUCTURE'}
               </div>
+              )}
 
+              {servicesCms?.teamStructure?.showHeading !== false && (
               <h2
                 style={{
                   fontSize: 'clamp(2rem, 3.8vw, 3.6rem)',
@@ -648,9 +728,11 @@ export default function ServicesPage() {
                   marginBottom: '1.25rem',
                 }}
               >
-                Assembled around the brief<span style={{ color: RED }}>.</span>
+                {servicesCms?.teamStructure?.heading || 'Assembled around the brief'}<span style={{ color: RED }}>.</span>
               </h2>
+              )}
 
+              {servicesCms?.teamStructure?.showDescription !== false && (
               <p
                 style={{
                   maxWidth: '480px',
@@ -659,9 +741,9 @@ export default function ServicesPage() {
                   color: BODY_TEXT,
                 }}
               >
-                We bring together specialists from strategy, creative, design, technology, hospitality and
-                production — depending on your goals, sector and scale.
+                {servicesCms?.teamStructure?.description || 'We bring together specialists from strategy, creative, design, technology, hospitality and production — depending on your goals, sector and scale.'}
               </p>
+              )}
             </div>
 
             {/* Right Column: Radial Hub Diagram */}
@@ -810,13 +892,13 @@ export default function ServicesPage() {
               </svg>
             </div>
           </div>
-        </section>
+        </section>)}
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════
           SECTION 7: BOTTOM BANNER ("Don't start with a service.")
           ═══════════════════════════════════════════════════════════════════ */}
-      <section
+      {servicesCms?.ctaEnabled !== false && (<section
         style={{
           position: 'relative',
           width: '100%',
@@ -852,6 +934,7 @@ export default function ServicesPage() {
               maxWidth: '720px',
             }}
           >
+            {servicesCms?.cta?.showEyebrow !== false && (
             <div
               className="tag-mono"
               style={{
@@ -862,9 +945,11 @@ export default function ServicesPage() {
                 marginBottom: '1rem',
               }}
             >
-              LET&rsquo;S BUILD
+              {servicesCms?.cta?.eyebrow || "LET'S BUILD"}
             </div>
+            )}
 
+            {servicesCms?.cta?.showHeading !== false && (
             <h2
               style={{
                 fontSize: 'clamp(2.2rem, 4.4vw, 4.2rem)',
@@ -875,11 +960,11 @@ export default function ServicesPage() {
                 marginBottom: '1.25rem',
               }}
             >
-              Don&rsquo;t start with a service.
-              <br />
-              Start with the problem<span style={{ color: RED }}>.</span>
+              {servicesCms?.cta?.heading || "Don't start with a service. Start with the problem."}
             </h2>
+            )}
 
+            {servicesCms?.cta?.showSubheading !== false && (
             <p
               style={{
                 fontSize: 'clamp(0.95rem, 1.2vw, 1.12rem)',
@@ -888,8 +973,9 @@ export default function ServicesPage() {
                 marginBottom: '2rem',
               }}
             >
-              Tell us what you are trying to build, fix or change.
+              {servicesCms?.cta?.subheading || 'Tell us what you are trying to build, fix or change.'}
             </p>
+            )}
 
             <div>
               <Link
@@ -920,13 +1006,13 @@ export default function ServicesPage() {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <span>Start a Conversation</span>
+                <span>{servicesCms?.cta?.buttonText || 'Start a Conversation'}</span>
                 <ArrowRight size={16} color="#ffffff" />
               </Link>
             </div>
           </div>
         </div>
-      </section>
+      </section>)}
     </div>
   );
 }

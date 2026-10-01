@@ -12,6 +12,9 @@ import {
   ArrowRight,
   ArrowDown,
   ChevronRight,
+  ChevronLeft,
+  Play,
+  X,
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -27,6 +30,23 @@ const SPREAD_PAGES = [
   { id: '03', image: '/images/army/rezang-la-2.jpg', alt: 'Memorial Archival Photography' },
   { id: '04', image: '/images/army/sampark-1.jpg', alt: 'High Altitude Highway Infrastructure' },
 ];
+
+function getEmbedUrl(url: string) {
+  if (!url) return '';
+  if (url.includes('youtube.com/watch?v=')) {
+    const id = url.split('v=')[1]?.split('&')[0];
+    return `https://www.youtube.com/embed/${id}?autoplay=1`;
+  }
+  if (url.includes('youtu.be/')) {
+    const id = url.split('youtu.be/')[1]?.split('?')[0];
+    return `https://www.youtube.com/embed/${id}?autoplay=1`;
+  }
+  if (url.includes('vimeo.com/')) {
+    const id = url.split('vimeo.com/')[1]?.split('?')[0];
+    return `https://player.vimeo.com/video/${id}?autoplay=1`;
+  }
+  return url;
+}
 
 export default function IndianArmyProjectsPage() {
   const { content } = useCmsContent();
@@ -136,6 +156,8 @@ export default function IndianArmyProjectsPage() {
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSpreadPage, setActiveSpreadPage] = useState('01');
+  const [firefuryIndex, setFirefuryIndex] = useState(0);
+  const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
 
   const currentSpread = SPREAD_PAGES.find((p) => p.id === activeSpreadPage) || SPREAD_PAGES[0];
 
@@ -147,6 +169,7 @@ export default function IndianArmyProjectsPage() {
       {/* ==========================================================================
           1. HERO SECTION (Atmospheric High-Altitude Soldier Backdrop Blended into Background)
           ========================================================================== */}
+      {armyCms.heroEnabled !== false && (
       <section className="army-hero-section">
         {/* Blended High-Altitude Himalayan Soldier Backdrop */}
         <div className="hero-bg-blend" aria-hidden="true">
@@ -206,6 +229,7 @@ export default function IndianArmyProjectsPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ==========================================================================
           3. INSTITUTIONAL INTEGRITY STATEMENT
@@ -247,10 +271,16 @@ export default function IndianArmyProjectsPage() {
 
             {/* Main Content Grid */}
             <div className="card-1-grid">
-              {/* Left Text & Sub-sections */}
+              {/* Left Text */}
               <div>
                 <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                  {p1.title}
+                  {p1.caseStudyEnabled !== false && (p1.caseStudyUrl || '/work/western-command') ? (
+                    <Link href={p1.caseStudyUrl || '/work/western-command'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
+                      {p1.title}
+                    </Link>
+                  ) : (
+                    p1.title
+                  )}
                 </h2>
                 <div className="card-subhead">
                   {p1.subtitle}
@@ -259,28 +289,85 @@ export default function IndianArmyProjectsPage() {
                   {p1.description}
                 </p>
 
+                {(p1.videoUrl || p1.redirectionUrl || (p1.caseStudyEnabled !== false && p1.caseStudyUrl)) && (
+                  <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    {(p1.videoUrl || p1.redirectionUrl) && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (p1.videoUrl) setActiveVideoUrl(p1.videoUrl);
+                          else if (p1.redirectionUrl) window.open(p1.redirectionUrl, '_blank');
+                        }}
+                        className="hero-primary-btn"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+                      >
+                        <Play size={15} fill="currentColor" />
+                        <span>{p1.videoUrl ? 'Watch Film' : 'View Assignment'}</span>
+                        <ArrowRight size={15} />
+                      </button>
+                    )}
 
-
-
+                    {p1.caseStudyEnabled !== false && p1.caseStudyUrl && (
+                      <Link
+                        href={p1.caseStudyUrl}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.45rem',
+                          padding: '0.55rem 1.15rem',
+                          borderRadius: '9999px',
+                          border: '1px solid rgba(0,0,0,0.14)',
+                          backgroundColor: '#FFFFFF',
+                          color: '#111113',
+                          fontSize: '0.82rem',
+                          fontWeight: 650,
+                          textDecoration: 'none',
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <span>{p1.caseStudyLabel || 'View case study ↗'}</span>
+                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <ArrowRight size={12} />
+                        </div>
+                      </Link>
+                    )}
+                  </div>
+                )}
               </div>
 
-              {/* Right Media Collage */}
+              {/* Right Media Collage / Clickable Video Thumbnail */}
               <div className="card-1-media-group">
                 {/* Main Photo Card */}
                 <div
                   className="card-1-main-photo"
-                  style={{ position: 'relative', overflow: 'hidden' }}
+                  style={{
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: (p1.videoUrl || p1.redirectionUrl) ? 'pointer' : 'default',
+                  }}
+                  onClick={() => {
+                    if (p1.videoUrl) setActiveVideoUrl(p1.videoUrl);
+                    else if (p1.redirectionUrl) window.open(p1.redirectionUrl, '_blank');
+                  }}
                 >
                   <Image
-                    src={p1.image || '/images/army/western-command-1.jpg'}
+                    src={p1.thumbnail || p1.image || '/images/army/western-command-1.jpg'}
                     alt={p1.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 450px"
                     style={{ objectFit: 'cover' }}
                   />
+                  {/* Clickable Play / Arrow Overlay */}
+                  {(p1.videoUrl || p1.redirectionUrl) && (
+                    <div className="video-thumb-overlay">
+                      <div className="video-play-pulse-btn">
+                        <Play size={22} fill="#ffffff" color="#ffffff" style={{ marginLeft: '3px' }} />
+                      </div>
+                    </div>
+                  )}
                   <div className="photo-bottom-caption">
                     <span className="p-label">{p1.title}</span>
-                    <span className="p-tag">Ceremonial Protocol &amp; Honours</span>
+                    <span className="p-tag">{p1.videoUrl ? 'Click to Play Film' : 'Ceremonial Protocol & Honours'}</span>
                   </div>
                 </div>
 
@@ -312,6 +399,8 @@ export default function IndianArmyProjectsPage() {
 
         {/* ----------------------------------------------------------------------
             CARD 2: "02 | 14 CORPS HEADQUARTERS" (TACTICAL DARK CARD)
+            Enlarged 3 Interactive Cards (Title, Description, Image, Link, Toggle)
+            Legacy fields (Scope of Work, Creative Approach, Production Discipline) Removed
             ---------------------------------------------------------------------- */}
         {(p2.published !== false && (activeCategory === 'all' || activeCategory === (p2.category || '14-corps'))) && (
           <article className="project-card card-dark" data-category={p2.category || '14-corps'}>
@@ -336,11 +425,17 @@ export default function IndianArmyProjectsPage() {
               </div>
             </div>
 
-            {/* Top Row: Text Description + 3D Publications */}
+            {/* Top Row: Description + Large Interactive Cards */}
             <div className="card-2-top-grid">
               <div className="card-2-content-col">
                 <h2 className="card-title card-2-title">
-                  {p2.title}
+                  {p2.caseStudyEnabled !== false && (p2.caseStudyUrl || '/work/she') ? (
+                    <Link href={p2.caseStudyUrl || '/work/she'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
+                      {p2.title}
+                    </Link>
+                  ) : (
+                    p2.title
+                  )}
                 </h2>
                 <div className="card-subhead">
                   {p2.subtitle}
@@ -348,6 +443,33 @@ export default function IndianArmyProjectsPage() {
                 <p className="card-description">
                   {p2.description}
                 </p>
+
+                {(p2.caseStudyEnabled !== false && (p2.caseStudyUrl || '/work/she')) && (
+                  <div style={{ marginTop: '1.25rem', marginBottom: '1.25rem' }}>
+                    <Link
+                      href={p2.caseStudyUrl || '/work/she'}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.55rem 1.25rem',
+                        borderRadius: '9999px',
+                        border: '1px solid rgba(255,255,255,0.25)',
+                        backgroundColor: 'rgba(255,255,255,0.08)',
+                        color: '#FFFFFF',
+                        fontSize: '0.82rem',
+                        fontWeight: 650,
+                        textDecoration: 'none',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span>{p2.caseStudyLabel || 'View case study ↗'}</span>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#DE322D', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ArrowRight size={12} />
+                      </div>
+                    </Link>
+                  </div>
+                )}
 
                 {/* Visual Communication Featured Image */}
                 <div
@@ -365,73 +487,80 @@ export default function IndianArmyProjectsPage() {
                 </div>
               </div>
 
-              {/* Right: 3 Standing 3D Publication Volumes */}
-              <div className="books-showcase-row">
-                <div className="book-3d-item">
-                  <Image
-                    src={p2.sidePhotos?.[0] || '/images/army/adgpi-firstvillages.jpg'}
-                    alt="First Villages Community Initiative"
-                    fill
-                    sizes="(max-width: 480px) 90px, (max-width: 768px) 115px, 175px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className="book-spine-lighting" />
-                </div>
+              {/* Right: 3 ENLARGED Interactive Cards */}
+              <div className="interactive-cards-container">
+                {(() => {
+                  const defaultCards = [
+                    {
+                      id: 'c1',
+                      title: 'First Villages',
+                      description: 'Comprehensive outreach documentation across border settlements.',
+                      image: p2.sidePhotos?.[0] || '/images/army/adgpi-firstvillages.jpg',
+                      link: '/work',
+                      enabled: true,
+                    },
+                    {
+                      id: 'c2',
+                      title: 'SHE Ladakh',
+                      description: 'Women empowerment and healthcare visual communications initiative.',
+                      image: p2.sidePhotos?.[1] || '/images/army/firefury-changthang-health.jpg',
+                      link: '/work/she',
+                      enabled: true,
+                    },
+                    {
+                      id: 'c3',
+                      title: 'Border Health',
+                      description: 'On-ground medical support campaigns in remote high-altitude sectors.',
+                      image: p2.sidePhotos?.[2] || '/images/army/adgpi-she-thumb-2.jpg',
+                      link: '/work',
+                      enabled: true,
+                    },
+                  ];
+                  const cards = (p2.interactiveCards && p2.interactiveCards.length > 0)
+                    ? p2.interactiveCards.filter((c: any) => c.enabled !== false)
+                    : defaultCards;
 
-                <div className="book-3d-item featured">
-                  <Image
-                    src={p2.sidePhotos?.[1] || '/images/army/firefury-changthang-health.jpg'}
-                    alt="SHE Ladakh Outreach"
-                    fill
-                    sizes="(max-width: 480px) 95px, (max-width: 768px) 120px, 185px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className="book-spine-lighting" />
-                </div>
+                  return (
+                    <div className="enlarged-interactive-cards-grid">
+                      {cards.map((card: any, idx: number) => {
+                        const cardContent = (
+                          <div key={card.id || idx} className="enlarged-interactive-card">
+                            <div className="enlarged-card-img-wrap">
+                              <Image
+                                src={card.image || '/images/army/adgpi-firstvillages.jpg'}
+                                alt={card.title || 'Interactive Project Card'}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 240px"
+                                style={{ objectFit: 'cover' }}
+                              />
+                              <div className="enlarged-card-glow" />
+                            </div>
+                            <div className="enlarged-card-body">
+                              <h4 className="enlarged-card-title">{card.title}</h4>
+                              {card.description && <p className="enlarged-card-desc">{card.description}</p>}
+                            </div>
+                          </div>
+                        );
 
-                <div className="book-3d-item">
-                  <Image
-                    src={p2.sidePhotos?.[2] || '/images/army/adgpi-she-thumb-2.jpg'}
-                    alt="Women Empowerment Ladakh"
-                    fill
-                    sizes="(max-width: 480px) 90px, (max-width: 768px) 115px, 175px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                  <div className="book-spine-lighting" />
-                </div>
+                        if (card.link) {
+                          return (
+                            <Link key={card.id || idx} href={card.link} className="enlarged-card-anchor">
+                              {cardContent}
+                            </Link>
+                          );
+                        }
+                        return cardContent;
+                      })}
+                    </div>
+                  );
+                })()}
               </div>
             </div>
-
-            {/* Bottom Row: 3 Sub-sections */}
-            {(p2.scopeOfWork || p2.creativeApproach || p2.productionDiscipline) && (
-              <div className="card-2-bottom-row">
-                <div className="three-subsections-row" style={{ marginTop: '1.5rem' }}>
-                  {p2.scopeOfWork && (
-                    <div className="subsection-box">
-                      <span className="subsection-title">Scope of Work</span>
-                      <p className="subsection-desc">{p2.scopeOfWork}</p>
-                    </div>
-                  )}
-                  {p2.creativeApproach && (
-                    <div className="subsection-box">
-                      <span className="subsection-title">Creative Approach</span>
-                      <p className="subsection-desc">{p2.creativeApproach}</p>
-                    </div>
-                  )}
-                  {p2.productionDiscipline && (
-                    <div className="subsection-box">
-                      <span className="subsection-title">Production Discipline</span>
-                      <p className="subsection-desc">{p2.productionDiscipline}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
           </article>
         )}
 
         {/* ----------------------------------------------------------------------
-            CARD 3: "03 | FIRE & FURY CORPS" (LIGHT CARD)
+            CARD 3: "03 | FIRE & FURY CORPS" (CAROUSEL SECTION: 2-5 IMAGES)
             ---------------------------------------------------------------------- */}
         {(p3.published !== false && (activeCategory === 'all' || activeCategory === (p3.category || '14-corps'))) && (
           <article
@@ -457,10 +586,16 @@ export default function IndianArmyProjectsPage() {
             </div>
 
             <div className="card-3-grid">
-              {/* Left Side: Title & Vertical Stepper */}
+              {/* Left Side: Title & Info */}
               <div>
                 <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                  {p3.title}
+                  {p3.caseStudyEnabled !== false && (p3.caseStudyUrl || '/work/firefury') ? (
+                    <Link href={p3.caseStudyUrl || '/work/firefury'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
+                      {p3.title}
+                    </Link>
+                  ) : (
+                    p3.title
+                  )}
                 </h2>
                 <div className="card-subhead">
                   {p3.subtitle}
@@ -469,117 +604,96 @@ export default function IndianArmyProjectsPage() {
                   {p3.description}
                 </p>
 
-
-
-
+                {p3.caseStudyEnabled !== false && p3.caseStudyUrl && (
+                  <div style={{ marginTop: '1.25rem' }}>
+                    <Link
+                      href={p3.caseStudyUrl}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.45rem',
+                        padding: '0.55rem 1.15rem',
+                        borderRadius: '9999px',
+                        border: '1px solid rgba(0,0,0,0.14)',
+                        backgroundColor: '#FFFFFF',
+                        color: '#111113',
+                        fontSize: '0.82rem',
+                        fontWeight: 650,
+                        textDecoration: 'none',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span>{p3.caseStudyLabel || 'View case study ↗'}</span>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ArrowRight size={12} />
+                      </div>
+                    </Link>
+                  </div>
+                )}
               </div>
 
-              {/* Right Side: Open Book & Spread Thumbnails */}
+              {/* Right Side: FIREFURY CORPS CAROUSEL (Min 2, Max 5 Images) */}
               <div className="card-3-visuals">
-                <div className="book-composition-wrapper">
-                  {/* Standing Book */}
-                  <div className="standing-fury-book">
-                    <Image
-                      src={p3.sidePhotos?.[0] || p3.image || '/images/army/fire-fury-1.jpg'}
-                      alt="Fire and Fury XIV Corps Volume"
-                      fill
-                      sizes="180px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
+                {(() => {
+                  const defaultCarousel = [
+                    { id: '1', image: p3.image || '/uploads/1790516375474-firefury1.jpg', caption: 'Fire & Fury XIV Corps Publication Architecture', enabled: true },
+                    { id: '2', image: p3.sidePhotos?.[0] || '/images/army/69armoured-2.jpg', caption: '69 Armoured Regiment Alpine Desert Formations', enabled: true },
+                    { id: '3', image: p3.sidePhotos?.[1] || '/uploads/1790516827847-rezang-la-memorial.jpg', caption: 'Rezang La Commemorative Archive', enabled: true },
+                  ];
+                  const rawList = (p3.carouselImages && p3.carouselImages.length > 0)
+                    ? p3.carouselImages.filter((img: any) => img.enabled !== false)
+                    : defaultCarousel;
+                  // Enforce min 2, max 5 images
+                  const carouselImages = rawList.slice(0, 5);
+                  if (carouselImages.length < 2 && defaultCarousel.length >= 2) {
+                    carouselImages.push(defaultCarousel[1]);
+                  }
 
-                  {/* Open Hardbound Book Spread */}
-                  <div className="open-spread-book">
-                    <div className="open-spread-left">
-                      <h4>
-                        In Service
-                        <br />
-                        of a Greater
-                        <br />
-                        Tomorrow
-                      </h4>
+                  const activeImg = carouselImages[firefuryIndex] || carouselImages[0];
+
+                  return (
+                    <div className="firefury-carousel-box">
+                      {/* Active Large Display */}
+                      <div className="carousel-main-slide">
+                        <Image
+                          src={activeImg?.image || '/uploads/1790516375474-firefury1.jpg'}
+                          alt={activeImg?.caption || 'Fire & Fury Corps Archive'}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 620px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                        <div className="carousel-slide-overlay">
+                          <span className="carousel-slide-caption">{activeImg?.caption || 'Corps Visual Archive'}</span>
+                          <span className="carousel-slide-counter">
+                            {firefuryIndex + 1} / {carouselImages.length}
+                          </span>
+                        </div>
+
+                        {/* Navigation Arrows */}
+                        <button
+                          type="button"
+                          className="carousel-nav-btn prev"
+                          aria-label="Previous Slide"
+                          onClick={() => {
+                            setFirefuryIndex((prev) => (prev > 0 ? prev - 1 : carouselImages.length - 1));
+                          }}
+                        >
+                          <ChevronLeft size={18} />
+                        </button>
+                        <button
+                          type="button"
+                          className="carousel-nav-btn next"
+                          aria-label="Next Slide"
+                          onClick={() => {
+                            setFirefuryIndex((prev) => (prev < carouselImages.length - 1 ? prev + 1 : 0));
+                          }}
+                        >
+                          <ChevronRight size={18} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="open-spread-right">
-                      <Image
-                        src={currentSpread.image}
-                        alt={currentSpread.alt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 450px"
-                        style={{ objectFit: 'cover' }}
-                      />
-                      <button
-                        type="button"
-                        className="spread-arrow-btn"
-                        aria-label="Next Spread Page"
-                        onClick={() => {
-                          const pages = ['01', '02', '03', '04'];
-                          const nextIdx = (pages.indexOf(activeSpreadPage) + 1) % pages.length;
-                          setActiveSpreadPage(pages[nextIdx]);
-                        }}
-                      >
-                        <ChevronRight size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Thumbnails & Number Indicator */}
-                <div className="card-3-thumbs-row">
-                  <div className="thumbs-mini-grid">
-                    <button
-                      type="button"
-                      className={`mini-spread-thumb ${activeSpreadPage === '02' ? 'thumb-active' : ''}`}
-                      onClick={() => setActiveSpreadPage('02')}
-                    >
-                      <Image
-                        src="/images/army/69armoured-2.jpg"
-                        alt="Interior Spread 1"
-                        fill
-                        sizes="80px"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </button>
-                    <button
-                      type="button"
-                      className={`mini-spread-thumb ${activeSpreadPage === '03' ? 'thumb-active' : ''}`}
-                      onClick={() => setActiveSpreadPage('03')}
-                    >
-                      <Image
-                        src="/images/army/rezang-la-2.jpg"
-                        alt="Interior Spread 2"
-                        fill
-                        sizes="80px"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </button>
-                    <button
-                      type="button"
-                      className={`mini-spread-thumb ${activeSpreadPage === '04' ? 'thumb-active' : ''}`}
-                      onClick={() => setActiveSpreadPage('04')}
-                    >
-                      <Image
-                        src="/images/army/sampark-1.jpg"
-                        alt="Interior Spread 3"
-                        fill
-                        sizes="80px"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </button>
-                  </div>
-
-                  <div className="pagination-tabs">
-                    {SPREAD_PAGES.map((pg) => (
-                      <button
-                        key={pg.id}
-                        type="button"
-                        onClick={() => setActiveSpreadPage(pg.id)}
-                        className={`page-tab-btn ${activeSpreadPage === pg.id ? 'active' : ''}`}
-                      >
-                        {pg.id}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                  );
+                })()}
               </div>
             </div>
           </article>
@@ -587,6 +701,8 @@ export default function IndianArmyProjectsPage() {
 
         {/* ----------------------------------------------------------------------
             CARD 4: "04 | REZANG LA WAR MEMORIAL" (TACTICAL DARK CARD)
+            Single Landscape Image Replacing 2 Square Images
+            Legacy fields removed
             ---------------------------------------------------------------------- */}
         {(p4.published !== false && (activeCategory === 'all' || activeCategory === (p4.category || 'border-initiatives'))) && (
           <article className="project-card card-dark" data-category={p4.category || 'border-initiatives'}>
@@ -608,10 +724,16 @@ export default function IndianArmyProjectsPage() {
             </div>
 
             <div className="card-4-grid">
-              {/* Left Side: Title & Subsections */}
+              {/* Left Side: Title & Description */}
               <div>
                 <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                  {p4.title}
+                  {p4.caseStudyEnabled !== false && (p4.caseStudyUrl || '/work/rezang-la-memorial') ? (
+                    <Link href={p4.caseStudyUrl || '/work/rezang-la-memorial'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
+                      {p4.title}
+                    </Link>
+                  ) : (
+                    p4.title
+                  )}
                 </h2>
                 <div className="card-subhead">
                   {p4.subtitle}
@@ -620,45 +742,62 @@ export default function IndianArmyProjectsPage() {
                   {p4.description}
                 </p>
 
-
-
-
+                {p4.caseStudyEnabled !== false && p4.caseStudyUrl && (
+                  <div style={{ marginTop: '1.25rem' }}>
+                    <Link
+                      href={p4.caseStudyUrl}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.55rem 1.25rem',
+                        borderRadius: '9999px',
+                        border: '1px solid rgba(255,255,255,0.25)',
+                        backgroundColor: 'rgba(255,255,255,0.08)',
+                        color: '#FFFFFF',
+                        fontSize: '0.82rem',
+                        fontWeight: 650,
+                        textDecoration: 'none',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span>{p4.caseStudyLabel || 'View case study ↗'}</span>
+                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#DE322D', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ArrowRight size={12} />
+                      </div>
+                    </Link>
+                  </div>
+                )}
               </div>
 
-              {/* Right Side: Hardbound Book + Archival Photos + Script Quote */}
-              <div className="card-4-media-composition">
-                {/* Hardbound Volume */}
-                <div className="rezang-hardbound-book">
-                  <Image
-                    src={p4.image || '/images/army/rezang-la-1.jpg'}
-                    alt={p4.title}
-                    fill
-                    sizes="240px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
+              {/* Right Side: ONE Landscape Image (Replacing 2 Square Archival Images) */}
+              <div className="card-4-landscape-container">
+                {(() => {
+                  const landscapeSrc = p4.landscapeImage || p4.sidePhotos?.[0] || '/uploads/1790516827847-rezang-la-memorial.jpg';
+                  const landscapeNode = (
+                    <div className="rezang-single-landscape-wrap">
+                      <Image
+                        src={landscapeSrc}
+                        alt={p4.title || 'Rezang La War Memorial Archival Landscape'}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 650px"
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <div className="landscape-caption-pill">
+                        <span>Rezang La War Memorial · High-Altitude Memorial Archival</span>
+                      </div>
+                    </div>
+                  );
 
-                {/* Archival Vertical Photo Cards */}
-                <div className="rezang-archival-column">
-                  <div className="archival-photo-card">
-                    <Image
-                      src={p4.sidePhotos?.[0] || '/images/army/rezangla-tribute.jpg'}
-                      alt="Major Shaitan Singh PVC Family Tribute"
-                      fill
-                      sizes="130px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="archival-photo-card">
-                    <Image
-                      src={p4.sidePhotos?.[1] || '/images/army/rezang-la-2.jpg'}
-                      alt="1962 Battlefield Archival"
-                      fill
-                      sizes="130px"
-                      style={{ objectFit: 'cover', filter: 'grayscale(0.7) contrast(1.1)' }}
-                    />
-                  </div>
-                </div>
+                  if (p4.landscapeImageLink) {
+                    return (
+                      <Link href={p4.landscapeImageLink} className="rezang-landscape-anchor">
+                        {landscapeNode}
+                      </Link>
+                    );
+                  }
+                  return landscapeNode;
+                })()}
               </div>
             </div>
           </article>
@@ -670,6 +809,10 @@ export default function IndianArmyProjectsPage() {
           .map((p: any) => {
             const isMatch = activeCategory === 'all' || activeCategory === p.category;
             if (!isMatch) return null;
+
+            const hasVideo = Boolean(p.videoUrl);
+            const isRezangLaLayout = p.layoutStyle === 'rezang-la' || hasVideo;
+
             return (
               <article key={p.id} className="project-card card-light" data-category={p.category}>
                 <div className="card-meta-bar">
@@ -677,43 +820,148 @@ export default function IndianArmyProjectsPage() {
                     <span className="meta-tag-pill">{p.command}</span>
                   </div>
                   <div className="card-meta-right">
-                    <span className="meta-meta-item"><MapPin size={13} /> {p.location}</span>
-                    <span className="meta-meta-item"><Calendar size={13} /> {p.date}</span>
+                    {p.location && <span className="meta-meta-item"><MapPin size={13} /> {p.location}</span>}
+                    {p.date && <span className="meta-meta-item"><Calendar size={13} /> {p.date}</span>}
                   </div>
                 </div>
-                <div className="card-1-grid">
-                  <div>
-                    <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>{p.title}</h2>
-                    <div className="card-subhead">{p.subtitle}</div>
-                    <p className="card-description">{p.description}</p>
-                    <div className="three-subsections-row">
-                      {p.scopeOfWork && (
-                        <div className="subsection-box">
-                          <span className="subsection-title highlight">Scope of Work</span>
-                          <p className="subsection-desc">{p.scopeOfWork}</p>
+
+                {isRezangLaLayout ? (
+                  /* Rezang La Layout: 1 Vertical Image + 1 Landscape Image (Landscape is Clickable Video Thumbnail) */
+                  <div className="card-4-grid" style={{ alignItems: 'center' }}>
+                    <div>
+                      <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
+                        {p.caseStudyEnabled !== false && p.caseStudyUrl ? (
+                          <Link href={p.caseStudyUrl} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
+                            {p.title}
+                          </Link>
+                        ) : (
+                          p.title
+                        )}
+                      </h2>
+                      <div className="card-subhead">{p.subtitle}</div>
+                      <p className="card-description">{p.description}</p>
+                      {hasVideo && (
+                        <div style={{ marginTop: '1.25rem' }}>
+                          <button
+                            type="button"
+                            onClick={() => setActiveVideoUrl(p.videoUrl)}
+                            className="hero-primary-btn"
+                            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+                          >
+                            <Play size={14} fill="currentColor" />
+                            <span>Play Project Video</span>
+                          </button>
                         </div>
                       )}
-                      {p.creativeApproach && (
-                        <div className="subsection-box">
-                          <span className="subsection-title">Creative Approach</span>
-                          <p className="subsection-desc">{p.creativeApproach}</p>
-                        </div>
-                      )}
-                      {p.productionDiscipline && (
-                        <div className="subsection-box">
-                          <span className="subsection-title">Production Discipline</span>
-                          <p className="subsection-desc">{p.productionDiscipline}</p>
+
+                      {p.caseStudyEnabled !== false && p.caseStudyUrl && (
+                        <div style={{ marginTop: '1.25rem' }}>
+                          <Link
+                            href={p.caseStudyUrl}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.45rem',
+                              padding: '0.55rem 1.15rem',
+                              borderRadius: '9999px',
+                              border: '1px solid rgba(0,0,0,0.14)',
+                              backgroundColor: '#FFFFFF',
+                              color: '#111113',
+                              fontSize: '0.82rem',
+                              fontWeight: 650,
+                              textDecoration: 'none',
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
+                            <span>{p.caseStudyLabel || 'View case study ↗'}</span>
+                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <ArrowRight size={12} />
+                            </div>
+                          </Link>
                         </div>
                       )}
                     </div>
 
-                  </div>
-                  {p.image && (
-                    <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '6px', border: '1px solid rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>
-                      <Image src={p.image} alt={p.title} fill sizes="450px" style={{ objectFit: 'cover' }} />
+                    <div className="rezang-la-dual-media-grid">
+                      {/* 1 Vertical Image */}
+                      <div className="rezang-vertical-img-wrap">
+                        <Image
+                          src={p.verticalImage || p.image || '/images/army/western-command-official.jpg'}
+                          alt={p.title}
+                          fill
+                          sizes="240px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+
+                      {/* 1 Landscape Image (Video Thumbnail with Play/Arrow Button) */}
+                      <div
+                        className="rezang-landscape-video-wrap"
+                        style={{ cursor: hasVideo ? 'pointer' : 'default' }}
+                        onClick={() => hasVideo && setActiveVideoUrl(p.videoUrl)}
+                      >
+                        <Image
+                          src={p.landscapeImage || p.videoThumbnail || p.sidePhotos?.[0] || '/uploads/1790516827847-rezang-la-memorial.jpg'}
+                          alt={`${p.title} Video Thumbnail`}
+                          fill
+                          sizes="400px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                        {hasVideo && (
+                          <div className="video-thumb-overlay">
+                            <div className="video-play-pulse-btn">
+                              <Play size={22} fill="#ffffff" color="#ffffff" style={{ marginLeft: '3px' }} />
+                            </div>
+                          </div>
+                        )}
+                        <div className="landscape-caption-pill">
+                          <span>{hasVideo ? 'Click to Watch Video' : p.title}</span>
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  /* Standard Project Layout */
+                  <div className="card-1-grid">
+                    <div>
+                      <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>{p.title}</h2>
+                      <div className="card-subhead">{p.subtitle}</div>
+                      <p className="card-description">{p.description}</p>
+
+                      {p.caseStudyEnabled !== false && p.caseStudyUrl && (
+                        <div style={{ marginTop: '1.25rem' }}>
+                          <Link
+                            href={p.caseStudyUrl}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.45rem',
+                              padding: '0.55rem 1.15rem',
+                              borderRadius: '9999px',
+                              border: '1px solid rgba(0,0,0,0.14)',
+                              backgroundColor: '#FFFFFF',
+                              color: '#111113',
+                              fontSize: '0.82rem',
+                              fontWeight: 650,
+                              textDecoration: 'none',
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
+                            <span>{p.caseStudyLabel || 'View case study ↗'}</span>
+                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <ArrowRight size={12} />
+                            </div>
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                    {p.image && (
+                      <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '6px', border: '1px solid rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>
+                        <Image src={p.image} alt={p.title} fill sizes="450px" style={{ objectFit: 'cover' }} />
+                      </div>
+                    )}
+                  </div>
+                )}
               </article>
             );
           })}
@@ -722,6 +970,7 @@ export default function IndianArmyProjectsPage() {
       {/* ==========================================================================
           6. FULL-WIDTH PANORAMIC BANNER (Soldiers Silhouette Sunset Horizon)
           ========================================================================== */}
+      {armyCms.closingBannerEnabled !== false && (
       <section className="army-container closing-banner-section" id="closing-panoramic-banner">
         <div className="closing-banner-card">
           {/* Background Panoramic Photo */}
@@ -759,13 +1008,415 @@ export default function IndianArmyProjectsPage() {
           </div>
         </div>
       </section>
+      )}
 
-
+      {/* Video Lightbox Modal */}
+      {activeVideoUrl && (
+        <div className="army-video-modal-backdrop" onClick={() => setActiveVideoUrl(null)}>
+          <div className="army-video-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="modal-close-btn"
+              onClick={() => setActiveVideoUrl(null)}
+              aria-label="Close Video"
+            >
+              <X size={20} />
+            </button>
+            <div className="modal-iframe-wrapper">
+              {activeVideoUrl.includes('youtube') || activeVideoUrl.includes('youtu.be') || activeVideoUrl.includes('vimeo') ? (
+                <iframe
+                  src={getEmbedUrl(activeVideoUrl)}
+                  title="Project Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video src={activeVideoUrl} controls autoPlay style={{ width: '100%', height: '100%', borderRadius: '8px' }} />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ==========================================================================
           8. SCOPED COMPONENT STYLES MATCHING THE REFERENCE IMAGE EXACTLY
           ========================================================================== */}
       <style jsx>{`
+        /* Clickable Video Thumb Overlay & Pulse Button */
+        .video-thumb-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 3;
+          transition: background 0.3s ease;
+        }
+        .clickable-video-thumb:hover .video-thumb-overlay,
+        .rezang-landscape-video-wrap:hover .video-thumb-overlay {
+          background: rgba(0, 0, 0, 0.2);
+        }
+        .video-play-pulse-btn {
+          width: 54px;
+          height: 54px;
+          border-radius: 50%;
+          background: #d8232a;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 0 0 rgba(216, 35, 42, 0.7);
+          animation: videoPulse 2s infinite;
+          transition: transform 0.25s ease;
+        }
+        .clickable-video-thumb:hover .video-play-pulse-btn,
+        .rezang-landscape-video-wrap:hover .video-play-pulse-btn {
+          transform: scale(1.1);
+        }
+        @keyframes videoPulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(216, 35, 42, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 14px rgba(216, 35, 42, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(216, 35, 42, 0);
+          }
+        }
+
+        /* Enlarged Interactive Cards */
+        .interactive-cards-container {
+          width: 100%;
+          max-width: 100%;
+        }
+        .enlarged-interactive-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 1.25rem;
+          width: 100%;
+        }
+        @media (max-width: 1024px) {
+          .enlarged-interactive-cards-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.85rem;
+          }
+          .enlarged-card-body {
+            padding: 0.85rem 0.65rem;
+          }
+          .enlarged-card-title {
+            font-size: 0.88rem;
+          }
+          .enlarged-card-desc {
+            font-size: 0.75rem;
+          }
+        }
+        @media (max-width: 768px) {
+          .enlarged-interactive-cards-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.65rem;
+          }
+          .enlarged-card-body {
+            padding: 0.65rem 0.45rem;
+          }
+          .enlarged-card-title {
+            font-size: 0.8rem;
+          }
+          .enlarged-card-desc {
+            font-size: 0.7rem;
+            line-height: 1.35;
+          }
+        }
+        @media (max-width: 480px) {
+          .enlarged-interactive-cards-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.45rem;
+          }
+          .enlarged-card-body {
+            padding: 0.5rem 0.35rem;
+          }
+          .enlarged-card-title {
+            font-size: 0.72rem;
+            margin-bottom: 0.2rem;
+          }
+          .enlarged-card-desc {
+            font-size: 0.64rem;
+            line-height: 1.25;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        }
+        .enlarged-card-anchor {
+          text-decoration: none;
+          display: block;
+          color: inherit;
+        }
+        .enlarged-interactive-card {
+          background: #18191c;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 8px;
+          overflow: hidden;
+          transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+        .enlarged-interactive-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(216, 35, 42, 0.6);
+          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+        }
+        .enlarged-card-img-wrap {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 10;
+          overflow: hidden;
+        }
+        .enlarged-card-glow {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, rgba(24, 25, 28, 0.95) 0%, transparent 60%);
+        }
+        .enlarged-card-body {
+          padding: 1rem;
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+        }
+        .enlarged-card-title {
+          font-size: 0.95rem;
+          font-weight: 700;
+          color: #ffffff;
+          margin: 0 0 0.4rem 0;
+        }
+        .enlarged-card-desc {
+          font-size: 0.8rem;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.65);
+          margin: 0 0 0.75rem 0;
+          flex-grow: 1;
+        }
+        .enlarged-card-link-text {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: #d8232a;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        /* Firefury Carousel */
+        .firefury-carousel-box {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          width: 100%;
+        }
+        .carousel-main-slide {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 10;
+          min-height: 280px;
+          border-radius: 8px;
+          overflow: hidden;
+          background: #0f1012;
+          box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+        }
+        .carousel-slide-overlay {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          padding: 0.75rem 1.25rem;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          color: #ffffff;
+          z-index: 2;
+        }
+        .carousel-slide-caption {
+          font-size: 0.85rem;
+          font-weight: 600;
+        }
+        .carousel-slide-counter {
+          font-size: 0.75rem;
+          background: rgba(255, 255, 255, 0.2);
+          padding: 2px 8px;
+          border-radius: 4px;
+          backdrop-filter: blur(4px);
+        }
+        .carousel-nav-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.65);
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: background 0.2s ease;
+          z-index: 3;
+        }
+        .carousel-nav-btn:hover {
+          background: #d8232a;
+        }
+        .carousel-nav-btn.prev {
+          left: 12px;
+        }
+        .carousel-nav-btn.next {
+          right: 12px;
+        }
+        .carousel-thumb-strip {
+          display: flex;
+          gap: 0.75rem;
+          overflow-x: auto;
+          padding-bottom: 4px;
+        }
+        .carousel-thumb-btn {
+          position: relative;
+          width: 72px;
+          height: 48px;
+          border-radius: 4px;
+          overflow: hidden;
+          border: 2px solid transparent;
+          cursor: pointer;
+          flex-shrink: 0;
+          opacity: 0.65;
+          transition: opacity 0.2s, border-color 0.2s;
+        }
+        .carousel-thumb-btn.active,
+        .carousel-thumb-btn:hover {
+          opacity: 1;
+          border-color: #d8232a;
+        }
+
+        /* Rezang La Single Landscape Layout */
+        .card-4-landscape-container {
+          width: 100%;
+        }
+        .rezang-single-landscape-wrap {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 9.5;
+          min-height: 290px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .rezang-landscape-anchor {
+          text-decoration: none;
+          display: block;
+        }
+        .landscape-caption-pill {
+          position: absolute;
+          left: 14px;
+          bottom: 14px;
+          background: rgba(0, 0, 0, 0.75);
+          color: rgba(255, 255, 255, 0.9);
+          padding: 6px 14px;
+          border-radius: 4px;
+          font-size: 0.78rem;
+          font-weight: 500;
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          z-index: 2;
+        }
+
+        /* Dual Media Grid for Project Video + Rezang La Layout */
+        .rezang-la-dual-media-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.6fr;
+          gap: 1.25rem;
+          align-items: stretch;
+          width: 100%;
+        }
+        .rezang-vertical-img-wrap {
+          position: relative;
+          width: 100%;
+          min-height: 260px;
+          aspect-ratio: 3 / 4;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .rezang-landscape-video-wrap {
+          position: relative;
+          width: 100%;
+          min-height: 260px;
+          aspect-ratio: 16 / 10;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Video Modal Lightbox */
+        .army-video-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.88);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+          backdrop-filter: blur(8px);
+        }
+        .army-video-modal-content {
+          position: relative;
+          width: 100%;
+          max-width: 900px;
+          background: #000000;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+        }
+        .modal-close-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.2);
+          border: none;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 10;
+          transition: background 0.2s;
+        }
+        .modal-close-btn:hover {
+          background: #d8232a;
+        }
+        .modal-iframe-wrapper {
+          position: relative;
+          width: 100%;
+          padding-bottom: 56.25%; /* 16:9 aspect */
+          height: 0;
+        }
+        .modal-iframe-wrapper iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 0;
+        }
+
         .army-page-wrapper {
           background-color: #f6f6f4;
           color: #111111;
@@ -1374,6 +2025,14 @@ export default function IndianArmyProjectsPage() {
           line-height: 1.08;
           letter-spacing: -0.035em;
           margin: 0 0 0.85rem 0;
+        }
+        .title-case-link {
+          transition: color 0.2s ease, opacity 0.2s ease;
+          display: inline-block;
+        }
+        .title-case-link:hover {
+          color: #de322d !important;
+          opacity: 0.92;
         }
 
         .card-subhead {

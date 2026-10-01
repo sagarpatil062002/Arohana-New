@@ -19,6 +19,15 @@ export default function AdminRootLayout({ children }: { children: React.ReactNod
       return;
     }
 
+    // If browser was closed, sessionStorage is automatically wiped
+    if (typeof window !== 'undefined' && !sessionStorage.getItem('arohana_admin_session')) {
+      fetch('/api/auth/login', { method: 'DELETE' }).finally(() => {
+        setIsAuthenticated(false);
+        router.push('/admin/login');
+      });
+      return;
+    }
+
     fetch('/api/auth/check')
       .then((r) => r.json())
       .then((data) => {

@@ -11,14 +11,29 @@ import { useCmsContent } from '@/lib/cms/content-context';
 export default function PointOfView() {
   const { content } = useCmsContent();
   const povCms = content?.home?.pov;
+
+  // Section level enable/disable
+  if (povCms?.enabled === false) {
+    return null;
+  }
+
   const activeEyebrow = povCms?.eyebrow || '';
   const activeHeadline = povCms?.headline || 'Some businesses need better marketing. Others need a better way of thinking about the business itself.';
   const activeParagraph1 = povCms?.paragraph1 || 'Ārohana works with businesses where communication cannot be separated from the business itself. We combine commercial thinking, sector experience and creative execution to help brands become clearer, more credible and more relevant to the people they need to reach.';
   const activeParagraph2 = povCms?.paragraph2 || "Depending on the brief, that can mean building a digital brand, running an ongoing social ecosystem, creating a film, fixing a restaurant's menu and operating systems, or taking a project from an idea to on-ground execution.";
-  const activeBtnPrimaryText = povCms?.btnPrimaryText || 'Read Founder Story & Philosophy';
-  const activeBtnPrimaryLink = povCms?.btnPrimaryLink || '/about';
-  const activeBtnSecondaryText = povCms?.btnSecondaryText || 'Explore Three Practice Areas';
-  const activeBtnSecondaryLink = povCms?.btnSecondaryLink || '/services';
+
+  // Visibility toggles
+  const showEyebrow = povCms?.eyebrowEnabled !== false && Boolean(activeEyebrow);
+  const showHeadline = povCms?.headlineEnabled !== false && Boolean(activeHeadline);
+  const showParagraph1 = povCms?.paragraph1Enabled !== false && Boolean(activeParagraph1);
+  const showParagraph2 = povCms?.paragraph2Enabled !== false && Boolean(activeParagraph2);
+
+  const showFounderCard = povCms?.founderCardEnabled !== false;
+  const showFounderPhoto = povCms?.founderPhotoEnabled !== false;
+  const showFounderName = povCms?.founderNameEnabled !== false;
+  const showFounderRole = povCms?.founderRoleEnabled !== false;
+  const showFounderDesc = povCms?.founderDescEnabled !== false;
+  const showFounderLink = povCms?.founderLinkEnabled !== false;
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
@@ -71,7 +86,7 @@ export default function PointOfView() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [showFounderCard]);
 
   return (
     <section
@@ -88,44 +103,41 @@ export default function PointOfView() {
       }}
     >
       <div className="padding-global container-large">
-        <div className="pov-split-grid">
+        <div
+          className="pov-split-grid"
+          style={{
+            gridTemplateColumns: showFounderCard ? undefined : '1fr',
+          }}
+        >
           {/* ============================================================
               LEFT COLUMN: Header, Headline, Paragraphs, CTA Buttons
               ============================================================ */}
-          <div ref={leftRef} className="pov-left-col">
-            {/* Tag / Eyebrow if present */}
-            {activeEyebrow ? (
+          <div
+            ref={leftRef}
+            className="pov-left-col"
+            style={{
+              maxWidth: showFounderCard ? '640px' : '960px',
+            }}
+          >
+            {/* Tag / Eyebrow if present & enabled */}
+            {showEyebrow ? (
               <div className="pov-eyebrow-row">
                 <span className="pov-eyebrow-text">{activeEyebrow}</span>
               </div>
             ) : null}
 
             {/* Main Headline with Red Accent Text & Underline Dash */}
-            <h2 className="pov-headline">
-              {activeHeadline}
-            </h2>
+            {showHeadline ? (
+              <h2 className="pov-headline">
+                {activeHeadline}
+              </h2>
+            ) : null}
 
             {/* Body Copy */}
-            <div className="pov-body-copy">
-              <p>{activeParagraph1}</p>
-              <p>{activeParagraph2}</p>
-            </div>
-
-            {/* CTA Buttons Row */}
-            {(activeBtnPrimaryText || activeBtnSecondaryText) && (
-              <div className="pov-buttons-row">
-                {activeBtnPrimaryText && (
-                  <Link href={activeBtnPrimaryLink} className="pov-btn-primary">
-                    <span>{activeBtnPrimaryText}</span>
-                    <ArrowRight size={15} />
-                  </Link>
-                )}
-                {activeBtnSecondaryText && (
-                  <Link href={activeBtnSecondaryLink} className="pov-btn-secondary">
-                    <span>{activeBtnSecondaryText}</span>
-                    <ArrowRight size={15} />
-                  </Link>
-                )}
+            {(showParagraph1 || showParagraph2) && (
+              <div className="pov-body-copy">
+                {showParagraph1 && <p>{activeParagraph1}</p>}
+                {showParagraph2 && <p>{activeParagraph2}</p>}
               </div>
             )}
           </div>
@@ -133,75 +145,87 @@ export default function PointOfView() {
           {/* ============================================================
               RIGHT COLUMN: Layered Architectural Shapes, Portrait, Founder Badge
               ============================================================ */}
-          <div ref={rightRef} className="pov-right-col">
-            {/* Visual Composition Container */}
-            <div className="pov-composition-box">
-              {/* Layer 1: Deep Red Rounded Arch on Left */}
-              <div className="pov-shape-red-arch" />
+          {showFounderCard && (
+            <div ref={rightRef} className="pov-right-col">
+              {/* Visual Composition Container */}
+              <div className="pov-composition-box">
+                {/* Layer 1: Deep Red Rounded Arch on Left */}
+                <div className="pov-shape-red-arch" />
 
-              {/* Layer 2: Thin Red Outline Arc SVG */}
-              <svg
-                className="pov-shape-red-outline"
-                width="140"
-                height="220"
-                viewBox="0 0 140 220"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  d="M 135,15 A 80,80 0 0,0 20,95 L 20,210"
-                  stroke="#9e1f24"
-                  strokeWidth="1.5"
+                {/* Layer 2: Thin Red Outline Arc SVG */}
+                <svg
+                  className="pov-shape-red-outline"
+                  width="140"
+                  height="220"
+                  viewBox="0 0 140 220"
                   fill="none"
-                  opacity="0.85"
-                />
-              </svg>
-
-              {/* Layer 3: Dark Navy Arched Monolith on Right */}
-              <div className="pov-shape-navy-pillar" />
-
-              {/* Layer 4: Vertical Text on Far Right (STRATEGY / STORY / EXECUTION) */}
-              <div className="pov-vertical-tags">
-                <span>STRATEGY &nbsp;/&nbsp; STORY &nbsp;/&nbsp; EXECUTION</span>
-              </div>
-
-              {/* Layer 5: Main Founder Portrait Card */}
-              <div className="pov-portrait-frame">
-                <Image
-                  src={povCms?.founderImage || "/images/home/madhura-editorial.jpg"}
-                  alt={`${povCms?.founderName || "Madhura Hawal"} - Founder of Ārohana Consultancy`}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 300px, (max-width: 1200px) 360px, 400px"
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'center 15%',
-                  }}
-                />
-              </div>
-
-              {/* Layer 6: Floating Founder Badge Card (Overlapping Bottom Right) */}
-              <div className="pov-founder-badge">
-                <div className="pov-founder-meta">
-                  <span className="pov-founder-name">{povCms?.founderName || "MADHURA HAWAL"}</span>
-                  <span className="pov-founder-role">{povCms?.founderRole || "FOUNDER"}</span>
-                </div>
-                <p className="pov-founder-desc">
-                  {povCms?.founderDesc || "Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs."}
-                </p>
-
-                {/* Floating Red Circular Arrow Button */}
-                <Link
-                  href={povCms?.founderLink || "/about"}
-                  className="pov-founder-action-btn"
-                  aria-label={`View ${povCms?.founderName || "Madhura Hawal"} founder story`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
                 >
-                  <ArrowRight size={16} />
-                </Link>
+                  <path
+                    d="M 135,15 A 80,80 0 0,0 20,95 L 20,210"
+                    stroke="#9e1f24"
+                    strokeWidth="1.5"
+                    fill="none"
+                    opacity="0.85"
+                  />
+                </svg>
+
+                {/* Layer 3: Dark Navy Arched Monolith on Right */}
+                <div className="pov-shape-navy-pillar" />
+
+                {/* Layer 4: Vertical Text on Far Right (STRATEGY / STORY / EXECUTION) */}
+                <div className="pov-vertical-tags">
+                  <span>STRATEGY &nbsp;/&nbsp; STORY &nbsp;/&nbsp; EXECUTION</span>
+                </div>
+
+                {/* Layer 5: Main Founder Portrait Card */}
+                {showFounderPhoto && (
+                  <div className="pov-portrait-frame">
+                    <Image
+                      src={povCms?.founderImage || "/images/home/madhura-editorial.jpg"}
+                      alt={`${povCms?.founderName || "Madhura Hawal"} - Founder of Ārohana Consultancy`}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 300px, (max-width: 1200px) 360px, 400px"
+                      style={{
+                        objectFit: 'cover',
+                        objectPosition: 'center 15%',
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Layer 6: Floating Founder Badge Card (Overlapping Bottom Right) */}
+                {(showFounderName || showFounderRole || showFounderDesc || showFounderLink) && (
+                  <div className="pov-founder-badge">
+                    {(showFounderName || showFounderRole) && (
+                      <div className="pov-founder-meta">
+                        {showFounderName && <span className="pov-founder-name">{povCms?.founderName || "MADHURA HAWAL"}</span>}
+                        {showFounderRole && <span className="pov-founder-role">{povCms?.founderRole || "FOUNDER"}</span>}
+                      </div>
+                    )}
+                    {showFounderDesc && (
+                      <p className="pov-founder-desc">
+                        {povCms?.founderDesc || "Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs."}
+                      </p>
+                    )}
+
+                    {/* Floating Red Circular Arrow Button */}
+                    {showFounderLink && (
+                      <Link
+                        href={povCms?.founderLink || "/about"}
+                        className="pov-founder-action-btn"
+                        aria-label={`View ${povCms?.founderName || "Madhura Hawal"} founder story`}
+                      >
+                        <ArrowRight size={16} />
+                      </Link>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

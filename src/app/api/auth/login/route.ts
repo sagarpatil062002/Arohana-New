@@ -15,13 +15,12 @@ export async function POST(req: NextRequest) {
         user: { email: ADMIN_EMAIL, name: 'Ārohana Admin' },
       });
 
-      // Set auth cookie
+      // Set session auth cookie (expires automatically on browser close)
       response.cookies.set('arohana_admin_auth', 'authenticated', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
       });
 
       return response;

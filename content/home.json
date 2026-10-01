@@ -53,23 +53,68 @@
       {
         "id": "banner-1",
         "image": "/images/home/hero-mountain-sky.png",
-        "caption": "Brand Strategy & Strategic Landscapes"
+        "caption": "Brand Strategy & Strategic Landscapes",
+        "badge": "STRATEGY · COMMUNICATION · EXECUTION",
+        "eyebrow": "STRATEGY · COMMUNICATION · EXECUTION",
+        "badgeEnabled": true,
+        "eyebrowEnabled": true,
+        "headline": "We build brands,\nbusinesses &\nexperiences.",
+        "headlineEnabled": true,
+        "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
+        "subheadlineEnabled": true,
+        "clickableUrl": "/work",
+        "isImageClickable": true,
+        "buttonLabel": "Explore Our Work",
+        "buttonUrl": "/work",
+        "buttonEnabled": true,
+        "imageEnabled": true,
+        "enabled": true
       },
       {
         "id": "banner-2",
         "image": "/uploads/1790712682532-hero-poster.jpg",
-        "caption": "High-Impact Commercial Production"
+        "caption": "High-Impact Commercial Production",
+        "badge": "STRATEGY · COMMUNICATION · EXECUTION",
+        "eyebrow": "STRATEGY · COMMUNICATION · EXECUTION",
+        "badgeEnabled": true,
+        "eyebrowEnabled": true,
+        "headline": "Commercial thinking.\nCreative clarity &\nmeasurable scale.",
+        "headlineEnabled": true,
+        "subheadline": "Directing multi-entity commercial initiatives and high-caliber brand transformations.",
+        "subheadlineEnabled": true,
+        "clickableUrl": "/work",
+        "isImageClickable": true,
+        "buttonLabel": "View Featured Projects",
+        "buttonUrl": "/work",
+        "buttonEnabled": true,
+        "imageEnabled": true,
+        "enabled": true
       },
       {
         "id": "banner-3",
         "image": "/images/services/services-hero-collage.png",
-        "caption": "Multidisciplinary Creative Execution"
+        "caption": "Multidisciplinary Creative Execution",
+        "badge": "STRATEGY · COMMUNICATION · EXECUTION",
+        "eyebrow": "STRATEGY · COMMUNICATION · EXECUTION",
+        "badgeEnabled": true,
+        "eyebrowEnabled": true,
+        "headline": "From boardroom strategy\nto rigorous on-ground\nexecution.",
+        "headlineEnabled": true,
+        "subheadline": "Operating across hospitality, enterprise, defence, luxury spaces and consumer retail.",
+        "subheadlineEnabled": true,
+        "clickableUrl": "/services",
+        "isImageClickable": true,
+        "buttonLabel": "Explore Capabilities",
+        "buttonUrl": "/services",
+        "buttonEnabled": true,
+        "imageEnabled": true,
+        "enabled": true
       }
     ],
     "carouselInterval": 5000,
     "bannerClarity": "clear",
     "videoUrl": "",
-    "showVideoCard": false,
+    "showVideoCard": true,
     "videoCard": {
       "enabled": false,
       "videoUrl": "/videos/hero-montage.mp4",
@@ -96,7 +141,9 @@
     "ctaLabel": "Explore Our Work",
     "ctaLink": "/work",
     "secondaryCtaLabel": "",
-    "secondaryCtaLink": ""
+    "secondaryCtaLink": "",
+    "eyebrowEnabled": true,
+    "subheadlineEnabled": true
   },
   "brands": {
     "eyebrow": "",
@@ -240,33 +287,36 @@
     ]
   },
   "impactStats": {
-    "eyebrow": "REAL-WORLD EXECUTION",
-    "heading": "Impact measured by delivery, not promises.",
-    "subtitle": "Numbers that represent sustained business equity and rigorous ground execution.",
     "counters": [
       {
         "id": "commercial",
-        "tag": "01",
         "target": 25,
         "suffix": "+",
         "title": "Commercial Engagements",
-        "desc": ""
+        "label": "Commercial Engagements",
+        "desc": "Hospitality, enterprise & consumer brands",
+        "detail": "Hospitality, enterprise & consumer brands",
+        "enabled": true
       },
       {
         "id": "sectors",
-        "tag": "02",
         "target": 10,
         "suffix": "+",
         "title": "Industry Sectors",
-        "desc": ""
+        "label": "Industry Sectors",
+        "desc": "Hospitality, Real Estate, Healthcare, Media, Travel & Defence",
+        "detail": "Hospitality, Real Estate, Healthcare, Media, Travel & Defence",
+        "enabled": true
       },
       {
         "id": "expeditions",
-        "tag": "03",
         "target": 15,
         "suffix": "+",
         "title": "Himalayan Expeditions",
-        "desc": ""
+        "label": "Himalayan Expeditions",
+        "desc": "Curated mountain journeys and border initiatives",
+        "detail": "Curated mountain journeys and border initiatives",
+        "enabled": true
       }
     ]
   },
@@ -327,18 +377,11 @@
     "founderRole": "FOUNDER",
     "founderDesc": "Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs.",
     "founderLink": "/about",
-    "btnPrimaryText": "Read Founder Story & Philosophy",
-    "btnPrimaryLink": "/about",
-    "btnSecondaryText": "Explore Practice Areas",
-    "btnSecondaryLink": "/services",
-    "quote": "Sometimes what looks like a marketing problem isn't a marketing problem at all.",
-    "attribution": "MADHURA HAWAL · FOUNDER, ĀROHANA",
     "triadWords": "IDEAS · BRANDS · PEOPLE · PROGRESS"
   },
   "selectedWork": {
     "eyebrow": "WORK PROOF",
     "title": "The work is the proof.",
-    "subtitle": "A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.",
     "ctaText": "View All Case Studies",
     "ctaLink": "/work",
     "projects": [
@@ -595,6 +638,16 @@
     "description": "Let's start with what you're trying to solve or build, not a cookie-cutter agency proposal.",
     "buttonLabel": "Start a conversation",
     "buttonLink": "/contact",
-    "email": "founder@byarohana.com"
+    "email": "founder@byarohana.com",
+    "hoverImagesEnabled": true,
+    "hoverImages": [
+      { "id": "1", "image": "/images/case-studies/raysons/casting-hero.jpg", "title": "Raysons Group", "enabled": true },
+      { "id": "2", "image": "/images/case-studies/loom/loom-hero.jpg", "title": "Loom Crafts", "enabled": true },
+      { "id": "3", "image": "/images/case-studies/picturetime/picturetime-hero.jpg", "title": "PictureTime", "enabled": true },
+      { "id": "4", "image": "/images/case-studies/she/she-hero.jpg", "title": "Project SHE", "enabled": true },
+      { "id": "5", "image": "/images/case-studies/misu/misu-hero.jpg", "title": "Misu Dining", "enabled": true },
+      { "id": "6", "image": "/images/case-studies/rrskins/rrskins-hero.jpg", "title": "RR Skins", "enabled": true },
+      { "id": "7", "image": "/images/tourin/tourin-hero.jpg", "title": "Tourin Expeditions", "enabled": true }
+    ]
   }
 }

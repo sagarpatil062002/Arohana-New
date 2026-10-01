@@ -171,9 +171,10 @@ export default function StudioPage() {
     stats: aboutCms.hero?.stats || STATS,
   };
 
-  const chaptersData: ChapterData[] = (aboutCms.chapters && aboutCms.chapters.length > 0)
+  const rawChapters: ChapterData[] = (aboutCms.chapters && aboutCms.chapters.length > 0)
     ? aboutCms.chapters
     : CHAPTERS;
+  const chaptersData: ChapterData[] = rawChapters.filter((ch: any) => ch && ch.enabled !== false);
 
   const teamData = aboutCms.team || {
     eyebrow: 'OUR TEAM',
@@ -309,6 +310,7 @@ export default function StudioPage() {
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 1: HERO SECTION
             ═══════════════════════════════════════════════════════════════════ */}
+        {aboutCms.hero?.enabled !== false && (
         <section
           style={{
             minHeight: 'calc(100vh - 76px)',
@@ -322,87 +324,98 @@ export default function StudioPage() {
           <div className="hero-story-grid">
             {/* Left Column: Headline, Narrative, CTA, Stats */}
             <div>
-              {/* Eyebrow label */}
-              <div
-                className="tag-mono"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.65rem',
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: 'clamp(1.25rem, 2vw, 1.75rem)',
-                }}
-              >
-                <span style={{ width: '22px', height: '2px', backgroundColor: RED, display: 'inline-block' }} />
-                {heroData.eyebrow}
-              </div>
-
-              {/* Main Headline */}
-              <h1
-                style={{
-                  fontSize: 'clamp(2.5rem, 5.2vw, 5.2rem)',
-                  lineHeight: 1.05,
-                  letterSpacing: '-0.04em',
-                  fontWeight: 600,
-                  color: DARK,
-                  marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
-                }}
-              >
-                {heroData.headline}
-              </h1>
-
-              {/* Description Paragraphs */}
-              <div style={{ maxWidth: '580px', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: 'clamp(1.75rem, 2.5vw, 2.5rem)' }}>
-                <p style={{ fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)', lineHeight: 1.65, color: BODY_TEXT, fontWeight: 450 }}>
-                  {heroData.introP1}
-                </p>
-                <p style={{ fontSize: 'clamp(0.92rem, 1.1vw, 1.02rem)', lineHeight: 1.65, color: MUTED }}>
-                  {heroData.introP2}
-                </p>
-              </div>
-
-              {/* CTA Button - takes to start a conversation */}
-              <div style={{ marginBottom: 'clamp(2.25rem, 3.5vw, 3.5rem)' }}>
-                <Link
-                  href="/contact"
-                  className="button-editorial"
+              {/* Eyebrow label without dash */}
+              {aboutCms.hero?.showEyebrow !== false && (
+                <div
+                  className="tag-mono"
                   style={{
-                    display: 'inline-flex',
+                    display: 'flex',
                     alignItems: 'center',
-                    gap: '0.75rem',
-                    height: '50px',
-                    padding: '0 1.85rem',
-                    backgroundColor: DARK,
-                    color: '#ffffff',
-                    borderRadius: '4px',
-                    border: '1px solid rgba(255, 255, 255, 0.16)',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    textDecoration: 'none',
-                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
-                    transition: 'all 0.3s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.backgroundColor = '#222226';
-                    handlePillEnter('START A CONVERSATION');
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.backgroundColor = DARK;
-                    handlePillLeave();
+                    fontSize: '0.68rem',
+                    letterSpacing: '0.2em',
+                    color: RED,
+                    fontWeight: 700,
+                    marginBottom: 'clamp(1.25rem, 2vw, 1.75rem)',
                   }}
                 >
-                  <span>Meet the Founder</span>
-                  <ArrowRight size={16} color="#ffffff" />
-                </Link>
-              </div>
+                  {(heroData.eyebrow || 'ABOUT ĀROHANA').replace(/^[\s—–-]+/, '').trim()}
+                </div>
+              )}
+
+              {/* Main Headline */}
+              {aboutCms.hero?.showHeadline !== false && (
+                <h1
+                  style={{
+                    fontSize: 'clamp(2.5rem, 5.2vw, 5.2rem)',
+                    lineHeight: 1.05,
+                    letterSpacing: '-0.04em',
+                    fontWeight: 600,
+                    color: DARK,
+                    marginBottom: 'clamp(1.5rem, 2.5vw, 2.25rem)',
+                  }}
+                >
+                  {heroData.headline}
+                </h1>
+              )}
+
+              {/* Description Paragraphs */}
+              {(aboutCms.hero?.showIntroP1 !== false || aboutCms.hero?.showIntroP2 !== false) && (
+                <div style={{ maxWidth: '580px', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: 'clamp(1.75rem, 2.5vw, 2.5rem)' }}>
+                  {aboutCms.hero?.showIntroP1 !== false && (
+                    <p style={{ fontSize: 'clamp(0.98rem, 1.2vw, 1.12rem)', lineHeight: 1.65, color: BODY_TEXT, fontWeight: 450 }}>
+                      {heroData.introP1}
+                    </p>
+                  )}
+                  {aboutCms.hero?.showIntroP2 !== false && (
+                    <p style={{ fontSize: 'clamp(0.92rem, 1.1vw, 1.02rem)', lineHeight: 1.65, color: MUTED }}>
+                      {heroData.introP2}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* CTA Button */}
+              {aboutCms.hero?.showSubheadline !== false && (
+                <div style={{ marginBottom: 'clamp(2.25rem, 3.5vw, 3.5rem)' }}>
+                  <Link
+                    href="/contact"
+                    className="button-editorial"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      height: '50px',
+                      padding: '0 1.85rem',
+                      backgroundColor: DARK,
+                      color: '#ffffff',
+                      borderRadius: '4px',
+                      border: '1px solid rgba(255, 255, 255, 0.16)',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                      transition: 'all 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.backgroundColor = '#222226';
+                      handlePillEnter('START A CONVERSATION');
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.backgroundColor = DARK;
+                      handlePillLeave();
+                    }}
+                  >
+                    <span>Meet the Founder</span>
+                    <ArrowRight size={16} color="#ffffff" />
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Right Column: Founder Portrait Artwork */}
+            {aboutCms.hero?.showFounderPhoto !== false && (
             <div
               style={{
                 position: 'relative',
@@ -463,7 +476,8 @@ export default function StudioPage() {
                     }}
                   />
 
-                  {/* Founder Identity Card - Just Company Name below Madhura's Name */}
+                  {/* Founder Identity Card */}
+                  {(aboutCms.hero?.showFounderName !== false || aboutCms.hero?.showFounderTitle !== false) && (
                   <div
                     className="founder-identity-card"
                     style={{
@@ -480,26 +494,32 @@ export default function StudioPage() {
                       zIndex: 3,
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
-                      <span style={{ fontSize: '1.15rem', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
-                        {heroData.founderName || 'Madhura Hawal'}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#D4D4D8', marginTop: '0.15rem' }}>
-                      ĀROHANA CONSULTANCY
-                    </div>
+                    {aboutCms.hero?.showFounderName !== false && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
+                        <span style={{ fontSize: '1.15rem', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
+                          {heroData.founderName || 'Madhura Hawal'}
+                        </span>
+                      </div>
+                    )}
+                    {aboutCms.hero?.showFounderTitle !== false && (
+                      <div style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#D4D4D8', marginTop: '0.15rem' }}>
+                        {heroData.founderTitle || 'ĀROHANA CONSULTANCY'}
+                      </div>
+                    )}
                   </div>
+                  )}
                 </div>
               </div>
             </div>
+            )}
           </div>
-
-
         </section>
+        )}
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 2: THREE CHAPTERS SECTION
             ═══════════════════════════════════════════════════════════════════ */}
+        {aboutCms.chaptersEnabled !== false && chaptersData.length > 0 && (
         <section
           id="chapters"
           style={{
@@ -810,11 +830,13 @@ export default function StudioPage() {
             </div>
           </div>
         </section>
+        )}
 
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 5: OUR TEAM ("People behind possibilities.")
             ═══════════════════════════════════════════════════════════════════ */}
+        {aboutCms.team?.enabled !== false && (
         <section
           id="team"
           style={{
@@ -831,51 +853,60 @@ export default function StudioPage() {
               marginBottom: 'clamp(2.5rem, 4vw, 3.75rem)',
             }}
           >
-            <div
-              className="tag-mono"
-              style={{
-                fontSize: '0.68rem',
-                letterSpacing: '0.2em',
-                color: RED,
-                fontWeight: 700,
-                marginBottom: '0.85rem',
-              }}
-            >
-              {teamData.eyebrow}
-            </div>
-            <h2
-              style={{
-                fontSize: 'clamp(2.2rem, 4.4vw, 4.4rem)',
-                fontWeight: 600,
-                letterSpacing: '-0.035em',
-                lineHeight: 1.05,
-                color: DARK,
-              }}
-            >
-              {teamData.title}
-            </h2>
+            {aboutCms.team?.showEyebrow !== false && (
+              <div
+                className="tag-mono"
+                style={{
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.2em',
+                  color: RED,
+                  fontWeight: 700,
+                  marginBottom: '0.85rem',
+                }}
+              >
+                {teamData.eyebrow}
+              </div>
+            )}
+            {aboutCms.team?.showTitle !== false && (
+              <h2
+                style={{
+                  fontSize: 'clamp(2.2rem, 4.4vw, 4.4rem)',
+                  fontWeight: 600,
+                  letterSpacing: '-0.035em',
+                  lineHeight: 1.05,
+                  color: DARK,
+                }}
+              >
+                {teamData.title}
+              </h2>
+            )}
           </div>
 
-          {/* Team Members in a Responsive Grid with Bios */}
+          {/* Team Members in a Compact Responsive Grid with Bios */}
           {(() => {
             const rawMembers = (teamData.members && teamData.members.length > 0) ? teamData.members : TEAM;
-            const activeTeamMembers = rawMembers.map((member: any) => {
-              const fallback = TEAM.find((t) => t.id === member.id || t.name.toLowerCase() === member.name?.toLowerCase());
-              return {
-                id: member.id || fallback?.id || member.name.toLowerCase().replace(/\s+/g, '-'),
-                name: member.name || fallback?.name || '',
-                role: member.role || fallback?.role || '',
-                image: member.image || fallback?.image || '/images/about/team-abijitha.jpg',
-                bio: member.bio || fallback?.bio || '',
-              };
-            });
+            const activeTeamMembers = rawMembers
+              .filter((member: any) => member && member.enabled !== false)
+              .map((member: any) => {
+                const fallback = TEAM.find((t) => t.id === member.id || t.name.toLowerCase() === member.name?.toLowerCase());
+                return {
+                  id: member.id || fallback?.id || member.name.toLowerCase().replace(/\s+/g, '-'),
+                  name: member.name || fallback?.name || '',
+                  role: member.role || fallback?.role || '',
+                  image: member.image || fallback?.image || '/images/about/team-abijitha.jpg',
+                  bio: member.bio || fallback?.bio || '',
+                  showRole: member.showRole !== false,
+                  showBio: member.showBio !== false,
+                  showImage: member.showImage !== false,
+                };
+              });
 
             return (
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
-                  gap: 'clamp(1.25rem, 2vw, 2.25rem)',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 230px), 1fr))',
+                  gap: 'clamp(1rem, 1.6vw, 1.5rem)',
                 }}
               >
                 {activeTeamMembers.map((member: any) => (
@@ -886,41 +917,43 @@ export default function StudioPage() {
                       borderRadius: '6px',
                       border: BORDER,
                       overflow: 'hidden',
-                      boxShadow: '0 8px 24px -6px rgba(0, 0, 0, 0.04)',
-                      transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                      boxShadow: '0 4px 16px -4px rgba(0, 0, 0, 0.04)',
+                      transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                       display: 'flex',
                       flexDirection: 'column',
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-6px)';
-                      e.currentTarget.style.boxShadow = '0 20px 35px -10px rgba(0, 0, 0, 0.1)';
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.boxShadow = '0 12px 24px -6px rgba(0, 0, 0, 0.08)';
                       e.currentTarget.style.borderColor = 'rgba(222, 50, 45, 0.3)';
                       handlePillEnter(member.name.toUpperCase());
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 8px 24px -6px rgba(0, 0, 0, 0.04)';
+                      e.currentTarget.style.boxShadow = '0 4px 16px -4px rgba(0, 0, 0, 0.04)';
                       e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.08)';
                       handlePillLeave();
                     }}
                   >
-                    {/* Photo container */}
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '100%',
-                        aspectRatio: '1 / 1.12',
-                        backgroundColor: '#EBEBEB',
-                      }}
-                    >
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 360px"
-                        style={{ objectFit: 'cover', objectPosition: 'top' }}
-                      />
-                    </div>
+                    {/* Compact Photo container */}
+                    {member.showImage !== false && (
+                      <div
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          aspectRatio: '1 / 1.02',
+                          backgroundColor: '#EBEBEB',
+                        }}
+                      >
+                        <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 260px"
+                          style={{ objectFit: 'cover', objectPosition: 'top' }}
+                        />
+                      </div>
+                    )}
 
                     {/* Caption & Bio below photo */}
                     <div style={{ padding: '1.25rem 1.35rem 1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -935,30 +968,34 @@ export default function StudioPage() {
                       >
                         {member.name}
                       </div>
-                      <div
-                        className="tag-mono"
-                        style={{
-                          fontSize: '0.64rem',
-                          letterSpacing: '0.12em',
-                          color: RED,
-                          fontWeight: 700,
-                          marginTop: '0.35rem',
-                          lineHeight: 1.35,
-                        }}
-                      >
-                        {member.role}
-                      </div>
-                      <p
-                        style={{
-                          fontSize: '0.82rem',
-                          lineHeight: 1.6,
-                          color: BODY_TEXT,
-                          marginTop: '0.85rem',
-                          marginBottom: 0,
-                        }}
-                      >
-                        {member.bio}
-                      </p>
+                      {member.showRole !== false && (
+                        <div
+                          className="tag-mono"
+                          style={{
+                            fontSize: '0.64rem',
+                            letterSpacing: '0.12em',
+                            color: RED,
+                            fontWeight: 700,
+                            marginTop: '0.35rem',
+                            lineHeight: 1.35,
+                          }}
+                        >
+                          {member.role}
+                        </div>
+                      )}
+                      {member.showBio !== false && (
+                        <p
+                          style={{
+                            fontSize: '0.82rem',
+                            lineHeight: 1.6,
+                            color: BODY_TEXT,
+                            marginTop: '0.85rem',
+                            marginBottom: 0,
+                          }}
+                        >
+                          {member.bio}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -966,10 +1003,12 @@ export default function StudioPage() {
             );
           })()}
         </section>
+        )}
 
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 6: CLOSING CTA (Serious about what you're building.)
             ═══════════════════════════════════════════════════════════════════ */}
+        {aboutCms.cta?.enabled !== false && (
         <section
           style={{
             paddingTop: 'clamp(3.5rem, 6vw, 5.5rem)',
@@ -1007,36 +1046,40 @@ export default function StudioPage() {
             />
 
             <div style={{ position: 'relative', zIndex: 1, maxWidth: '780px' }}>
-              <div
-                className="tag-mono"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.65rem',
-                  fontSize: '0.68rem',
-                  letterSpacing: '0.2em',
-                  color: RED,
-                  fontWeight: 700,
-                  marginBottom: '1.25rem',
-                }}
-              >
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: RED }} />
-                {ctaData.eyebrow}
-              </div>
+              {aboutCms.cta?.showEyebrow !== false && (
+                <div
+                  className="tag-mono"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    fontSize: '0.68rem',
+                    letterSpacing: '0.2em',
+                    color: RED,
+                    fontWeight: 700,
+                    marginBottom: '1.25rem',
+                  }}
+                >
+                  <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: RED }} />
+                  {ctaData.eyebrow}
+                </div>
+              )}
 
-              <h2
-                style={{
-                  fontSize: 'clamp(2.2rem, 4.8vw, 4.5rem)',
-                  fontWeight: 600,
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.08,
-                  color: '#ffffff',
-                  marginBottom: '1.5rem',
-                  whiteSpace: 'pre-line',
-                }}
-              >
-                {ctaData.headline}
-              </h2>
+              {aboutCms.cta?.showHeadline !== false && (
+                <h2
+                  style={{
+                    fontSize: 'clamp(2.2rem, 4.8vw, 4.5rem)',
+                    fontWeight: 600,
+                    letterSpacing: '-0.035em',
+                    lineHeight: 1.08,
+                    color: '#ffffff',
+                    marginBottom: '1.5rem',
+                    whiteSpace: 'pre-line',
+                  }}
+                >
+                  {ctaData.headline}
+                </h2>
+              )}
 
               <p
                 style={{
@@ -1052,37 +1095,39 @@ export default function StudioPage() {
               </p>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1.25rem' }}>
-                <Link
-                  href={ctaData.buttonUrl || '/contact'}
-                  className="button-editorial"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    height: '50px',
-                    padding: '0 1.85rem',
-                    backgroundColor: '#000000',
-                    color: '#ffffff',
-                    borderRadius: '4px',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    textDecoration: 'none',
-                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
-                    border: '1px solid rgba(255, 255, 255, 0.18)',
-                    transition: 'all 0.25s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#222226';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#000000';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <span>{ctaData.buttonText || 'Start a Conversation'}</span>
-                  <ArrowRight size={16} color="#ffffff" />
-                </Link>
+                {aboutCms.cta?.showButton !== false && (
+                  <Link
+                    href={ctaData.buttonUrl || '/contact'}
+                    className="button-editorial"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      height: '50px',
+                      padding: '0 1.85rem',
+                      backgroundColor: '#000000',
+                      color: '#ffffff',
+                      borderRadius: '4px',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+                      border: '1px solid rgba(255, 255, 255, 0.18)',
+                      transition: 'all 0.25s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#222226';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#000000';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <span>{ctaData.buttonText || 'Start a Conversation'}</span>
+                    <ArrowRight size={16} color="#ffffff" />
+                  </Link>
+                )}
 
                 <Link
                   href="/work"
@@ -1116,23 +1161,11 @@ export default function StudioPage() {
                 </Link>
               </div>
 
-              {/* Bottom location metadata */}
-              <div
-                className="tag-mono"
-                style={{
-                  fontSize: '0.64rem',
-                  letterSpacing: '0.2em',
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  marginTop: 'clamp(2.5rem, 4vw, 3.5rem)',
-                  paddingTop: '1.25rem',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                }}
-              >
-                KOLHAPUR · PUNE · LADAKH
-              </div>
+
             </div>
           </div>
         </section>
+        )}
       </div>
 
       <style jsx>{`

@@ -63,6 +63,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   const handleLogout = async () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('arohana_admin_session');
+    }
     await fetch('/api/auth/login', { method: 'DELETE' });
     router.push('/admin/login');
   };

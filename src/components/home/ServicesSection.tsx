@@ -126,6 +126,13 @@ function SharpFlipDigit({ digit }: { digit: string }) {
 export default function ServicesSection() {
   const { content } = useCmsContent();
   const srvCms = content?.home?.services;
+  const isEnabled = srvCms?.enabled !== false;
+  const showEyebrow = srvCms?.showEyebrow !== false;
+  const showHeadline = srvCms?.showHeadline !== false;
+  const showDescription = srvCms?.showDescription !== false;
+  const isStatsEnabled = content?.home?.impactStats?.enabled !== false;
+  const isPillarsEnabled = srvCms?.pillarsEnabled !== false;
+
   const activeEyebrow = srvCms?.eyebrow || 'CAPABILITIES & PRACTICE AREAS';
   const activeTitle = srvCms?.title || 'Three distinct capabilities. One strategic spine.';
   const activeDesc = srvCms?.description && srvCms.description.length < 200
@@ -134,8 +141,10 @@ export default function ServicesSection() {
 
   // Dynamic stats from CMS: memoized so references stay stable and prevent animation cancellation
   const statsList: StatData[] = useMemo(() => {
-    const raw = srvCms?.stats || content?.home?.impactStats?.counters;
-    const source = (raw && Array.isArray(raw) && raw.length > 0) ? raw : SHARP_STATS;
+    const raw = content?.home?.impactStats?.counters || srvCms?.stats;
+    const source = (raw && Array.isArray(raw))
+      ? raw.filter((s: any) => s && s.enabled !== false)
+      : SHARP_STATS;
     return source.map((s: any, i: number) => ({
       id: s.id || `stat-${i}`,
       target: typeof s.target === 'number' ? s.target : (parseInt(s.target, 10) || SHARP_STATS[i]?.target || 0),
@@ -146,18 +155,19 @@ export default function ServicesSection() {
     }));
   }, [srvCms?.stats, content?.home?.impactStats?.counters]);
 
-  const capabilitiesList: CapabilityItemData[] = (srvCms?.items && srvCms.items.length > 0)
-    ? srvCms.items.map((item: any, i: number) => ({
-        title: item.title || CAPABILITIES_DATA[i]?.title || '',
-        tags: Array.isArray(item.tags)
-          ? item.tags
-          : (typeof item.tags === 'string' ? item.tags.split(',').map((t: string) => t.trim()) : CAPABILITIES_DATA[i]?.tags || []),
-        image: item.image || CAPABILITIES_DATA[i]?.image || '',
-        alt: item.title || CAPABILITIES_DATA[i]?.alt || '',
-        description: item.description || CAPABILITIES_DATA[i]?.description || '',
-        href: item.href || CAPABILITIES_DATA[i]?.href || '/services',
-      }))
-    : CAPABILITIES_DATA;
+  const rawCapabilities = (srvCms?.items && srvCms.items.length > 0) ? srvCms.items : CAPABILITIES_DATA;
+  const capabilitiesList: CapabilityItemData[] = rawCapabilities
+    .filter((item: any) => item && item.enabled !== false)
+    .map((item: any, i: number) => ({
+      title: item.title || CAPABILITIES_DATA[i]?.title || '',
+      tags: Array.isArray(item.tags)
+        ? item.tags
+        : (typeof item.tags === 'string' ? item.tags.split(',').map((t: string) => t.trim()) : CAPABILITIES_DATA[i]?.tags || []),
+      image: item.image || CAPABILITIES_DATA[i]?.image || '',
+      alt: item.title || CAPABILITIES_DATA[i]?.alt || '',
+      description: item.description || CAPABILITIES_DATA[i]?.description || '',
+      href: item.href || CAPABILITIES_DATA[i]?.href || '/services',
+    }));
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const statsGridRef = useRef<HTMLDivElement>(null);
@@ -242,6 +252,8 @@ export default function ServicesSection() {
     };
   }, [animateCounters, resetCounters]);
 
+  if (!isEnabled) return null;
+
   return (
     <section
       ref={sectionRef}
@@ -279,88 +291,99 @@ export default function ServicesSection() {
           }}
         >
           {/* Header Row: Three distinct capabilities. One strategic spine. */}
-          <div
-            className="services-header-top"
-            style={{
-              width: '100%',
-              paddingBottom: '2rem',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-              marginBottom: '2.5rem',
-              boxSizing: 'border-box',
-            }}
-          >
-            <div style={{ maxWidth: '920px' }}>
-              <div
-                className="tag-mono"
-                style={{
-                  color: '#DE322D',
-                  marginBottom: '0.85rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  fontSize: '0.8rem',
-                  letterSpacing: '0.14em',
-                  fontWeight: 700,
-                }}
-              >
-                {activeEyebrow}
+          {(showEyebrow || showHeadline || showDescription) && (
+            <div
+              className="services-header-top"
+              style={{
+                width: '100%',
+                paddingBottom: '2rem',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+                marginBottom: '2.5rem',
+                boxSizing: 'border-box',
+              }}
+            >
+              <div style={{ maxWidth: '920px' }}>
+                {showEyebrow && (
+                  <div
+                    className="tag-mono"
+                    style={{
+                      color: '#DE322D',
+                      marginBottom: '0.85rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      fontSize: '0.8rem',
+                      letterSpacing: '0.14em',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {activeEyebrow}
+                  </div>
+                )}
+                {showHeadline && (
+                  <h2
+                    style={{
+                      color: '#ffffff',
+                      fontSize: 'clamp(2.1rem, 3.8vw, 3.4rem)',
+                      fontWeight: 600,
+                      fontFamily: 'var(--font-display)',
+                      lineHeight: 1.12,
+                      letterSpacing: '-0.03em',
+                      margin: '0 0 1rem 0',
+                    }}
+                  >
+                    {activeTitle}
+                  </h2>
+                )}
+                {showDescription && (
+                  <p
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.72)',
+                      fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)',
+                      lineHeight: 1.6,
+                      margin: 0,
+                      maxWidth: '720px',
+                    }}
+                  >
+                    {activeDesc}
+                  </p>
+                )}
               </div>
-              <h2
-                style={{
-                  color: '#ffffff',
-                  fontSize: 'clamp(2.1rem, 3.8vw, 3.4rem)',
-                  fontWeight: 600,
-                  fontFamily: 'var(--font-display)',
-                  lineHeight: 1.12,
-                  letterSpacing: '-0.03em',
-                  margin: '0 0 1rem 0',
-                }}
-              >
-                {activeTitle}
-              </h2>
-              <p
-                style={{
-                  color: 'rgba(255, 255, 255, 0.72)',
-                  fontSize: 'clamp(0.95rem, 1.2vw, 1.1rem)',
-                  lineHeight: 1.6,
-                  margin: 0,
-                  maxWidth: '720px',
-                }}
-              >
-                {activeDesc}
-              </p>
             </div>
-          </div>
+          )}
 
           {/* ============================================================
               SHARP FLIPPING NUMBERS GRID (ANIMATES EVERY TIME IN VIEW)
               Razor-sharp linear typography, no rounded bubbly numerals
               ============================================================ */}
-          <div ref={statsGridRef} className="sharp-stats-grid">
-            {statsList.map((stat, idx) => {
-              const countVal = counts[idx] ?? 0;
-              const formattedNum = stat.twoDigits && countVal < 10 ? `0${countVal}` : `${countVal}`;
-              const digits = formattedNum.split('');
+          {isStatsEnabled && statsList.length > 0 && (
+            <div ref={statsGridRef} className="sharp-stats-grid">
+              {statsList.map((stat, idx) => {
+                const countVal = counts[idx] ?? 0;
+                const formattedNum = stat.twoDigits && countVal < 10 ? `0${countVal}` : `${countVal}`;
+                const digits = formattedNum.split('');
 
-              return (
-                <div key={stat.id} className="sharp-stat-item">
-                  <div className="sharp-stat-num-row">
-                    {digits.map((d, dIdx) => (
-                      <SharpFlipDigit key={dIdx} digit={d} />
-                    ))}
-                    {stat.suffix && <span className="sharp-stat-suffix">{stat.suffix}</span>}
+                return (
+                  <div key={stat.id} className="sharp-stat-item">
+                    <div className="sharp-stat-num-row">
+                      {digits.map((d, dIdx) => (
+                        <SharpFlipDigit key={dIdx} digit={d} />
+                      ))}
+                      {stat.suffix && <span className="sharp-stat-suffix">{stat.suffix}</span>}
+                    </div>
+                    <div className="sharp-stat-label">{stat.label}</div>
                   </div>
-                  <div className="sharp-stat-label">{stat.label}</div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* ============================================================
               CAPABILITIES STACK: 3 DISTINCT CARDS WITHOUT NUMBER BADGES
               ============================================================ */}
-          <div
-            className="services-cards-stack"
+          {isPillarsEnabled && capabilitiesList.length > 0 && (
+            <div
+              className="services-cards-stack"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -416,16 +439,15 @@ export default function ServicesSection() {
                         alignItems: 'flex-start',
                         justifyContent: 'flex-start',
                       }}
-                    >
-                      <h3
+                    >                      <h3
                         style={{
-                          color: '#f0eee6',
-                          fontSize: 'clamp(1.8rem, 2.6vw, 2.4rem)',
-                          fontWeight: 600,
+                          color: '#FFFFFF',
+                          fontSize: 'clamp(2.2rem, 3.4vw, 3.1rem)',
+                          fontWeight: 700,
                           fontFamily: 'var(--font-display)',
-                          letterSpacing: '-0.025em',
-                          lineHeight: 1.15,
-                          margin: '0 0 1rem 0',
+                          letterSpacing: '-0.03em',
+                          lineHeight: 1.1,
+                          margin: '0 0 0.85rem 0',
                           padding: 0,
                         }}
                       >
@@ -434,11 +456,12 @@ export default function ServicesSection() {
 
                       <p
                         style={{
-                          color: 'rgba(255, 255, 255, 0.7)',
-                          fontSize: 'clamp(0.92rem, 1.1vw, 1.05rem)',
-                          lineHeight: 1.6,
+                          color: 'rgba(255, 255, 255, 0.65)',
+                          fontSize: 'clamp(0.88rem, 1.05vw, 0.98rem)',
+                          lineHeight: 1.55,
                           margin: '0 0 1.5rem 0',
                           maxWidth: '460px',
+                          fontWeight: 400,
                         }}
                       >
                         {service.description}
@@ -546,6 +569,7 @@ export default function ServicesSection() {
               );
             })}
           </div>
+        )}
         </div>
       </div>
 

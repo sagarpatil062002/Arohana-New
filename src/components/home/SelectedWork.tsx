@@ -88,7 +88,11 @@ export default function SelectedWork() {
   const activeEyebrow = workCms?.eyebrow || 'SELECTED WORK';
   const activeTitle = workCms?.title || 'The work is the proof.';
   const activeSubtitle = workCms?.subtitle || 'A selection of brand stories and projects that show how Ārohana thinks, creates and executes across very different environments.';
-  const projectsList: ProjectItem[] = (workCms?.projects && workCms.projects.length > 0) ? workCms.projects : PROJECTS;
+  const rawProjects = (workCms?.projects && workCms.projects.length > 0) ? workCms.projects : PROJECTS;
+  const projectsList: ProjectItem[] = rawProjects.filter((p: any) => p && p.enabled !== false);
+  const isEnabled = workCms?.enabled !== false;
+  const showEyebrow = workCms?.showEyebrow !== false;
+  const showHeadline = workCms?.showHeadline !== false;
 
   // Center card initially on index 0 (Raysons Group)
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -101,7 +105,7 @@ export default function SelectedWork() {
   const [dragDelta, setDragDelta] = useState(0);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const total = projectsList.length;
+  const total = Math.max(projectsList.length, 1);
 
   // Responsive screen check
   useEffect(() => {
@@ -124,12 +128,12 @@ export default function SelectedWork() {
   // Autoplay automatically from left to right
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
-    if (!isDragging) {
+    if (!isDragging && total > 1) {
       timerRef.current = setInterval(() => {
         nextSlide();
       }, 2500);
     }
-  }, [isDragging, nextSlide]);
+  }, [isDragging, nextSlide, total]);
 
   useEffect(() => {
     resetAutoplay();
@@ -173,6 +177,8 @@ export default function SelectedWork() {
     setDragDelta(0);
   };
 
+  if (!isEnabled) return null;
+
   return (
     <section
       id="selected-work"
@@ -187,28 +193,31 @@ export default function SelectedWork() {
         {/* ================================================================= */}
         {/* 1. SECTION HEADER (Exact match to Reference Image)                */}
         {/* ================================================================= */}
-        <div className="sw-header">
-          {/* Eyebrow with red bar */}
-          <div className="sw-eyebrow-row">
-            <span className="sw-red-bar" />
-            <span className="sw-eyebrow-text">{activeEyebrow}</span>
-          </div>
+        {(showEyebrow || showHeadline) && (
+          <div className="sw-header">
+            {/* Eyebrow without red dash */}
+            {showEyebrow && (
+              <div className="sw-eyebrow-row">
+                <span className="sw-eyebrow-text">{(activeEyebrow || 'WORK PROOF').replace(/^[\s—–-]+/, '').trim()}</span>
+              </div>
+            )}
 
-          <div className="sw-header-main">
-            {/* Title with red period */}
-            <div className="sw-title-col">
-              <h2 className="sw-title">
-                The
-                <br />
-                work is
-                <br />
-                the proof<span className="sw-dot-red">.</span>
-              </h2>
-            </div>
-
-            {/* Description & ©26 Badge removed as requested */}
+            {showHeadline && (
+              <div className="sw-header-main">
+                {/* Title with red period */}
+                <div className="sw-title-col">
+                  <h2 className="sw-title">
+                    The
+                    <br />
+                    work is
+                    <br />
+                    the proof<span className="sw-dot-red">.</span>
+                  </h2>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
         {/* ================================================================= */}
         {/* 2. 3D COVERFLOW HORIZONTAL CAROUSEL (ARMY SECTION ANIMATION STYLE)*/}

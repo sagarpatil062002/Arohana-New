@@ -107,6 +107,7 @@ export default function AdminCasesPage() {
   const heroImgInputRef = useRef<HTMLInputElement>(null);
   const galleryImgInputRef = useRef<HTMLInputElement>(null);
   const activeGalleryIdxRef = useRef<number>(-1);
+  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (content.work) {
@@ -161,7 +162,7 @@ export default function AdminCasesPage() {
 
   const activeCaseMerged = getCaseWithDefaults(selectedCase);
 
-  const handleCaseChange = async (field: string, val: any) => {
+  const handleCaseChange = (field: string, val: any) => {
     if (!selectedCase) return;
     const updatedCases = workData.caseStudies.map((c: any) =>
       c.id === selectedCase.id ? { ...getCaseWithDefaults(c), [field]: val } : c
@@ -169,6 +170,24 @@ export default function AdminCasesPage() {
     const updated = { ...workData, caseStudies: updatedCases };
     setWorkData(updated);
     updateDraftInMemory('work', updated);
+
+    // Instant zero-refresh broadcast to all preview iframes
+    if (typeof window !== 'undefined') {
+      const msg = { type: 'CMS_UPDATE', section: 'work', data: updated };
+      window.postMessage(msg, '*');
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((ifr) => {
+        try {
+          ifr.contentWindow?.postMessage(msg, '*');
+        } catch (e) {}
+      });
+    }
+
+    // Auto-save draft so server content is always current without manual button clicks
+    if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+    autoSaveTimerRef.current = setTimeout(() => {
+      saveDraft('work', updated);
+    }, 600);
   };
 
   const handleSaveAndSync = async (dataToSave?: any) => {
@@ -446,6 +465,67 @@ export default function AdminCasesPage() {
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: '#FFFFFF' }}>
             {selectedCase ? (
               <>
+                {/* PROMINENT CASE STUDY LAYOUT SELECTOR */}
+                <div
+                  style={{
+                    padding: '0.85rem 1.25rem',
+                    backgroundColor: '#FDF2F2',
+                    borderBottom: '1px solid #FECACA',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '0.75rem',
+                    flexShrink: 0,
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#DE322D', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                      Choose Case Study Layout
+                    </div>
+                    <div style={{ fontSize: '0.68rem', color: '#7F1D1D' }}>
+                      Selected layout determines the visual architecture across headline, imagery, and narrative blocks.
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.45rem' }}>
+                    {[
+                      { id: 'layout-1', name: 'Layout 1', desc: 'Editorial Classic' },
+                      { id: 'layout-2', name: 'Layout 2', desc: 'Split Sidebar' },
+                      { id: 'layout-3', name: 'Layout 3', desc: 'Modern Magazine' },
+                    ].map((l) => {
+                      const isSelected = (selectedCase.layoutStyle || selectedCase.layout || 'layout-1') === l.id;
+                      return (
+                        <button
+                          key={l.id}
+                          type="button"
+                          onClick={() => {
+                            handleCaseChange('layoutStyle', l.id);
+                            handleCaseChange('layout', l.id);
+                          }}
+                          style={{
+                            padding: '0.4rem 0.85rem',
+                            borderRadius: '6px',
+                            border: isSelected ? '1.5px solid #DE322D' : '1px solid #E4E4E7',
+                            backgroundColor: isSelected ? '#DE322D' : '#FFFFFF',
+                            color: isSelected ? '#FFFFFF' : '#27272A',
+                            fontSize: '0.74rem',
+                            fontWeight: isSelected ? 700 : 500,
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            lineHeight: 1.2,
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          <span>{l.name}</span>
+                          <span style={{ fontSize: '0.62rem', opacity: isSelected ? 0.9 : 0.65 }}>{l.desc}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {/* Case Study Sub-Tabs */}
                 <div
                   style={{
@@ -459,9 +539,9 @@ export default function AdminCasesPage() {
                   {[
                     { id: 'card', label: '1. Card Info' },
                     { id: 'hero', label: '2. Hero & Lead' },
-                    { id: 'narrative', label: '3. Narrative & Pillars' },
+                    { id: 'narrative', label: '3. Narrative & Approach' },
                     { id: 'gallery', label: '4. Visual Gallery' },
-                    { id: 'outcomes', label: '5. Proof & Closing' },
+                    { id: 'outcomes', label: '5. Outcomes & Quote' },
                   ].map((st) => (
                     <button
                       key={st.id}
@@ -488,6 +568,57 @@ export default function AdminCasesPage() {
                   {/* SUBTAB 1: CARD INFO */}
                   {caseSubTab === 'card' && (
                     <>
+                      {/* CLICKABLE CASE STUDY & DIRECT LINK */}
+                      <div style={{ padding: '0.95rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <label style={{ fontSize: '0.74rem', fontWeight: 700, color: '#0F172A', letterSpacing: '0.04em' }}>
+                            CASE STUDY CLICKABLE &amp; DIRECT LINK
+                          </label>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 650, color: selectedCase.isClickable !== false ? '#16A34A' : '#71717A' }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedCase.isClickable !== false}
+                              onChange={(e) => {
+                                handleCaseChange('isClickable', e.target.checked);
+                                handleCaseChange('caseStudyEnabled', e.target.checked);
+                              }}
+                              style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                            />
+                            <span>{selectedCase.isClickable !== false ? 'Clickable Active' : 'Clickable Disabled'}</span>
+                          </label>
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748B', lineHeight: 1.4 }}>
+                          When enabled, visitors can click into the detailed case study page and a dedicated "View case study ↗" button is shown on the card.
+                        </div>
+                        {selectedCase.isClickable !== false && (
+                          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', marginTop: '0.2rem' }}>
+                            <div>
+                              <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
+                                DIRECT DESTINATION URL
+                              </label>
+                              <input
+                                type="text"
+                                readOnly
+                                value={`/work/${selectedCase.slug || selectedCase.id || ''}`}
+                                style={{ ...inputStyle, backgroundColor: '#F1F5F9', color: '#475569', fontSize: '0.78rem', cursor: 'default' }}
+                              />
+                            </div>
+                            <div>
+                              <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
+                                BUTTON LABEL
+                              </label>
+                              <input
+                                type="text"
+                                value={selectedCase.caseStudyBtnText || 'View case study ↗'}
+                                onChange={(e) => handleCaseChange('caseStudyBtnText', e.target.value)}
+                                placeholder="View case study ↗"
+                                style={{ ...inputStyle, fontSize: '0.78rem' }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
                       <div>
                         <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
                           PROJECT TITLE
@@ -637,24 +768,74 @@ export default function AdminCasesPage() {
                   {/* SUBTAB 2: HERO & LEAD */}
                   {caseSubTab === 'hero' && (
                     <>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          PAGE SUBTITLE / HERO ONE-LINER
-                        </label>
-                        <input
-                          type="text"
-                          value={activeCaseMerged.subtitle || ''}
-                          onChange={(e) => handleCaseChange('subtitle', e.target.value)}
-                          style={inputStyle}
-                        />
+                      {/* Page Header Section Controls */}
+                      <div style={{ padding: '0.85rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1E293B' }}>
+                            PAGE HEADER & HERO CONTROLS
+                          </span>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: selectedCase.showHeader !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedCase.showHeader !== false}
+                              onChange={(e) => handleCaseChange('showHeader', e.target.checked)}
+                              style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
+                            />
+                            <span>{selectedCase.showHeader !== false ? 'Page Header: Enabled' : 'Page Header: Disabled'}</span>
+                          </label>
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748B', marginBottom: '0.85rem' }}>
+                          Control whether the top case study header, breadcrumb navigation, title, and intro metadata are visible on the website.
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                              DETAIL PAGE HEADLINE
+                            </label>
+                            <input
+                              type="text"
+                              value={selectedCase.title || ''}
+                              onChange={(e) => handleCaseChange('title', e.target.value)}
+                              style={inputStyle}
+                              placeholder="Case study headline..."
+                            />
+                          </div>
+
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                              SUPPORTING TEXT / HERO ONE-LINER
+                            </label>
+                            <input
+                              type="text"
+                              value={activeCaseMerged.subtitle || ''}
+                              onChange={(e) => handleCaseChange('subtitle', e.target.value)}
+                              style={inputStyle}
+                              placeholder="e.g. One relationship. Three very different businesses."
+                            />
+                          </div>
+                        </div>
                       </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          DETAIL HERO BANNER IMAGE
-                        </label>
-                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                          <div style={{ width: '100px', height: '65px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7' }}>
+                      {/* Hero Image Section */}
+                      <div style={{ padding: '0.85rem', backgroundColor: '#FFFFFF', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
+                            DETAIL HERO BANNER IMAGE
+                          </span>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 600, color: selectedCase.showHeroImage !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedCase.showHeroImage !== false}
+                              onChange={(e) => handleCaseChange('showHeroImage', e.target.checked)}
+                              style={{ width: '15px', height: '15px', accentColor: '#16A34A' }}
+                            />
+                            <span>{selectedCase.showHeroImage !== false ? 'Hero Image: Enabled' : 'Hero Image: Disabled'}</span>
+                          </label>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.65rem' }}>
+                          <div style={{ width: '100px', height: '65px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0 }}>
                             {activeCaseMerged.heroImage ? (
                               <Image src={activeCaseMerged.heroImage} alt="" fill style={{ objectFit: 'cover' }} />
                             ) : null}
@@ -694,133 +875,338 @@ export default function AdminCasesPage() {
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          HERO IMAGE CAPTION
-                        </label>
-                        <input
-                          type="text"
-                          value={activeCaseMerged.heroImageCaption || ''}
-                          onChange={(e) => handleCaseChange('heroImageCaption', e.target.value)}
-                          style={inputStyle}
-                        />
-                      </div>
-
-                      <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)', paddingTop: '1rem' }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113', marginBottom: '0.75rem' }}>
-                          Project Snapshot Card
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                            HERO IMAGE CAPTION
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.heroImageCaption || ''}
+                            onChange={(e) => handleCaseChange('heroImageCaption', e.target.value)}
+                            style={inputStyle}
+                            placeholder="Optional caption displayed under the hero image..."
+                          />
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                      </div>
+
+                      {/* Snapshot & Core Scope Controls */}
+                      <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div>
+                          <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113', marginBottom: '0.5rem' }}>
+                            Project Snapshot Card
+                          </div>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                            <div>
+                              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                                LOCATION
+                              </label>
+                              <input
+                                type="text"
+                                value={activeCaseMerged.snapshot?.location || ''}
+                                onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, location: e.target.value })}
+                                style={inputStyle}
+                              />
+                            </div>
+                            <div>
+                              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                                DURATION
+                              </label>
+                              <input
+                                type="text"
+                                value={activeCaseMerged.snapshot?.duration || ''}
+                                onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, duration: e.target.value })}
+                                style={inputStyle}
+                              />
+                            </div>
+                          </div>
+
                           <div>
                             <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                              LOCATION
+                              ENGAGEMENT TYPE
                             </label>
                             <input
                               type="text"
-                              value={activeCaseMerged.snapshot?.location || ''}
-                              onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, location: e.target.value })}
+                              value={activeCaseMerged.snapshot?.engagementType || ''}
+                              onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, engagementType: e.target.value })}
                               style={inputStyle}
                             />
                           </div>
-                          <div>
-                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                              DURATION
+                        </div>
+
+                        {/* CORE SCOPE - EDIT & ENABLE/DISABLE */}
+                        <div style={{ padding: '0.9rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                            <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#991B1B' }}>
+                              CORE SCOPE
+                            </div>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: selectedCase.showCoreScope !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                              <input
+                                type="checkbox"
+                                checked={selectedCase.showCoreScope !== false}
+                                onChange={(e) => handleCaseChange('showCoreScope', e.target.checked)}
+                                style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
+                              />
+                              <span>{selectedCase.showCoreScope !== false ? 'Core Scope: Enabled' : 'Core Scope: Disabled'}</span>
                             </label>
-                            <input
-                              type="text"
-                              value={activeCaseMerged.snapshot?.duration || ''}
-                              onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, duration: e.target.value })}
-                              style={inputStyle}
-                            />
                           </div>
+                          <div style={{ fontSize: '0.7rem', color: '#7F1D1D', marginBottom: '0.65rem', lineHeight: 1.4 }}>
+                            If disabled, the Core Scope section will not appear on the website. Enter one deliverable or capability per line.
+                          </div>
+                          <textarea
+                            rows={4}
+                            value={(activeCaseMerged.snapshot?.coreCapabilities || []).join('\n')}
+                            onChange={(e) =>
+                              handleCaseChange('snapshot', {
+                                ...activeCaseMerged.snapshot,
+                                coreCapabilities: e.target.value.split('\n').filter(Boolean),
+                              })
+                            }
+                            placeholder="Deliverable 1&#10;Deliverable 2&#10;Deliverable 3..."
+                            style={{ ...inputStyle, fontFamily: 'monospace', fontSize: '0.78rem' }}
+                          />
                         </div>
                       </div>
                     </>
                   )}
 
-                  {/* SUBTAB 3: NARRATIVE & PILLARS */}
+                  {/* SUBTAB 3: NARRATIVE & APPROACH */}
                   {caseSubTab === 'narrative' && (
-                    <>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          THE SITUATION (PARAGRAPHS - ONE PER LINE)
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                        <div>
+                          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0F172A' }}>
+                            03 NARRATIVE &amp; APPROACH SECTION
+                          </div>
+                          <div style={{ fontSize: '0.68rem', color: '#64748B' }}>
+                            Master switch to enable or disable the complete Narrative &amp; Approach block on the website.
+                          </div>
+                        </div>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 650, color: selectedCase.showNarrative !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedCase.showNarrative !== false}
+                            onChange={(e) => handleCaseChange('showNarrative', e.target.checked)}
+                            style={{ width: '16px', height: '16px', accentColor: '#16A34A', cursor: 'pointer' }}
+                          />
+                          <span>{selectedCase.showNarrative !== false ? 'Section: Enabled' : 'Section: Disabled'}</span>
                         </label>
+                      </div>
+
+                      <div style={{ padding: '0.65rem 0.85rem', backgroundColor: '#F4F4F5', borderRadius: '6px', fontSize: '0.74rem', color: '#52525B', lineHeight: 1.4 }}>
+                        Configure the 3 core narrative sections of this case study. Each section can be individually enabled, disabled, edited, or cleared.
+                      </div>
+
+                      {/* 1. THE CHALLENGE */}
+                      <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: '#FAFAFA' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B', letterSpacing: '0.04em' }}>
+                            1. THE CHALLENGE (PROBLEM CONTEXT)
+                          </label>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                handleCaseChange('challenge', '');
+                                handleCaseChange('realChallenge', []);
+                                handleCaseChange('situation', []);
+                              }}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#EF4444',
+                                fontSize: '0.68rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                padding: '2px 4px',
+                              }}
+                            >
+                              <Trash2 size={12} />
+                              Clear Challenge
+                            </button>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedCase.showChallenge !== false ? '#16A34A' : '#71717A' }}>
+                              <input
+                                type="checkbox"
+                                checked={selectedCase.showChallenge !== false}
+                                onChange={(e) => handleCaseChange('showChallenge', e.target.checked)}
+                                style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                              />
+                              <span>{selectedCase.showChallenge !== false ? 'Visible' : 'Hidden'}</span>
+                            </label>
+                          </div>
+                        </div>
                         <textarea
                           rows={4}
-                          value={(activeCaseMerged.situation || []).join('\n\n')}
-                          onChange={(e) => handleCaseChange('situation', e.target.value.split('\n\n').filter(Boolean))}
+                          value={activeCaseMerged.challenge || (activeCaseMerged.realChallenge || []).join('\n\n') || (activeCaseMerged.situation || []).join('\n\n') || ''}
+                          onChange={(e) => {
+                            handleCaseChange('challenge', e.target.value);
+                            handleCaseChange('realChallenge', e.target.value.split('\n\n').filter(Boolean));
+                          }}
+                          placeholder="Describe the initial brand reality, business context, and the problem Ārohana was called to solve..."
                           style={inputStyle}
                         />
                       </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          THE REAL CHALLENGE
-                        </label>
+                      {/* 2. WHAT WE DID / WORK PILLARS */}
+                      <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: '#FAFAFA' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B', letterSpacing: '0.04em' }}>
+                            2. WHAT WE DID / WORK PILLARS (STRATEGY &amp; EXECUTION)
+                          </label>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleCaseChange('whatWeDid', '')}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#EF4444',
+                                fontSize: '0.68rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                padding: '2px 4px',
+                              }}
+                            >
+                              <Trash2 size={12} />
+                              Clear Execution
+                            </button>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedCase.showWhatWeDid !== false ? '#16A34A' : '#71717A' }}>
+                              <input
+                                type="checkbox"
+                                checked={selectedCase.showWhatWeDid !== false}
+                                onChange={(e) => handleCaseChange('showWhatWeDid', e.target.checked)}
+                                style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                              />
+                              <span>{selectedCase.showWhatWeDid !== false ? 'Visible' : 'Hidden'}</span>
+                            </label>
+                          </div>
+                        </div>
                         <textarea
-                          rows={4}
-                          value={(activeCaseMerged.realChallenge || []).join('\n\n')}
-                          onChange={(e) => handleCaseChange('realChallenge', e.target.value.split('\n\n').filter(Boolean))}
+                          rows={5}
+                          value={activeCaseMerged.whatWeDid || (activeCaseMerged.work ? activeCaseMerged.work.map((w: any) => `${w.title}: ${w.description}`).join('\n\n') : '')}
+                          onChange={(e) => handleCaseChange('whatWeDid', e.target.value)}
+                          placeholder="Detail the workstreams delivered, creative direction, photo/video production, and digital management..."
                           style={inputStyle}
                         />
                       </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          OUR THINKING / STRATEGY
-                        </label>
+                      {/* 3. THE RESULT */}
+                      <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: '#FAFAFA' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B', letterSpacing: '0.04em' }}>
+                            3. THE RESULT (MEASURED IMPACT)
+                          </label>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleCaseChange('theResult', '')}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#EF4444',
+                                fontSize: '0.68rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                padding: '2px 4px',
+                              }}
+                            >
+                              <Trash2 size={12} />
+                              Clear Result
+                            </button>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedCase.showResult !== false ? '#16A34A' : '#71717A' }}>
+                              <input
+                                type="checkbox"
+                                checked={selectedCase.showResult !== false}
+                                onChange={(e) => handleCaseChange('showResult', e.target.checked)}
+                                style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                              />
+                              <span>{selectedCase.showResult !== false ? 'Visible' : 'Hidden'}</span>
+                            </label>
+                          </div>
+                        </div>
                         <textarea
                           rows={4}
-                          value={(activeCaseMerged.thinking || []).join('\n\n')}
-                          onChange={(e) => handleCaseChange('thinking', e.target.value.split('\n\n').filter(Boolean))}
+                          value={activeCaseMerged.theResult || ''}
+                          onChange={(e) => handleCaseChange('theResult', e.target.value)}
+                          placeholder="Highlight the concrete outcome, commercial retention, or business shift achieved..."
                           style={inputStyle}
                         />
                       </div>
-                    </>
+                    </div>
                   )}
 
                   {/* SUBTAB 4: VISUAL GALLERY */}
                   {caseSubTab === 'gallery' && (
-                    <>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
-                          Media Gallery ({activeCaseMerged.gallery?.length || 0} Assets)
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0, 0, 0, 0.08)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                          <span style={{ fontSize: '0.84rem', fontWeight: 700, color: '#111113' }}>
+                            Visual Gallery ({activeCaseMerged.gallery?.length || 0} Assets)
+                          </span>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 600, color: selectedCase.galleryEnabled !== false ? '#16A34A' : '#71717A' }}>
+                            <input
+                              type="checkbox"
+                              checked={selectedCase.galleryEnabled !== false}
+                              onChange={(e) => handleCaseChange('galleryEnabled', e.target.checked)}
+                              style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                            />
+                            <span>{selectedCase.galleryEnabled !== false ? 'Gallery Section: Enabled' : 'Gallery Section: Disabled'}</span>
+                          </label>
                         </div>
                         <button
                           type="button"
                           onClick={() => {
                             const newG = [
                               ...(activeCaseMerged.gallery || []),
-                              { image: '/images/case-studies/raysons/neora-1.jpg', caption: 'New photo showcase', alt: '' },
+                              { image: '/images/case-studies/raysons/neora-1.jpg', caption: 'New photo showcase', alt: '', enabled: true },
                             ];
                             handleCaseChange('gallery', newG);
                           }}
-                          style={mediaBtnStyle}
+                          style={{ ...mediaBtnStyle, backgroundColor: '#111113', color: '#FFFFFF', border: 'none' }}
                         >
-                          + Add Media
+                          + Add Media Asset
                         </button>
                       </div>
 
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                         {(activeCaseMerged.gallery || []).map((item: any, gIdx: number) => (
-                          <div key={gIdx} style={{ display: 'flex', gap: '0.75rem', padding: '0.75rem', borderRadius: '6px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: '#FAFAFA', alignItems: 'center' }}>
-                            <div style={{ width: '60px', height: '45px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7' }}>
+                          <div key={gIdx} style={{ display: 'flex', gap: '0.85rem', padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: item.enabled !== false ? '#FAFAFA' : '#F4F4F5', alignItems: 'center' }}>
+                            <div style={{ width: '70px', height: '52px', position: 'relative', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0 }}>
                               {item.image ? <Image src={item.image} alt="" fill style={{ objectFit: 'cover' }} /> : null}
                             </div>
                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                              <input
-                                type="text"
-                                value={item.image || ''}
-                                onChange={(e) => {
-                                  const g = [...activeCaseMerged.gallery];
-                                  g[gIdx].image = e.target.value;
-                                  handleCaseChange('gallery', g);
-                                }}
-                                style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
-                                placeholder="Image URL..."
-                              />
+                              <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
+                                <input
+                                  type="text"
+                                  value={item.image || ''}
+                                  onChange={(e) => {
+                                    const g = [...activeCaseMerged.gallery];
+                                    g[gIdx].image = e.target.value;
+                                    handleCaseChange('gallery', g);
+                                  }}
+                                  style={{ ...inputStyle, padding: '0.4rem 0.6rem', flex: 1 }}
+                                  placeholder="Image URL (/images/... or https://...)"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    activeGalleryIdxRef.current = gIdx;
+                                    galleryImgInputRef.current?.click();
+                                  }}
+                                  style={mediaBtnStyle}
+                                >
+                                  Upload
+                                </button>
+                              </div>
                               <input
                                 type="text"
                                 value={item.caption || ''}
@@ -830,64 +1216,164 @@ export default function AdminCasesPage() {
                                   handleCaseChange('gallery', g);
                                 }}
                                 style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
-                                placeholder="Caption..."
+                                placeholder="Caption / description text..."
                               />
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const g = activeCaseMerged.gallery.filter((_: any, idx: number) => idx !== gIdx);
-                                handleCaseChange('gallery', g);
-                              }}
-                              style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#EF4444' }}
-                            >
-                              <Trash2 size={16} />
-                            </button>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+                              <button
+                                type="button"
+                                title={item.enabled !== false ? 'Hide image from gallery' : 'Show image in gallery'}
+                                onClick={() => {
+                                  const g = [...activeCaseMerged.gallery];
+                                  g[gIdx].enabled = item.enabled === false ? true : false;
+                                  handleCaseChange('gallery', g);
+                                }}
+                                style={{
+                                  border: 'none',
+                                  background: 'transparent',
+                                  cursor: 'pointer',
+                                  color: item.enabled !== false ? '#16A34A' : '#A1A1AA',
+                                }}
+                              >
+                                {item.enabled !== false ? <Eye size={16} /> : <EyeOff size={16} />}
+                              </button>
+                              <button
+                                type="button"
+                                title="Delete image"
+                                onClick={() => {
+                                  const g = activeCaseMerged.gallery.filter((_: any, idx: number) => idx !== gIdx);
+                                  handleCaseChange('gallery', g);
+                                }}
+                                style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#EF4444' }}
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
                           </div>
                         ))}
                       </div>
-                    </>
+                    </div>
                   )}
 
-                  {/* SUBTAB 5: PROOF & CLOSING */}
+                  {/* SUBTAB 5: OUTCOMES & QUOTE */}
                   {caseSubTab === 'outcomes' && (
-                    <>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          VERIFIED OUTCOMES STATEMENT
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                        <div>
+                          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0F172A' }}>
+                            05 OUTCOMES &amp; QUOTE SECTION
+                          </div>
+                          <div style={{ fontSize: '0.68rem', color: '#64748B' }}>
+                            Master switch to enable or disable the complete Outcomes &amp; Quote proof block on the website.
+                          </div>
+                        </div>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 650, color: selectedCase.showOutcomes !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedCase.showOutcomes !== false}
+                            onChange={(e) => handleCaseChange('showOutcomes', e.target.checked)}
+                            style={{ width: '16px', height: '16px', accentColor: '#16A34A', cursor: 'pointer' }}
+                          />
+                          <span>{selectedCase.showOutcomes !== false ? 'Section: Enabled' : 'Section: Disabled'}</span>
                         </label>
+                      </div>
+
+                      <div style={{ padding: '0.65rem 0.85rem', backgroundColor: '#F4F4F5', borderRadius: '6px', fontSize: '0.74rem', color: '#52525B', lineHeight: 1.4 }}>
+                        Configure the verified outcome statement and founder closing quote. Each field has enable/disable controls and a delete/clear option.
+                      </div>
+
+                      {/* VERIFIED OUTCOMES */}
+                      <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: '#FAFAFA' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B', letterSpacing: '0.04em' }}>
+                            VERIFIED OUTCOMES STATEMENT
+                          </label>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleCaseChange('proof', { ...activeCaseMerged.proof, verifiedText: '' })}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#EF4444',
+                                fontSize: '0.68rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                padding: '2px 4px',
+                              }}
+                            >
+                              <Trash2 size={12} />
+                              Clear Outcomes
+                            </button>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedCase.showVerifiedText !== false ? '#16A34A' : '#71717A' }}>
+                              <input
+                                type="checkbox"
+                                checked={selectedCase.showVerifiedText !== false}
+                                onChange={(e) => handleCaseChange('showVerifiedText', e.target.checked)}
+                                style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                              />
+                              <span>{selectedCase.showVerifiedText !== false ? 'Visible' : 'Hidden'}</span>
+                            </label>
+                          </div>
+                        </div>
                         <textarea
                           rows={4}
                           value={activeCaseMerged.proof?.verifiedText || ''}
                           onChange={(e) => handleCaseChange('proof', { ...activeCaseMerged.proof, verifiedText: e.target.value })}
+                          placeholder="e.g. Expanded across three distinct commercial verticals over 18+ months with zero agency churn..."
                           style={inputStyle}
                         />
                       </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          METRICS BADGE / SUMMARY
-                        </label>
-                        <input
-                          type="text"
-                          value={activeCaseMerged.proof?.metricsNote || ''}
-                          onChange={(e) => handleCaseChange('proof', { ...activeCaseMerged.proof, metricsNote: e.target.value })}
-                          style={inputStyle}
-                        />
-                      </div>
-
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          FOUNDER CLOSING QUOTE
-                        </label>
+                      {/* FOUNDER CLOSING QUOTE */}
+                      <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: '#FAFAFA' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B', letterSpacing: '0.04em' }}>
+                            FOUNDER CLOSING QUOTE
+                          </label>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleCaseChange('closingQuote', '')}
+                              style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#EF4444',
+                                fontSize: '0.68rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                                padding: '2px 4px',
+                              }}
+                            >
+                              <Trash2 size={12} />
+                              Clear Quote
+                            </button>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedCase.showClosingQuote !== false ? '#16A34A' : '#71717A' }}>
+                              <input
+                                type="checkbox"
+                                checked={selectedCase.showClosingQuote !== false}
+                                onChange={(e) => handleCaseChange('showClosingQuote', e.target.checked)}
+                                style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
+                              />
+                              <span>{selectedCase.showClosingQuote !== false ? 'Visible' : 'Hidden'}</span>
+                            </label>
+                          </div>
+                        </div>
                         <textarea
                           rows={3}
                           value={activeCaseMerged.closingQuote || ''}
                           onChange={(e) => handleCaseChange('closingQuote', e.target.value)}
+                          placeholder="e.g. Long-term client relationships aren’t built on presentations. They are built on delivering quality consistently..."
                           style={inputStyle}
                         />
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               </>
@@ -926,6 +1412,28 @@ export default function AdminCasesPage() {
           setDeleteTargetId(null);
         }}
         onCancel={() => setDeleteTargetId(null)}
+      />
+
+      {/* Hidden Upload Inputs */}
+      <input
+        ref={galleryImgInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) handleDirectUpload(file, 'gallery');
+        }}
+      />
+      <input
+        ref={heroImgInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) handleDirectUpload(file, 'hero');
+        }}
       />
 
       {/* Media Picker Modal */}

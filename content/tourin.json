@@ -1,14 +1,33 @@
 {
   "hero": {
+    "enabled": true,
     "eyebrow": "OWNED EXPERIENTIAL TRAVEL BRAND",
+    "eyebrowEnabled": true,
     "headline": "Travel\nbeyond\nthe itinerary.",
+    "headlineEnabled": true,
     "quote": "Some places are better experienced when you stop trying to see everything.",
+    "quoteEnabled": true,
     "description": "Tourin creates thoughtful journeys through places with character, culture and a story to tell — beginning with Ladakh, and beyond.",
-    "primaryDestination": "Ladakh, Himalayan Plateau",
-    "elevation": "11,500 – 17,580 FT",
-    "season": "May to October Active Windows"
+    "descriptionEnabled": true,
+    "season": "May to October Active Windows",
+    "image1": {
+      "src": "/images/tourin/tourin-hero.jpg",
+      "alt": "High altitude mountain landscape in Ladakh",
+      "enabled": true
+    },
+    "image2": {
+      "src": "/images/tourin/dest-ladakh.jpg",
+      "alt": "Pristine alpine landscape with turquoise lake",
+      "enabled": true
+    },
+    "image3": {
+      "src": "/images/tourin/tourin-3.jpg",
+      "alt": "High mountain pass and valley in Ladakh",
+      "enabled": true
+    }
   },
   "genesis": {
+    "enabled": true,
     "tag": "",
     "heading": "Why Tourin.",
     "p1": "Tourin came from a simple realisation: the places people experience and the places most itineraries sell are not always the same.",
@@ -16,6 +35,7 @@
     "p3": "Tourin was created to make space for the second one."
   },
   "destination": {
+    "enabled": true,
     "tag": "THE DESTINATION",
     "heading": "Where We Go",
     "primary": "We create thoughtful journeys through places with character, culture and a story to tell. We go beyond the usual tourist circuit to discover local experiences, landscapes, food, people and ways of life.",
@@ -41,6 +61,7 @@
     ]
   },
   "philosophy": {
+    "enabled": true,
     "tag": "OUR PHILOSOPHY",
     "heading": "What we believe.",
     "p1": "A good trip should leave you with more than photographs. It should give you a sense of where you were.",
@@ -80,6 +101,7 @@
     }
   ],
   "journeysTaken": {
+    "enabled": true,
     "tag": "PROOF THAT IT WORKS",
     "heading": "Journeys already taken.",
     "p1": "Tourin has successfully guided private cultural journeys, intimate escapes, and bespoke high-altitude expeditions across Ladakh's most remote valleys and mountain passes.",

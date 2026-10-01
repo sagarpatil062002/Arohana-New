@@ -23,6 +23,8 @@ import {
   MessageSquare,
   ListOrdered,
   HelpCircle,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
 
 const DEFAULT_CASE_DETAILS: Record<string, any> = {
@@ -97,10 +99,49 @@ export default function AdminWorkPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    type: 'case' | 'reel';
+    id: string | number;
+    title: string;
+    message: string;
+  } | null>(null);
+  const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'info' | 'error' } | null>(null);
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'info' | 'error' = 'success') => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    setToastMessage({ text, type });
+    toastTimeoutRef.current = setTimeout(() => setToastMessage(null), 3500);
+  };
+
   const [savedStatus, setSavedStatus] = useState(false);
   const [uploadingFor, setUploadingFor] = useState<string | null>(null);
   const [previewKey, setPreviewKey] = useState(0);
   const [previewUrlType, setPreviewUrlType] = useState<'work' | 'detail'>('work');
+
+  const handleMoveCase = (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    const cases = [...(workData.caseStudies || [])];
+    if (targetIdx < 0 || targetIdx >= cases.length) return;
+    const temp = cases[index];
+    cases[index] = cases[targetIdx];
+    cases[targetIdx] = temp;
+    const updated = { ...workData, caseStudies: cases };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleMoveReel = (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    const reels = [...(workData.featuredReels || [])];
+    if (targetIdx < 0 || targetIdx >= reels.length) return;
+    const temp = reels[index];
+    reels[index] = reels[targetIdx];
+    reels[targetIdx] = temp;
+    const updated = { ...workData, featuredReels: reels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
 
   const caseImgInputRef = useRef<HTMLInputElement>(null);
   const heroImgInputRef = useRef<HTMLInputElement>(null);
@@ -191,7 +232,10 @@ export default function AdminWorkPage() {
     if (ok) {
       setSavedStatus(true);
       setPreviewKey((k) => k + 1);
+      showToast('Work draft saved to CRM!', 'success');
       setTimeout(() => setSavedStatus(false), 2200);
+    } else {
+      showToast('Failed to save draft', 'error');
     }
   };
 
@@ -201,7 +245,10 @@ export default function AdminWorkPage() {
     if (res && res.success) {
       setSavedStatus(true);
       setPreviewKey((k) => k + 1);
+      showToast('Work page published live to website!', 'success');
       setTimeout(() => setSavedStatus(false), 3000);
+    } else {
+      showToast('Failed to publish live', 'error');
     }
   };
 
@@ -252,6 +299,7 @@ export default function AdminWorkPage() {
           await saveDraft('work', updated);
           setPreviewKey((k) => k + 1);
           setSavedStatus(true);
+          showToast('Reel cover image uploaded', 'success');
           setTimeout(() => setSavedStatus(false), 2000);
           return;
         }
@@ -261,10 +309,12 @@ export default function AdminWorkPage() {
         await saveDraft('work', updated);
         setPreviewKey((k) => k + 1);
         setSavedStatus(true);
+        showToast('Image uploaded and synced', 'success');
         setTimeout(() => setSavedStatus(false), 2000);
       }
     } catch (err) {
       console.error('Upload failed', err);
+      showToast('Image upload failed', 'error');
     } finally {
       setUploadingFor(null);
     }
@@ -301,6 +351,7 @@ export default function AdminWorkPage() {
       proof: { verifiedText: 'Measurable audience growth and high retainer engagement.', metricsNote: 'Verified client engagement' },
       closingQuote: 'Quality execution speaks louder than marketing promises.',
       published: true,
+      enabled: true,
       featured: false,
       year: '2026',
     };
@@ -313,6 +364,7 @@ export default function AdminWorkPage() {
     setSelectedCaseId(newId);
     updateDraftInMemory('work', updated);
     handleSaveAndSync(updated);
+    showToast('New project added', 'success');
   };
 
   const handleDeleteCase = (id: string) => {
@@ -324,7 +376,33 @@ export default function AdminWorkPage() {
     }
     updateDraftInMemory('work', updated);
     handleSaveAndSync(updated);
-    setDeleteTargetId(null);
+    setDeleteConfirm(null);
+    showToast('Project deleted', 'info');
+  };
+
+  const handleDeleteReel = (idx: number) => {
+    const updatedReels = (workData.featuredReels || []).filter((_: any, i: number) => i !== idx);
+    const updated = { ...workData, featuredReels: updatedReels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    setDeleteConfirm(null);
+    showToast('Reel deleted', 'info');
+  };
+
+  const toggleCasesSection = () => {
+    const current = workData.caseStudiesSection?.enabled !== false;
+    const updated = {
+      ...workData,
+      caseStudiesSection: {
+        ...(workData.caseStudiesSection || {}),
+        enabled: !current,
+      },
+    };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    showToast(`Case Studies section ${!current ? 'enabled' : 'disabled'}`, 'info');
   };
 
   const filteredCases = (workData.caseStudies || []).filter(
@@ -335,6 +413,37 @@ export default function AdminWorkPage() {
 
   const detailSlug = selectedCase?.slug || selectedCase?.id || 'raysons-group';
   const effectivePreviewUrl = previewUrlType === 'work' ? '/work' : `/work/${detailSlug}`;
+
+  const FieldToggle = ({
+    enabled,
+    onToggle,
+  }: {
+    enabled: boolean;
+    onToggle: () => void;
+  }) => (
+    <button
+      type="button"
+      onClick={onToggle}
+      title={enabled ? 'Field is visible on website. Click to disable.' : 'Field is hidden. Click to enable.'}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '4px',
+        padding: '2px 7px',
+        borderRadius: '9999px',
+        border: 'none',
+        backgroundColor: enabled ? '#ECFDF5' : '#FEE2E2',
+        color: enabled ? '#047857' : '#DC2626',
+        fontSize: '0.68rem',
+        fontWeight: 650,
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+      }}
+    >
+      {enabled ? <Eye size={11} /> : <EyeOff size={11} />}
+      {enabled ? 'Visible' : 'Hidden'}
+    </button>
+  );
 
   return (
     <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
@@ -349,8 +458,36 @@ export default function AdminWorkPage() {
           overflow: 'hidden',
           height: '100%',
           minHeight: 0,
+          position: 'relative',
         }}
       >
+        {/* Toast notification banner */}
+        {toastMessage && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '12px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 9999,
+              backgroundColor: toastMessage.type === 'error' ? '#EF4444' : toastMessage.type === 'info' ? '#111113' : '#16A34A',
+              color: '#FFFFFF',
+              padding: '0.45rem 1.1rem',
+              borderRadius: '9999px',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              pointerEvents: 'none',
+            }}
+          >
+            <Sparkles size={13} />
+            {toastMessage.text}
+          </div>
+        )}
+
         {/* Top Header */}
         <div
           style={{
@@ -515,10 +652,62 @@ export default function AdminWorkPage() {
         {/* ── TAB 1: PAGE HEADER ── */}
         {activeTab === 'header' && (
           <div className="admin-editor-scroll" style={{ padding: '1.5rem 1.5rem 6rem 1.5rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
+            {/* Section Master Enable / Disable Bar */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '0.85rem 1.15rem',
+                borderRadius: '10px',
+                backgroundColor: workData.header?.enabled !== false ? '#ECFDF5' : '#FEF2F2',
+                border: workData.header?.enabled !== false ? '1px solid #A7F3D0' : '1px solid #FECACA',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: workData.header?.enabled !== false ? '#065F46' : '#991B1B' }}>
+                  Work Page Header
+                </div>
+                <div style={{ fontSize: '0.72rem', color: workData.header?.enabled !== false ? '#047857' : '#DC2626' }}>
+                  {workData.header?.enabled !== false ? 'Currently Visible on live /work' : 'Currently Hidden on live /work'}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const isEnabled = workData.header?.enabled !== false;
+                  updateField(['header', 'enabled'], !isEnabled);
+                  showToast(`Header Section ${!isEnabled ? 'Enabled' : 'Disabled'}`, 'info');
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.45rem 0.95rem',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  backgroundColor: workData.header?.enabled !== false ? '#047857' : '#DC2626',
+                  color: '#FFFFFF',
+                  fontSize: '0.76rem',
+                  fontWeight: 650,
+                  cursor: 'pointer',
+                }}
+              >
+                {workData.header?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
+                {workData.header?.enabled !== false ? 'Disable Section' : 'Enable Section'}
+              </button>
+            </div>
+
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                EYEBROW LABEL
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                  EYEBROW LABEL
+                </label>
+                <FieldToggle
+                  enabled={workData.header?.showEyebrow !== false}
+                  onToggle={() => updateField(['header', 'showEyebrow'], workData.header?.showEyebrow === false)}
+                />
+              </div>
               <input
                 type="text"
                 value={workData.header?.eyebrow || ''}
@@ -528,9 +717,15 @@ export default function AdminWorkPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                PAGE TITLE
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                  PAGE TITLE
+                </label>
+                <FieldToggle
+                  enabled={workData.header?.showTitle !== false}
+                  onToggle={() => updateField(['header', 'showTitle'], workData.header?.showTitle === false)}
+                />
+              </div>
               <input
                 type="text"
                 value={workData.header?.title || ''}
@@ -540,9 +735,15 @@ export default function AdminWorkPage() {
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                SUBTITLE / PHILOSOPHY
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                  SUBTITLE / PHILOSOPHY
+                </label>
+                <FieldToggle
+                  enabled={workData.header?.showSubtitle !== false}
+                  onToggle={() => updateField(['header', 'showSubtitle'], workData.header?.showSubtitle === false)}
+                />
+              </div>
               <textarea
                 rows={3}
                 value={workData.header?.subtitle || ''}
@@ -555,10 +756,56 @@ export default function AdminWorkPage() {
 
         {/* ── TAB 2: REELS CAROUSEL ── */}
         {activeTab === 'reels' && (
-          <div className="admin-editor-scroll" style={{ padding: '1.5rem 1.5rem 6rem 1.5rem', overflowY: 'auto', flex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <div className="admin-editor-scroll" style={{ padding: '1.5rem 1.5rem 6rem 1.5rem', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {/* Section Master Enable / Disable Bar */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '0.85rem 1.15rem',
+                borderRadius: '10px',
+                backgroundColor: workData.reelsSection?.enabled !== false ? '#ECFDF5' : '#FEF2F2',
+                border: workData.reelsSection?.enabled !== false ? '1px solid #A7F3D0' : '1px solid #FECACA',
+              }}
+            >
+              <div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: workData.reelsSection?.enabled !== false ? '#065F46' : '#991B1B' }}>
+                  Video Reels Showcase Carousel
+                </div>
+                <div style={{ fontSize: '0.72rem', color: workData.reelsSection?.enabled !== false ? '#047857' : '#DC2626' }}>
+                  {workData.reelsSection?.enabled !== false ? 'Currently Visible on live /work' : 'Currently Hidden on live /work'}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const isEnabled = workData.reelsSection?.enabled !== false;
+                  updateField(['reelsSection', 'enabled'], !isEnabled);
+                  showToast(`Reels Section ${!isEnabled ? 'Enabled' : 'Disabled'}`, 'info');
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.45rem 0.95rem',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  backgroundColor: workData.reelsSection?.enabled !== false ? '#047857' : '#DC2626',
+                  color: '#FFFFFF',
+                  fontSize: '0.76rem',
+                  fontWeight: 650,
+                  cursor: 'pointer',
+                }}
+              >
+                {workData.reelsSection?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
+                {workData.reelsSection?.enabled !== false ? 'Disable Section' : 'Enable Section'}
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
-                Featured Reels (Static Cover Images + Reel Links)
+                Featured Reels Sequence ({workData.featuredReels?.length || 0})
               </div>
               <button
                 type="button"
@@ -570,8 +817,10 @@ export default function AdminWorkPage() {
                     category: 'Hospitality & F&B',
                     coverImage: '/images/case-studies/raysons/neora-1.jpg',
                     instagramUrl: 'https://www.instagram.com/byarohana/',
+                    enabled: true,
                   };
                   updateField(['featuredReels'], [...(workData.featuredReels || []), newReel]);
+                  showToast('New reel added to carousel', 'success');
                 }}
                 style={{
                   ...mediaBtnStyle,
@@ -585,228 +834,422 @@ export default function AdminWorkPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-              {(workData.featuredReels || []).map((reel: any, idx: number) => (
-                <div
-                  key={reel.id || idx}
-                  style={{
-                    padding: '0.85rem',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(0,0,0,0.08)',
-                    backgroundColor: '#F8F8FA',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '0.5rem',
-                  }}
-                >
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 32px', gap: '0.5rem', alignItems: 'center' }}>
-                    <div>
-                      <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Hook Title</span>
-                      <input
-                        type="text"
-                        value={reel.hookTitle || ''}
-                        onChange={(e) => {
-                          const updated = [...workData.featuredReels];
-                          updated[idx] = { ...updated[idx], hookTitle: e.target.value };
-                          updateField(['featuredReels'], updated);
-                        }}
-                        style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                      />
-                    </div>
-                    <div>
-                      <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category / Subtitle</span>
-                      <input
-                        type="text"
-                        value={reel.subtitle || ''}
-                        onChange={(e) => {
-                          const updated = [...workData.featuredReels];
-                          updated[idx] = { ...updated[idx], subtitle: e.target.value };
-                          updateField(['featuredReels'], updated);
-                        }}
-                        style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const updated = workData.featuredReels.filter((_: any, i: number) => i !== idx);
-                        updateField(['featuredReels'], updated);
-                      }}
-                      style={{
-                        height: '32px',
-                        border: 'none',
-                        backgroundColor: 'transparent',
-                        color: '#EF4444',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                    <div>
-                      <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Instagram URL</span>
-                      <input
-                        type="text"
-                        value={reel.instagramUrl || ''}
-                        onChange={(e) => {
-                          const updated = [...workData.featuredReels];
-                          updated[idx] = { ...updated[idx], instagramUrl: e.target.value };
-                          updateField(['featuredReels'], updated);
-                        }}
-                        style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
-                      />
-                    </div>
-                    <div>
-                      <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Cover Image</span>
-                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+              {(workData.featuredReels || []).map((reel: any, idx: number, arr: any[]) => {
+                const isReelEnabled = reel.enabled !== false;
+                return (
+                  <div
+                    key={reel.id || idx}
+                    style={{
+                      padding: '0.85rem',
+                      borderRadius: '10px',
+                      border: isReelEnabled ? '1px solid rgba(0,0,0,0.08)' : '1px dashed #FECACA',
+                      backgroundColor: isReelEnabled ? '#F8F8FA' : '#FEF2F2',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr auto', gap: '0.5rem', alignItems: 'center' }}>
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Hook Title</span>
                         <input
                           type="text"
-                          value={reel.coverImage || ''}
+                          value={reel.hookTitle || ''}
                           onChange={(e) => {
                             const updated = [...workData.featuredReels];
-                            updated[idx] = { ...updated[idx], coverImage: e.target.value };
+                            updated[idx] = { ...updated[idx], hookTitle: e.target.value };
                             updateField(['featuredReels'], updated);
                           }}
-                          style={{ ...inputStyle, padding: '0.35rem 0.55rem', flex: 1, minWidth: '100px' }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
                         />
+                      </div>
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category / Subtitle</span>
+                        <input
+                          type="text"
+                          value={reel.subtitle || ''}
+                          onChange={(e) => {
+                            const updated = [...workData.featuredReels];
+                            updated[idx] = { ...updated[idx], subtitle: e.target.value };
+                            updateField(['featuredReels'], updated);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                        />
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                         <button
                           type="button"
-                          disabled={uploadingFor === `reel-${idx}`}
                           onClick={() => {
-                            reelImgTargetIdx.current = idx;
-                            reelImgInputRef.current?.click();
+                            const updated = [...workData.featuredReels];
+                            updated[idx] = { ...updated[idx], enabled: !isReelEnabled };
+                            updateField(['featuredReels'], updated);
+                            showToast(`Reel ${!isReelEnabled ? 'enabled' : 'disabled'}`, 'info');
                           }}
+                          title={isReelEnabled ? 'Disable Reel' : 'Enable Reel'}
                           style={{
-                            ...mediaBtnStyle,
-                            padding: '0.35rem 0.65rem',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.3rem',
-                            opacity: uploadingFor === `reel-${idx}` ? 0.6 : 1,
+                            border: 'none',
+                            backgroundColor: isReelEnabled ? '#ECFDF5' : '#FEE2E2',
+                            color: isReelEnabled ? '#047857' : '#DC2626',
+                            borderRadius: '4px',
+                            padding: '4px 6px',
+                            cursor: 'pointer',
                           }}
                         >
-                          <Upload size={12} />
-                          {uploadingFor === `reel-${idx}` ? '...' : 'Upload'}
+                          {isReelEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
                         </button>
                         <button
                           type="button"
-                          onClick={() => setMediaPickerTarget({ path: `featuredReels.${idx}.coverImage`, type: 'image' })}
-                          style={{ ...mediaBtnStyle, padding: '0.35rem 0.65rem' }}
+                          disabled={idx === 0}
+                          onClick={() => handleMoveReel(idx, 'up')}
+                          title="Move reel up"
+                          style={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            color: idx === 0 ? '#D4D4D8' : '#52525B',
+                            cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                            padding: '3px',
+                          }}
                         >
-                          Pick
+                          <ChevronUp size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === arr.length - 1}
+                          onClick={() => handleMoveReel(idx, 'down')}
+                          title="Move reel down"
+                          style={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            color: idx === arr.length - 1 ? '#D4D4D8' : '#52525B',
+                            cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                            padding: '3px',
+                          }}
+                        >
+                          <ChevronDown size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDeleteConfirm({
+                              type: 'reel',
+                              id: idx,
+                              title: 'Delete Reel?',
+                              message: `Remove "${reel.hookTitle || 'this reel'}" from the showcase?`,
+                            });
+                          }}
+                          style={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            color: '#EF4444',
+                            cursor: 'pointer',
+                            padding: '3px',
+                          }}
+                        >
+                          <Trash2 size={15} />
                         </button>
                       </div>
                     </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Instagram URL</span>
+                        <input
+                          type="text"
+                          value={reel.instagramUrl || ''}
+                          onChange={(e) => {
+                            const updated = [...workData.featuredReels];
+                            updated[idx] = { ...updated[idx], instagramUrl: e.target.value };
+                            updateField(['featuredReels'], updated);
+                          }}
+                          style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
+                        />
+                      </div>
+                      <div>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Cover Image</span>
+                        <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                          <input
+                            type="text"
+                            value={reel.coverImage || ''}
+                            onChange={(e) => {
+                              const updated = [...workData.featuredReels];
+                              updated[idx] = { ...updated[idx], coverImage: e.target.value };
+                              updateField(['featuredReels'], updated);
+                            }}
+                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', flex: 1, minWidth: '100px' }}
+                          />
+                          <button
+                            type="button"
+                            disabled={uploadingFor === `reel-${idx}`}
+                            onClick={() => {
+                              reelImgTargetIdx.current = idx;
+                              reelImgInputRef.current?.click();
+                            }}
+                            style={{
+                              ...mediaBtnStyle,
+                              padding: '0.35rem 0.65rem',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                              opacity: uploadingFor === `reel-${idx}` ? 0.6 : 1,
+                            }}
+                          >
+                            <Upload size={12} />
+                            {uploadingFor === `reel-${idx}` ? '...' : 'Upload'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setMediaPickerTarget({ path: `featuredReels.${idx}.coverImage`, type: 'image' })}
+                            style={{ ...mediaBtnStyle, padding: '0.35rem 0.65rem' }}
+                          >
+                            Pick
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
 
         {/* ── TAB 3: CASE STUDIES & FULL DETAIL PAGE EDITOR ── */}
         {activeTab === 'cases' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', flex: 1, overflow: 'hidden' }}>
-            {/* Left Case Studies Sidebar */}
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+            {/* Section Master Enable / Disable Bar */}
             <div
               style={{
-                borderRight: '1px solid rgba(0, 0, 0, 0.08)',
                 display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#FAF9F6',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.65rem 1.25rem',
+                backgroundColor: workData.caseStudiesSection?.enabled !== false ? '#F0FDF4' : '#FEF2F2',
+                borderBottom: workData.caseStudiesSection?.enabled !== false ? '1px solid #BBF7D0' : '1px solid #FECACA',
               }}
             >
-              <div style={{ padding: '0.75rem', borderBottom: '1px solid rgba(0, 0, 0, 0.08)' }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '8px',
-                    padding: '0.4rem 0.6rem',
-                    border: '1px solid rgba(0, 0, 0, 0.1)',
-                  }}
-                >
-                  <Search size={14} color="#71717A" style={{ marginRight: '0.4rem' }} />
-                  <input
-                    type="text"
-                    placeholder="Search projects..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: workData.caseStudiesSection?.enabled !== false ? '#15803D' : '#B91C1C' }}>
+                  Case Studies Section: {workData.caseStudiesSection?.enabled !== false ? 'ENABLED (Visible on Website)' : 'DISABLED (Hidden from Website)'}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={toggleCasesSection}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  padding: '0.35rem 0.85rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: workData.caseStudiesSection?.enabled !== false ? '#DC2626' : '#16A34A',
+                  color: '#FFFFFF',
+                  fontSize: '0.74rem',
+                  fontWeight: 650,
+                  cursor: 'pointer',
+                }}
+              >
+                {workData.caseStudiesSection?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
+                {workData.caseStudiesSection?.enabled !== false ? 'Disable Section' : 'Enable Section'}
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', flex: 1, overflow: 'hidden' }}>
+              {/* Left Case Studies Sidebar */}
+              <div
+                style={{
+                  borderRight: '1px solid rgba(0, 0, 0, 0.08)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  backgroundColor: '#FAF9F6',
+                }}
+              >
+                <div style={{ padding: '0.75rem', borderBottom: '1px solid rgba(0, 0, 0, 0.08)' }}>
+                  <button
+                    type="button"
+                    onClick={handleAddNewCase}
                     style={{
-                      border: 'none',
-                      outline: 'none',
-                      backgroundColor: 'transparent',
-                      fontSize: '0.78rem',
                       width: '100%',
+                      padding: '0.45rem',
+                      borderRadius: '7px',
+                      backgroundColor: '#111113',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.35rem',
+                      marginBottom: '0.6rem',
                     }}
-                  />
+                  >
+                    <Plus size={13} /> Add New Project
+                  </button>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '8px',
+                      padding: '0.4rem 0.6rem',
+                      border: '1px solid rgba(0, 0, 0, 0.1)',
+                    }}
+                  >
+                    <Search size={14} color="#71717A" style={{ marginRight: '0.4rem' }} />
+                    <input
+                      type="text"
+                      placeholder="Search projects..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      style={{
+                        border: 'none',
+                        outline: 'none',
+                        backgroundColor: 'transparent',
+                        fontSize: '0.78rem',
+                        width: '100%',
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Case Studies List */}
+                <div className="admin-editor-scroll" style={{ flex: 1, overflowY: 'auto', padding: '0.5rem' }}>
+                  {filteredCases.map((c: any, idx: number, arr: any[]) => {
+                    const isSelected = selectedCase?.id === c.id;
+                    const isCaseEnabled = c.enabled !== false;
+                    return (
+                      <div
+                        key={c.id}
+                        onClick={() => {
+                          setSelectedCaseId(c.id);
+                          if (previewUrlType === 'detail') {
+                            setPreviewKey((k) => k + 1);
+                          }
+                        }}
+                        style={{
+                          padding: '0.55rem 0.65rem',
+                          borderRadius: '8px',
+                          marginBottom: '0.35rem',
+                          cursor: 'pointer',
+                          backgroundColor: isSelected ? '#111113' : (isCaseEnabled ? '#FFFFFF' : '#FEF2F2'),
+                          color: isSelected ? '#FFFFFF' : '#111113',
+                          border: isSelected ? '1px solid #111113' : (isCaseEnabled ? '1px solid rgba(0,0,0,0.06)' : '1px dashed #FECACA'),
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '0.35rem',
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        <div style={{ overflow: 'hidden', flex: 1 }}>
+                          <div
+                            style={{
+                              fontSize: '0.78rem',
+                              fontWeight: isSelected ? 600 : 500,
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {c.title}
+                          </div>
+                          <div style={{ fontSize: '0.66rem', color: isSelected ? '#A1A1AA' : '#71717A' }}>
+                            {c.client || c.category}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }} onClick={(e) => e.stopPropagation()}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const originalIdx = (workData.caseStudies || []).findIndex((item: any) => item.id === c.id);
+                              if (originalIdx === -1) return;
+                              const updatedCases = [...workData.caseStudies];
+                              updatedCases[originalIdx] = {
+                                ...updatedCases[originalIdx],
+                                enabled: !isCaseEnabled,
+                              };
+                              const updated = { ...workData, caseStudies: updatedCases };
+                              setWorkData(updated);
+                              updateDraftInMemory('work', updated);
+                              handleSaveAndSync(updated);
+                              showToast(`Project "${c.title}" ${!isCaseEnabled ? 'enabled' : 'disabled'}`, 'info');
+                            }}
+                            title={isCaseEnabled ? 'Disable project' : 'Enable project'}
+                            style={{
+                              border: 'none',
+                              backgroundColor: isSelected ? 'rgba(255,255,255,0.15)' : (isCaseEnabled ? '#ECFDF5' : '#FEE2E2'),
+                              color: isSelected ? '#FFFFFF' : (isCaseEnabled ? '#047857' : '#DC2626'),
+                              borderRadius: '4px',
+                              padding: '3px 4px',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {isCaseEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => handleMoveCase(idx, 'up')}
+                            title="Move up"
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: isSelected ? (idx === 0 ? '#52525B' : '#E4E4E7') : (idx === 0 ? '#D4D4D8' : '#52525B'),
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              padding: '2px',
+                            }}
+                          >
+                            <ChevronUp size={13} />
+                          </button>
+
+                          <button
+                            type="button"
+                            disabled={idx === arr.length - 1}
+                            onClick={() => handleMoveCase(idx, 'down')}
+                            title="Move down"
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: isSelected ? (idx === arr.length - 1 ? '#52525B' : '#E4E4E7') : (idx === arr.length - 1 ? '#D4D4D8' : '#52525B'),
+                              cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                              padding: '2px',
+                            }}
+                          >
+                            <ChevronDown size={13} />
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setDeleteConfirm({
+                                type: 'case',
+                                id: c.id,
+                                title: 'Delete Project?',
+                                message: `Permanently delete "${c.title}"? This cannot be undone.`,
+                              });
+                            }}
+                            title="Delete project"
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: isSelected ? '#FCA5A5' : '#EF4444',
+                              cursor: 'pointer',
+                              padding: '2px',
+                            }}
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-
-              {/* Case Studies List */}
-              <div className="admin-editor-scroll" style={{ flex: 1, overflowY: 'auto', padding: '0.5rem' }}>
-                {filteredCases.map((c: any) => {
-                  const isSelected = selectedCase?.id === c.id;
-                  return (
-                    <div
-                      key={c.id}
-                      onClick={() => {
-                        setSelectedCaseId(c.id);
-                        if (previewUrlType === 'detail') {
-                          setPreviewKey((k) => k + 1);
-                        }
-                      }}
-                      style={{
-                        padding: '0.65rem 0.75rem',
-                        borderRadius: '8px',
-                        marginBottom: '0.35rem',
-                        cursor: 'pointer',
-                        backgroundColor: isSelected ? '#111113' : 'transparent',
-                        color: isSelected ? '#FFFFFF' : '#111113',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        transition: 'all 0.15s ease',
-                      }}
-                    >
-                      <div style={{ overflow: 'hidden' }}>
-                        <div
-                          style={{
-                            fontSize: '0.82rem',
-                            fontWeight: isSelected ? 600 : 500,
-                            whiteSpace: 'nowrap',
-                            textOverflow: 'ellipsis',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          {c.title}
-                        </div>
-                        <div style={{ fontSize: '0.68rem', color: isSelected ? '#A1A1AA' : '#71717A' }}>
-                          {c.client}
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                        <span
-                          style={{
-                            color: c.published ? '#16A34A' : '#A1A1AA',
-                            padding: '2px',
-                          }}
-                          title={c.published ? 'Published' : 'Hidden'}
-                        >
-                          {c.published ? <Eye size={13} /> : <EyeOff size={13} />}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
 
             {/* Right Editor Area */}
             {activeCaseMerged ? (
@@ -947,9 +1390,15 @@ export default function AdminWorkPage() {
                     <>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                         <div>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            PROJECT TITLE
-                          </label>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                            <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                              PROJECT TITLE
+                            </label>
+                            <FieldToggle
+                              enabled={activeCaseMerged.showTitle !== false}
+                              onToggle={() => handleCaseChange('showTitle', activeCaseMerged.showTitle === false)}
+                            />
+                          </div>
                           <input
                             type="text"
                             value={activeCaseMerged.title || ''}
@@ -959,9 +1408,15 @@ export default function AdminWorkPage() {
                         </div>
 
                         <div>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            CLIENT NAME
-                          </label>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                            <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                              CLIENT NAME
+                            </label>
+                            <FieldToggle
+                              enabled={activeCaseMerged.showClient !== false}
+                              onToggle={() => handleCaseChange('showClient', activeCaseMerged.showClient === false)}
+                            />
+                          </div>
                           <input
                             type="text"
                             value={activeCaseMerged.client || ''}
@@ -973,9 +1428,15 @@ export default function AdminWorkPage() {
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                         <div>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            CATEGORY
-                          </label>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                            <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                              CATEGORY
+                            </label>
+                            <FieldToggle
+                              enabled={activeCaseMerged.showCategory !== false}
+                              onToggle={() => handleCaseChange('showCategory', activeCaseMerged.showCategory === false)}
+                            />
+                          </div>
                           <input
                             type="text"
                             value={activeCaseMerged.category || ''}
@@ -985,9 +1446,15 @@ export default function AdminWorkPage() {
                         </div>
 
                         <div>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            YEAR OF DELIVERY
-                          </label>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                            <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                              YEAR OF DELIVERY
+                            </label>
+                            <FieldToggle
+                              enabled={activeCaseMerged.showYear !== false}
+                              onToggle={() => handleCaseChange('showYear', activeCaseMerged.showYear === false)}
+                            />
+                          </div>
                           <input
                             type="text"
                             value={activeCaseMerged.year || ''}
@@ -998,9 +1465,15 @@ export default function AdminWorkPage() {
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          BRIEF / EXECUTIVE SUMMARY (FOR CARD)
-                        </label>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                            BRIEF / EXECUTIVE SUMMARY (FOR CARD)
+                          </label>
+                          <FieldToggle
+                            enabled={activeCaseMerged.showDesc !== false}
+                            onToggle={() => handleCaseChange('showDesc', activeCaseMerged.showDesc === false)}
+                          />
+                        </div>
                         <textarea
                           rows={3}
                           value={activeCaseMerged.desc || ''}
@@ -1009,12 +1482,37 @@ export default function AdminWorkPage() {
                         />
                       </div>
 
+                      {/* Case Study Layout Style */}
+                      <div style={{ padding: '0.85rem', backgroundColor: '#FDF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
+                        <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 700, color: '#DE322D', marginBottom: '0.35rem' }}>
+                          SELECT CASE STUDY LAYOUT STYLE
+                        </label>
+                        <select
+                          value={activeCaseMerged.layoutStyle || activeCaseMerged.layout || 'layout-1'}
+                          onChange={(e) => handleCaseChange('layoutStyle', e.target.value)}
+                          style={{ ...inputStyle, fontWeight: 600, borderColor: '#F87171', backgroundColor: '#FFFFFF' }}
+                        >
+                          <option value="layout-1">Layout 1 — Editorial Classic (Left headline, right snapshot card, featured panoramic hero)</option>
+                          <option value="layout-2">Layout 2 — Visual Heavy (Split 2-column hero with sticky snapshot & right hero imagery)</option>
+                          <option value="layout-3">Layout 3 — Modern Magazine (Centered headline, edge-to-edge widescreen banner, horizontal snapshot bar)</option>
+                        </select>
+                        <div style={{ fontSize: '0.7rem', color: '#7F1D1D', marginTop: '0.4rem', lineHeight: 1.4 }}>
+                          The selected layout style automatically determines how text, imagery, and snapshot cards are arranged across the case study page.
+                        </div>
+                      </div>
+
                       {/* Card Cover Image */}
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
-                          <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
-                            PORTFOLIO CARD COVER IMAGE
-                          </label>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                              PORTFOLIO CARD COVER IMAGE
+                            </label>
+                            <FieldToggle
+                              enabled={activeCaseMerged.showImage !== false}
+                              onToggle={() => handleCaseChange('showImage', activeCaseMerged.showImage === false)}
+                            />
+                          </div>
                           <span style={{ fontSize: '0.68rem', color: '#16A34A', fontWeight: 600 }}>
                             Auto-syncs to live preview
                           </span>
@@ -1063,9 +1561,15 @@ export default function AdminWorkPage() {
 
                       {/* Tags */}
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          TAGS (COMMA SEPARATED)
-                        </label>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                          <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                            TAGS (COMMA SEPARATED)
+                          </label>
+                          <FieldToggle
+                            enabled={activeCaseMerged.showTags !== false}
+                            onToggle={() => handleCaseChange('showTags', activeCaseMerged.showTags === false)}
+                          />
+                        </div>
                         <input
                           type="text"
                           value={Array.isArray(activeCaseMerged.tags) ? activeCaseMerged.tags.join(', ') : ''}
@@ -1083,7 +1587,7 @@ export default function AdminWorkPage() {
                         <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', cursor: 'pointer' }}>
                           <input
                             type="checkbox"
-                            checked={!!activeCaseMerged.published}
+                            checked={activeCaseMerged.published !== false}
                             onChange={(e) => handleCaseChange('published', e.target.checked)}
                           />
                           Published on Website
@@ -1100,7 +1604,14 @@ export default function AdminWorkPage() {
 
                         <button
                           type="button"
-                          onClick={() => setDeleteTargetId(selectedCase.id)}
+                          onClick={() => {
+                            setDeleteConfirm({
+                              type: 'case',
+                              id: selectedCase.id,
+                              title: 'Delete Project?',
+                              message: `Permanently delete "${selectedCase.title || 'this project'}"? This cannot be undone.`,
+                            });
+                          }}
                           style={{
                             marginLeft: 'auto',
                             border: 'none',
@@ -1123,58 +1634,83 @@ export default function AdminWorkPage() {
                   {/* ── SUBTAB 2: DETAIL PAGE HERO & SNAPSHOT ── */}
                   {caseSubTab === 'hero' && (
                     <>
-                      <div
-                        style={{
-                          padding: '0.65rem 0.85rem',
-                          backgroundColor: '#F0F9FF',
-                          borderRadius: '8px',
-                          border: '1px solid #BAE6FD',
-                          fontSize: '0.78rem',
-                          color: '#0369A1',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.5rem',
-                        }}
-                      >
-                        <Sparkles size={14} />
-                        Editing Live Case Study Page at <strong>/work/{detailSlug}</strong>
-                      </div>
+                      {/* Page Header Section Controls */}
+                      <div style={{ padding: '0.85rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1E293B' }}>
+                            PAGE HEADER & HERO CONTROLS
+                          </span>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: activeCaseMerged.showHeader !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={activeCaseMerged.showHeader !== false}
+                              onChange={(e) => handleCaseChange('showHeader', e.target.checked)}
+                              style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
+                            />
+                            <span>{activeCaseMerged.showHeader !== false ? 'Page Header: Enabled' : 'Page Header: Disabled'}</span>
+                          </label>
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748B', marginBottom: '0.85rem' }}>
+                          Control whether the top case study header, breadcrumb navigation, title, and intro metadata are visible on the website.
+                        </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          PAGE HERO HEADLINE / SUBTITLE
-                        </label>
-                        <input
-                          type="text"
-                          value={activeCaseMerged.subtitle || ''}
-                          onChange={(e) => handleCaseChange('subtitle', e.target.value)}
-                          placeholder="e.g. One relationship. Three very different businesses."
-                          style={inputStyle}
-                        />
-                      </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                              DETAIL PAGE HEADLINE
+                            </label>
+                            <input
+                              type="text"
+                              value={activeCaseMerged.title || ''}
+                              onChange={(e) => handleCaseChange('title', e.target.value)}
+                              style={inputStyle}
+                              placeholder="Case study headline..."
+                            />
+                          </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          SECTOR EYEBROW
-                        </label>
-                        <input
-                          type="text"
-                          value={activeCaseMerged.sector || ''}
-                          onChange={(e) => handleCaseChange('sector', e.target.value)}
-                          placeholder="e.g. Hospitality, Real Estate & Industrial Casting"
-                          style={inputStyle}
-                        />
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                              SUPPORTING TEXT / HERO ONE-LINER
+                            </label>
+                            <input
+                              type="text"
+                              value={activeCaseMerged.subtitle || ''}
+                              onChange={(e) => handleCaseChange('subtitle', e.target.value)}
+                              placeholder="e.g. One relationship. Three very different businesses."
+                              style={inputStyle}
+                            />
+                          </div>
+
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                              SECTOR EYEBROW
+                            </label>
+                            <input
+                              type="text"
+                              value={activeCaseMerged.sector || ''}
+                              onChange={(e) => handleCaseChange('sector', e.target.value)}
+                              placeholder="e.g. Hospitality, Real Estate & Industrial Casting"
+                              style={inputStyle}
+                            />
+                          </div>
+                        </div>
                       </div>
 
                       {/* Detail Page Hero Image */}
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
-                          <label style={{ fontSize: '0.72rem', fontWeight: 600, color: '#52525B' }}>
+                      <div style={{ padding: '0.85rem', backgroundColor: '#FFFFFF', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
                             DETAIL PAGE MAIN HERO IMAGE
-                          </label>
-                          <span style={{ fontSize: '0.68rem', color: '#16A34A', fontWeight: 600 }}>
-                            High-Resolution 16:9 Banner
                           </span>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 600, color: activeCaseMerged.showHeroImage !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={activeCaseMerged.showHeroImage !== false}
+                              onChange={(e) => handleCaseChange('showHeroImage', e.target.checked)}
+                              style={{ width: '15px', height: '15px', accentColor: '#16A34A' }}
+                            />
+                            <span>{activeCaseMerged.showHeroImage !== false ? 'Hero Image: Enabled' : 'Hero Image: Disabled'}</span>
+                          </label>
                         </div>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                           <input
@@ -1216,27 +1752,26 @@ export default function AdminWorkPage() {
                             />
                           </div>
                         )}
+                        <div style={{ marginTop: '0.5rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                            HERO IMAGE CAPTION
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.heroImageCaption || ''}
+                            onChange={(e) => handleCaseChange('heroImageCaption', e.target.value)}
+                            placeholder="e.g. Neora Deck rooftop hospitality & on-ground execution"
+                            style={inputStyle}
+                          />
+                        </div>
                       </div>
 
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                          HERO IMAGE CAPTION
-                        </label>
-                        <input
-                          type="text"
-                          value={activeCaseMerged.heroImageCaption || ''}
-                          onChange={(e) => handleCaseChange('heroImageCaption', e.target.value)}
-                          placeholder="e.g. Neora Deck rooftop hospitality & on-ground execution"
-                          style={inputStyle}
-                        />
-                      </div>
-
-                      {/* Snapshot Metadata Bar */}
-                      <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '0.85rem' }}>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 650, color: '#111113', marginBottom: '0.65rem' }}>
+                      {/* Snapshot Metadata Bar & CORE SCOPE */}
+                      <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 650, color: '#111113' }}>
                           Snapshot Metadata Bar
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
                           <div>
                             <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Location</span>
                             <input
@@ -1279,24 +1814,39 @@ export default function AdminWorkPage() {
                               style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
                             />
                           </div>
-                          <div>
-                            <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Core Capabilities (comma separated)</span>
-                            <input
-                              type="text"
-                              value={
-                                Array.isArray(activeCaseMerged.snapshot?.coreCapabilities)
-                                  ? activeCaseMerged.snapshot.coreCapabilities.join(', ')
-                                  : ''
-                              }
-                              onChange={(e) =>
-                                handleCaseChange('snapshot', {
-                                  ...activeCaseMerged.snapshot,
-                                  coreCapabilities: e.target.value.split(',').map((s: string) => s.trim()).filter(Boolean),
-                                })
-                              }
-                              style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
-                            />
+                        </div>
+
+                        {/* CORE SCOPE - EDIT & ENABLE/DISABLE */}
+                        <div style={{ padding: '0.9rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                            <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#991B1B' }}>
+                              CORE SCOPE
+                            </div>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: activeCaseMerged.showCoreScope !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
+                              <input
+                                type="checkbox"
+                                checked={activeCaseMerged.showCoreScope !== false}
+                                onChange={(e) => handleCaseChange('showCoreScope', e.target.checked)}
+                                style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
+                              />
+                              <span>{activeCaseMerged.showCoreScope !== false ? 'Core Scope: Enabled' : 'Core Scope: Disabled'}</span>
+                            </label>
                           </div>
+                          <div style={{ fontSize: '0.7rem', color: '#7F1D1D', marginBottom: '0.65rem', lineHeight: 1.4 }}>
+                            If disabled, the Core Scope section will not appear on the website. Enter one deliverable or capability per line.
+                          </div>
+                          <textarea
+                            rows={4}
+                            value={(activeCaseMerged.snapshot?.coreCapabilities || []).join('\n')}
+                            onChange={(e) =>
+                              handleCaseChange('snapshot', {
+                                ...activeCaseMerged.snapshot,
+                                coreCapabilities: e.target.value.split('\n').filter(Boolean),
+                              })
+                            }
+                            placeholder="Deliverable 1&#10;Deliverable 2&#10;Deliverable 3..."
+                            style={{ ...inputStyle, fontFamily: 'monospace', fontSize: '0.78rem' }}
+                          />
                         </div>
                       </div>
                     </>
@@ -1579,6 +2129,7 @@ export default function AdminWorkPage() {
               </div>
             )}
           </div>
+        </div>
         )}
 
         {/* Hidden inputs for native file uploads */}
@@ -1730,11 +2281,18 @@ export default function AdminWorkPage() {
 
       {/* Confirm Delete Dialog */}
       <ConfirmDialog
-        isOpen={!!deleteTargetId}
-        title="Delete Project"
-        message="Are you sure you want to permanently delete this project? This will remove it from live display."
-        onConfirm={() => deleteTargetId && handleDeleteCase(deleteTargetId)}
-        onCancel={() => setDeleteTargetId(null)}
+        isOpen={!!deleteConfirm}
+        title={deleteConfirm?.title || 'Confirm Delete'}
+        message={deleteConfirm?.message || 'Are you sure you want to delete this item? This will remove it from live display.'}
+        onConfirm={() => {
+          if (!deleteConfirm) return;
+          if (deleteConfirm.type === 'case') {
+            handleDeleteCase(deleteConfirm.id as string);
+          } else if (deleteConfirm.type === 'reel') {
+            handleDeleteReel(deleteConfirm.id as number);
+          }
+        }}
+        onCancel={() => setDeleteConfirm(null)}
       />
 
       {/* Media Picker Modal */}

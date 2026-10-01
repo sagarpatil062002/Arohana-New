@@ -132,6 +132,13 @@ interface CaseStudyItem {
   tags: string[];
   category: string;
   image: string;
+  showTitle?: boolean;
+  showClient?: boolean;
+  showDesc?: boolean;
+  showTags?: boolean;
+  showImage?: boolean;
+  isClickable?: boolean;
+  caseStudyBtnText?: string;
 }
 
 const CASE_STUDIES: CaseStudyItem[] = [
@@ -334,17 +341,19 @@ function WorkCaseCard({
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const isClickable = cs.isClickable !== false;
+
   return (
     <div
       style={{
         backgroundColor: '#FFFFFF',
         borderRadius: '6px',
-        border: isHovered ? '1px solid rgba(0, 0, 0, 0.14)' : '1px solid rgba(0, 0, 0, 0.08)',
+        border: isHovered && isClickable ? '1px solid rgba(0, 0, 0, 0.14)' : '1px solid rgba(0, 0, 0, 0.08)',
         overflow: 'hidden',
-        boxShadow: isHovered
+        boxShadow: isHovered && isClickable
           ? '0 16px 36px -6px rgba(0, 0, 0, 0.08)'
           : '0 4px 18px rgba(0, 0, 0, 0.03)',
-        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        transform: isHovered && isClickable ? 'translateY(-4px)' : 'translateY(0)',
         opacity: isDimmed ? 0.28 : 1,
         filter: isDimmed ? 'grayscale(40%)' : 'none',
         pointerEvents: isDimmed ? 'none' : 'auto',
@@ -356,30 +365,53 @@ function WorkCaseCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container — Clickable directly to Case Study */}
-      <Link
-        href={`/work/${cs.slug}`}
-        style={{
-          position: 'relative',
-          width: '100%',
-          aspectRatio: imageAspect,
-          backgroundColor: '#EBEAE6',
-          overflow: 'hidden',
-          display: 'block',
-        }}
-      >
-        <Image
-          src={cs.image}
-          alt={cs.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
-          style={{
-            objectFit: 'cover',
-            transform: isHovered ? 'scale(1.04)' : 'scale(1)',
-            transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        />
-      </Link>
+      {/* Image Container — Clickable directly to Case Study when enabled */}
+      {cs.showImage !== false && (
+        isClickable ? (
+          <Link
+            href={`/work/${cs.slug}`}
+            style={{
+              position: 'relative',
+              width: '100%',
+              aspectRatio: imageAspect,
+              backgroundColor: '#EBEAE6',
+              overflow: 'hidden',
+              display: 'block',
+            }}
+          >
+            <Image
+              src={cs.image}
+              alt={cs.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
+              style={{
+                objectFit: 'cover',
+                transform: isHovered ? 'scale(1.04)' : 'scale(1)',
+                transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            />
+          </Link>
+        ) : (
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              aspectRatio: imageAspect,
+              backgroundColor: '#EBEAE6',
+              overflow: 'hidden',
+              display: 'block',
+            }}
+          >
+            <Image
+              src={cs.image}
+              alt={cs.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+        )
+      )}
 
       {/* Card Content */}
       <div
@@ -390,105 +422,113 @@ function WorkCaseCard({
           flexGrow: 1,
         }}
       >
-        <h3
-          style={{
-            fontSize: 'clamp(1.15rem, 1.35vw, 1.25rem)',
-            fontWeight: 650,
-            letterSpacing: '-0.02em',
-            color: DARK,
-            lineHeight: 1.2,
-            margin: 0,
-          }}
-        >
-          {cs.title}
-        </h3>
+        {cs.showTitle !== false && (
+          <h3
+            style={{
+              fontSize: 'clamp(1.15rem, 1.35vw, 1.25rem)',
+              fontWeight: 650,
+              letterSpacing: '-0.02em',
+              color: DARK,
+              lineHeight: 1.2,
+              margin: 0,
+            }}
+          >
+            {cs.title}
+          </h3>
+        )}
 
-        <p
-          style={{
-            fontSize: '0.82rem',
-            lineHeight: 1.45,
-            color: '#71717A',
-            marginTop: '0.35rem',
-            marginBottom: '0.85rem',
-          }}
-        >
-          {cs.desc}
-        </p>
+        {cs.showDesc !== false && cs.desc && (
+          <p
+            style={{
+              fontSize: '0.82rem',
+              lineHeight: 1.45,
+              color: '#71717A',
+              marginTop: '0.35rem',
+              marginBottom: '0.85rem',
+            }}
+          >
+            {cs.desc}
+          </p>
+        )}
 
         {/* Tag Pills */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '0.35rem',
-            marginBottom: '1rem',
-          }}
-        >
-          {cs.tags.map((tag) => (
-            <span
-              key={tag}
+        {cs.showTags !== false && cs.tags && cs.tags.length > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.35rem',
+              marginBottom: '1rem',
+            }}
+          >
+            {cs.tags.map((tag) => (
+              <span
+                key={tag}
+                style={{
+                  fontSize: '0.68rem',
+                  fontWeight: 500,
+                  padding: '0.28rem 0.65rem',
+                  borderRadius: '3px',
+                  backgroundColor: '#F4F4F5',
+                  color: '#52525B',
+                  border: '1px solid rgba(0, 0, 0, 0.06)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Bottom Link Row — Only rendered when isClickable is true */}
+        {isClickable && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 'auto',
+              paddingTop: '0.25rem',
+            }}
+          >
+            <Link
+              href={`/work/${cs.slug}`}
               style={{
-                fontSize: '0.68rem',
-                fontWeight: 500,
-                padding: '0.28rem 0.65rem',
-                borderRadius: '3px',
-                backgroundColor: '#F4F4F5',
-                color: '#52525B',
-                border: '1px solid rgba(0, 0, 0, 0.06)',
-                whiteSpace: 'nowrap',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                color: isHovered ? RED : DARK,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                transition: 'color 0.2s ease',
               }}
             >
-              {tag}
-            </span>
-          ))}
-        </div>
+              {cs.caseStudyBtnText || 'View case study ↗'}
+            </Link>
 
-        {/* Bottom Link Row */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 'auto',
-            paddingTop: '0.25rem',
-          }}
-        >
-          <Link
-            href={`/work/${cs.slug}`}
-            style={{
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              color: isHovered ? RED : DARK,
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-              transition: 'color 0.2s ease',
-            }}
-          >
-            View case study ↗
-          </Link>
-
-          <Link
-            href={`/work/${cs.slug}`}
-            aria-label={`View ${cs.title} case study`}
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              border: isHovered ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
-              backgroundColor: isHovered ? DARK : '#FFFFFF',
-              color: isHovered ? '#FFFFFF' : DARK,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
-            }}
-          >
-            <ArrowRight size={13} />
-          </Link>
-        </div>
+            <Link
+              href={`/work/${cs.slug}`}
+              aria-label={`View ${cs.title} case study`}
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: isHovered ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
+                backgroundColor: isHovered ? DARK : '#FFFFFF',
+                color: isHovered ? '#FFFFFF' : DARK,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -570,7 +610,9 @@ export default function WorkPage() {
   const { content } = useCmsContent();
   const workCms = content?.work;
   const activeReelsList: ReelItem[] = (workCms?.featuredReels && workCms.featuredReels.length > 0)
-    ? workCms.featuredReels.map((r: any, i: number) => ({
+    ? workCms.featuredReels
+        .filter((r: any) => r && r.enabled !== false)
+        .map((r: any, i: number) => ({
         id: r.id || `reel-${i}`,
         num: String(i + 1).padStart(2, '0'),
         hookTitle: r.hookTitle || '',
@@ -584,7 +626,7 @@ export default function WorkPage() {
   // ── CMS-driven case studies (falls back to hardcoded if CMS unavailable) ──
   const activeCaseStudies: CaseStudyItem[] = (workCms?.caseStudies && workCms.caseStudies.length > 0)
     ? workCms.caseStudies
-        .filter((c: any) => c.published !== false)
+        .filter((c: any) => c && c.published !== false && c.enabled !== false)
         .map((c: any, i: number) => ({
           id: c.id || `cs-${i}`,
           slug: c.slug || c.id || `cs-${i}`,
@@ -594,8 +636,19 @@ export default function WorkPage() {
           tags: Array.isArray(c.tags) ? c.tags : [],
           category: c.category || '',
           image: c.image || CASE_STUDIES[i % CASE_STUDIES.length]?.image || '/images/case-studies/raysons/neora-1.jpg',
+          showTitle: c.showTitle,
+          showClient: c.showClient,
+          showDesc: c.showDesc,
+          showTags: c.showTags,
+          showImage: c.showImage,
+          isClickable: c.isClickable !== false && c.caseStudyEnabled !== false && c.clickable !== false,
+          caseStudyBtnText: c.caseStudyBtnText || 'View case study ↗',
         }))
     : CASE_STUDIES;
+
+  const isHeroEnabled = workCms?.header?.enabled !== false;
+  const isReelsEnabled = workCms?.reelsSection?.enabled !== false && activeReelsList.length > 0;
+  const isCasesEnabled = workCms?.caseStudiesSection?.enabled !== false && activeCaseStudies.length > 0;
 
   const getCase = (idOrSlug: string, fallbackIdx: number): CaseStudyItem => {
     return (
@@ -633,28 +686,50 @@ export default function WorkPage() {
     });
   };
 
-  // Auto-scroll animation for reels slider (pauses on user interaction)
+  // Continuous infinite marquee ticker for reels carousel (never stops, seamless wrap)
   useEffect(() => {
-    const el = reelsScrollRef.current;
-    if (!el || !isAutoScrolling) return;
-
+    setIsAutoScrolling(true);
     let animId: number;
-    const speed = 0.5;
+    const speed = 0.75;
 
-    const step = () => {
-      if (el) {
-        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) {
-          el.scrollLeft = 0;
-        } else {
-          el.scrollLeft += speed;
+    const startScroll = () => {
+      const el = reelsScrollRef.current;
+      if (!el) return;
+
+      const step = () => {
+        if (el && isAutoScrolling) {
+          // Continuous marquee scrolling using 3x duplicate loop
+          const singleSetWidth = el.scrollWidth / 3;
+          if (singleSetWidth > 20) {
+            el.scrollLeft += speed;
+            if (el.scrollLeft >= singleSetWidth * 2) {
+              el.scrollLeft -= singleSetWidth;
+            }
+          }
         }
-      }
+        animId = requestAnimationFrame(step);
+      };
+
       animId = requestAnimationFrame(step);
     };
 
-    animId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animId);
-  }, [isAutoScrolling]);
+    const initTimer = setTimeout(startScroll, 120);
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        setIsAutoScrolling(true);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleVisibility);
+
+    return () => {
+      clearTimeout(initTimer);
+      cancelAnimationFrame(animId);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleVisibility);
+    };
+  }, [isAutoScrolling, filteredReels.length]);
 
   // Entrance animations
   useEffect(() => {
@@ -693,138 +768,145 @@ export default function WorkPage() {
         {/* ═══════════════════════════════════════════════════════════════════
             SECTION 1: HERO SECTION ("The work is the proof.")
             ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          style={{
-            position: 'relative',
-            paddingTop: 'clamp(4.5rem, 7vw, 7rem)',
-            paddingBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
-          }}
-        >
-          {/* Top-right red indicator ring matching desktop reference */}
-          <div className="work-hero-top-dot" aria-hidden="true" />
+        {isHeroEnabled && (
+          <section
+            style={{
+              position: 'relative',
+              paddingTop: 'clamp(4.5rem, 7vw, 7rem)',
+              paddingBottom: 'clamp(1.75rem, 3vw, 2.5rem)',
+            }}
+          >
+            {/* Top-right red indicator ring matching desktop reference */}
+            <div className="work-hero-top-dot" aria-hidden="true" />
 
-          {/* Desktop & Tablet Layout (> 860px) */}
-          <div className="work-hero-grid">
-            {/* Left: Main Heading */}
-            <div className="work-hero-left">
-              <h1 className="work-hero-headline">
-                The
-                <br />
-                work is
-                <br />
-                <span style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
-                  the proof
-                  <span
-                    className="hero-red-dot"
-                    style={{
-                      display: 'inline-block',
-                      width: 'clamp(9px, 0.85vw, 13px)',
-                      height: 'clamp(9px, 0.85vw, 13px)',
-                      borderRadius: '50%',
-                      backgroundColor: '#FF3838',
-                      marginLeft: 'clamp(4px, 0.35vw, 7px)',
-                      verticalAlign: 'baseline',
-                      transform: 'translateY(-0.06em)',
-                      flexShrink: 0,
-                    }}
-                    aria-hidden="true"
-                  />
-                </span>
-              </h1>
+            {/* Desktop & Tablet Layout (> 860px) */}
+            <div className="work-hero-grid">
+              {/* Left: Main Heading */}
+              {workCms?.header?.showTitle !== false && (
+                <div className="work-hero-left">
+                  <h1 className="work-hero-headline">
+                    The
+                    <br />
+                    work is
+                    <br />
+                    <span style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
+                      the proof
+                      <span
+                        className="hero-red-dot"
+                        style={{
+                          display: 'inline-block',
+                          width: 'clamp(9px, 0.85vw, 13px)',
+                          height: 'clamp(9px, 0.85vw, 13px)',
+                          borderRadius: '50%',
+                          backgroundColor: '#FF3838',
+                          marginLeft: 'clamp(4px, 0.35vw, 7px)',
+                          verticalAlign: 'baseline',
+                          transform: 'translateY(-0.06em)',
+                          flexShrink: 0,
+                        }}
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </h1>
+                </div>
+              )}
             </div>
 
-          </div>
+            {/* Mobile Layout (<= 860px) - Exact match to reference mockup */}
+            {workCms?.header?.showTitle !== false && (
+              <div className="work-hero-mobile-layout">
+                <div className="work-hero-mobile-row">
+                  <h1 className="work-hero-headline-mobile">
+                    The work is
+                    <br />
+                    <span style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
+                      the proof
+                      <span
+                        className="hero-red-dot"
+                        style={{
+                          display: 'inline-block',
+                          width: '7px',
+                          height: '7px',
+                          borderRadius: '50%',
+                          backgroundColor: '#FF3838',
+                          marginLeft: '3px',
+                          verticalAlign: 'baseline',
+                          transform: 'translateY(-0.06em)',
+                          flexShrink: 0,
+                        }}
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </h1>
+                </div>
+              </div>
+            )}
 
-          {/* Mobile Layout (<= 860px) - Exact match to reference mockup */}
-          <div className="work-hero-mobile-layout">
-            <div className="work-hero-mobile-row">
-              <h1 className="work-hero-headline-mobile">
-                The work is
-                <br />
-                <span style={{ display: 'inline-flex', alignItems: 'baseline', whiteSpace: 'nowrap' }}>
-                  the proof
-                  <span
-                    className="hero-red-dot"
-                    style={{
-                      display: 'inline-block',
-                      width: '7px',
-                      height: '7px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FF3838',
-                      marginLeft: '3px',
-                      verticalAlign: 'baseline',
-                      transform: 'translateY(-0.06em)',
-                      flexShrink: 0,
-                    }}
-                    aria-hidden="true"
-                  />
-                </span>
-              </h1>
-            </div>
-          </div>
+            {/* Reel Category Filters & Slider Controls */}
+            {isReelsEnabled && (
+              <div className="work-reel-filters-bar">
+                {/* Filter Pills */}
+                <div className="work-reel-filters-scroll">
+                  {REEL_FILTERS.map((filter) => {
+                    const isActive = selectedReelFilter === filter;
+                    return (
+                      <button
+                        key={filter}
+                        type="button"
+                        onClick={() => setSelectedReelFilter(filter)}
+                        className={`work-filter-pill-btn ${isActive ? 'active' : ''}`}
+                      >
+                        {filter}
+                      </button>
+                    );
+                  })}
+                </div>
 
-          {/* Reel Category Filters & Slider Controls */}
-          <div className="work-reel-filters-bar">
-            {/* Filter Pills */}
-            <div className="work-reel-filters-scroll">
-              {REEL_FILTERS.map((filter) => {
-                const isActive = selectedReelFilter === filter;
-                return (
+                {/* Slider Navigation Arrows (Desktop / Compact) */}
+                <div className="work-reel-nav-arrows">
                   <button
-                    key={filter}
                     type="button"
-                    onClick={() => setSelectedReelFilter(filter)}
-                    className={`work-filter-pill-btn ${isActive ? 'active' : ''}`}
+                    aria-label="Scroll left"
+                    onClick={() => scrollReels('left')}
+                    className="work-nav-arrow-btn"
                   >
-                    {filter}
+                    <ChevronLeft size={17} color={DARK} />
                   </button>
-                );
-              })}
-            </div>
 
-            {/* Slider Navigation Arrows (Desktop / Compact) */}
-            <div className="work-reel-nav-arrows">
-              <button
-                type="button"
-                aria-label="Scroll left"
-                onClick={() => scrollReels('left')}
-                className="work-nav-arrow-btn"
-              >
-                <ChevronLeft size={17} color={DARK} />
-              </button>
-
-              <button
-                type="button"
-                aria-label="Scroll right"
-                onClick={() => scrollReels('right')}
-                className="work-nav-arrow-btn work-nav-arrow-dark"
-              >
-                <ChevronRight size={17} color="#FFFFFF" />
-              </button>
-            </div>
-          </div>
-        </section>
+                  <button
+                    type="button"
+                    aria-label="Scroll right"
+                    onClick={() => scrollReels('right')}
+                    className="work-nav-arrow-btn work-nav-arrow-dark"
+                  >
+                    <ChevronRight size={17} color="#FFFFFF" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════
           SECTION 2: INSTAGRAM REELS CAROUSEL / HORIZONTAL SLIDER
           ═══════════════════════════════════════════════════════════════════ */}
-      <section
-        style={{
-          width: '100%',
-          overflow: 'hidden',
-          paddingBottom: 'clamp(3.5rem, 5vw, 5rem)',
-        }}
-        onMouseEnter={() => setIsAutoScrolling(false)}
-        onMouseLeave={() => setIsAutoScrolling(true)}
-      >
+      {isReelsEnabled && (
+        <section
+          style={{
+            width: '100%',
+            overflow: 'hidden',
+            paddingBottom: 'clamp(3.5rem, 5vw, 5rem)',
+          }}
+          onMouseEnter={() => setIsAutoScrolling(false)}
+          onMouseLeave={() => setIsAutoScrolling(true)}
+        >
         <div
           ref={reelsScrollRef}
           style={{
             display: 'flex',
             gap: '1.25rem',
             overflowX: 'auto',
-            scrollBehavior: 'smooth',
             scrollbarWidth: 'none',
             paddingLeft: 'max(1.5rem, calc((100vw - 1440px) / 2 + 1.5rem))',
             paddingRight: 'max(1.5rem, calc((100vw - 1440px) / 2 + 1.5rem))',
@@ -832,9 +914,9 @@ export default function WorkPage() {
             paddingBottom: '1.5rem',
           }}
         >
-          {filteredReels.map((reel) => (
+          {[...filteredReels, ...filteredReels, ...filteredReels].map((reel, idx) => (
             <a
-              key={reel.id}
+              key={`${reel.id}-${idx}`}
               href={reel.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -1001,99 +1083,102 @@ export default function WorkPage() {
           <ArrowDown size={16} color={MUTED} />
         </div>
       </section>
+      )}
 
-      <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
-        {/* ═══════════════════════════════════════════════════════════════════
-            SECTION 3: FEATURED CASE STUDIES BENTO GRID
-            Matching exact editorial reference layout:
-            Col 1: Intro + Filter Pills & Card 03 (PictureTime)
-            Col 2: Card 01 (Raysons Group) + Subgrid (04 Misu & 05 SHE + Slogan)
-            Col 3: Card 02 (Loom Crafts - staggered) & Card 06 (RR Skins)
-            ═══════════════════════════════════════════════════════════════════ */}
-        <section
-          style={{
-            paddingTop: 'clamp(3.5rem, 5vw, 5rem)',
-            paddingBottom: 'clamp(4.5rem, 7vw, 7rem)',
-            borderTop: BORDER,
-          }}
-        >
-          {/* Header & Filter Bar */}
-          <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
-            <p
-              style={{
-                fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
-                lineHeight: 1.45,
-                color: '#71717A',
-                maxWidth: '640px',
-                fontWeight: 400,
-                margin: '0 0 1.75rem 0',
-              }}
-            >
-              A selection of businesses and projects that show how Ārohana thinks,
-              creates and executes across very different environments.
-            </p>
-
-            {/* Filter Pills */}
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}
-            >
-              {CASE_FILTERS.map((f) => {
-                const isActive = selectedCaseFilter === f;
-                return (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => setSelectedCaseFilter(f)}
-                    style={{
-                      padding: '0.45rem 1rem',
-                      borderRadius: '4px',
-                      fontSize: '0.78rem',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      backgroundColor: isActive ? DARK : '#FFFFFF',
-                      color: isActive ? '#FFFFFF' : '#374151',
-                      border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
-                      boxShadow: isActive ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
-                    }}
-                  >
-                    {f}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Responsive Editorial Grid */}
-          <div
+      {isCasesEnabled && (
+        <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
+          {/* ═══════════════════════════════════════════════════════════════════
+              SECTION 3: FEATURED CASE STUDIES BENTO GRID
+              Matching exact editorial reference layout:
+              Col 1: Intro + Filter Pills & Card 03 (PictureTime)
+              Col 2: Card 01 (Raysons Group) + Subgrid (04 Misu & 05 SHE + Slogan)
+              Col 3: Card 02 (Loom Crafts - staggered) & Card 06 (RR Skins)
+              ═══════════════════════════════════════════════════════════════════ */}
+          <section
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 380px), 1fr))',
-              gap: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+              paddingTop: 'clamp(3.5rem, 5vw, 5rem)',
+              paddingBottom: 'clamp(4.5rem, 7vw, 7rem)',
+              borderTop: BORDER,
             }}
           >
-            {activeCaseStudies
-              .filter((c) => {
-                if (selectedCaseFilter === 'All') return true;
-                const matchCategory = c.category?.toLowerCase() === selectedCaseFilter.toLowerCase();
-                const matchTag = c.tags?.some((t) => t.toLowerCase() === selectedCaseFilter.toLowerCase());
-                return matchCategory || matchTag;
-              })
-              .map((cs) => (
-                <WorkCaseCard
-                  key={cs.id || cs.slug}
-                  cs={cs}
-                  imageAspect="16 / 10"
-                />
-              ))}
-          </div>
-        </section>
-      </div>
+            {/* Header & Filter Bar */}
+            <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
+              <p
+                style={{
+                  fontSize: 'clamp(1.05rem, 1.35vw, 1.25rem)',
+                  lineHeight: 1.45,
+                  color: '#71717A',
+                  maxWidth: '640px',
+                  fontWeight: 400,
+                  margin: '0 0 1.75rem 0',
+                }}
+              >
+                A selection of businesses and projects that show how Ārohana thinks,
+                creates and executes across very different environments.
+              </p>
+
+              {/* Filter Pills */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                {CASE_FILTERS.map((f) => {
+                  const isActive = selectedCaseFilter === f;
+                  return (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setSelectedCaseFilter(f)}
+                      style={{
+                        padding: '0.45rem 1rem',
+                        borderRadius: '4px',
+                        fontSize: '0.78rem',
+                        fontWeight: 500,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        backgroundColor: isActive ? DARK : '#FFFFFF',
+                        color: isActive ? '#FFFFFF' : '#374151',
+                        border: isActive ? `1px solid ${DARK}` : '1px solid rgba(0, 0, 0, 0.12)',
+                        boxShadow: isActive ? '0 2px 8px rgba(0, 0, 0, 0.1)' : 'none',
+                      }}
+                    >
+                      {f}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Responsive Editorial Grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 380px), 1fr))',
+                gap: 'clamp(1.5rem, 2.5vw, 2.5rem)',
+              }}
+            >
+              {activeCaseStudies
+                .filter((c) => {
+                  if (selectedCaseFilter === 'All') return true;
+                  const matchCategory = c.category?.toLowerCase() === selectedCaseFilter.toLowerCase();
+                  const matchTag = c.tags?.some((t) => t.toLowerCase() === selectedCaseFilter.toLowerCase());
+                  return matchCategory || matchTag;
+                })
+                .map((cs) => (
+                  <WorkCaseCard
+                    key={cs.id || cs.slug}
+                    cs={cs}
+                    imageAspect="16 / 10"
+                  />
+                ))}
+            </div>
+          </section>
+        </div>
+      )}
 
       <style jsx>{`
         /* ── SECTION 1: HERO SECTION STYLES ── */

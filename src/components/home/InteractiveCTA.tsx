@@ -6,9 +6,20 @@ import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { useCmsContent } from '@/lib/cms/content-context';
 
+const DEFAULT_TRAIL_IMAGES = [
+  '/images/case-studies/raysons/casting-hero.jpg',
+  '/images/case-studies/loom/loom-hero.jpg',
+  '/images/case-studies/picturetime/picturetime-hero.jpg',
+  '/images/case-studies/she/she-hero.jpg',
+  '/images/case-studies/misu/misu-hero.jpg',
+  '/images/case-studies/rrskins/rrskins-hero.jpg',
+  '/images/tourin/tourin-hero.jpg',
+];
+
 export default function InteractiveCTA() {
   const { content } = useCmsContent();
   const ctaCms = content?.home?.cta;
+  const isSectionEnabled = ctaCms?.visible !== false && ctaCms?.enabled !== false;
   const activeEyebrow = ctaCms?.eyebrow || 'START A CONVERSATION';
   const activeHeadline = ctaCms?.headline || "If you're building something serious, let's talk about what it actually needs.";
   const activeDesc = ctaCms?.description || "Let's start with what you're trying to solve or build, not a cookie-cutter agency proposal.";
@@ -16,20 +27,39 @@ export default function InteractiveCTA() {
   const activeButtonLink = ctaCms?.buttonLink || '/contact';
   const activeEmail = ctaCms?.email || 'founder@byarohana.com';
 
+  const showEyebrow = ctaCms?.eyebrowEnabled !== false && ctaCms?.showEyebrow !== false && Boolean(activeEyebrow);
+  const showHeadline = ctaCms?.headlineEnabled !== false && ctaCms?.showHeadline !== false;
+  const showDesc = ctaCms?.descriptionEnabled !== false && ctaCms?.showDescription !== false;
+  const showButton = ctaCms?.buttonEnabled !== false && ctaCms?.showButton !== false;
+  const showEmail = ctaCms?.emailEnabled !== false && ctaCms?.showEmail !== false;
+
+  const isHoverEnabled = ctaCms?.hoverImagesEnabled !== false && ctaCms?.hoverEffectEnabled !== false;
+
+  // Extract active trail images from CMS (supports objects with .image or plain string URLs)
+  const activeTrailImages: string[] = React.useMemo(() => {
+    const rawList = ctaCms?.hoverImages || ctaCms?.trailImages;
+    if (Array.isArray(rawList) && rawList.length > 0) {
+      const filtered = rawList
+        .filter((item: any) => {
+          if (typeof item === 'string') return item.trim() !== '';
+          return item && item.enabled !== false && item.image && item.image.trim() !== '';
+        })
+        .map((item: any) => (typeof item === 'string' ? item : item.image));
+      if (filtered.length > 0) return filtered;
+    }
+    return DEFAULT_TRAIL_IMAGES;
+  }, [ctaCms?.hoverImages, ctaCms?.trailImages]);
+
+  const trailImagesRef = useRef<string[]>(activeTrailImages);
+  useEffect(() => {
+    trailImagesRef.current = activeTrailImages;
+  }, [activeTrailImages]);
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const visualWrapRef = useRef<HTMLDivElement>(null);
 
-  const trailImages = [
-    '/images/case-studies/raysons/casting-hero.jpg',
-    '/images/case-studies/loom/loom-hero.jpg',
-    '/images/case-studies/picturetime/picturetime-hero.jpg',
-    '/images/case-studies/she/she-hero.jpg',
-    '/images/case-studies/misu/misu-hero.jpg',
-    '/images/case-studies/rrskins/rrskins-hero.jpg',
-    '/images/tourin/tourin-hero.jpg',
-  ];
-
   useEffect(() => {
+    if (!isHoverEnabled) return;
     const section = sectionRef.current;
     const visualWrap = visualWrapRef.current;
     if (!section || !visualWrap) return;
@@ -40,6 +70,9 @@ export default function InteractiveCTA() {
     let lastY = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
+      const list = trailImagesRef.current;
+      if (!list || list.length === 0) return;
+
       const rect = section.getBoundingClientRect();
       const currentX = e.clientX - rect.left;
       const currentY = e.clientY - rect.top;
@@ -50,7 +83,7 @@ export default function InteractiveCTA() {
         lastX = currentX;
         lastY = currentY;
 
-        const imgSrc = trailImages[imageIndex % trailImages.length];
+        const imgSrc = list[imageIndex % list.length];
         imageIndex++;
 
         // Create trailing card element
@@ -98,7 +131,9 @@ export default function InteractiveCTA() {
     return () => {
       section.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [isHoverEnabled]);
+
+  if (!isSectionEnabled) return null;
 
   return (
     <section
@@ -134,7 +169,9 @@ export default function InteractiveCTA() {
           alignItems: 'center',
         }}
       >
-        <div
+
+        {showEyebrow && (
+          <div
             className="tag-mono"
             style={{
               color: '#888888',
@@ -144,74 +181,85 @@ export default function InteractiveCTA() {
           >
             {activeEyebrow}
           </div>
+        )}
 
-        <h2
-          style={{
-            fontSize: 'clamp(2.4rem, 5.5vw, 5.5rem)',
-            fontWeight: 500,
-            letterSpacing: '-0.035em',
-            lineHeight: 1.06,
-            color: '#ffffff',
-            maxWidth: '1080px',
-            marginBottom: '1.25rem',
-          }}
-        >
-          {activeHeadline}
-        </h2>
-
-        <p
-          style={{
-            fontSize: 'clamp(1.05rem, 1.8vw, 1.4rem)',
-            color: 'rgba(255, 255, 255, 0.8)',
-            maxWidth: '680px',
-            lineHeight: 1.5,
-            marginBottom: 'clamp(2rem, 4vw, 3.5rem)',
-          }}
-        >
-          {activeDesc}
-        </p>
-
-        <div className="interactive-cta-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
-          <Link
-            href={activeButtonLink}
-            className="button-editorial button-editorial-dark"
+        {showHeadline && activeHeadline && (
+          <h2
             style={{
-              height: '52px',
-              padding: '0 2rem',
-              fontSize: '0.95rem',
-              backgroundColor: '#000000',
+              fontSize: 'clamp(2.4rem, 5.5vw, 5.5rem)',
+              fontWeight: 500,
+              letterSpacing: '-0.035em',
+              lineHeight: 1.06,
               color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+              maxWidth: '1080px',
+              marginBottom: '1.25rem',
             }}
           >
-            <div className="button-texts-slider">
-              <span className="button-text-item">{activeButtonLabel}</span>
-              <span className="button-text-item">{activeButtonLabel}</span>
-            </div>
-            <ArrowRight size={16} />
-          </Link>
+            {activeHeadline}
+          </h2>
+        )}
 
-          <a
-            href={`mailto:${activeEmail}`}
+        {showDesc && activeDesc && (
+          <p
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '52px',
-              padding: '0 1.5rem',
-              borderRadius: '4px',
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              color: '#ffffff',
-              fontSize: '0.925rem',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              textDecoration: 'none',
-              transition: 'all 0.3s ease',
+              fontSize: 'clamp(1.05rem, 1.8vw, 1.4rem)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              maxWidth: '680px',
+              lineHeight: 1.5,
+              marginBottom: 'clamp(2rem, 4vw, 3.5rem)',
             }}
           >
-            {activeEmail}
-          </a>
-        </div>
+            {activeDesc}
+          </p>
+        )}
+
+        {(showButton || showEmail) && (
+          <div className="interactive-cta-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center', width: '100%', maxWidth: '520px' }}>
+            {showButton && (
+              <Link
+                href={activeButtonLink}
+                className="button-editorial button-editorial-dark"
+                style={{
+                  height: '52px',
+                  padding: '0 2rem',
+                  fontSize: '0.95rem',
+                  backgroundColor: '#000000',
+                  color: '#ffffff',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+                }}
+              >
+                <div className="button-texts-slider">
+                  <span className="button-text-item">{activeButtonLabel}</span>
+                  <span className="button-text-item">{activeButtonLabel}</span>
+                </div>
+                <ArrowRight size={16} />
+              </Link>
+            )}
+
+            {showEmail && (
+              <a
+                href={`mailto:${activeEmail}`}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '52px',
+                  padding: '0 1.5rem',
+                  borderRadius: '4px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  color: '#ffffff',
+                  fontSize: '0.925rem',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                  textDecoration: 'none',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {activeEmail}
+              </a>
+            )}
+          </div>
+        )}
 
       </div>
 

@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,6 +27,10 @@ export default function AdminLoginPage() {
 
       const data = await res.json();
       if (res.ok && data.success) {
+        // Save session-only token in browser session storage
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('arohana_admin_session', 'active');
+        }
         // Successful login
         router.push('/admin');
       } else {
@@ -200,14 +205,14 @@ export default function AdminLoginPage() {
                 style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#71717A' }}
               />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
                 style={{
                   width: '100%',
-                  padding: '0.8rem 1rem 0.8rem 2.65rem',
+                  padding: '0.8rem 2.85rem 0.8rem 2.65rem',
                   borderRadius: '12px',
                   backgroundColor: '#22232A',
                   border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -216,6 +221,27 @@ export default function AdminLoginPage() {
                   outline: 'none',
                 }}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                style={{
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'transparent',
+                  border: 'none',
+                  color: showPassword ? '#DE322D' : '#71717A',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
           </div>
 

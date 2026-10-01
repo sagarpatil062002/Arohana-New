@@ -33,13 +33,33 @@ export default function TourinPage() {
   const tourinCms = content.tourin || {};
 
   const hero = tourinCms.hero || {
+    enabled: true,
     eyebrow: 'OWNED EXPERIENTIAL TRAVEL BRAND',
+    eyebrowEnabled: true,
     headline: 'Travel\nbeyond\nthe itinerary.',
+    headlineEnabled: true,
     quote: 'Some places are better experienced when you stop trying to see everything.',
+    quoteEnabled: true,
     description: 'Tourin creates experiential journeys for travellers who want more than a checklist of sights — beginning with Ladakh, and beyond.',
-    primaryDestination: 'Ladakh, Himalayan Plateau',
-    elevation: '11,500 – 17,580 FT',
+    descriptionEnabled: true,
     season: 'May to October Active Windows',
+  };
+
+  // Section 01 image composition: Image 1 (large) + Image 2 & Image 3 (equal, stacked)
+  const heroImage1 = hero.image1 || {
+    src: '/images/tourin/tourin-hero.jpg',
+    alt: 'High altitude mountain landscape in Ladakh',
+    enabled: true,
+  };
+  const heroImage2 = hero.image2 || {
+    src: '/images/tourin/dest-ladakh.jpg',
+    alt: 'Pristine alpine landscape with turquoise lake',
+    enabled: true,
+  };
+  const heroImage3 = hero.image3 || {
+    src: '/images/tourin/tourin-3.jpg',
+    alt: 'High mountain pass and valley in Ladakh',
+    enabled: true,
   };
 
   const genesis = tourinCms.genesis || {
@@ -394,8 +414,10 @@ export default function TourinPage() {
       </div>
 
       {/* ================================================================
-          01 — HERO (3-Column Editorial Grid matching Reference Image 1)
+          01 — SECTION 01: HERO EDITORIAL GRID & STORYTELLING
+              (Admin CRM controllable: master enable + per-field enable/disable)
       ================================================================ */}
+      {hero.enabled !== false && (
       <section
         className="tourin-hero-editorial-section"
         style={{
@@ -421,34 +443,37 @@ export default function TourinPage() {
             {/* ── LEFT COLUMN: Storytelling, Headline, Copy & CTAs ── */}
             <div className="tourin-col-left">
               {/* Eyebrow */}
-              <div className="tourin-tag-eyebrow">
-                {hero.eyebrow}
-              </div>
+              {hero.eyebrowEnabled !== false && hero.eyebrow && (
+                <div className="tourin-tag-eyebrow">{hero.eyebrow}</div>
+              )}
 
               {/* Main Headline */}
-              <h1 className="tourin-editorial-headline" style={{ whiteSpace: 'pre-line' }}>
-                {hero.headline?.includes('itinerary') ? (
-                  <>
-                    Travel
-                    <br />
-                    beyond
-                    <br />
-                    the itinerary<span className="tourin-red-dot">.</span>
-                  </>
-                ) : (
-                  hero.headline
-                )}
-              </h1>
+              {hero.headlineEnabled !== false && hero.headline && (
+                <h1 className="tourin-editorial-headline" style={{ whiteSpace: 'pre-line' }}>
+                  {hero.headline?.includes('itinerary') ? (
+                    <>
+                      Travel
+                      <br />
+                      beyond
+                      <br />
+                      the itinerary<span className="tourin-red-dot">.</span>
+                    </>
+                  ) : (
+                    hero.headline
+                  )}
+                </h1>
+              )}
 
               {/* Sub-quote */}
-              <p className="tourin-quote-text">
-                {hero.quote}
-              </p>
+              {hero.quoteEnabled !== false && hero.quote && (
+                <p className="tourin-quote-text">{hero.quote}</p>
+              )}
 
               {/* Description Body */}
-              <p className="tourin-desc-text">
-                {hero.description}
-              </p>
+              {hero.descriptionEnabled !== false && hero.description && (
+                <p className="tourin-desc-text">{hero.description}</p>
+              )}
+
 
               {/* Action Buttons Row */}
               <div className="tourin-action-buttons">
@@ -460,29 +485,42 @@ export default function TourinPage() {
 
             </div>
 
-            {/* ── CENTER COLUMN: Main Feature Card ── */}
+            {/* ── CENTER COLUMN: Image 1 (large / main image) ── */}
             <div className="tourin-col-center">
-              <div className="santorini-feature-card">
-                <Image
-                  src="/images/tourin/tourin-hero.jpg"
-                  alt="High altitude mountain landscape in Ladakh"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 42vw"
-                  className="santorini-card-img"
-                />
-                <div className="santorini-vignette-overlay" />
-              </div>
+              {heroImage1.enabled !== false && heroImage1.src && (
+                <div className="santorini-feature-card">
+                  <Image
+                    src={heroImage1.src}
+                    alt={heroImage1.alt || 'High altitude mountain landscape in Ladakh'}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    className="santorini-card-img"
+                  />
+                  <div className="santorini-vignette-overlay" />
+                </div>
+              )}
             </div>
 
-            {/* ── RIGHT COLUMN: Editorial Timeline & Lower Turquoise Lake Card ── */}
+            {/* ── RIGHT COLUMN: Image 2 (upper) + Image 3 (lower) — exactly equal size ── */}
             <div className="tourin-col-right">
-              {/* Lower Thumbnail Card: Pristine Turquoise Lake */}
-              <div className="tourin-right-lower">
-                <div className="lake-thumbnail-card">
+              {heroImage2.enabled !== false && heroImage2.src && (
+                <div className="tourin-img-slot">
                   <Image
-                    src="/images/tourin/dest-ladakh.jpg"
-                    alt="Pristine alpine landscape"
+                    src={heroImage2.src}
+                    alt={heroImage2.alt || 'Pristine alpine landscape'}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 22vw"
+                    className="lake-card-img"
+                  />
+                  <div className="lake-gradient-dim" />
+                </div>
+              )}
+              {heroImage3.enabled !== false && heroImage3.src && (
+                <div className="tourin-img-slot">
+                  <Image
+                    src={heroImage3.src}
+                    alt={heroImage3.alt || 'High mountain pass and valley in Ladakh'}
                     fill
                     sizes="(max-width: 1024px) 100vw, 22vw"
                     className="lake-card-img"
@@ -492,16 +530,18 @@ export default function TourinPage() {
                     <ArrowRight size={14} strokeWidth={2.4} />
                   </Link>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
 
       </section>
+      )}
 
       {/* ================================================================
            02 — SECTION: 01 • THE GENESIS — Why Tourin.
       ================================================================ */}
+      {genesis.enabled !== false && (
       <section
         id="the-genesis"
         style={{
@@ -539,27 +579,23 @@ export default function TourinPage() {
               {/* Row 1 Content Grid: Left Text Column + Right Media Gallery */}
               <div className="genesis-row-content">
                 <div className="genesis-text-col">
-                  {genesis.tag ? (
+                  {genesis.tagEnabled !== false && genesis.tag ? (
                     <div className="genesis-tag">
                       <span className="tag-red-bullet">•</span>
                       <span>{genesis.tag}</span>
                     </div>
                   ) : null}
 
-                  <h2 className="genesis-heading">
-                    {genesis.heading || 'Why Tourin.'}
-                  </h2>
+                  {genesis.headingEnabled !== false && genesis.heading && (
+                    <h2 className="genesis-heading">
+                      {genesis.heading}
+                    </h2>
+                  )}
 
                   <div className="genesis-paragraphs">
-                    <p>
-                      {genesis.p1}
-                    </p>
-                    <p>
-                      {genesis.p2}
-                    </p>
-                    <p>
-                      {genesis.p3}
-                    </p>
+                    {genesis.p1Enabled !== false && genesis.p1 && <p>{genesis.p1}</p>}
+                    {genesis.p2Enabled !== false && genesis.p2 && <p>{genesis.p2}</p>}
+                    {genesis.p3Enabled !== false && genesis.p3 && <p>{genesis.p3}</p>}
                   </div>
                 </div>
 
@@ -596,12 +632,14 @@ export default function TourinPage() {
         </div>
 
       </section>
+      )}
 
 
 
       {/* ================================================================
            03 — SECTION: 03 • THE DESTINATION — Where we go.
       ================================================================ */}
+      {destination.enabled !== false && (
       <section
         id="the-destination"
         style={{
@@ -630,25 +668,26 @@ export default function TourinPage() {
             <div className="tourin-section-inner dest-section-inner">
               {/* Left Text */}
               <div className="tourin-section-left">
-                <div className="genesis-tag">
-                  <span className="tag-red-bullet">•</span>
-                  <span>{destination.tag || 'THE DESTINATION'}</span>
-                </div>
+                {destination.tagEnabled !== false && destination.tag && (
+                  <div className="genesis-tag">
+                    <span className="tag-red-bullet">•</span>
+                    <span>{destination.tag}</span>
+                  </div>
+                )}
 
-                <h2 className="tourin-section-heading">
-                  Where We Go
-                </h2>
+                {destination.headingEnabled !== false && destination.heading && (
+                  <h2 className="tourin-section-heading">
+                    {destination.heading}
+                  </h2>
+                )}
 
                 <div className="tourin-section-body">
-                  <p>
-                    We create thoughtful journeys through places with character, culture and a story to tell. We go beyond the usual tourist circuit to discover local experiences, landscapes, food, people and ways of life.
-                  </p>
-                  <p style={{ marginTop: '0.85rem' }}>
-                    Our journeys currently begins in Ladakh, with plans to take the same approach to other destinations.
-                  </p>
-                  <p style={{ marginTop: '0.85rem' }}>
-                    Wherever we go, the idea remains simple — travel deeper, experience more and leave with a sense of the place and memories.
-                  </p>
+                  {destination.primaryEnabled !== false && destination.primary && (
+                    <p>{destination.primary}</p>
+                  )}
+                  {destination.upcomingEnabled !== false && destination.upcoming && (
+                    <p style={{ marginTop: '0.85rem' }}>{destination.upcoming}</p>
+                  )}
                 </div>
 
                 <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.85rem', alignItems: 'flex-start' }}>
@@ -680,7 +719,7 @@ export default function TourinPage() {
               {/* Right: Destination Cards Grid (Ladakh + Adding More Places Coming Soon) */}
               <div style={{ width: '100%' }}>
                 <div className="dest-cards-grid">
-                  {(showAllPlaces ? destinationPlaces : destinationPlaces.slice(0, 2)).map((place: any) => (
+                  {(showAllPlaces ? destinationPlaces : destinationPlaces.slice(0, 2)).filter((p: any) => p.enabled !== false).map((place: any) => (
                     <div key={place.id} className="dest-card-wrap">
                       <div
                         className="dest-card"
@@ -804,11 +843,13 @@ export default function TourinPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ================================================================
            UNIFIED MASTER SECTION: PHILOSOPHY, TRAVELLER & EXPERIENCE
            Combined into ONE seamless section as requested
       ================================================================ */}
+      {philosophy.enabled !== false && (
       <section
         id="what-we-believe"
         style={{
@@ -834,13 +875,17 @@ export default function TourinPage() {
             <div style={{ flex: 1, minWidth: 0 }}>
               {/* 1. MASTER HEADER & PHILOSOPHY */}
               <div style={{ marginBottom: 'clamp(2rem, 3.5vw, 3rem)' }}>
-                <div className="genesis-tag">
-                  <span className="tag-red-bullet">•</span>
-                  <span>{philosophy.tag || 'OUR PHILOSOPHY & APPROACH'}</span>
-                </div>
-                <h2 className="genesis-heading">
-                  {philosophy.heading || 'What we believe.'}
-                </h2>
+                {philosophy.tagEnabled !== false && philosophy.tag && (
+                  <div className="genesis-tag">
+                    <span className="tag-red-bullet">•</span>
+                    <span>{philosophy.tag}</span>
+                  </div>
+                )}
+                {philosophy.headingEnabled !== false && philosophy.heading && (
+                  <h2 className="genesis-heading">
+                    {philosophy.heading}
+                  </h2>
+                )}
               </div>
 
           {/* Core Philosophy Narrative & Quote Grid */}
@@ -856,23 +901,25 @@ export default function TourinPage() {
           >
             <div className="genesis-text-col">
               <div className="genesis-paragraphs">
-                <p>{philosophy.p1}</p>
-                <p>{philosophy.p2}</p>
-                <p>{philosophy.p3}</p>
+                {philosophy.p1Enabled !== false && philosophy.p1 && <p>{philosophy.p1}</p>}
+                {philosophy.p2Enabled !== false && philosophy.p2 && <p>{philosophy.p2}</p>}
+                {philosophy.p3Enabled !== false && philosophy.p3 && <p>{philosophy.p3}</p>}
               </div>
             </div>
 
             {/* The Stylized Quote Block */}
-            <div className="genesis-quote-col">
-              <div className="quote-watermark-ring" />
-              <div className="quote-mark">“</div>
-              <blockquote className="quote-statement" style={{ whiteSpace: 'pre-line' }}>
-                {philosophy.quote || 'TRAVEL SHOULD NOT MERELY FILL YOUR CALENDAR; IT SHOULD RESHAPE HOW YOU OBSERVE THE EARTH.'}
-              </blockquote>
-              <p className="quote-attribution">
-                It is about what you have time to notice.
-              </p>
-            </div>
+            {philosophy.quoteEnabled !== false && philosophy.quote && (
+              <div className="genesis-quote-col">
+                <div className="quote-watermark-ring" />
+                <div className="quote-mark">“</div>
+                <blockquote className="quote-statement" style={{ whiteSpace: 'pre-line' }}>
+                  {philosophy.quote}
+                </blockquote>
+                <p className="quote-attribution">
+                  It is about what you have time to notice.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* 2. THE TRAVELLER (Who Tourin is for) */}
@@ -979,6 +1026,7 @@ export default function TourinPage() {
       </div>
     </div>
   </section>
+      )}
 
       {/* ================================================================
            06 — EXPERIENCE MARQUEE (Continuous Horizontal Ticker)
@@ -1075,6 +1123,7 @@ export default function TourinPage() {
       {/* ================================================================
            06 — SECTION: PROOF THAT IT WORKS — Journeys already taken.
       ================================================================ */}
+      {journeysTaken.enabled !== false && (
       <section
         style={{
           paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
@@ -1099,46 +1148,54 @@ export default function TourinPage() {
             <div className="proof-content-grid">
               {/* Left: Text */}
               <div>
-                <div className="genesis-tag">
-                  <span className="tag-red-bullet">•</span>
-                  <span>{journeysTaken.tag || 'PROOF THAT IT WORKS'}</span>
-                </div>
+                {journeysTaken.tagEnabled !== false && journeysTaken.tag && (
+                  <div className="genesis-tag">
+                    <span className="tag-red-bullet">•</span>
+                    <span>{journeysTaken.tag}</span>
+                  </div>
+                )}
 
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
-                    fontWeight: 500,
-                    letterSpacing: '-0.03em',
-                    color: '#111111',
-                    lineHeight: 1.12,
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  {journeysTaken.heading || 'Journeys already taken.'}
-                </h2>
+                {journeysTaken.headingEnabled !== false && journeysTaken.heading && (
+                  <h2
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+                      fontWeight: 500,
+                      letterSpacing: '-0.03em',
+                      color: '#111111',
+                      lineHeight: 1.12,
+                      marginBottom: '1.5rem',
+                    }}
+                  >
+                    {journeysTaken.heading}
+                  </h2>
+                )}
 
                 <div style={{ maxWidth: '380px', marginTop: '1.25rem' }}>
-                  <p
-                    style={{
-                      fontSize: '0.98rem',
-                      color: '#444444',
-                      lineHeight: 1.7,
-                      marginBottom: '0.85rem',
-                      fontWeight: 450,
-                    }}
-                  >
-                    {journeysTaken.p1 || 'Tourin has successfully guided private cultural journeys, intimate escapes, and bespoke high-altitude expeditions across Ladakh\'s most remote valleys and mountain passes.'}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: '0.88rem',
-                      color: '#777777',
-                      lineHeight: 1.65,
-                    }}
-                  >
-                    {journeysTaken.p2 || 'Proven on high-altitude routes with trusted local relationships, tailored medical acclimatisation, and zero-compromise logistical care.'}
-                  </p>
+                  {journeysTaken.p1Enabled !== false && journeysTaken.p1 && (
+                    <p
+                      style={{
+                        fontSize: '0.98rem',
+                        color: '#444444',
+                        lineHeight: 1.7,
+                        marginBottom: '0.85rem',
+                        fontWeight: 450,
+                      }}
+                    >
+                      {journeysTaken.p1}
+                    </p>
+                  )}
+                  {journeysTaken.p2Enabled !== false && journeysTaken.p2 && (
+                    <p
+                      style={{
+                        fontSize: '0.88rem',
+                        color: '#777777',
+                        lineHeight: 1.65,
+                      }}
+                    >
+                      {journeysTaken.p2}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -1176,11 +1233,12 @@ export default function TourinPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ================================================================
-           07 — SECTION: CURATED JOURNEYS (kept in backend)
+           07 — SECTION: CURATED JOURNEYS
       ================================================================ */}
-      {false && (
+      {tourinCms.journeysEnabled !== false && journeys.length > 0 && (
       <section
         id="curated-journeys"
         style={{
@@ -1319,8 +1377,8 @@ export default function TourinPage() {
                 ref={journeysScrollRef}
                 className="curated-cards-grid"
               >
-                {/* 1. The Single Curated Journey */}
-                {journeys.slice(0, 1).map((journey) => (
+                {/* Published Curated Journeys */}
+                {journeys.map((journey) => (
                   <div
                     key={journey.id}
                     className="tourin-journey-card"
@@ -1610,6 +1668,60 @@ export default function TourinPage() {
           </div>
         </div>
       </section>
+      )}
+
+      {/* ================================================================
+           07 — SECTION: OPERATIONAL READINESS STATS
+      ================================================================ */}
+      {tourinCms.statsEnabled !== false && (tourinCms.stats || []).filter((s: any) => s.enabled !== false && (s.value || s.label)).length > 0 && (
+        <section
+          style={{
+            padding: 'clamp(3.5rem, 6vw, 5.5rem) 0',
+            backgroundColor: '#fafafb',
+            borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+          }}
+        >
+          <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '1.5rem',
+              }}
+            >
+              {(tourinCms.stats || []).filter((s: any) => s.enabled !== false && (s.value || s.label)).map((stat: any, idx: number) => (
+                <div
+                  key={idx}
+                  style={{
+                    padding: '1.75rem',
+                    borderRadius: '12px',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid rgba(0, 0, 0, 0.07)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
+                      fontWeight: 700,
+                      color: '#DE322D',
+                      letterSpacing: '-0.02em',
+                      lineHeight: 1.1,
+                      marginBottom: '0.4rem',
+                    }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div style={{ fontSize: '0.85rem', color: '#555558', fontWeight: 550, lineHeight: 1.4 }}>
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       )}
 
       {/* ================================================================
