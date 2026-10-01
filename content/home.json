@@ -114,10 +114,10 @@
     "carouselInterval": 5000,
     "bannerClarity": "clear",
     "videoUrl": "",
-    "showVideoCard": true,
+    "showVideoCard": false,
     "videoCard": {
       "enabled": false,
-      "videoUrl": "/videos/hero-montage.mp4",
+      "videoUrl": "",
       "posterImage": "/images/case-studies/raysons/neora-1.jpg",
       "badge": "PRODUCTION · 4K FILM",
       "title": "Raysons Group · Neora Deck",
