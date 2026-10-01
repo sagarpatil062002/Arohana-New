@@ -356,54 +356,6 @@ export default function Hero() {
                     </Link>
                   ))}
                 </div>
-
-                {/* Agency Practice Areas Bar */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    gap: '0.65rem',
-                    marginTop: '2rem',
-                    paddingTop: '1.25rem',
-                    borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '0.66rem',
-                      color: 'rgba(255, 255, 255, 0.75)',
-                      fontFamily: 'var(--font-mono, monospace)',
-                      letterSpacing: '0.12em',
-                      fontWeight: 600,
-                      textShadow: '0 1px 4px rgba(0, 0, 0, 0.8)',
-                    }}
-                  >
-                    DISCIPLINES:
-                  </span>
-                  {[
-                    'Digital Brand Growth',
-                    'Content & Film Production',
-                    'Hospitality Consulting',
-                  ].map((area) => (
-                    <span
-                      key={area}
-                      style={{
-                        fontSize: '0.72rem',
-                        fontWeight: 600,
-                        color: '#ffffff',
-                        backgroundColor: 'rgba(10, 14, 23, 0.65)',
-                        border: '1px solid rgba(255, 255, 255, 0.22)',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-                        padding: '0.22rem 0.65rem',
-                        borderRadius: '3px',
-                        backdropFilter: 'blur(8px)',
-                      }}
-                    >
-                      {area}
-                    </span>
-                  ))}
-                </div>
               </motion.div>
 
               {/* Right Column: Creative Agency Work & Production Showcase (Rendered only when enabled) */}
@@ -474,55 +426,14 @@ export default function Hero() {
                 style={{
                   position: 'absolute',
                   bottom: '1.25rem',
-                  left: 'clamp(1.75rem, 4.5vw, 4.5rem)',
                   right: 'clamp(1.75rem, 4.5vw, 4.5rem)',
                   zIndex: 25,
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
+                  justifyContent: 'flex-end',
                   pointerEvents: 'auto',
                 }}
               >
-                {/* Active Slide Caption & Index */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    backgroundColor: 'rgba(10, 13, 20, 0.65)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                    padding: '0.35rem 0.85rem',
-                    borderRadius: '9999px',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono, monospace)',
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      color: '#DE322D',
-                      letterSpacing: '0.08em',
-                    }}
-                  >
-                    0{activeSlideIndex + 1} / 0{slides.length}
-                  </span>
-                  {slides[activeSlideIndex]?.caption && (
-                    <>
-                      <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(255, 255, 255, 0.4)' }} />
-                      <span
-                        style={{
-                          fontSize: '0.74rem',
-                          color: 'rgba(255, 255, 255, 0.85)',
-                          fontWeight: 500,
-                        }}
-                      >
-                        {slides[activeSlideIndex].caption}
-                      </span>
-                    </>
-                  )}
-                </div>
 
                 {/* Carousel Controls: Arrows + Dots */}
                 <div

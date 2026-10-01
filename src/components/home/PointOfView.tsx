@@ -111,15 +111,29 @@ export default function PointOfView() {
               <p>{activeParagraph2}</p>
             </div>
 
-
+            {/* CTA Buttons Row */}
+            {(activeBtnPrimaryText || activeBtnSecondaryText) && (
+              <div className="pov-buttons-row">
+                {activeBtnPrimaryText && (
+                  <Link href={activeBtnPrimaryLink} className="pov-btn-primary">
+                    <span>{activeBtnPrimaryText}</span>
+                    <ArrowRight size={15} />
+                  </Link>
+                )}
+                {activeBtnSecondaryText && (
+                  <Link href={activeBtnSecondaryLink} className="pov-btn-secondary">
+                    <span>{activeBtnSecondaryText}</span>
+                    <ArrowRight size={15} />
+                  </Link>
+                )}
+              </div>
+            )}
           </div>
 
           {/* ============================================================
               RIGHT COLUMN: Layered Architectural Shapes, Portrait, Founder Badge
               ============================================================ */}
           <div ref={rightRef} className="pov-right-col">
-
-
             {/* Visual Composition Container */}
             <div className="pov-composition-box">
               {/* Layer 1: Deep Red Rounded Arch on Left */}
@@ -156,7 +170,7 @@ export default function PointOfView() {
               <div className="pov-portrait-frame">
                 <Image
                   src={povCms?.founderImage || "/images/home/madhura-editorial.jpg"}
-                  alt="Madhura Hawal - Founder of Ārohana Consultancy"
+                  alt={`${povCms?.founderName || "Madhura Hawal"} - Founder of Ārohana Consultancy`}
                   fill
                   priority
                   sizes="(max-width: 768px) 300px, (max-width: 1200px) 360px, 400px"
@@ -170,18 +184,18 @@ export default function PointOfView() {
               {/* Layer 6: Floating Founder Badge Card (Overlapping Bottom Right) */}
               <div className="pov-founder-badge">
                 <div className="pov-founder-meta">
-                  <span className="pov-founder-name">MADHURA HAWAL</span>
-                  <span className="pov-founder-role">FOUNDER</span>
+                  <span className="pov-founder-name">{povCms?.founderName || "MADHURA HAWAL"}</span>
+                  <span className="pov-founder-role">{povCms?.founderRole || "FOUNDER"}</span>
                 </div>
                 <p className="pov-founder-desc">
-                  Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs.
+                  {povCms?.founderDesc || "Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs."}
                 </p>
 
                 {/* Floating Red Circular Arrow Button */}
                 <Link
-                  href="/about"
+                  href={povCms?.founderLink || "/about"}
                   className="pov-founder-action-btn"
-                  aria-label="View Madhura Hawal founder story"
+                  aria-label={`View ${povCms?.founderName || "Madhura Hawal"} founder story`}
                 >
                   <ArrowRight size={16} />
                 </Link>

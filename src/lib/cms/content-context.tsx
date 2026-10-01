@@ -25,13 +25,29 @@ export function CmsProvider({
 
   const channelRef = React.useRef<BroadcastChannel | null>(null);
 
+  // Helper to read localStorage drafts
+  const getLocalDrafts = () => {
+    if (typeof window === 'undefined') return {};
+    const sections = ['home', 'work', 'services', 'army-projects', 'tourin', 'about', 'partners', 'contact', 'footer', 'settings'];
+    const cached: Record<string, any> = {};
+    sections.forEach((sec) => {
+      try {
+        const val = localStorage.getItem(`arohana_cms_${sec}`);
+        if (val) cached[sec] = JSON.parse(val);
+      } catch (e) {}
+    });
+    return cached;
+  };
+
   // Initial load of sections via single batch endpoint
   useEffect(() => {
+    const cached = getLocalDrafts();
+
     fetch('/api/content')
       .then((r) => r.json())
       .then((res) => {
         if (res.success && res.data) {
-          setContent(res.data);
+          setContent({ ...res.data, ...cached });
           setIsLoading(false);
         } else {
           throw new Error('Fallback to individual');
@@ -51,7 +67,7 @@ export function CmsProvider({
           results.forEach((r) => {
             if (r.data) initial[r.section] = r.data;
           });
-          setContent(initial);
+          setContent({ ...initial, ...cached });
           setIsLoading(false);
         });
       });
@@ -89,6 +105,11 @@ export function CmsProvider({
 
   const updateDraftInMemory = (section: string, data: any) => {
     setContent((prev) => ({ ...prev, [section]: data }));
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(`arohana_cms_${section}`, JSON.stringify(data));
+      } catch (err) {}
+    }
     if (channelRef.current) {
       try {
         channelRef.current.postMessage({ type: 'DRAFT_UPDATE', section, data });

@@ -50,17 +50,34 @@ export default function MediaPickerModal({
       setPreviewError(false);
       setCopied(false);
 
+      const mergeLocalAssets = (remoteList: any[]) => {
+        try {
+          const stored = localStorage.getItem('arohana_cms_media_assets');
+          if (stored) {
+            const parsed: any[] = JSON.parse(stored);
+            const combined = [...parsed];
+            remoteList.forEach((a: any) => {
+              if (!combined.some((c: any) => c.url === a.url)) {
+                combined.push(a);
+              }
+            });
+            return combined;
+          }
+        } catch (e) {}
+        return remoteList;
+      };
+
       fetch('/api/content/media?draft=true')
         .then((r) => r.json())
         .then((res) => {
           const assetList = res?.data?.assets || res?.assets || [];
-          setAssets(assetList);
+          setAssets(mergeLocalAssets(assetList));
         })
         .catch(() => {
           fetch('/content/media.json')
             .then((r) => r.json())
             .then((data) => {
-              if (data.assets) setAssets(data.assets);
+              if (data.assets) setAssets(mergeLocalAssets(data.assets));
             })
             .catch(() => {});
         });
@@ -89,14 +106,23 @@ export default function MediaPickerModal({
       });
       const data = await res.json();
       if (data.success && data.asset) {
-        setAssets((prev) => [data.asset, ...prev]);
+        setAssets((prev) => {
+          const updated = [data.asset, ...prev.filter((p) => p.id !== data.asset.id)];
+          try {
+            localStorage.setItem('arohana_cms_media_assets', JSON.stringify(updated));
+          } catch (e) {}
+          return updated;
+        });
         setSelectedUrl(data.url);
         setUrlInput(data.url);
         onSelect(data.url);
         onClose();
+      } else {
+        alert(data.error || 'Upload failed. Please try again.');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Upload failed:', err);
+      alert(err.message || 'Upload failed. Please try again.');
     } finally {
       setIsUploading(false);
     }

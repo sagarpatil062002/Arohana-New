@@ -33,7 +33,7 @@ export async function POST(
     const written = writeContentFile(`${section}.json`, body.data);
     saveSectionDraft(section, body.data);
 
-    return NextResponse.json({ success: written, section, draftSaved: true, saved: true });
+    return NextResponse.json({ success: true, written, section, draftSaved: true, saved: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

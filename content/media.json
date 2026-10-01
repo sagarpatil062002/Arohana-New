@@ -1,6 +1,26 @@
 {
   "assets": [
     {
+      "id": "asset-1790846901692",
+      "name": "madhura-editorial.jpg",
+      "url": "/uploads/1790846901692-madhura-editorial.jpg",
+      "type": "image",
+      "size": "83 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-01T09:28:21.696Z",
+      "usedIn": "Hero Artwork"
+    },
+    {
+      "id": "asset-1790846891950",
+      "name": "Jeena Mutha.jpg",
+      "url": "/uploads/1790846891950-jeena-mutha.jpg",
+      "type": "image",
+      "size": "4.9 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-01T09:28:12.000Z",
+      "usedIn": "Hero Artwork"
+    },
+    {
       "id": "asset-1790712682532",
       "name": "hero-poster.jpg",
       "url": "/uploads/1790712682532-hero-poster.jpg",

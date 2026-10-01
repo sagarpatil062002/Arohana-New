@@ -1591,6 +1591,126 @@ export default function AdminHomePage() {
                 </p>
               </div>
 
+              {/* Founder Portrait & Profile Card (Live on Homepage Right Column) */}
+              <div
+                style={{
+                  padding: '1rem',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(0, 0, 0, 0.08)',
+                  backgroundColor: '#F8F8FA',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.85rem',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
+                    FOUNDER PORTRAIT &amp; IDENTITY CARD
+                  </span>
+                  <span style={{ fontSize: '0.68rem', color: '#71717A', backgroundColor: '#FFFFFF', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    Live Right Column Component
+                  </span>
+                </div>
+
+                {/* Founder Image Picker */}
+                <div>
+                  <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    Founder Portrait Photo (Madhura Hawal)
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div
+                      style={{
+                        width: '54px',
+                        height: '68px',
+                        borderRadius: '6px',
+                        overflow: 'hidden',
+                        border: '1px solid rgba(0,0,0,0.1)',
+                        backgroundColor: '#E4E4E7',
+                        position: 'relative',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {homeData.pov?.founderImage || '/images/home/madhura-editorial.jpg' ? (
+                        <img
+                          src={homeData.pov?.founderImage || '/images/home/madhura-editorial.jpg'}
+                          alt="Founder Portrait Preview"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      ) : null}
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', gap: '0.4rem' }}>
+                      <input
+                        type="text"
+                        value={homeData.pov?.founderImage || ''}
+                        placeholder="/images/home/madhura-editorial.jpg"
+                        onChange={(e) => updateField(['pov', 'founderImage'], e.target.value)}
+                        style={{ ...inputStyle, fontSize: '0.78rem' }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setMediaPickerTarget({ path: 'pov.founderImage', type: 'image' })}
+                        style={mediaBtnStyle}
+                      >
+                        Pick / Upload
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                      FOUNDER NAME
+                    </label>
+                    <input
+                      type="text"
+                      value={homeData.pov?.founderName || ''}
+                      placeholder="MADHURA HAWAL"
+                      onChange={(e) => updateField(['pov', 'founderName'], e.target.value)}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                      FOUNDER ROLE / BADGE
+                    </label>
+                    <input
+                      type="text"
+                      value={homeData.pov?.founderRole || ''}
+                      placeholder="FOUNDER"
+                      onChange={(e) => updateField(['pov', 'founderRole'], e.target.value)}
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    FOUNDER BIO / CARD DESCRIPTION
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={homeData.pov?.founderDesc || ''}
+                    placeholder="Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs."
+                    onChange={(e) => updateField(['pov', 'founderDesc'], e.target.value)}
+                    style={inputStyle}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    FOUNDER BUTTON LINK (ARROW)
+                  </label>
+                  <input
+                    type="text"
+                    value={homeData.pov?.founderLink || ''}
+                    placeholder="/about"
+                    onChange={(e) => updateField(['pov', 'founderLink'], e.target.value)}
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
+
               <div>
                 <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
                   EYEBROW
