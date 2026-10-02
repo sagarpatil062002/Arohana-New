@@ -1188,6 +1188,7 @@ export const CASE_STUDIES: CaseStudy[] = [
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
+  if (!slug) return undefined;
   const normalized = slug.toLowerCase();
   let base: CaseStudy | undefined;
   if (normalized === 'raysons' || normalized === 'raysons-group') {
@@ -1205,72 +1206,79 @@ export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
     );
   }
 
-  if (!base) return undefined;
-
   if (typeof window === 'undefined') {
     try {
       // Dynamic import / require of getSectionContent to ensure compatibility
       // with both server environment and static evaluation
       const { getSectionContent } = require('@/lib/cms/content-manager');
       const workCms = getSectionContent('work', true);
-    if (workCms?.caseStudies && Array.isArray(workCms.caseStudies)) {
-      const cmsItem = workCms.caseStudies.find(
-        (c: any) =>
-          c.id === base?.slug ||
-          c.slug === base?.slug ||
-          c.id === normalized ||
-          c.slug === normalized ||
-          (base?.slug === 'raysons-group' && (c.id === 'raysons-group' || c.slug === 'raysons')) ||
-          (base?.slug === 'she' && (c.id === 'the-she-project' || c.slug === 'the-she-project'))
-      );
+      if (workCms?.caseStudies && Array.isArray(workCms.caseStudies)) {
+        const cmsItem = workCms.caseStudies.find(
+          (c: any) =>
+            c.id === base?.slug ||
+            c.slug === base?.slug ||
+            c.id === normalized ||
+            c.slug === normalized ||
+            (base?.slug === 'raysons-group' && (c.id === 'raysons-group' || c.slug === 'raysons')) ||
+            (base?.slug === 'she' && (c.id === 'the-she-project' || c.slug === 'the-she-project'))
+        );
 
-      if (cmsItem) {
-        return {
-          ...base,
-          title: cmsItem.title || base.title,
-          subtitle: cmsItem.subtitle || cmsItem.desc || base.subtitle,
-          sector: cmsItem.sector || cmsItem.category || base.sector,
-          heroImage: cmsItem.heroImage || cmsItem.image || base.heroImage,
-          heroImageCaption: cmsItem.heroImageCaption !== undefined ? cmsItem.heroImageCaption : base.heroImageCaption,
-          tags: Array.isArray(cmsItem.tags) && cmsItem.tags.length > 0 ? cmsItem.tags : base.tags,
-          snapshot: {
-            ...base.snapshot,
-            ...(cmsItem.snapshot || {}),
-            coreCapabilities:
-              cmsItem.snapshot?.coreCapabilities && cmsItem.snapshot.coreCapabilities.length > 0
-                ? cmsItem.snapshot.coreCapabilities
-                : base.snapshot.coreCapabilities,
-          },
-          situation:
-            Array.isArray(cmsItem.situation) && cmsItem.situation.length > 0
-              ? cmsItem.situation
-              : base.situation,
-          realChallenge:
-            Array.isArray(cmsItem.realChallenge) && cmsItem.realChallenge.length > 0
-              ? cmsItem.realChallenge
-              : base.realChallenge,
-          thinking:
-            Array.isArray(cmsItem.thinking) && cmsItem.thinking.length > 0
-              ? cmsItem.thinking
-              : base.thinking,
-          work:
-            Array.isArray(cmsItem.work) && cmsItem.work.length > 0
-              ? cmsItem.work
-              : base.work,
-          gallery:
-            Array.isArray(cmsItem.gallery) && cmsItem.gallery.length > 0
-              ? cmsItem.gallery
-              : base.gallery,
-          proof: cmsItem.proof ? { ...base.proof, ...cmsItem.proof } : base.proof,
-          closingQuote: cmsItem.closingQuote !== undefined ? cmsItem.closingQuote : base.closingQuote,
-          closingText: cmsItem.closingText !== undefined ? cmsItem.closingText : base.closingText,
-        };
+        if (cmsItem) {
+          // If explicitly disabled in CMS, return undefined
+          if (cmsItem.enabled === false || cmsItem.published === false) {
+            return undefined;
+          }
+
+          return {
+            id: cmsItem.id || base?.id || base?.slug || normalized,
+            slug: cmsItem.slug || base?.slug || normalized,
+            title: cmsItem.title || base?.title || 'Case Study',
+            subtitle: cmsItem.subtitle || cmsItem.desc || base?.subtitle || '',
+            sector: cmsItem.sector || cmsItem.category || base?.sector || 'Case Study',
+            heroImage: cmsItem.heroImage || cmsItem.image || base?.heroImage || '/images/case-studies/raysons/neora-1.jpg',
+            heroImageCaption: cmsItem.heroImageCaption !== undefined ? cmsItem.heroImageCaption : (base?.heroImageCaption || ''),
+            tags: Array.isArray(cmsItem.tags) && cmsItem.tags.length > 0 ? cmsItem.tags : (base?.tags || []),
+            snapshot: {
+              sector: cmsItem.snapshot?.sector || cmsItem.sector || cmsItem.category || base?.snapshot?.sector || 'Brand & Creative Strategy',
+              location: cmsItem.snapshot?.location || base?.snapshot?.location || '',
+              engagementType: cmsItem.snapshot?.engagementType || base?.snapshot?.engagementType || '',
+              duration: cmsItem.snapshot?.duration || base?.snapshot?.duration || '',
+              coreCapabilities:
+                Array.isArray(cmsItem.snapshot?.coreCapabilities) && cmsItem.snapshot.coreCapabilities.length > 0
+                  ? cmsItem.snapshot.coreCapabilities
+                  : (base?.snapshot?.coreCapabilities || []),
+            },
+            situation:
+              Array.isArray(cmsItem.situation) && cmsItem.situation.length > 0
+                ? cmsItem.situation
+                : (typeof cmsItem.situation === 'string' ? [cmsItem.situation] : (base?.situation || [])),
+            realChallenge:
+              Array.isArray(cmsItem.realChallenge) && cmsItem.realChallenge.length > 0
+                ? cmsItem.realChallenge
+                : (typeof cmsItem.realChallenge === 'string' ? [cmsItem.realChallenge] : (base?.realChallenge || [])),
+            thinking:
+              Array.isArray(cmsItem.thinking) && cmsItem.thinking.length > 0
+                ? cmsItem.thinking
+                : (typeof cmsItem.thinking === 'string' ? [cmsItem.thinking] : (base?.thinking || [])),
+            work:
+              Array.isArray(cmsItem.work) && cmsItem.work.length > 0
+                ? cmsItem.work
+                : (base?.work || []),
+            gallery:
+              Array.isArray(cmsItem.gallery) && cmsItem.gallery.length > 0
+                ? cmsItem.gallery
+                : (base?.gallery || []),
+            proof: cmsItem.proof ? { ...(base?.proof || {}), ...cmsItem.proof } : (base?.proof || { verifiedText: '', metricsNote: '' }),
+            closingQuote: cmsItem.closingQuote !== undefined ? cmsItem.closingQuote : (base?.closingQuote || ''),
+            closingText: cmsItem.closingText !== undefined ? cmsItem.closingText : (base?.closingText || ''),
+            videos: Array.isArray(cmsItem.videos) ? cmsItem.videos : (base?.videos || []),
+          } as unknown as CaseStudy;
+        }
       }
+    } catch (err) {
+      // If running in an environment without direct fs access, fallback to base
     }
-  } catch (err) {
-    // If running in an environment without direct fs access, fallback to base
   }
-}
 
   return base;
 }

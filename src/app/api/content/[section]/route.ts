@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSectionContent, saveSectionDraft, writeContentFile } from '@/lib/cms/content-manager';
 
 export async function GET(
@@ -32,6 +33,13 @@ export async function POST(
 
     if (action === 'publish') {
       const written = writeContentFile(`${section}.json`, body.data);
+      if (section === 'work') {
+        try {
+          revalidatePath('/work');
+          revalidatePath('/work/[slug]', 'page');
+          revalidatePath('/');
+        } catch (e) {}
+      }
       return NextResponse.json({
         success: true,
         written,

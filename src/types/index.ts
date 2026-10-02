@@ -36,6 +36,7 @@ export interface CaseStudyMediaLink {
 }
 
 export interface CaseStudy {
+  id?: string;
   slug: string;
   title: string;
   subtitle: string;

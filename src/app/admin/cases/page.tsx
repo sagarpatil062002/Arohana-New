@@ -26,6 +26,8 @@ import {
   HelpCircle,
   Briefcase,
   ArrowRight,
+  ChevronUp,
+  ChevronDown,
 } from 'lucide-react';
 
 const DEFAULT_CASE_DETAILS: Record<string, any> = {
@@ -92,7 +94,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
 };
 
 export default function AdminCasesPage() {
-  const { content, saveDraft, updateDraftInMemory, publishAll } = useCmsContent();
+  const { content, saveDraft, publishSection, updateDraftInMemory, publishAll } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
@@ -122,6 +124,10 @@ export default function AdminCasesPage() {
   const selectedCase =
     workData.caseStudies?.find((c: any) => c.id === selectedCaseId || c.slug === selectedCaseId) ||
     workData.caseStudies?.[0];
+
+  const deleteTargetCase = workData.caseStudies?.find(
+    (c: any) => c.id === deleteTargetId || c.slug === deleteTargetId
+  );
 
   const getCaseWithDefaults = (c: any) => {
     if (!c) return null;
@@ -165,7 +171,7 @@ export default function AdminCasesPage() {
   const handleCaseChange = (field: string, val: any) => {
     if (!selectedCase) return;
     const updatedCases = workData.caseStudies.map((c: any) =>
-      c.id === selectedCase.id ? { ...getCaseWithDefaults(c), [field]: val } : c
+      (c.id === selectedCase.id || c.slug === selectedCase.slug) ? { ...getCaseWithDefaults(c), [field]: val } : c
     );
     const updated = { ...workData, caseStudies: updatedCases };
     setWorkData(updated);
@@ -183,27 +189,135 @@ export default function AdminCasesPage() {
       });
     }
 
-    // Auto-save draft so server content is always current without manual button clicks
+    // Auto-save so persistent server storage is kept up-to-date
     if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
     autoSaveTimerRef.current = setTimeout(() => {
-      saveDraft('work', updated);
-    }, 600);
+      publishSection('work', updated);
+    }, 800);
   };
 
   const handleSaveAndSync = async (dataToSave?: any) => {
     const target = dataToSave || workData;
-    const ok = await saveDraft('work', target);
+    updateDraftInMemory('work', target);
+    const ok = await publishSection('work', target);
     if (ok) {
       setSavedStatus(true);
       setPreviewKey((k) => k + 1);
       setTimeout(() => setSavedStatus(false), 2200);
     }
+    return ok;
+  };
+
+  const handleMoveCase = async (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    const cases = [...(workData.caseStudies || [])];
+    if (targetIdx < 0 || targetIdx >= cases.length) return;
+    const temp = cases[index];
+    cases[index] = cases[targetIdx];
+    cases[targetIdx] = temp;
+    const updated = { ...workData, caseStudies: cases };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    await handleSaveAndSync(updated);
+  };
+
+  const toggleCaseEnabled = async (caseId: string) => {
+    const originalIdx = (workData.caseStudies || []).findIndex((item: any) => item.id === caseId || item.slug === caseId);
+    if (originalIdx === -1) return;
+    const item = workData.caseStudies[originalIdx];
+    const isCurrentlyEnabled = item.enabled !== false && item.published !== false;
+    const nextState = !isCurrentlyEnabled;
+
+    const updatedCases = [...workData.caseStudies];
+    updatedCases[originalIdx] = {
+      ...updatedCases[originalIdx],
+      enabled: nextState,
+      published: nextState,
+    };
+    const updated = { ...workData, caseStudies: updatedCases };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    await handleSaveAndSync(updated);
+  };
+
+  const handleAddNewCase = async () => {
+    const newId = `case-${Date.now()}`;
+    const newNum = String((workData.caseStudies?.length || 0) + 1).padStart(2, '0');
+    const newCase = {
+      id: newId,
+      num: newNum,
+      slug: newId,
+      title: 'New Case Study',
+      client: 'Client Name',
+      category: 'Hospitality',
+      sector: 'Hospitality & Commercial',
+      desc: 'Brief overview of strategy, execution and commercial impact.',
+      tags: ['Strategy', 'Execution'],
+      image: '/images/case-studies/raysons/neora-1.jpg',
+      heroImage: '/images/case-studies/raysons/neora-1.jpg',
+      heroImageCaption: 'Featured project overview',
+      subtitle: 'Comprehensive brand and digital growth partnership.',
+      directUrl: `/work/${newId}`,
+      caseStudyBtnText: 'View case study ↗',
+      snapshot: {
+        location: 'Mumbai & Western India',
+        engagementType: 'Retainer & Visual Production',
+        duration: '2024 — Present',
+        coreCapabilities: ['Brand Strategy', 'Content Production'],
+      },
+      situation: ['The brand required an elevated digital presence.'],
+      realChallenge: ['Cutting through generic social media noise with verified quality.'],
+      thinking: ['Strategic narrative first, followed by cinematic production.'],
+      work: [
+        {
+          title: 'Brand Identity & Production',
+          description: 'Complete creative execution.',
+          bullets: ['Strategy', 'Shoots', 'Publishing'],
+        },
+      ],
+      gallery: [
+        { image: '/images/case-studies/raysons/neora-1.jpg', caption: 'Initial launch asset', alt: 'Launch' },
+      ],
+      proof: {
+        verifiedText: 'Measurable audience growth and high retainer engagement.',
+        metricsNote: 'Verified client engagement',
+      },
+      closingQuote: 'Quality execution speaks louder than marketing promises.',
+      closingText: 'Have a similar challenge? Let’s talk.',
+      published: true,
+      enabled: true,
+      layoutStyle: 'layout-1',
+      year: '2026',
+    };
+
+    const updated = {
+      ...workData,
+      caseStudies: [...(workData.caseStudies || []), newCase],
+    };
+    setWorkData(updated);
+    setSelectedCaseId(newId);
+    updateDraftInMemory('work', updated);
+    await handleSaveAndSync(updated);
+  };
+
+  const handleDeleteCase = async (id: string) => {
+    const updatedCases = (workData.caseStudies || []).filter(
+      (c: any) => c.id !== id && c.slug !== id
+    );
+    const updated = { ...workData, caseStudies: updatedCases };
+    setWorkData(updated);
+    if (selectedCaseId === id || selectedCase?.slug === id) {
+      setSelectedCaseId(updatedCases[0]?.id || updatedCases[0]?.slug || null);
+    }
+    updateDraftInMemory('work', updated);
+    await handleSaveAndSync(updated);
+    setDeleteTargetId(null);
   };
 
   const handlePublishLive = async () => {
-    await saveDraft('work', workData);
+    await handleSaveAndSync(workData);
     const res = await publishAll();
-    if (res.success) {
+    if (res && res.success) {
       alert('All case studies published live successfully!');
     }
   };
@@ -384,36 +498,102 @@ export default function AdminCasesPage() {
             </div>
 
             <div style={{ flex: 1, overflowY: 'auto', padding: '0.5rem' }}>
-              {filteredCases.map((c: any) => {
+              {filteredCases.map((c: any, idx: number, arr: any[]) => {
                 const isSelected = (c.id === selectedCase?.id || c.slug === selectedCase?.slug);
+                const isCaseEnabled = c.enabled !== false && c.published !== false;
                 return (
                   <div
                     key={c.id || c.slug}
                     onClick={() => setSelectedCaseId(c.id || c.slug)}
                     style={{
-                      padding: '0.65rem 0.75rem',
+                      padding: '0.55rem 0.65rem',
                       borderRadius: '8px',
-                      backgroundColor: isSelected ? '#111113' : 'transparent',
+                      backgroundColor: isSelected ? '#111113' : (isCaseEnabled ? '#FFFFFF' : '#FEF2F2'),
                       color: isSelected ? '#FFFFFF' : '#111113',
+                      border: isSelected ? '1px solid #111113' : (isCaseEnabled ? '1px solid rgba(0,0,0,0.06)' : '1px dashed #FECACA'),
                       cursor: 'pointer',
                       marginBottom: '0.35rem',
                       transition: 'all 0.15s ease',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
+                      gap: '0.35rem',
                     }}
                   >
-                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      <div style={{ fontSize: '0.82rem', fontWeight: isSelected ? 650 : 500, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ overflow: 'hidden', flex: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontSize: '0.8rem', fontWeight: isSelected ? 650 : 500, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {c.title || 'Untitled Case'}
                       </div>
-                      <div style={{ fontSize: '0.68rem', color: isSelected ? 'rgba(255, 255, 255, 0.65)' : '#71717A', marginTop: '0.15rem' }}>
-                        {c.category || 'General'}
+                      <div style={{ fontSize: '0.66rem', color: isSelected ? 'rgba(255, 255, 255, 0.65)' : '#71717A', marginTop: '0.15rem' }}>
+                        {c.client || c.category || 'General'}
                       </div>
                     </div>
-                    {c.published === false && (
-                      <EyeOff size={13} color={isSelected ? '#9CA3AF' : '#A1A1AA'} />
-                    )}
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }} onClick={(e) => e.stopPropagation()}>
+                      <button
+                        type="button"
+                        onClick={() => toggleCaseEnabled(c.id || c.slug)}
+                        title={isCaseEnabled ? 'Disable case study' : 'Enable case study'}
+                        style={{
+                          border: 'none',
+                          backgroundColor: isSelected ? 'rgba(255,255,255,0.15)' : (isCaseEnabled ? '#ECFDF5' : '#FEE2E2'),
+                          color: isSelected ? '#FFFFFF' : (isCaseEnabled ? '#047857' : '#DC2626'),
+                          borderRadius: '4px',
+                          padding: '3px 4px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {isCaseEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={idx === 0}
+                        onClick={() => handleMoveCase(idx, 'up')}
+                        title="Move up"
+                        style={{
+                          border: 'none',
+                          backgroundColor: 'transparent',
+                          color: isSelected ? (idx === 0 ? '#52525B' : '#E4E4E7') : (idx === 0 ? '#D4D4D8' : '#52525B'),
+                          cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                          padding: '2px',
+                        }}
+                      >
+                        <ChevronUp size={13} />
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={idx === arr.length - 1}
+                        onClick={() => handleMoveCase(idx, 'down')}
+                        title="Move down"
+                        style={{
+                          border: 'none',
+                          backgroundColor: 'transparent',
+                          color: isSelected ? (idx === arr.length - 1 ? '#52525B' : '#E4E4E7') : (idx === arr.length - 1 ? '#D4D4D8' : '#52525B'),
+                          cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                          padding: '2px',
+                        }}
+                      >
+                        <ChevronDown size={13} />
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setDeleteTargetId(c.id || c.slug)}
+                        title="Delete case study"
+                        style={{
+                          border: 'none',
+                          backgroundColor: 'transparent',
+                          color: isSelected ? '#FCA5A5' : '#EF4444',
+                          borderRadius: '4px',
+                          padding: '2px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
                   </div>
                 );
               })}
@@ -422,23 +602,7 @@ export default function AdminCasesPage() {
             <div style={{ padding: '0.75rem', borderTop: '1px solid rgba(0, 0, 0, 0.08)' }}>
               <button
                 type="button"
-                onClick={() => {
-                  const newSlug = `new-project-${Date.now().toString().slice(-4)}`;
-                  const newCase = {
-                    id: newSlug,
-                    slug: newSlug,
-                    title: 'New Case Study',
-                    category: 'Brand Strategy',
-                    desc: 'Project brief and narrative summary.',
-                    tags: ['Brand Strategy'],
-                    image: '/images/case-studies/raysons/neora-1.jpg',
-                    published: true,
-                  };
-                  const updated = { ...workData, caseStudies: [...(workData.caseStudies || []), newCase] };
-                  setWorkData(updated);
-                  setSelectedCaseId(newSlug);
-                  updateDraftInMemory('work', updated);
-                }}
+                onClick={handleAddNewCase}
                 style={{
                   width: '100%',
                   padding: '0.55rem',
@@ -568,55 +732,76 @@ export default function AdminCasesPage() {
                   {/* SUBTAB 1: CARD INFO */}
                   {caseSubTab === 'card' && (
                     <>
-                      {/* CLICKABLE CASE STUDY & DIRECT LINK */}
+                      {/* CASE STUDY VISIBILITY & DIRECT LINK */}
                       <div style={{ padding: '0.95rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                           <label style={{ fontSize: '0.74rem', fontWeight: 700, color: '#0F172A', letterSpacing: '0.04em' }}>
-                            CASE STUDY CLICKABLE &amp; DIRECT LINK
+                            WORK VISIBILITY &amp; DIRECT LINK
                           </label>
-                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 650, color: selectedCase.isClickable !== false ? '#16A34A' : '#71717A' }}>
-                            <input
-                              type="checkbox"
-                              checked={selectedCase.isClickable !== false}
-                              onChange={(e) => {
-                                handleCaseChange('isClickable', e.target.checked);
-                                handleCaseChange('caseStudyEnabled', e.target.checked);
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <span
+                              style={{
+                                fontSize: '0.72rem',
+                                fontWeight: 700,
+                                padding: '0.2rem 0.55rem',
+                                borderRadius: '4px',
+                                backgroundColor: selectedCase.enabled !== false && selectedCase.published !== false ? '#DCFCE7' : '#FEE2E2',
+                                color: selectedCase.enabled !== false && selectedCase.published !== false ? '#15803D' : '#B91C1C',
                               }}
-                              style={{ width: '15px', height: '15px', accentColor: '#16A34A', cursor: 'pointer' }}
-                            />
-                            <span>{selectedCase.isClickable !== false ? 'Clickable Active' : 'Clickable Disabled'}</span>
-                          </label>
+                            >
+                              {selectedCase.enabled !== false && selectedCase.published !== false ? 'Active on Website' : 'Hidden / Disabled'}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => toggleCaseEnabled(selectedCase.id || selectedCase.slug)}
+                              style={{
+                                border: 'none',
+                                padding: '0.25rem 0.6rem',
+                                borderRadius: '4px',
+                                fontSize: '0.72rem',
+                                fontWeight: 650,
+                                cursor: 'pointer',
+                                backgroundColor: selectedCase.enabled !== false && selectedCase.published !== false ? '#FEE2E2' : '#DCFCE7',
+                                color: selectedCase.enabled !== false && selectedCase.published !== false ? '#DC2626' : '#15803D',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.3rem',
+                              }}
+                            >
+                              {selectedCase.enabled !== false && selectedCase.published !== false ? <EyeOff size={12} /> : <Eye size={12} />}
+                              {selectedCase.enabled !== false && selectedCase.published !== false ? 'Disable Work' : 'Enable Work'}
+                            </button>
+                          </div>
                         </div>
                         <div style={{ fontSize: '0.7rem', color: '#64748B', lineHeight: 1.4 }}>
-                          When enabled, visitors can click into the detailed case study page and a dedicated "View case study ↗" button is shown on the card.
+                          Work visibility controls both the Work page card and access to the dynamic case study page.
                         </div>
-                        {selectedCase.isClickable !== false && (
-                          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', marginTop: '0.2rem' }}>
-                            <div>
-                              <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
-                                DIRECT DESTINATION URL
-                              </label>
-                              <input
-                                type="text"
-                                readOnly
-                                value={`/work/${selectedCase.slug || selectedCase.id || ''}`}
-                                style={{ ...inputStyle, backgroundColor: '#F1F5F9', color: '#475569', fontSize: '0.78rem', cursor: 'default' }}
-                              />
-                            </div>
-                            <div>
-                              <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
-                                BUTTON LABEL
-                              </label>
-                              <input
-                                type="text"
-                                value={selectedCase.caseStudyBtnText || 'View case study ↗'}
-                                onChange={(e) => handleCaseChange('caseStudyBtnText', e.target.value)}
-                                placeholder="View case study ↗"
-                                style={{ ...inputStyle, fontSize: '0.78rem' }}
-                              />
-                            </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem', marginTop: '0.2rem' }}>
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
+                              DIRECT DESTINATION URL
+                            </label>
+                            <input
+                              type="text"
+                              value={selectedCase.directUrl !== undefined ? selectedCase.directUrl : (selectedCase.slug ? `/work/${selectedCase.slug}` : (selectedCase.id ? `/work/${selectedCase.id}` : ''))}
+                              onChange={(e) => handleCaseChange('directUrl', e.target.value)}
+                              placeholder={`/work/${selectedCase.slug || selectedCase.id || ''}`}
+                              style={{ ...inputStyle, fontSize: '0.78rem' }}
+                            />
                           </div>
-                        )}
+                          <div>
+                            <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#475569', marginBottom: '0.25rem' }}>
+                              BUTTON LABEL
+                            </label>
+                            <input
+                              type="text"
+                              value={selectedCase.caseStudyBtnText !== undefined ? selectedCase.caseStudyBtnText : 'View case study ↗'}
+                              onChange={(e) => handleCaseChange('caseStudyBtnText', e.target.value)}
+                              placeholder="View case study ↗"
+                              style={{ ...inputStyle, fontSize: '0.78rem' }}
+                            />
+                          </div>
+                        </div>
                       </div>
 
                       <div>
@@ -731,8 +916,11 @@ export default function AdminCasesPage() {
                         <input
                           type="checkbox"
                           id="publish-toggle"
-                          checked={selectedCase.published !== false}
-                          onChange={(e) => handleCaseChange('published', e.target.checked)}
+                          checked={selectedCase.enabled !== false && selectedCase.published !== false}
+                          onChange={(e) => {
+                            handleCaseChange('published', e.target.checked);
+                            handleCaseChange('enabled', e.target.checked);
+                          }}
                           style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                         />
                         <label htmlFor="publish-toggle" style={{ fontSize: '0.82rem', fontWeight: 500, color: '#111113', cursor: 'pointer' }}>
@@ -1399,17 +1587,17 @@ export default function AdminCasesPage() {
       <ConfirmDialog
         isOpen={Boolean(deleteTargetId)}
         title="Delete Case Study?"
-        message="Are you sure you want to permanently remove this case study from Ārohana?"
+        message={
+          deleteTargetCase
+            ? `Are you sure you want to delete "${deleteTargetCase.title || deleteTargetCase.id}"?\n\nThis action cannot be undone.`
+            : 'Are you sure you want to delete this case study?\n\nThis action cannot be undone.'
+        }
+        confirmLabel="Delete Case Study"
+        cancelLabel="Cancel"
         onConfirm={() => {
-          if (!deleteTargetId) return;
-          const updatedCases = (workData.caseStudies || []).filter(
-            (c: any) => c.id !== deleteTargetId && c.slug !== deleteTargetId
-          );
-          const updated = { ...workData, caseStudies: updatedCases };
-          setWorkData(updated);
-          setSelectedCaseId(updatedCases[0]?.slug || updatedCases[0]?.id || null);
-          updateDraftInMemory('work', updated);
-          setDeleteTargetId(null);
+          if (deleteTargetId) {
+            handleDeleteCase(deleteTargetId);
+          }
         }}
         onCancel={() => setDeleteTargetId(null)}
       />

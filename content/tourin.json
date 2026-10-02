@@ -11,7 +11,7 @@
     "descriptionEnabled": true,
     "season": "May to October Active Windows",
     "image1": {
-      "src": "/images/tourin/tourin-hero.jpg",
+      "src": "/uploads/1790913662698-vertical-hero-tourin.png",
       "alt": "High altitude mountain landscape in Ladakh",
       "enabled": true
     },
@@ -21,7 +21,7 @@
       "enabled": true
     },
     "image3": {
-      "src": "/images/tourin/tourin-3.jpg",
+      "src": "/uploads/1790913673166-hero-ever-wondered-about-a-pangong-proposal.png",
       "alt": "High mountain pass and valley in Ladakh",
       "enabled": true
     }
@@ -108,9 +108,21 @@
     "p2": "Proven on high-altitude routes with trusted local relationships, tailored medical acclimatisation, and zero-compromise logistical care."
   },
   "stats": [
-    { "value": "17,580 FT", "label": "Maximum Altitude Reached" },
-    { "value": "100%", "label": "Oxygen & Medical Readiness" },
-    { "value": "12", "label": "Maximum Group Size" },
-    { "value": "Zero", "label": "Single-Use Plastic Mandate" }
+    {
+      "value": "17,580 FT",
+      "label": "Maximum Altitude Reached"
+    },
+    {
+      "value": "100%",
+      "label": "Oxygen & Medical Readiness"
+    },
+    {
+      "value": "12",
+      "label": "Maximum Group Size"
+    },
+    {
+      "value": "Zero",
+      "label": "Single-Use Plastic Mandate"
+    }
   ]
 }

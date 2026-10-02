@@ -139,6 +139,9 @@ interface CaseStudyItem {
   showImage?: boolean;
   isClickable?: boolean;
   caseStudyBtnText?: string;
+  directUrl?: string;
+  enabled?: boolean;
+  published?: boolean;
 }
 
 const CASE_STUDIES: CaseStudyItem[] = [
@@ -341,7 +344,22 @@ function WorkCaseCard({
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const isClickable = cs.isClickable !== false;
+  // Validate destination URL
+  const rawDest = (cs.directUrl?.trim()) || (cs.slug ? `/work/${cs.slug}` : (cs.id ? `/work/${cs.id}` : ''));
+  const isValidDestination = Boolean(
+    rawDest &&
+    rawDest !== '/work/' &&
+    rawDest !== '/work/undefined' &&
+    rawDest !== '/work/null' &&
+    rawDest !== '/work/undefined-case'
+  );
+  const destination = isValidDestination ? rawDest : '';
+  const isEnabled = cs.enabled !== false;
+  const isClickable = isEnabled && isValidDestination;
+  const btnLabel = cs.caseStudyBtnText?.trim() || 'View case study ↗';
+  const cardImage = (typeof cs.image === 'string' && cs.image.trim().length > 0)
+    ? cs.image
+    : '/images/case-studies/raysons/neora-1.jpg';
 
   return (
     <div
@@ -365,11 +383,11 @@ function WorkCaseCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container — Clickable directly to Case Study when enabled */}
+      {/* Image Container — Clickable directly to Case Study when enabled and valid destination */}
       {cs.showImage !== false && (
         isClickable ? (
           <Link
-            href={`/work/${cs.slug}`}
+            href={destination}
             style={{
               position: 'relative',
               width: '100%',
@@ -380,8 +398,8 @@ function WorkCaseCard({
             }}
           >
             <Image
-              src={cs.image}
-              alt={cs.title}
+              src={cardImage}
+              alt={cs.title || 'Case study'}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
               style={{
@@ -403,8 +421,8 @@ function WorkCaseCard({
             }}
           >
             <Image
-              src={cs.image}
-              alt={cs.title}
+              src={cardImage}
+              alt={cs.title || 'Case study'}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 420px"
               style={{ objectFit: 'cover' }}
@@ -481,7 +499,7 @@ function WorkCaseCard({
           </div>
         )}
 
-        {/* Bottom Link Row — Only rendered when isClickable is true */}
+        {/* Bottom Link Row — Only rendered when isClickable is true and has valid destination */}
         {isClickable && (
           <div
             style={{
@@ -493,7 +511,7 @@ function WorkCaseCard({
             }}
           >
             <Link
-              href={`/work/${cs.slug}`}
+              href={destination}
               style={{
                 fontSize: '0.8rem',
                 fontWeight: 600,
@@ -505,11 +523,11 @@ function WorkCaseCard({
                 transition: 'color 0.2s ease',
               }}
             >
-              {cs.caseStudyBtnText || 'View case study ↗'}
+              {btnLabel}
             </Link>
 
             <Link
-              href={`/work/${cs.slug}`}
+              href={destination}
               aria-label={`View ${cs.title} case study`}
               style={{
                 width: '32px',
@@ -627,23 +645,29 @@ export default function WorkPage() {
   const activeCaseStudies: CaseStudyItem[] = (workCms?.caseStudies && workCms.caseStudies.length > 0)
     ? workCms.caseStudies
         .filter((c: any) => c && c.published !== false && c.enabled !== false)
-        .map((c: any, i: number) => ({
-          id: c.id || `cs-${i}`,
-          slug: c.slug || c.id || `cs-${i}`,
-          num: c.num || String(i + 1).padStart(2, '0'),
-          title: c.title || '',
-          desc: c.desc || '',
-          tags: Array.isArray(c.tags) ? c.tags : [],
-          category: c.category || '',
-          image: c.image || CASE_STUDIES[i % CASE_STUDIES.length]?.image || '/images/case-studies/raysons/neora-1.jpg',
-          showTitle: c.showTitle,
-          showClient: c.showClient,
-          showDesc: c.showDesc,
-          showTags: c.showTags,
-          showImage: c.showImage,
-          isClickable: c.isClickable !== false && c.caseStudyEnabled !== false && c.clickable !== false,
-          caseStudyBtnText: c.caseStudyBtnText || 'View case study ↗',
-        }))
+        .map((c: any, i: number) => {
+          const slug = c.slug || c.id || `cs-${i}`;
+          return {
+            id: c.id || slug,
+            slug: slug,
+            num: c.num || String(i + 1).padStart(2, '0'),
+            title: c.title || '',
+            desc: c.desc || '',
+            tags: Array.isArray(c.tags) ? c.tags : [],
+            category: c.category || '',
+            image: (typeof c.image === 'string' && c.image.trim().length > 0)
+              ? c.image
+              : (CASE_STUDIES[i % CASE_STUDIES.length]?.image || '/images/case-studies/raysons/neora-1.jpg'),
+            directUrl: c.directUrl || (slug ? `/work/${slug}` : ''),
+            caseStudyBtnText: c.caseStudyBtnText || 'View case study ↗',
+            showTitle: c.showTitle,
+            showClient: c.showClient,
+            showDesc: c.showDesc,
+            showTags: c.showTags,
+            showImage: c.showImage,
+            enabled: c.enabled !== false && c.published !== false,
+          };
+        })
     : CASE_STUDIES;
 
   const isHeroEnabled = workCms?.header?.enabled !== false;

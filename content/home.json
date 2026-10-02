@@ -48,7 +48,7 @@
     "headline": "We build brands,\nbusinesses &\nexperiences.",
     "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
     "bannerImage": "/images/home/hero-mountain-sky.png",
-    "posterImage": "/images/home/hero-mountain-sky.png",
+    "posterImage": "/uploads/1790911663159-1.-hero-image-home-page.png",
     "bannerImages": [
       {
         "id": "banner-1",
@@ -72,7 +72,7 @@
       },
       {
         "id": "banner-2",
-        "image": "/uploads/1790712682532-hero-poster.jpg",
+        "image": "/uploads/1790911704026-2.-climbing-toward-ideas.png",
         "caption": "High-Impact Commercial Production",
         "badge": "STRATEGY · COMMUNICATION · EXECUTION",
         "eyebrow": "STRATEGY · COMMUNICATION · EXECUTION",
@@ -92,7 +92,7 @@
       },
       {
         "id": "banner-3",
-        "image": "/images/services/services-hero-collage.png",
+        "image": "/uploads/1790911717309-3.-ideas-to-impact--growth-in-motion.png",
         "caption": "Multidisciplinary Creative Execution",
         "badge": "STRATEGY · COMMUNICATION · EXECUTION",
         "eyebrow": "STRATEGY · COMMUNICATION · EXECUTION",
@@ -493,7 +493,7 @@
           "Digital production",
           "Website management and branding"
         ],
-        "image": "/images/services/digital-growth.jpg",
+        "image": "/uploads/1790912051772-digital-brand-growth.png",
         "description": "Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding",
         "href": "/services#digital-growth"
       },
@@ -510,7 +510,7 @@
           "Influencer & UGC content",
           "AI content"
         ],
-        "image": "/images/services/content-production.jpg",
+        "image": "/uploads/1790913249447-content-production.png",
         "description": "Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content",
         "href": "/services#content-production"
       },
@@ -524,7 +524,7 @@
           "Revenue Optimisation",
           "Guest Journeys"
         ],
-        "image": "/images/case-studies/raysons/neora-1.jpg",
+        "image": "/uploads/1790913265172-hospitality---experience.png",
         "description": "Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.",
         "href": "/services#hospitality-consulting"
       }
@@ -641,13 +641,48 @@
     "email": "founder@byarohana.com",
     "hoverImagesEnabled": true,
     "hoverImages": [
-      { "id": "1", "image": "/images/case-studies/raysons/casting-hero.jpg", "title": "Raysons Group", "enabled": true },
-      { "id": "2", "image": "/images/case-studies/loom/loom-hero.jpg", "title": "Loom Crafts", "enabled": true },
-      { "id": "3", "image": "/images/case-studies/picturetime/picturetime-hero.jpg", "title": "PictureTime", "enabled": true },
-      { "id": "4", "image": "/images/case-studies/she/she-hero.jpg", "title": "Project SHE", "enabled": true },
-      { "id": "5", "image": "/images/case-studies/misu/misu-hero.jpg", "title": "Misu Dining", "enabled": true },
-      { "id": "6", "image": "/images/case-studies/rrskins/rrskins-hero.jpg", "title": "RR Skins", "enabled": true },
-      { "id": "7", "image": "/images/tourin/tourin-hero.jpg", "title": "Tourin Expeditions", "enabled": true }
+      {
+        "id": "1",
+        "image": "/images/case-studies/raysons/casting-hero.jpg",
+        "title": "Raysons Group",
+        "enabled": true
+      },
+      {
+        "id": "2",
+        "image": "/images/case-studies/loom/loom-hero.jpg",
+        "title": "Loom Crafts",
+        "enabled": true
+      },
+      {
+        "id": "3",
+        "image": "/images/case-studies/picturetime/picturetime-hero.jpg",
+        "title": "PictureTime",
+        "enabled": true
+      },
+      {
+        "id": "4",
+        "image": "/images/case-studies/she/she-hero.jpg",
+        "title": "Project SHE",
+        "enabled": true
+      },
+      {
+        "id": "5",
+        "image": "/images/case-studies/misu/misu-hero.jpg",
+        "title": "Misu Dining",
+        "enabled": true
+      },
+      {
+        "id": "6",
+        "image": "/images/case-studies/rrskins/rrskins-hero.jpg",
+        "title": "RR Skins",
+        "enabled": true
+      },
+      {
+        "id": "7",
+        "image": "/images/tourin/tourin-hero.jpg",
+        "title": "Tourin Expeditions",
+        "enabled": true
+      }
     ]
   }
 }

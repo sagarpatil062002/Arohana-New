@@ -1,6 +1,116 @@
 {
   "assets": [
     {
+      "id": "asset-1790913673166",
+      "name": "HERO Ever Wondered About a Pangong Proposal.png",
+      "url": "/uploads/1790913673166-hero-ever-wondered-about-a-pangong-proposal.png",
+      "type": "image",
+      "size": "2.2 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T04:01:13.173Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790913662698",
+      "name": "Vertical Hero Tourin.png",
+      "url": "/uploads/1790913662698-vertical-hero-tourin.png",
+      "type": "image",
+      "size": "1.9 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T04:01:02.706Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790913499091",
+      "name": "HERO- What We Do Collage.png",
+      "url": "/uploads/1790913499091-hero--what-we-do-collage.png",
+      "type": "image",
+      "size": "1.9 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:58:19.098Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790913392964",
+      "name": "SHE.JPG",
+      "url": "/uploads/1790913392964-she.jpg",
+      "type": "image",
+      "size": "282 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:56:32.966Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790913377769",
+      "name": "MISU Ribandar.jfif",
+      "url": "/uploads/1790913377769-misu-ribandar.jfif",
+      "type": "image",
+      "size": "29 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:56:17.771Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790913265172",
+      "name": "Hospitality & Experience.png",
+      "url": "/uploads/1790913265172-hospitality---experience.png",
+      "type": "image",
+      "size": "1.5 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:54:25.183Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790913249447",
+      "name": "Content Production.png",
+      "url": "/uploads/1790913249447-content-production.png",
+      "type": "image",
+      "size": "1.3 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:54:09.459Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790912051772",
+      "name": "Digital Brand Growth.png",
+      "url": "/uploads/1790912051772-digital-brand-growth.png",
+      "type": "image",
+      "size": "1.6 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:34:11.782Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790911717309",
+      "name": "3. Ideas to Impact_ Growth in Motion.png",
+      "url": "/uploads/1790911717309-3.-ideas-to-impact--growth-in-motion.png",
+      "type": "image",
+      "size": "1.6 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:28:37.316Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790911704026",
+      "name": "2. Climbing Toward Ideas.png",
+      "url": "/uploads/1790911704026-2.-climbing-toward-ideas.png",
+      "type": "image",
+      "size": "2.1 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:28:24.032Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790911663159",
+      "name": "1. Hero Image Home Page.png",
+      "url": "/uploads/1790911663159-1.-hero-image-home-page.png",
+      "type": "image",
+      "size": "1.7 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T03:27:43.169Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1790846901692",
       "name": "madhura-editorial.jpg",
       "url": "/uploads/1790846901692-madhura-editorial.jpg",

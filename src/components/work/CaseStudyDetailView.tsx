@@ -105,41 +105,84 @@ export default function CaseStudyDetailView({
   const showResult = caseStudy.showResult !== false;
 
   const challengeText = showChallenge
-    ? caseStudy.challenge || caseStudy.realChallenge?.join('\n\n') || caseStudy.situation?.join('\n\n') || ''
+    ? (typeof caseStudy.challenge === 'string' && caseStudy.challenge.trim()
+        ? caseStudy.challenge
+        : Array.isArray(caseStudy.realChallenge)
+          ? caseStudy.realChallenge.join('\n\n')
+          : typeof caseStudy.realChallenge === 'string'
+            ? caseStudy.realChallenge
+            : Array.isArray(caseStudy.situation)
+              ? caseStudy.situation.join('\n\n')
+              : typeof caseStudy.situation === 'string'
+                ? caseStudy.situation
+                : '')
     : '';
 
   const whatWeDidText = showWhatWeDid
-    ? caseStudy.whatWeDid ||
-      (caseStudy.work ? caseStudy.work.map((w: any) => `${w.title}: ${w.description}`).join('\n\n') : '')
+    ? (typeof caseStudy.whatWeDid === 'string' && caseStudy.whatWeDid.trim()
+        ? caseStudy.whatWeDid
+        : Array.isArray(caseStudy.work)
+          ? caseStudy.work
+              .map((w: any) =>
+                typeof w === 'string'
+                  ? w
+                  : `${w?.title || ''}${w?.title && w?.description ? ': ' : ''}${w?.description || ''}`
+              )
+              .filter(Boolean)
+              .join('\n\n')
+          : typeof caseStudy.work === 'string'
+            ? caseStudy.work
+            : '')
     : '';
 
   const resultText = showResult
-    ? caseStudy.theResult ||
-      (caseStudy.showVerifiedText !== false ? caseStudy.proof?.verifiedText : '') ||
-      (caseStudy.showClosingQuote !== false ? caseStudy.closingQuote : '') ||
-      ''
+    ? (typeof caseStudy.theResult === 'string' && caseStudy.theResult.trim()
+        ? caseStudy.theResult
+        : (caseStudy.showVerifiedText !== false && typeof caseStudy.proof?.verifiedText === 'string'
+            ? caseStudy.proof.verifiedText
+            : '') ||
+          (caseStudy.showClosingQuote !== false && typeof caseStudy.closingQuote === 'string'
+            ? caseStudy.closingQuote
+            : '') ||
+          '')
     : '';
 
-  const stillsSubtitleText = caseStudy.stillsSubtitle || caseStudy.snapshot?.coreCapabilities?.join(' · ') || '';
+  const coreCaps: string[] = Array.isArray(caseStudy.snapshot?.coreCapabilities)
+    ? caseStudy.snapshot.coreCapabilities.filter((c: any) => typeof c === 'string' && c.trim().length > 0)
+    : (typeof caseStudy.snapshot?.coreCapabilities === 'string' && caseStudy.snapshot.coreCapabilities.trim()
+        ? [caseStudy.snapshot.coreCapabilities.trim()]
+        : []);
+
+  const stillsSubtitleText =
+    caseStudy.stillsSubtitle ||
+    coreCaps.join(' · ') ||
+    '';
 
   const layoutStyle = caseStudy.layoutStyle || caseStudy.layout || 'layout-1';
   const showHeader = caseStudy.headerEnabled !== false && caseStudy.showHeader !== false;
   const showHeroImage =
     caseStudy.heroImageEnabled !== false &&
     caseStudy.showHeroImage !== false &&
-    Boolean(caseStudy.heroImage);
+    typeof caseStudy.heroImage === 'string' &&
+    caseStudy.heroImage.trim().length > 0;
 
   const showCoreScope =
     caseStudy.coreScopeEnabled !== false &&
     caseStudy.showCoreScope !== false &&
     caseStudy.snapshot?.coreScopeEnabled !== false &&
-    Boolean(caseStudy.snapshot?.coreCapabilities && caseStudy.snapshot.coreCapabilities.length > 0);
+    coreCaps.length > 0;
 
   const showNarrative = caseStudy.narrativeEnabled !== false && caseStudy.showNarrative !== false;
   const showOutcomes = caseStudy.outcomesEnabled !== false && caseStudy.showOutcomes !== false;
   const showGallery = caseStudy.galleryEnabled !== false && caseStudy.showGallery !== false;
-  const activeGallery = showGallery
-    ? (caseStudy.gallery || []).filter((item: any) => item && item.enabled !== false)
+  const activeGallery = showGallery && Array.isArray(caseStudy.gallery)
+    ? caseStudy.gallery.filter(
+        (item: any) =>
+          item &&
+          item.enabled !== false &&
+          typeof item.image === 'string' &&
+          item.image.trim().length > 0
+      )
     : [];
 
   return (
@@ -258,7 +301,7 @@ export default function CaseStudyDetailView({
                   CORE SCOPE:
                 </span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
-                  {caseStudy.snapshot.coreCapabilities.map((cap: string, i: number) => (
+                  {coreCaps.map((cap: string, i: number) => (
                     <span
                       key={i}
                       style={{
@@ -628,7 +671,7 @@ export default function CaseStudyDetailView({
                     CORE SCOPE &amp; DELIVERABLES:
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    {caseStudy.snapshot.coreCapabilities.map((cap: string, i: number) => (
+                    {coreCaps.map((cap: string, i: number) => (
                       <span
                         key={i}
                         style={{
@@ -839,7 +882,7 @@ export default function CaseStudyDetailView({
             }}
           >
             {/* Panoramic Hero Banner Card */}
-            {showHeroImage && (
+            {showHeroImage ? (
               <div
                 style={{
                   position: 'relative',
@@ -854,7 +897,7 @@ export default function CaseStudyDetailView({
               >
                 <Image
                   src={caseStudy.heroImage}
-                  alt={caseStudy.title}
+                  alt={caseStudy.title || ''}
                   fill
                   priority
                   style={{ objectFit: 'cover' }}
@@ -919,7 +962,41 @@ export default function CaseStudyDetailView({
                   </div>
                 )}
               </div>
-            )}
+            ) : showHeader ? (
+              <div style={{ maxWidth: '880px', marginBottom: '1.5rem' }}>
+                <div
+                  className="tag-mono"
+                  style={{
+                    color: '#DE322D',
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    marginBottom: '0.6rem',
+                  }}
+                >
+                  {caseStudy.sector || 'FEATURED CASE STUDY'}
+                </div>
+                <h1
+                  style={{
+                    fontSize: 'clamp(2.4rem, 5vw, 4.4rem)',
+                    lineHeight: 1.08,
+                    fontWeight: 700,
+                    letterSpacing: '-0.035em',
+                    margin: 0,
+                    marginBottom: '0.75rem',
+                    color: '#111113',
+                  }}
+                >
+                  {caseStudy.title}
+                </h1>
+                {caseStudy.subtitle && (
+                  <p style={{ fontSize: '1.15rem', color: '#4A4A52', lineHeight: 1.5, margin: 0 }}>
+                    {caseStudy.subtitle}
+                  </p>
+                )}
+              </div>
+            ) : null}
 
             {/* Core Scope Bar */}
             {showCoreScope && (
@@ -948,7 +1025,7 @@ export default function CaseStudyDetailView({
                 >
                   CORE SCOPE:
                 </span>
-                {caseStudy.snapshot.coreCapabilities.map((cap: string, i: number) => (
+                {coreCaps.map((cap: string, i: number) => (
                   <span
                     key={i}
                     style={{
@@ -1005,7 +1082,7 @@ export default function CaseStudyDetailView({
                           {challengeText}
                         </p>
                       </div>
-                      {activeGallery[0] && (
+                      {activeGallery[0]?.image && (
                         <div
                           style={{
                             position: 'relative',
@@ -1040,7 +1117,7 @@ export default function CaseStudyDetailView({
                         border: '1px solid rgba(0, 0, 0, 0.08)',
                       }}
                     >
-                      {activeGallery[1] && (
+                      {activeGallery[1]?.image && (
                         <div
                           style={{
                             position: 'relative',
@@ -1165,7 +1242,7 @@ export default function CaseStudyDetailView({
         )}
 
         {/* ─── NEXT CASE STUDY NAVIGATION CARD ─── */}
-        {nextCase && (
+        {nextCase && (nextCase.slug || nextCase.id) && (
           <div
             style={{
               padding: 'clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3.5vw, 3.5rem)',
@@ -1211,7 +1288,7 @@ export default function CaseStudyDetailView({
             </div>
 
             <Link
-              href={`/work/${nextCase.slug}`}
+              href={`/work/${nextCase.slug || nextCase.id}`}
               className="button-editorial"
               style={{
                 height: '48px',

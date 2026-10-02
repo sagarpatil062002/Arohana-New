@@ -91,7 +91,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
 };
 
 export default function AdminWorkPage() {
-  const { content, saveDraft, updateDraftInMemory, publishAll } = useCmsContent();
+  const { content, saveDraft, updateDraftInMemory, publishAll, publishSection } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'reels' | 'header' | 'cases'>('reels');
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
@@ -226,17 +226,33 @@ export default function AdminWorkPage() {
     updateDraftInMemory('work', updated);
   };
 
+  const handleCaseChanges = (updates: Record<string, any>) => {
+    if (!selectedCase) return;
+    const updatedCases = workData.caseStudies.map((c: any) =>
+      c.id === selectedCase.id ? { ...getCaseWithDefaults(c), ...updates } : c
+    );
+    const updated = { ...workData, caseStudies: updatedCases };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
   const handleSaveAndSync = async (dataToSave?: any) => {
     const target = dataToSave || workData;
-    const ok = await saveDraft('work', target);
-    if (ok) {
-      setSavedStatus(true);
-      setPreviewKey((k) => k + 1);
-      showToast('Work draft saved to CRM!', 'success');
-      setTimeout(() => setSavedStatus(false), 2200);
-    } else {
-      showToast('Failed to save draft', 'error');
+    await saveDraft('work', target);
+    if (publishSection) {
+      const pubRes = await publishSection('work', target);
+      if (pubRes) {
+        setSavedStatus(true);
+        setPreviewKey((k) => k + 1);
+        showToast('Changes saved and published live!', 'success');
+        setTimeout(() => setSavedStatus(false), 2200);
+        return;
+      }
     }
+    setSavedStatus(true);
+    setPreviewKey((k) => k + 1);
+    showToast('Work changes saved!', 'success');
+    setTimeout(() => setSavedStatus(false), 2200);
   };
 
   const handlePublishLive = async () => {
@@ -296,7 +312,7 @@ export default function AdminWorkPage() {
           updatedReels[extraIdx] = { ...updatedReels[extraIdx], coverImage: json.url };
           const updated = { ...workData, featuredReels: updatedReels };
           setWorkData(updated);
-          await saveDraft('work', updated);
+          await handleSaveAndSync(updated);
           setPreviewKey((k) => k + 1);
           setSavedStatus(true);
           showToast('Reel cover image uploaded', 'success');
@@ -306,7 +322,7 @@ export default function AdminWorkPage() {
 
         const updated = { ...workData, caseStudies: updatedCases };
         setWorkData(updated);
-        await saveDraft('work', updated);
+        await handleSaveAndSync(updated);
         setPreviewKey((k) => k + 1);
         setSavedStatus(true);
         showToast('Image uploaded and synced', 'success');
@@ -350,9 +366,10 @@ export default function AdminWorkPage() {
       gallery: [{ image: '/images/case-studies/raysons/neora-1.jpg', caption: 'Initial launch asset', alt: 'Launch' }],
       proof: { verifiedText: 'Measurable audience growth and high retainer engagement.', metricsNote: 'Verified client engagement' },
       closingQuote: 'Quality execution speaks louder than marketing promises.',
+      directUrl: `/work/${newId}`,
+      caseStudyBtnText: 'View Case Study',
       published: true,
       enabled: true,
-      featured: false,
       year: '2026',
     };
 
@@ -1171,6 +1188,7 @@ export default function AdminWorkPage() {
                               updatedCases[originalIdx] = {
                                 ...updatedCases[originalIdx],
                                 enabled: !isCaseEnabled,
+                                published: !isCaseEnabled,
                               };
                               const updated = { ...workData, caseStudies: updatedCases };
                               setWorkData(updated);
@@ -1583,23 +1601,44 @@ export default function AdminWorkPage() {
                         />
                       </div>
 
-                      <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', alignItems: 'center' }}>
-                        <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', cursor: 'pointer' }}>
+                      {/* Destination URL & CTA Button */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginTop: '0.75rem' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                            DIRECT DESTINATION URL
+                          </label>
                           <input
-                            type="checkbox"
-                            checked={activeCaseMerged.published !== false}
-                            onChange={(e) => handleCaseChange('published', e.target.checked)}
+                            type="text"
+                            value={activeCaseMerged.directUrl || (activeCaseMerged.slug ? `/work/${activeCaseMerged.slug}` : `/work/${activeCaseMerged.id}`)}
+                            onChange={(e) => handleCaseChange('directUrl', e.target.value)}
+                            placeholder="/work/slug"
+                            style={inputStyle}
                           />
-                          Published on Website
-                        </label>
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                            BUTTON LABEL
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.caseStudyBtnText || 'View Case Study'}
+                            onChange={(e) => handleCaseChange('caseStudyBtnText', e.target.value)}
+                            placeholder="View Case Study"
+                            style={inputStyle}
+                          />
+                        </div>
+                      </div>
 
+                      <div style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem', alignItems: 'center' }}>
                         <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', cursor: 'pointer' }}>
                           <input
                             type="checkbox"
-                            checked={!!activeCaseMerged.featured}
-                            onChange={(e) => handleCaseChange('featured', e.target.checked)}
+                            checked={activeCaseMerged.published !== false && activeCaseMerged.enabled !== false}
+                            onChange={(e) => {
+                              handleCaseChanges({ published: e.target.checked, enabled: e.target.checked });
+                            }}
                           />
-                          Featured Spotlight
+                          Published / Enabled on Website
                         </label>
 
                         <button
@@ -1608,8 +1647,8 @@ export default function AdminWorkPage() {
                             setDeleteConfirm({
                               type: 'case',
                               id: selectedCase.id,
-                              title: 'Delete Project?',
-                              message: `Permanently delete "${selectedCase.title || 'this project'}"? This cannot be undone.`,
+                              title: 'Delete Case Study',
+                              message: `Are you sure you want to delete "${selectedCase.title || 'this case study'}"?\n\nThis action cannot be undone and will permanently remove the record and its detail page.`,
                             });
                           }}
                           style={{
@@ -1625,7 +1664,7 @@ export default function AdminWorkPage() {
                             gap: '0.3rem',
                           }}
                         >
-                          <Trash2 size={14} /> Delete Project
+                          <Trash2 size={14} /> Delete Case Study
                         </button>
                       </div>
                     </>
@@ -2320,7 +2359,7 @@ export default function AdminWorkPage() {
               updated[idx] = { ...updated[idx], coverImage: url };
               const newWork = { ...workData, featuredReels: updated };
               setWorkData(newWork);
-              await saveDraft('work', newWork);
+              await handleSaveAndSync(newWork);
               setPreviewKey((k) => k + 1);
             } else if (mediaPickerTarget.path === 'caseStudies.image') {
               if (selectedCase) {
@@ -2329,7 +2368,7 @@ export default function AdminWorkPage() {
                 );
                 const newWork = { ...workData, caseStudies: updatedCases };
                 setWorkData(newWork);
-                await saveDraft('work', newWork);
+                await handleSaveAndSync(newWork);
                 setPreviewKey((k) => k + 1);
               }
             } else if (mediaPickerTarget.path === 'caseStudies.heroImage') {
@@ -2339,7 +2378,7 @@ export default function AdminWorkPage() {
                 );
                 const newWork = { ...workData, caseStudies: updatedCases };
                 setWorkData(newWork);
-                await saveDraft('work', newWork);
+                await handleSaveAndSync(newWork);
                 setPreviewKey((k) => k + 1);
               }
             } else if (mediaPickerTarget.path.startsWith('gallery.')) {
@@ -2355,7 +2394,7 @@ export default function AdminWorkPage() {
                 });
                 const newWork = { ...workData, caseStudies: updatedCases };
                 setWorkData(newWork);
-                await saveDraft('work', newWork);
+                await handleSaveAndSync(newWork);
                 setPreviewKey((k) => k + 1);
               }
             }
