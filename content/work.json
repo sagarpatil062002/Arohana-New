@@ -632,68 +632,134 @@
       "stillsSubtitle": "Community Storytelling · Visual Art Direction · Sports & Tournament Communication · Education & Training Content"
     },
     {
-      "subtitle": "Comprehensive brand and digital growth partnership.",
-      "heroImage": "/images/case-studies/raysons/neora-1.jpg",
-      "heroImageCaption": "Featured project overview",
-      "sector": "Hospitality & Commercial",
-      "snapshot": {
-        "location": "Mumbai & Western India",
-        "engagementType": "Retainer & Visual Production",
-        "duration": "2024 — Present",
-        "coreCapabilities": [
-          "Brand Strategy",
-          "Content Production"
-        ]
-      },
-      "situation": [
-        "The brand required an elevated digital presence."
-      ],
-      "realChallenge": [
-        "Cutting through generic social media noise with verified quality."
-      ],
-      "thinking": [
-        "Strategic narrative first, followed by cinematic production."
-      ],
-      "work": [
-        {
-          "title": "Brand Identity & Production",
-          "description": "Complete creative execution.",
-          "bullets": [
-            "Strategy",
-            "Shoots",
-            "Publishing"
-          ]
-        }
-      ],
-      "gallery": [
-        {
-          "image": "/images/case-studies/raysons/neora-1.jpg",
-          "caption": "Initial launch asset",
-          "alt": "Launch"
-        }
-      ],
-      "proof": {
-        "verifiedText": "Measurable audience growth and high retainer engagement.",
-        "metricsNote": "Verified client engagement"
-      },
-      "closingQuote": "Quality execution speaks louder than marketing promises.",
-      "closingText": "",
-      "id": "case-1790886095460",
+      "id": "she",
       "num": "08",
-      "slug": "case-1790886095460",
-      "title": "xyz",
-      "client": "Client Name",
-      "category": "Hospitality",
-      "desc": "Brief overview of strategy, execution and commercial impact.",
+      "slug": "she",
+      "title": "SHE Initiative — Case Study",
+      "client": "SHE Initiative / 14 Corps",
+      "category": "Institutional",
+      "desc": "Brand identity design, field documentary, and institutional communication for women-led development across Ladakh border villages.",
       "tags": [
-        "Strategy",
-        "Execution"
+        "Institutional",
+        "Community",
+        "Documentary"
       ],
-      "image": "/images/case-studies/raysons/neora-1.jpg",
+      "image": "/images/case-studies/she/she-hero.jpg",
       "published": true,
       "featured": false,
       "year": "2026",
-      "layoutStyle": "layout-2"
+      "layoutStyle": "layout-1",
+      "subtitle": "Self Help Empower · Ladakh Border Villages · Operation Sadbhavana",
+      "heroImage": "/images/case-studies/she/she-hero.jpg",
+      "heroImageCaption": "SHE Initiative — connecting Ladakh border village women through education, entrepreneurship, and documentary storytelling.",
+      "sector": "Institutions · Social Impact · Community Development",
+      "challenge": "The SHE Initiative needed to communicate its work across border villages in Ladakh — translating the on-ground reality of women-led development programmes into a compelling, credible digital story for funders, government partners and wider audiences.",
+      "whatWeDid": "Ārohana designed the SHE Initiative brand identity, produced the field documentary capturing lives and stories across remote Ladakh border villages, and developed communication assets for Operation Sadbhavana-linked programmes under 14 Corps.",
+      "theResult": "A coherent brand identity and documentary record now represent the SHE Initiative’s work authentically — giving the organisation a credible communication foundation for institutional outreach, programme documentation, and storytelling at scale.",
+      "stillsSubtitle": "Identity Design · Documentary Production · Field Communication · Institutional Outreach",
+      "snapshot": {
+        "sector": "Community Development · Women Empowerment · Institutional",
+        "location": "Ladakh Border Villages",
+        "engagementType": "Identity Design + Documentary Production + Field Communication",
+        "duration": "Project-Based Engagement",
+        "coreCapabilities": [
+          "Brand Identity Design",
+          "Documentary Production & Storytelling",
+          "Field Cinematography",
+          "Institutional Communication",
+          "Operation Sadbhavana Documentation"
+        ]
+      },
+      "situation": [
+        "The SHE Initiative operates across remote Ladakh border villages, connecting women to education, skill development and entrepreneurship opportunities through Operation Sadbhavana-linked programmes.",
+        "The organisation had meaningful work on the ground but lacked a coherent brand identity and documented communication assets to represent that work to institutional funders, government partners and wider audiences."
+      ],
+      "realChallenge": [
+        "Communicating the reality of life and development programmes across high-altitude border villages requires on-ground presence, not remote production. The stories exist but needed careful documentation and narrative structure.",
+        "The identity had to feel both institutionally credible and human — reflecting the dignity of the women and communities being served."
+      ],
+      "thinking": [
+        "Begin with identity: a visual and verbal foundation that could anchor all communication.",
+        "Documentary as the primary medium: field shoots across border villages to capture real stories, participation, skills, and life.",
+        "Institutional alignment: all assets built to serve Operation Sadbhavana programmes and be useful in government and funder-facing outreach."
+      ],
+      "work": [
+        {
+          "title": "Brand Identity Design",
+          "description": "Complete visual identity for the SHE Initiative — logo, colour system, typography and brand guidelines created to function across print, digital and institutional formats.",
+          "bullets": [
+            "Logo concept and mark development",
+            "Visual identity system and colour palette",
+            "Brand guidelines for institutional use",
+            "Print and digital identity applications"
+          ]
+        },
+        {
+          "title": "Field Documentary Production",
+          "description": "On-ground documentary production across remote Ladakh border villages — capturing programme participation, community stories and the real texture of the SHE Initiative’s work.",
+          "bullets": [
+            "High-altitude border village field shoots",
+            "Community participation and skills documentation",
+            "Participant storytelling and interview direction",
+            "End-to-end post-production and film delivery"
+          ]
+        },
+        {
+          "title": "Institutional Communication Assets",
+          "description": "Documentation and communication materials aligned with Operation Sadbhavana programmes under 14 Corps.",
+          "bullets": [
+            "Operation Sadbhavana-aligned programme documentation",
+            "Institutional outreach communication assets",
+            "14 Corps programme reporting support",
+            "Digital and print formats for partner presentations"
+          ]
+        }
+      ],
+      "proof": {
+        "verifiedText": "The SHE Initiative now has a defined visual identity and a documented record of its field work — giving the organisation a credible foundation to communicate its impact, engage institutional partners, and build sustained visibility for the women and communities it serves.",
+        "metricsNote": "Identity design, field documentary, and institutional assets delivered for Operation Sadbhavana-linked programmes in Ladakh border villages."
+      },
+      "gallery": [
+        {
+          "image": "/images/case-studies/she/she-hero.jpg",
+          "caption": "SHE Initiative: High-altitude border village field documentation and community engagement.",
+          "alt": "SHE Initiative Ladakh border villages",
+          "enabled": true
+        },
+        {
+          "image": "/images/case-studies/she/field-1.jpg",
+          "caption": "Field documentation: Women participation and skills development programme in Ladakh.",
+          "alt": "SHE Initiative field programme Ladakh",
+          "enabled": true
+        },
+        {
+          "image": "/images/case-studies/she/field-2.jpg",
+          "caption": "On-ground community storytelling across remote border village settlements.",
+          "alt": "SHE Initiative border village community",
+          "enabled": true
+        },
+        {
+          "image": "/images/case-studies/she/film-1.jpg",
+          "caption": "Documentary production: Capturing participant stories and programme reality.",
+          "alt": "SHE Initiative documentary film",
+          "enabled": true
+        },
+        {
+          "image": "/images/case-studies/she/film-2.jpg",
+          "caption": "Field cinematography across Ladakh — high-altitude, ground-level storytelling.",
+          "alt": "SHE Initiative field cinematography",
+          "enabled": true
+        },
+        {
+          "image": "/images/case-studies/she/identity-1.jpg",
+          "caption": "SHE Initiative brand identity — visual system for institutional and digital use.",
+          "alt": "SHE Initiative brand identity design",
+          "enabled": true
+        }
+      ],
+      "videos": [],
+      "closingQuote": "Authentic storytelling about communities requires the same precision and care as any brand brief — perhaps more, because the people in the frame deserve it.",
+      "closingText": "Working on institutional communication or community documentation? Let’s talk."
     }
   ]
 }

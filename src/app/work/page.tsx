@@ -217,6 +217,15 @@ const CASE_STUDIES: CaseStudyItem[] = [
     category: 'Community',
     image: '/uploads/1790516538989-communtiy.jpg',
   },
+  {
+    id: 'she',
+    slug: 'she',
+    title: 'SHE Initiative',
+    desc: 'Brand identity design, field documentary, and institutional communication for women-led development across Ladakh border villages.',
+    tags: ['Institutional', 'Community'],
+    category: 'Institutional',
+    image: '/images/case-studies/she/she-hero.jpg',
+  },
 ];
 
 /* ─── ©26 Editorial Badge Component matching exact design reference ─── */
@@ -644,7 +653,7 @@ export default function WorkPage() {
   // ── CMS-driven case studies (falls back to hardcoded if CMS unavailable) ──
   const activeCaseStudies: CaseStudyItem[] = (workCms?.caseStudies && workCms.caseStudies.length > 0)
     ? workCms.caseStudies
-        .filter((c: any) => c && c.published !== false && c.enabled !== false)
+        .filter((c: any) => c && c.published !== false && c.enabled !== false && c.title?.toLowerCase() !== 'xyz' && c.id !== 'case-1790886095460' && c.slug !== 'case-1790886095460')
         .map((c: any, i: number) => {
           const slug = c.slug || c.id || `cs-${i}`;
           return {

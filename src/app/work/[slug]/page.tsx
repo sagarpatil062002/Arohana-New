@@ -108,16 +108,17 @@ export default function CaseStudyDetailPage({ params }: { params: { slug: string
   };
 
   // Find next case study dynamically for smooth sequential navigation
-  const activeCases = (workCms?.caseStudies && workCms.caseStudies.length > 0)
-    ? workCms.caseStudies.filter((c: any) => c && c.enabled !== false && c.published !== false)
-    : CASE_STUDIES;
+  const validCases = (workCms?.caseStudies && workCms.caseStudies.length > 0)
+    ? workCms.caseStudies.filter((c: any) => c && c.enabled !== false && c.published !== false && c.id !== 'xyz' && c.slug !== 'xyz' && c.title !== 'xyz')
+    : CASE_STUDIES.filter((c: any) => c && c.id !== 'xyz' && c.slug !== 'xyz' && c.title !== 'xyz');
 
-  const currentIndex = activeCases.findIndex(
+  const currentIndex = validCases.findIndex(
     (c: any) => c.slug === targetSlug || c.id === targetSlug
   );
-  const nextCase = activeCases.length > 0 && currentIndex >= 0
-    ? activeCases[(currentIndex + 1) % activeCases.length]
-    : (activeCases[0] || null);
+
+  const nextCase = (currentIndex >= 0 && currentIndex < validCases.length - 1)
+    ? validCases[currentIndex + 1]
+    : null;
 
   return (
     <CaseStudyDetailView

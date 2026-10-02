@@ -39,7 +39,6 @@
       "caseStudyEnabled": true,
       "caseStudyUrl": "/work/she",
       "caseStudyLabel": "View case study ↗",
-      "pdfUrl": "/pdf/she-project-ladakh.pdf",
       "videoUrl": "",
       "image": "/uploads/1790515799187-high-alltitude-1.jpg",
       "interactiveCards": [
@@ -79,13 +78,12 @@
     {
       "id": "corps-publications",
       "num": "03",
-      "command": "69 Armoured",
+      "command": " 69 Armoured ",
       "location": "Ladakh",
       "date": "",
-      "title": "69 Armoured Regiment",
+      "title": " 69 Armoured Regiment",
       "subtitle": "Collateral designing · Content creation · Publications",
-      "description": "Comprehensive institutional communication, editorial publications, and visual documentation uniting 69 Armoured Regiment collateral designing and content creation.",
-      "pdfUrl": "/pdf/69-armoured-regiment.pdf",
+      "description": "Comprehensive institutional communication, editorial publications, and visual documentation uniting 69 Armoured Regiment collateral designing and content creation",
       "carouselEnabled": true,
       "carouselImages": [
         {
@@ -115,7 +113,8 @@
         "/uploads/1790516538989-communtiy.jpg"
       ],
       "category": "14-corps",
-      "published": true
+      "published": true,
+      "pdfUrl": "/uploads/1790923450984-69-armoured-regimet-.pdf"
     },
     {
       "id": "rezang-la-memorial",
@@ -126,7 +125,6 @@
       "title": "Rezang La War Memorial",
       "subtitle": "Collateral designing | Content production",
       "description": "Coffee table book designs, editorial layouts, commemorative publication architecture, and visual content production for the Rezang La War Memorial honoring the supreme sacrifice of the 114 gallant soldiers in the 1962 Battle of Rezang La.",
-      "pdfUrl": "/pdf/rezang-la-memorial.pdf",
       "landscapeImage": "/uploads/1790516827847-rezang-la-memorial.jpg",
       "landscapeImageLink": "",
       "landscapeImageEnabled": true,
@@ -138,38 +136,8 @@
       ],
       "category": "border-initiatives",
       "published": true
-    },
-    {
-      "id": "northern-command-ia",
-      "num": "05",
-      "command": "NORTHERN COMMAND IA",
-      "location": "Northern Command HQ",
-      "date": "2026",
-      "title": "Northern Command IA",
-      "subtitle": "Institutional Communication & Field Production",
-      "description": "Visual communications, ceremonial protocol documentation, and high-altitude field film direction conducted for Northern Command Headquarters.",
-      "pdfUrl": "/pdf/northern-command-ia.pdf",
-      "image": "/images/army/soldier-peak.jpg",
-      "sidePhotos": [
-        "/images/army/vibrant-villages-1.jpg",
-        "/images/army/69armoured-2.jpg"
-      ],
-      "category": "border-initiatives",
-      "published": true
     }
   ],
-  "coffeeTableBookPdf": {
-    "enabled": true,
-    "title": "Rezang La War Memorial Coffee Table Book",
-    "subtitle": "Interactive High-Altitude Commemorative Flipbook",
-    "pdfUrl": "/pdf/coffee-table-book.pdf"
-  },
-  "secondPdf": {
-    "enabled": true,
-    "title": "Indian Army Field Operations & Protocol Document",
-    "subtitle": "Official Defence Publication Archive",
-    "pdfUrl": "/pdf/army-field-document.pdf"
-  },
   "closingBanner": {
     "eyebrow": "PEOPLE · PLACES · SACRIFICE · A STRONGER TOMORROW",
     "heading": "Documenting\na stronger tomorrow",

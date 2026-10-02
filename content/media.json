@@ -1,6 +1,46 @@
 {
   "assets": [
     {
+      "id": "asset-1790924074560",
+      "name": "SHE.JPG",
+      "url": "/uploads/1790924074560-she.jpg",
+      "type": "image",
+      "size": "282 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T06:54:34.568Z",
+      "usedIn": "general"
+    },
+    {
+      "id": "asset-1790923632546",
+      "name": "DTK Card Work Proof.jpg.jpeg",
+      "url": "/uploads/1790923632546-dtk-card-work-proof.jpg.jpeg",
+      "type": "image",
+      "size": "98 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T06:47:12.552Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790923522446",
+      "name": "Rezang La War Memorial.pdf",
+      "url": "/uploads/1790923522446-rezang-la-war-memorial.pdf",
+      "type": "image",
+      "size": "98.5 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T06:45:23.206Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790923450984",
+      "name": "69 armoured regimet .pdf",
+      "url": "/uploads/1790923450984-69-armoured-regimet-.pdf",
+      "type": "image",
+      "size": "367.2 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T06:44:17.516Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1790914566864",
       "name": "Digital Brand Growth.png",
       "url": "/uploads/1790914566864-digital-brand-growth.png",

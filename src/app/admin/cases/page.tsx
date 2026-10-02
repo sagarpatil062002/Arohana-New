@@ -91,6 +91,68 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
     closingQuote: 'Long-term client relationships aren’t built on presentations. They are built on delivering quality consistently across completely different business realities.',
     closingText: 'Have a multi-entity or diversified business challenge? Let’s talk.',
   },
+  'she': {
+    subtitle: 'Self Help Empower · Ladakh Border Villages · Operation Sadbhavana',
+    heroImage: '/images/case-studies/she/she-hero.jpg',
+    heroImageCaption: 'SHE Initiative — connecting Ladakh border village women through education, entrepreneurship, and documentary storytelling.',
+    sector: 'Institutions · Social Impact · Community Development',
+    snapshot: {
+      location: 'Ladakh Border Villages',
+      engagementType: 'Identity Design + Documentary Production + Field Communication',
+      duration: 'Project-Based Engagement',
+      coreCapabilities: [
+        'Brand Identity Design',
+        'Documentary Production & Storytelling',
+        'Field Cinematography',
+        'Institutional Communication',
+        'Operation Sadbhavana Documentation',
+      ],
+    },
+    situation: [
+      'The SHE Initiative operates across remote Ladakh border villages, connecting women to education, skill development and entrepreneurship opportunities through Operation Sadbhavana-linked programmes.',
+      'The organisation had meaningful work on the ground but lacked a coherent brand identity and documented communication assets to represent that work to institutional funders, government partners and wider audiences.',
+    ],
+    realChallenge: [
+      'Communicating the reality of life and development programmes across high-altitude border villages requires on-ground presence, not remote production. The stories exist but needed careful documentation and narrative structure.',
+      'The identity had to feel both institutionally credible and human — reflecting the dignity of the women and communities being served.',
+    ],
+    thinking: [
+      'Begin with identity: a visual and verbal foundation that could anchor all communication.',
+      'Documentary as the primary medium: field shoots across border villages to capture real stories, participation, skills, and life.',
+      'Institutional alignment: all assets built to serve Operation Sadbhavana programmes and be useful in government and funder-facing outreach.',
+    ],
+    work: [
+      {
+        title: 'Brand Identity Design',
+        description: 'Complete visual identity for the SHE Initiative — logo, colour system, typography and brand guidelines created to function across print, digital and institutional formats.',
+        bullets: ['Logo concept and mark development', 'Visual identity system and colour palette', 'Brand guidelines for institutional use', 'Print and digital identity applications'],
+      },
+      {
+        title: 'Field Documentary Production',
+        description: 'On-ground documentary production across remote Ladakh border villages — capturing programme participation, community stories and the real texture of the SHE Initiative’s work.',
+        bullets: ['High-altitude border village field shoots', 'Community participation and skills documentation', 'Participant storytelling and interview direction', 'End-to-end post-production and film delivery'],
+      },
+      {
+        title: 'Institutional Communication Assets',
+        description: 'Documentation and communication materials aligned with Operation Sadbhavana programmes under 14 Corps.',
+        bullets: ['Operation Sadbhavana-aligned programme documentation', 'Institutional outreach communication assets', '14 Corps programme reporting support', 'Digital and print formats for partner presentations'],
+      },
+    ],
+    gallery: [
+      { image: '/images/case-studies/she/she-hero.jpg', caption: 'SHE Initiative: High-altitude border village field documentation and community engagement.', alt: 'SHE Initiative Ladakh border villages' },
+      { image: '/images/case-studies/she/field-1.jpg', caption: 'Field documentation: Women participation and skills development programme in Ladakh.', alt: 'SHE Initiative field programme Ladakh' },
+      { image: '/images/case-studies/she/field-2.jpg', caption: 'On-ground community storytelling across remote border village settlements.', alt: 'SHE Initiative border village community' },
+      { image: '/images/case-studies/she/film-1.jpg', caption: 'Documentary production: Capturing participant stories and programme reality.', alt: 'SHE Initiative documentary film' },
+      { image: '/images/case-studies/she/film-2.jpg', caption: 'Field cinematography across Ladakh — high-altitude, ground-level storytelling.', alt: 'SHE Initiative field cinematography' },
+      { image: '/images/case-studies/she/identity-1.jpg', caption: 'SHE Initiative brand identity — visual system for institutional and digital use.', alt: 'SHE Initiative brand identity design' },
+    ],
+    proof: {
+      verifiedText: 'The SHE Initiative now has a defined visual identity and a documented record of its field work — giving the organisation a credible foundation to communicate its impact, engage institutional partners, and build sustained visibility for the women and communities it serves.',
+      metricsNote: 'Identity design, field documentary, and institutional assets delivered for Operation Sadbhavana-linked programmes in Ladakh border villages.',
+    },
+    closingQuote: 'Authentic storytelling about communities requires the same precision and care as any brand brief — perhaps more, because the people in the frame deserve it.',
+    closingText: 'Working on institutional communication or community documentation? Let’s talk.',
+  },
 };
 
 export default function AdminCasesPage() {
@@ -170,9 +232,24 @@ export default function AdminCasesPage() {
 
   const handleCaseChange = (field: string, val: any) => {
     if (!selectedCase) return;
-    const updatedCases = workData.caseStudies.map((c: any) =>
-      (c.id === selectedCase.id || c.slug === selectedCase.slug) ? { ...getCaseWithDefaults(c), [field]: val } : c
-    );
+    const updatedCases = workData.caseStudies.map((c: any) => {
+      if (c.id !== selectedCase.id && c.slug !== selectedCase.slug) return c;
+      const base = getCaseWithDefaults(c);
+
+      // Support nested gallery paths e.g. "gallery[0].image" or "gallery[1].pdfUrl"
+      const galleryMatch = field.match(/^gallery\[(\d+)\]\.(.+)$/);
+      if (galleryMatch) {
+        const idx = parseInt(galleryMatch[1], 10);
+        const prop = galleryMatch[2];
+        const g = Array.isArray(base.gallery) ? [...base.gallery] : [];
+        if (g[idx]) {
+          g[idx] = { ...g[idx], [prop]: val };
+          return { ...base, gallery: g };
+        }
+      }
+
+      return { ...base, [field]: val };
+    });
     const updated = { ...workData, caseStudies: updatedCases };
     setWorkData(updated);
     updateDraftInMemory('work', updated);
@@ -1097,55 +1174,6 @@ export default function AdminCasesPage() {
                           </div>
                         </div>
 
-                        {/* Video Option */}
-                        <div style={{ marginBottom: '0.85rem' }}>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            VIDEO URL (MP4, YouTube, Vimeo, or Hosted Video)
-                          </label>
-                          <input
-                            type="text"
-                            value={activeCaseMerged.videoUrl || ''}
-                            onChange={(e) => handleCaseChange('videoUrl', e.target.value)}
-                            style={{ ...inputStyle, marginBottom: '0.35rem' }}
-                            placeholder="e.g. https://www.youtube.com/watch?v=... or /uploads/video.mp4"
-                          />
-                          <div style={{ display: 'flex', gap: '0.45rem' }}>
-                            <button
-                              type="button"
-                              onClick={() => setMediaPickerTarget({ path: 'videoUrl', type: 'video' })}
-                              style={mediaBtnStyle}
-                            >
-                              Pick / Upload Video
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* PDF Option */}
-                        <div style={{ marginBottom: '0.85rem' }}>
-                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            PDF DOCUMENT URL (Opens in Reusable Website PDF Viewer)
-                          </label>
-                          <input
-                            type="text"
-                            value={activeCaseMerged.pdfUrl || ''}
-                            onChange={(e) => handleCaseChange('pdfUrl', e.target.value)}
-                            style={{ ...inputStyle, marginBottom: '0.35rem' }}
-                            placeholder="e.g. /uploads/she-project-ladakh.pdf or https://..."
-                          />
-                          <div style={{ display: 'flex', gap: '0.45rem' }}>
-                            <button
-                              type="button"
-                              onClick={() => setMediaPickerTarget({ path: 'pdfUrl', type: 'pdf' })}
-                              style={mediaBtnStyle}
-                            >
-                              Pick / Upload PDF
-                            </button>
-                          </div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A', marginTop: '4px', display: 'block' }}>
-                            Configures the PDF document displayed when visitors view this case study.
-                          </span>
-                        </div>
-
                         <div>
                           <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
                             HERO MEDIA CAPTION
@@ -1155,54 +1183,13 @@ export default function AdminCasesPage() {
                             value={activeCaseMerged.heroImageCaption || ''}
                             onChange={(e) => handleCaseChange('heroImageCaption', e.target.value)}
                             style={inputStyle}
-                            placeholder="Optional caption displayed under the hero media..."
+                            placeholder="Optional caption displayed under the hero image..."
                           />
                         </div>
                       </div>
 
-                      {/* Snapshot & Core Scope Controls */}
+                      {/* Core Scope Controls */}
                       <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.08)', paddingTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div>
-                          <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113', marginBottom: '0.5rem' }}>
-                            Project Snapshot Card
-                          </div>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                            <div>
-                              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                                LOCATION
-                              </label>
-                              <input
-                                type="text"
-                                value={activeCaseMerged.snapshot?.location || ''}
-                                onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, location: e.target.value })}
-                                style={inputStyle}
-                              />
-                            </div>
-                            <div>
-                              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                                DURATION
-                              </label>
-                              <input
-                                type="text"
-                                value={activeCaseMerged.snapshot?.duration || ''}
-                                onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, duration: e.target.value })}
-                                style={inputStyle}
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                              ENGAGEMENT TYPE
-                            </label>
-                            <input
-                              type="text"
-                              value={activeCaseMerged.snapshot?.engagementType || ''}
-                              onChange={(e) => handleCaseChange('snapshot', { ...activeCaseMerged.snapshot, engagementType: e.target.value })}
-                              style={inputStyle}
-                            />
-                          </div>
-                        </div>
 
                         {/* CORE SCOPE - EDIT & ENABLE/DISABLE */}
                         <div style={{ padding: '0.9rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
@@ -1475,91 +1462,354 @@ export default function AdminCasesPage() {
                         </div>
                       </div>
 
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                        {(activeCaseMerged.gallery || []).map((item: any, gIdx: number) => (
-                          <div key={gIdx} style={{ display: 'flex', gap: '0.85rem', padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)', backgroundColor: item.enabled !== false ? '#FAFAFA' : '#F4F4F5', alignItems: 'center' }}>
-                            <div style={{ width: '70px', height: '52px', position: 'relative', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0 }}>
-                              {item.image ? <Image src={item.image} alt="" fill style={{ objectFit: 'cover' }} /> : null}
-                            </div>
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                              <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {(activeCaseMerged.gallery || []).map((item: any, gIdx: number) => {
+                          const currentType = item.type || (item.pdfUrl || (item.url && item.url.includes('.pdf')) ? 'pdf' : (item.videoUrl ? 'video' : 'image'));
+
+                          return (
+                            <div
+                              key={gIdx}
+                              style={{
+                                padding: '1.25rem',
+                                borderRadius: '8px',
+                                border: '1px solid rgba(0, 0, 0, 0.1)',
+                                backgroundColor: item.enabled !== false ? '#FFFFFF' : '#F8FAFC',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '1rem',
+                              }}
+                            >
+                              {/* Asset Header */}
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(0, 0, 0, 0.06)', paddingBottom: '0.65rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                                  <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111113', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                                    PRIMARY MEDIA ASSET 0{gIdx + 1} ({currentType === 'pdf' ? 'PDF DOCUMENT' : currentType.toUpperCase()})
+                                  </span>
+                                </div>
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', cursor: 'pointer', fontSize: '0.76rem', fontWeight: 600, color: item.enabled !== false ? '#16A34A' : '#71717A' }}>
+                                    <input
+                                      type="checkbox"
+                                      checked={item.enabled !== false}
+                                      onChange={(e) => {
+                                        const g = [...activeCaseMerged.gallery];
+                                        g[gIdx].enabled = e.target.checked;
+                                        handleCaseChange('gallery', g);
+                                      }}
+                                      style={{ width: '16px', height: '16px', accentColor: '#16A34A', cursor: 'pointer' }}
+                                    />
+                                    <span>{item.enabled !== false ? 'Asset Media: Enabled' : 'Asset Media: Disabled'}</span>
+                                  </label>
+
+                                  <button
+                                    type="button"
+                                    title="Delete asset"
+                                    onClick={() => {
+                                      const g = activeCaseMerged.gallery.filter((_: any, idx: number) => idx !== gIdx);
+                                      handleCaseChange('gallery', g);
+                                    }}
+                                    style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#EF4444', display: 'flex', alignItems: 'center', padding: '0.25rem' }}
+                                  >
+                                    <Trash2 size={16} />
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* SELECT MEDIA TYPE BUTTONS */}
+                              <div>
+                                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#52525B', marginBottom: '0.45rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                  SELECT MEDIA TYPE FOR THIS ASSET
+                                </label>
+                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                  {[
+                                    { id: 'image', label: '🖼️ Image' },
+                                    { id: 'video', label: '🎬 Video' },
+                                    { id: 'pdf', label: '📄 PDF Document' },
+                                  ].map((mt) => {
+                                    const isSel = currentType === mt.id;
+                                    return (
+                                      <button
+                                        key={mt.id}
+                                        type="button"
+                                        onClick={() => {
+                                          const g = [...activeCaseMerged.gallery];
+                                          g[gIdx].type = mt.id;
+                                          handleCaseChange('gallery', g);
+                                        }}
+                                        style={{
+                                          flex: 1,
+                                          padding: '0.5rem 0.75rem',
+                                          borderRadius: '6px',
+                                          border: isSel ? '1.5px solid #DE322D' : '1px solid #E4E4E7',
+                                          backgroundColor: isSel ? '#DE322D' : '#F4F4F5',
+                                          color: isSel ? '#FFFFFF' : '#27272A',
+                                          fontSize: '0.78rem',
+                                          fontWeight: isSel ? 700 : 500,
+                                          cursor: 'pointer',
+                                          transition: 'all 0.15s ease',
+                                        }}
+                                      >
+                                        {mt.label}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+
+                              {/* CONDITIONAL CONTROLS PER MEDIA TYPE */}
+
+                              {/* 1. IMAGE CONTROLS */}
+                              {currentType === 'image' && (
+                                <div>
+                                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                    ASSET IMAGE URL
+                                  </label>
+                                  <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+                                    <div style={{ width: '100px', height: '65px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0, border: '1px solid rgba(0,0,0,0.08)' }}>
+                                      {item.image ? (
+                                        <Image src={item.image} alt="" fill style={{ objectFit: 'cover' }} />
+                                      ) : (
+                                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', color: '#71717A' }}>
+                                          No Image
+                                        </div>
+                                      )}
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                      <input
+                                        type="text"
+                                        value={item.image || ''}
+                                        onChange={(e) => {
+                                          const g = [...activeCaseMerged.gallery];
+                                          g[gIdx].image = e.target.value;
+                                          handleCaseChange('gallery', g);
+                                        }}
+                                        style={{ ...inputStyle, marginBottom: '0.4rem' }}
+                                        placeholder="/images/case-studies/... or https://..."
+                                      />
+                                      <div style={{ display: 'flex', gap: '0.45rem' }}>
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            activeGalleryIdxRef.current = gIdx;
+                                            galleryImgInputRef.current?.click();
+                                          }}
+                                          style={mediaBtnStyle}
+                                        >
+                                          Upload Image
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() => setMediaPickerTarget({ path: `gallery[${gIdx}].image`, type: 'image' })}
+                                          style={mediaBtnStyle}
+                                        >
+                                          Pick Image
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* 2. VIDEO CONTROLS */}
+                              {currentType === 'video' && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                                  <div>
+                                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                      VIDEO URL (MP4, YouTube, Vimeo, or Hosted Video)
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={item.videoUrl || item.url || ''}
+                                      onChange={(e) => {
+                                        const g = [...activeCaseMerged.gallery];
+                                        g[gIdx].videoUrl = e.target.value;
+                                        handleCaseChange('gallery', g);
+                                      }}
+                                      style={{ ...inputStyle, marginBottom: '0.4rem' }}
+                                      placeholder="e.g. https://www.youtube.com/watch?v=... or /uploads/video.mp4"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => setMediaPickerTarget({ path: `gallery[${gIdx}].videoUrl`, type: 'video' })}
+                                      style={mediaBtnStyle}
+                                    >
+                                      Pick / Upload Video
+                                    </button>
+                                  </div>
+
+                                  <div>
+                                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                      POSTER / PREVIEW IMAGE URL
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+                                      <div style={{ width: '100px', height: '65px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0, border: '1px solid rgba(0,0,0,0.08)' }}>
+                                        {item.image ? (
+                                          <Image src={item.image} alt="" fill style={{ objectFit: 'cover' }} />
+                                        ) : (
+                                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', color: '#71717A' }}>
+                                            No Poster
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div style={{ flex: 1 }}>
+                                        <input
+                                          type="text"
+                                          value={item.image || ''}
+                                          onChange={(e) => {
+                                            const g = [...activeCaseMerged.gallery];
+                                            g[gIdx].image = e.target.value;
+                                            handleCaseChange('gallery', g);
+                                          }}
+                                          style={{ ...inputStyle, marginBottom: '0.4rem' }}
+                                          placeholder="Poster image for video (/images/... or https://...)"
+                                        />
+                                        <div style={{ display: 'flex', gap: '0.45rem' }}>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              activeGalleryIdxRef.current = gIdx;
+                                              galleryImgInputRef.current?.click();
+                                            }}
+                                            style={mediaBtnStyle}
+                                          >
+                                            Upload Image
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => setMediaPickerTarget({ path: `gallery[${gIdx}].image`, type: 'image' })}
+                                            style={mediaBtnStyle}
+                                          >
+                                            Pick Image
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* 3. PDF DOCUMENT CONTROLS */}
+                              {currentType === 'pdf' && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                                  <div>
+                                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                      PDF DOCUMENT URL (Opens in Reusable Website PDF Viewer)
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={item.pdfUrl || item.url || ''}
+                                      onChange={(e) => {
+                                        const g = [...activeCaseMerged.gallery];
+                                        g[gIdx].pdfUrl = e.target.value;
+                                        handleCaseChange('gallery', g);
+                                      }}
+                                      style={{ ...inputStyle, marginBottom: '0.4rem' }}
+                                      placeholder="e.g. /uploads/she-project-ladakh.pdf or https://..."
+                                    />
+                                    <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center', marginBottom: '0.35rem' }}>
+                                      <button
+                                        type="button"
+                                        onClick={() => setMediaPickerTarget({ path: `gallery[${gIdx}].pdfUrl`, type: 'pdf' })}
+                                        style={mediaBtnStyle}
+                                      >
+                                        Pick / Upload PDF
+                                      </button>
+                                    </div>
+                                    <div style={{ fontSize: '0.7rem', color: '#71717A' }}>
+                                      Configures the PDF document displayed when visitors view this item.
+                                    </div>
+                                  </div>
+
+                                  <div>
+                                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                      COVER IMAGE URL (For PDF Card Thumbnail)
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+                                      <div style={{ width: '100px', height: '65px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0, border: '1px solid rgba(0,0,0,0.08)' }}>
+                                        {item.image ? (
+                                          <Image src={item.image} alt="" fill style={{ objectFit: 'cover' }} />
+                                        ) : (
+                                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', color: '#71717A' }}>
+                                            PDF Cover
+                                          </div>
+                                        )}
+                                      </div>
+                                      <div style={{ flex: 1 }}>
+                                        <input
+                                          type="text"
+                                          value={item.image || ''}
+                                          onChange={(e) => {
+                                            const g = [...activeCaseMerged.gallery];
+                                            g[gIdx].image = e.target.value;
+                                            handleCaseChange('gallery', g);
+                                          }}
+                                          style={{ ...inputStyle, marginBottom: '0.4rem' }}
+                                          placeholder="Thumbnail cover image for PDF (/images/...)"
+                                        />
+                                        <div style={{ display: 'flex', gap: '0.45rem' }}>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              activeGalleryIdxRef.current = gIdx;
+                                              galleryImgInputRef.current?.click();
+                                            }}
+                                            style={mediaBtnStyle}
+                                          >
+                                            Upload Image
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => setMediaPickerTarget({ path: `gallery[${gIdx}].image`, type: 'image' })}
+                                            style={mediaBtnStyle}
+                                          >
+                                            Pick Image
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* COMMON: CAPTION & REDIRECT */}
+                              <div>
+                                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                  MEDIA CAPTION / SUBTITLE
+                                </label>
                                 <input
                                   type="text"
-                                  value={item.image || ''}
+                                  value={item.caption || ''}
                                   onChange={(e) => {
                                     const g = [...activeCaseMerged.gallery];
-                                    g[gIdx].image = e.target.value;
+                                    g[gIdx].caption = e.target.value;
                                     handleCaseChange('gallery', g);
                                   }}
-                                  style={{ ...inputStyle, padding: '0.4rem 0.6rem', flex: 1 }}
-                                  placeholder="Image URL (/images/... or https://...)"
+                                  style={inputStyle}
+                                  placeholder="Caption / description text displayed with this asset..."
                                 />
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    activeGalleryIdxRef.current = gIdx;
-                                    galleryImgInputRef.current?.click();
-                                  }}
-                                  style={mediaBtnStyle}
-                                >
-                                  Upload
-                                </button>
                               </div>
-                              <input
-                                type="text"
-                                value={item.caption || ''}
-                                onChange={(e) => {
-                                  const g = [...activeCaseMerged.gallery];
-                                  g[gIdx].caption = e.target.value;
-                                  handleCaseChange('gallery', g);
-                                }}
-                                style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
-                                placeholder="Caption / description text..."
-                              />
-                              <input
-                                type="text"
-                                value={item.url || item.redirectUrl || ''}
-                                onChange={(e) => {
-                                  const g = [...activeCaseMerged.gallery];
-                                  g[gIdx].url = e.target.value;
-                                  handleCaseChange('gallery', g);
-                                }}
-                                style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
-                                placeholder="Target Redirect URL or PDF Link (e.g. /pdf-viewer?url=... or https://...)"
-                              />
+
+                              <div>
+                                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                                  TARGET REDIRECT URL (Optional Custom Link)
+                                </label>
+                                <input
+                                  type="text"
+                                  value={item.url || item.redirectUrl || ''}
+                                  onChange={(e) => {
+                                    const g = [...activeCaseMerged.gallery];
+                                    g[gIdx].url = e.target.value;
+                                    handleCaseChange('gallery', g);
+                                  }}
+                                  style={inputStyle}
+                                  placeholder="Custom redirect link (e.g. /pdf-viewer?url=... or https://...)"
+                                />
+                              </div>
                             </div>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
-                              <button
-                                type="button"
-                                title={item.enabled !== false ? 'Hide image from gallery' : 'Show image in gallery'}
-                                onClick={() => {
-                                  const g = [...activeCaseMerged.gallery];
-                                  g[gIdx].enabled = item.enabled === false ? true : false;
-                                  handleCaseChange('gallery', g);
-                                }}
-                                style={{
-                                  border: 'none',
-                                  background: 'transparent',
-                                  cursor: 'pointer',
-                                  color: item.enabled !== false ? '#16A34A' : '#A1A1AA',
-                                }}
-                              >
-                                {item.enabled !== false ? <Eye size={16} /> : <EyeOff size={16} />}
-                              </button>
-                              <button
-                                type="button"
-                                title="Delete image"
-                                onClick={() => {
-                                  const g = activeCaseMerged.gallery.filter((_: any, idx: number) => idx !== gIdx);
-                                  handleCaseChange('gallery', g);
-                                }}
-                                style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#EF4444' }}
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}

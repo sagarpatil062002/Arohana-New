@@ -462,7 +462,6 @@ export default function AdminArmyProjectsPage() {
             { id: 'rezangLaMemorial', label: '14. Rezang La Memorial' },
             { id: 'hero', label: 'Page Hero' },
             { id: 'closingBanner', label: 'Closing Banner' },
-            { id: 'pdfViewers', label: '15. PDF Viewers (CMS)' },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
