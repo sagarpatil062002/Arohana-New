@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getPendingChangesSummary, publishAllDrafts } from '@/lib/cms/content-manager';
 
 export async function GET() {
@@ -13,6 +14,17 @@ export async function GET() {
 export async function POST() {
   try {
     const result = publishAllDrafts();
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/');
+      revalidatePath('/work');
+      revalidatePath('/work/[slug]', 'page');
+      revalidatePath('/tourin');
+      revalidatePath('/army-projects');
+      revalidatePath('/services');
+      revalidatePath('/about');
+      revalidatePath('/contact');
+    } catch (e) {}
     return NextResponse.json(result);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

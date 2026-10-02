@@ -32,7 +32,7 @@ export default function AdminArmyProjectsPage() {
   const [armyData, setArmyData] = useState<any>(null);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>('western-command-investiture');
   const [activeTab, setActiveTab] = useState<
-    'projects' | 'armyVideos' | 'firefuryCarousel' | 'communicationCards' | 'rezangLaMemorial' | 'hero' | 'closingBanner'
+    'projects' | 'armyVideos' | 'firefuryCarousel' | 'communicationCards' | 'rezangLaMemorial' | 'hero' | 'closingBanner' | 'pdfViewers'
   >('projects');
   const [savedStatus, setSavedStatus] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
@@ -58,6 +58,9 @@ export default function AdminArmyProjectsPage() {
       | 'landscapeImage'
       | 'verticalImage'
       | 'armyVideoThumbnail'
+      | 'pdfUrl'
+      | 'coffeeTablePdfUrl'
+      | 'secondPdfUrl'
       | { cardImageIndex: number }
       | { carouselImageIndex: number }
       | 'addCarouselImage'
@@ -459,6 +462,7 @@ export default function AdminArmyProjectsPage() {
             { id: 'rezangLaMemorial', label: '14. Rezang La Memorial' },
             { id: 'hero', label: 'Page Hero' },
             { id: 'closingBanner', label: 'Closing Banner' },
+            { id: 'pdfViewers', label: '15. PDF Viewers (CMS)' },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -696,6 +700,48 @@ export default function AdminArmyProjectsPage() {
                     placeholder="Provide detailed description of the project brief, narrative, and execution..."
                     style={inputStyle}
                   />
+                </div>
+
+                {/* 5B. PDF DOCUMENT URL */}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    PDF DOCUMENT URL (Opens in Reusable Website PDF Viewer)
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <input
+                      type="text"
+                      value={selectedProject.pdfUrl || ''}
+                      onChange={(e) => handleProjectChange('pdfUrl', e.target.value)}
+                      placeholder="e.g. /pdf/69-armoured-regiment.pdf or https://..."
+                      style={{ ...inputStyle, flex: 1 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMediaPickerConfig({
+                          isOpen: true,
+                          mediaType: 'all',
+                          target: 'pdfUrl',
+                        })
+                      }
+                      style={{
+                        padding: '0.5rem 0.85rem',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(0,0,0,0.15)',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        fontSize: '0.76rem',
+                        fontWeight: 650,
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Upload / Pick PDF
+                    </button>
+                  </div>
+                  <span style={{ fontSize: '0.68rem', color: '#71717A', marginTop: '2px', display: 'block' }}>
+                    Configures the PDF document displayed when visitors click &ldquo;View PDF&rdquo; on this project.
+                  </span>
                 </div>
 
                 {/* 6. CLICKABLE CASE STUDY FLOW & ACTIONS */}
@@ -2419,6 +2465,176 @@ export default function AdminArmyProjectsPage() {
             </div>
           </div>
         )}
+
+        {/* ─── TAB: PDF VIEWERS (COFFEE TABLE BOOK & SECOND PDF) ─── */}
+        {activeTab === 'pdfViewers' && (
+          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div style={{ borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.75rem' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: '#DE322D' }}>
+                PDF Viewers Management (Army Projects)
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '4px 0 0' }}>
+                Manage interactive PDF documents embedded in the Army section. Draft changes require clicking &ldquo;Publish Live&rdquo; to reflect on the live site.
+              </p>
+            </div>
+
+            {/* Coffee Table Book PDF (Flipbook) */}
+            <div style={{ padding: '1.25rem', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.1)', backgroundColor: '#FAFAFA' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: 0, color: '#111113' }}>
+                    1. Coffee Table Book (3D Flipbook Experience)
+                  </h4>
+                  <span style={{ fontSize: '0.74rem', color: '#71717A' }}>Realistic double-page spread with page-turning animation</span>
+                </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', cursor: 'pointer', fontWeight: 600 }}>
+                  <input
+                    type="checkbox"
+                    checked={armyData.coffeeTableBookPdf?.enabled !== false}
+                    onChange={(e) => updateField(['coffeeTableBookPdf', 'enabled'], e.target.checked)}
+                  />
+                  Enable Flipbook
+                </label>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Title</label>
+                  <input
+                    type="text"
+                    style={inputStyle}
+                    value={armyData.coffeeTableBookPdf?.title || ''}
+                    onChange={(e) => updateField(['coffeeTableBookPdf', 'title'], e.target.value)}
+                    placeholder="Rezang La War Memorial Coffee Table Book"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Subtitle</label>
+                  <input
+                    type="text"
+                    style={inputStyle}
+                    value={armyData.coffeeTableBookPdf?.subtitle || ''}
+                    onChange={(e) => updateField(['coffeeTableBookPdf', 'subtitle'], e.target.value)}
+                    placeholder="Interactive High-Altitude Commemorative Flipbook"
+                  />
+                </div>
+              </div>
+              <div style={{ marginTop: '0.75rem' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>PDF Document URL</label>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    style={{ ...inputStyle, flex: 1 }}
+                    value={armyData.coffeeTableBookPdf?.pdfUrl || ''}
+                    onChange={(e) => updateField(['coffeeTableBookPdf', 'pdfUrl'], e.target.value)}
+                    placeholder="/pdf/coffee-table-book.pdf or https://..."
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setMediaPickerConfig({
+                        isOpen: true,
+                        mediaType: 'all',
+                        target: 'coffeeTablePdfUrl',
+                      })
+                    }
+                    style={{
+                      padding: '0.45rem 0.85rem',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0,0,0,0.15)',
+                      backgroundColor: '#111113',
+                      color: '#FFFFFF',
+                      fontSize: '0.76rem',
+                      fontWeight: 650,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Upload / Pick PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Second PDF (Standard Viewer) */}
+            <div style={{ padding: '1.25rem', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.1)', backgroundColor: '#FAFAFA' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: 0, color: '#111113' }}>
+                    2. Second PDF Document (Standard Reader View)
+                  </h4>
+                  <span style={{ fontSize: '0.74rem', color: '#71717A' }}>Clean single-page document reader with page navigation &amp; zoom</span>
+                </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', cursor: 'pointer', fontWeight: 600 }}>
+                  <input
+                    type="checkbox"
+                    checked={armyData.secondPdf?.enabled !== false}
+                    onChange={(e) => updateField(['secondPdf', 'enabled'], e.target.checked)}
+                  />
+                  Enable Document Viewer
+                </label>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Title</label>
+                  <input
+                    type="text"
+                    style={inputStyle}
+                    value={armyData.secondPdf?.title || ''}
+                    onChange={(e) => updateField(['secondPdf', 'title'], e.target.value)}
+                    placeholder="Indian Army Field Operations & Protocol Document"
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Subtitle</label>
+                  <input
+                    type="text"
+                    style={inputStyle}
+                    value={armyData.secondPdf?.subtitle || ''}
+                    onChange={(e) => updateField(['secondPdf', 'subtitle'], e.target.value)}
+                    placeholder="Official Defence Publication Archive"
+                  />
+                </div>
+              </div>
+              <div style={{ marginTop: '0.75rem' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>PDF Document URL</label>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    style={{ ...inputStyle, flex: 1 }}
+                    value={armyData.secondPdf?.pdfUrl || ''}
+                    onChange={(e) => updateField(['secondPdf', 'pdfUrl'], e.target.value)}
+                    placeholder="/pdf/army-field-document.pdf or https://..."
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setMediaPickerConfig({
+                        isOpen: true,
+                        mediaType: 'all',
+                        target: 'secondPdfUrl',
+                      })
+                    }
+                    style={{
+                      padding: '0.45rem 0.85rem',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(0,0,0,0.15)',
+                      backgroundColor: '#111113',
+                      color: '#FFFFFF',
+                      fontSize: '0.76rem',
+                      fontWeight: 650,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Upload / Pick PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
@@ -2503,6 +2719,14 @@ export default function AdminArmyProjectsPage() {
               existing.push({ image: url, caption: 'Archival Still', enabled: true });
               handleProjectChange('gallery', existing);
             }
+          } else if (mediaPickerConfig.target === 'pdfUrl') {
+            if (selectedProject) {
+              handleProjectChange('pdfUrl', url);
+            }
+          } else if (mediaPickerConfig.target === 'coffeeTablePdfUrl') {
+            updateField(['coffeeTableBookPdf', 'pdfUrl'], url);
+          } else if (mediaPickerConfig.target === 'secondPdfUrl') {
+            updateField(['secondPdf', 'pdfUrl'], url);
           } else if (mediaPickerConfig.target === 'bannerImage') {
             handleClosingBannerChange('image', url);
           }

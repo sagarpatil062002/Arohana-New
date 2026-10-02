@@ -1,6 +1,36 @@
 {
   "assets": [
     {
+      "id": "asset-1790914566864",
+      "name": "Digital Brand Growth.png",
+      "url": "/uploads/1790914566864-digital-brand-growth.png",
+      "type": "image",
+      "size": "1.6 MB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T04:16:06.872Z",
+      "usedIn": "Media Library"
+    },
+    {
+      "id": "asset-1790914513686",
+      "name": "SHE.JPG",
+      "url": "/uploads/1790914513686-she.jpg",
+      "type": "image",
+      "size": "282 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T04:15:13.689Z",
+      "usedIn": "general"
+    },
+    {
+      "id": "asset-1790914503136",
+      "name": "SHE.JPG",
+      "url": "/uploads/1790914503136-she.jpg",
+      "type": "image",
+      "size": "282 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T04:15:03.143Z",
+      "usedIn": "general"
+    },
+    {
       "id": "asset-1790913673166",
       "name": "HERO Ever Wondered About a Pangong Proposal.png",
       "url": "/uploads/1790913673166-hero-ever-wondered-about-a-pangong-proposal.png",

@@ -488,48 +488,103 @@ export default function TourinPage() {
             {/* ── CENTER COLUMN: Image 1 (large / main image) ── */}
             <div className="tourin-col-center">
               {heroImage1.enabled !== false && heroImage1.src && (
-                <div className="santorini-feature-card">
-                  <Image
-                    src={heroImage1.src}
-                    alt={heroImage1.alt || 'High altitude mountain landscape in Ladakh'}
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 42vw"
-                    className="santorini-card-img"
-                  />
-                  <div className="santorini-vignette-overlay" />
-                </div>
+                heroImage1.isClickable !== false && heroImage1.redirectUrl ? (
+                  <Link
+                    href={heroImage1.redirectUrl}
+                    target={heroImage1.openInNewTab ? '_blank' : undefined}
+                    rel={heroImage1.openInNewTab ? 'noopener noreferrer' : undefined}
+                    className="santorini-feature-card"
+                    style={{ display: 'block', textDecoration: 'none' }}
+                  >
+                    <Image
+                      src={heroImage1.src}
+                      alt={heroImage1.alt || 'High altitude mountain landscape in Ladakh'}
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 42vw"
+                      className="santorini-card-img"
+                    />
+                    <div className="santorini-vignette-overlay" />
+                  </Link>
+                ) : (
+                  <div className="santorini-feature-card">
+                    <Image
+                      src={heroImage1.src}
+                      alt={heroImage1.alt || 'High altitude mountain landscape in Ladakh'}
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 42vw"
+                      className="santorini-card-img"
+                    />
+                    <div className="santorini-vignette-overlay" />
+                  </div>
+                )
               )}
             </div>
 
             {/* ── RIGHT COLUMN: Image 2 (upper) + Image 3 (lower) — exactly equal size ── */}
             <div className="tourin-col-right">
               {heroImage2.enabled !== false && heroImage2.src && (
-                <div className="tourin-img-slot">
-                  <Image
-                    src={heroImage2.src}
-                    alt={heroImage2.alt || 'Pristine alpine landscape'}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 22vw"
-                    className="lake-card-img"
-                  />
-                  <div className="lake-gradient-dim" />
-                </div>
+                heroImage2.isClickable !== false && heroImage2.redirectUrl ? (
+                  <Link
+                    href={heroImage2.redirectUrl}
+                    target={heroImage2.openInNewTab ? '_blank' : undefined}
+                    rel={heroImage2.openInNewTab ? 'noopener noreferrer' : undefined}
+                    className="tourin-img-slot"
+                    style={{ display: 'block', textDecoration: 'none' }}
+                  >
+                    <Image
+                      src={heroImage2.src}
+                      alt={heroImage2.alt || 'Pristine alpine landscape'}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 22vw"
+                      className="lake-card-img"
+                    />
+                    <div className="lake-gradient-dim" />
+                  </Link>
+                ) : (
+                  <div className="tourin-img-slot">
+                    <Image
+                      src={heroImage2.src}
+                      alt={heroImage2.alt || 'Pristine alpine landscape'}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 22vw"
+                      className="lake-card-img"
+                    />
+                    <div className="lake-gradient-dim" />
+                  </div>
+                )
               )}
               {heroImage3.enabled !== false && heroImage3.src && (
-                <div className="tourin-img-slot">
-                  <Image
-                    src={heroImage3.src}
-                    alt={heroImage3.alt || 'High mountain pass and valley in Ladakh'}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 22vw"
-                    className="lake-card-img"
-                  />
-                  <div className="lake-gradient-dim" />
-                  <Link href="/contact" className="lake-action-circle" aria-label="Talk to us about a journey">
-                    <ArrowRight size={14} strokeWidth={2.4} />
+                heroImage3.isClickable !== false && heroImage3.redirectUrl ? (
+                  <Link
+                    href={heroImage3.redirectUrl}
+                    target={heroImage3.openInNewTab ? '_blank' : undefined}
+                    rel={heroImage3.openInNewTab ? 'noopener noreferrer' : undefined}
+                    className="tourin-img-slot"
+                    style={{ display: 'block', textDecoration: 'none' }}
+                  >
+                    <Image
+                      src={heroImage3.src}
+                      alt={heroImage3.alt || 'High mountain pass and valley in Ladakh'}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 22vw"
+                      className="lake-card-img"
+                    />
+                    <div className="lake-gradient-dim" />
                   </Link>
-                </div>
+                ) : (
+                  <div className="tourin-img-slot">
+                    <Image
+                      src={heroImage3.src}
+                      alt={heroImage3.alt || 'High mountain pass and valley in Ladakh'}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 22vw"
+                      className="lake-card-img"
+                    />
+                    <div className="lake-gradient-dim" />
+                  </div>
+                )
               )}
             </div>
           </div>
@@ -1235,494 +1290,9 @@ export default function TourinPage() {
       </section>
       )}
 
-      {/* ================================================================
-           07 — SECTION: CURATED JOURNEYS
-      ================================================================ */}
-      {tourinCms.journeysEnabled !== false && journeys.length > 0 && (
-      <section
-        id="curated-journeys"
-        style={{
-          paddingTop: 'clamp(4.5rem, 8vw, 7.5rem)',
-          paddingBottom: 'clamp(4.5rem, 8vw, 7.5rem)',
-          backgroundColor: '#ffffff',
-          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-        }}
-      >
-        <div
-          className="padding-global"
-          style={{ maxWidth: '1440px', margin: '0 auto' }}
-        >
-          <div className="tourin-section-row">
-            {/* Timeline Col */}
-            <div className="genesis-timeline-col">
-              <div className="timeline-badge-wrap">
-                <span className="timeline-num-badge">05</span>
-                <span className="timeline-dot-red" />
-              </div>
-              <div className="timeline-connector-line" />
-            </div>
 
-            {/* Main Content Area */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              {/* Header Row */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '1.5rem',
-                  marginBottom: '2.5rem',
-                }}
-              >
-                <div>
-                  <div className="genesis-tag">
-                    <span className="timeline-mobile-badge">05</span>
-                    <span className="tag-red-bullet">•</span>
-                    <span>CURATED JOURNEYS</span>
-                  </div>
 
-                  <h2
-                    style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
-                      fontWeight: 500,
-                      letterSpacing: '-0.03em',
-                      color: '#111111',
-                      lineHeight: 1.12,
-                      margin: 0,
-                    }}
-                  >
-                    Journeys designed with a reason.
-                  </h2>
-                </div>
 
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1.5rem',
-                  }}
-                >
-                  <Link
-                    href="/tourin#curated-journeys"
-                    className="genesis-story-link"
-                    style={{ margin: 0 }}
-                  >
-                    <span>VIEW ALL JOURNEYS</span>
-                    <ArrowUpRight size={15} strokeWidth={2.4} />
-                  </Link>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <button
-                      onClick={() => scrollJourneys('left')}
-                      aria-label="Previous journey"
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#ffffff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        color: '#111111',
-                        transition: 'all 0.2s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = '#111111';
-                        e.currentTarget.style.backgroundColor = '#f7f7f7';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.15)';
-                        e.currentTarget.style.backgroundColor = '#ffffff';
-                      }}
-                    >
-                      <ArrowLeft size={16} />
-                    </button>
-                    <button
-                      onClick={() => scrollJourneys('right')}
-                      aria-label="Next journey"
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#ffffff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        color: '#111111',
-                        transition: 'all 0.2s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = '#111111';
-                        e.currentTarget.style.backgroundColor = '#f7f7f7';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = 'rgba(0, 0, 0, 0.15)';
-                        e.currentTarget.style.backgroundColor = '#ffffff';
-                      }}
-                    >
-                      <ArrowRight size={16} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Curated Journeys: 1 Active Journey + Adding More Places Coming Soon Card */}
-              <div
-                ref={journeysScrollRef}
-                className="curated-cards-grid"
-              >
-                {/* Published Curated Journeys */}
-                {journeys.map((journey) => (
-                  <div
-                    key={journey.id}
-                    className="tourin-journey-card"
-                    onClick={() => setActiveJourney(journey)}
-                    onMouseEnter={() => handlePillEnter('EXPLORE')}
-                    onMouseLeave={handlePillLeave}
-                    style={{
-                      borderRadius: '16px',
-                      backgroundColor: '#ffffff',
-                      border: '1px solid rgba(0, 0, 0, 0.08)',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      cursor: 'pointer',
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                    }}
-                  >
-                    {/* Top Image */}
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '100%',
-                        aspectRatio: '16/10',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      <Image
-                        src={journey.image}
-                        alt={journey.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        style={{
-                          objectFit: 'cover',
-                          transition: 'transform 0.6s ease',
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                      />
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '1rem',
-                          right: '1rem',
-                          zIndex: 2,
-                        }}
-                      >
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            padding: '0.25rem 0.65rem',
-                            borderRadius: '9999px',
-                            fontSize: '0.66rem',
-                            fontFamily: 'var(--font-mono)',
-                            letterSpacing: '0.08em',
-                            fontWeight: 700,
-                            textTransform: 'uppercase',
-                            backgroundColor: 'rgba(0, 0, 0, 0.65)',
-                            color: '#FFFFFF',
-                            backdropFilter: 'blur(8px)',
-                          }}
-                        >
-                          Curated Expedition
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Card Body */}
-                    <div
-                      style={{
-                        padding: '1.75rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flex: 1,
-                      }}
-                    >
-                      <h3
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: '1.35rem',
-                          fontWeight: 500,
-                          color: '#111111',
-                          lineHeight: 1.2,
-                          marginBottom: '0.35rem',
-                        }}
-                      >
-                        {journey.title}
-                      </h3>
-
-                      <div
-                        style={{
-                          fontSize: '0.85rem',
-                          color: '#777777',
-                          marginBottom: '0.85rem',
-                          fontWeight: 500,
-                        }}
-                      >
-                        {journey.duration} · {journey.elevation || '11,500 FT'}
-                      </div>
-
-                      <p
-                        style={{
-                          fontSize: '0.9rem',
-                          color: '#555555',
-                          lineHeight: 1.6,
-                          marginBottom: '1.5rem',
-                          flex: 1,
-                        }}
-                      >
-                        {journey.desc}
-                      </p>
-
-                      <div
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                          fontSize: '0.85rem',
-                          fontWeight: 600,
-                          color: '#111111',
-                        }}
-                      >
-                        <span>Explore Journey</span>
-                        <ArrowUpRight size={15} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                {/* 2. Adding More Places / Coming Soon Card */}
-                <div
-                  className="tourin-journey-card"
-                  style={{
-                    borderRadius: '16px',
-                    backgroundColor: '#0d0e12',
-                    border: '1px dashed rgba(222, 50, 45, 0.4)',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'relative',
-                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  }}
-                >
-                  {/* Top Image with Atmospheric Wash */}
-                  <div
-                    style={{
-                      position: 'relative',
-                      width: '100%',
-                      aspectRatio: '16/10',
-                      overflow: 'hidden',
-                      backgroundColor: '#16171d',
-                    }}
-                  >
-                    <Image
-                      src="/images/tourin/tourin-hero.jpg"
-                      alt="Adding More Places"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      style={{
-                        objectFit: 'cover',
-                        opacity: 0.32,
-                        filter: 'grayscale(0.4)',
-                        transition: 'transform 0.6s ease',
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                    />
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background: 'linear-gradient(to top, #0d0e12 0%, rgba(13, 14, 18, 0.6) 60%, rgba(13, 14, 18, 0.3) 100%)',
-                      }}
-                    />
-
-                    {/* Coming Soon Badge */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '1rem',
-                        right: '1rem',
-                        zIndex: 2,
-                      }}
-                    >
-                      <span
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                          padding: '0.28rem 0.75rem',
-                          borderRadius: '9999px',
-                          fontSize: '0.68rem',
-                          fontFamily: 'var(--font-mono)',
-                          letterSpacing: '0.1em',
-                          fontWeight: 700,
-                          textTransform: 'uppercase',
-                          backgroundColor: '#DE322D',
-                          color: '#FFFFFF',
-                          boxShadow: '0 2px 10px rgba(222, 50, 45, 0.35)',
-                        }}
-                      >
-                        Coming Soon
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div
-                    style={{
-                      padding: '1.75rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flex: 1,
-                      color: '#ffffff',
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.7rem',
-                        color: '#DE322D',
-                        fontWeight: 700,
-                        letterSpacing: '0.12em',
-                        marginBottom: '0.35rem',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      UPCOMING ITINERARIES
-                    </div>
-
-                    <h3
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '1.35rem',
-                        fontWeight: 500,
-                        color: '#ffffff',
-                        lineHeight: 1.2,
-                        marginBottom: '0.35rem',
-                      }}
-                    >
-                      Adding More Places
-                    </h3>
-
-                    <div
-                      style={{
-                        fontSize: '0.85rem',
-                        color: 'rgba(255, 255, 255, 0.55)',
-                        marginBottom: '0.85rem',
-                        fontWeight: 450,
-                      }}
-                    >
-                      New Itineraries &amp; Routes in Preparation
-                    </div>
-
-                    <p
-                      style={{
-                        fontSize: '0.9rem',
-                        color: 'rgba(255, 255, 255, 0.72)',
-                        lineHeight: 1.6,
-                        marginBottom: '1.5rem',
-                        flex: 1,
-                      }}
-                    >
-                      We are scouting and designing new slow-travel routes across untouched valleys and remote mountain communities. New curated journeys will be announced soon.
-                    </p>
-
-                    <Link
-                      href="/contact"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.45rem',
-                        fontSize: '0.85rem',
-                        fontWeight: 600,
-                        color: '#DE322D',
-                        textDecoration: 'none',
-                        transition: 'color 0.2s ease',
-                      }}
-                    >
-                      <span>Inquire about upcoming journeys</span>
-                      <ArrowRight size={15} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* ================================================================
-           07 — SECTION: OPERATIONAL READINESS STATS
-      ================================================================ */}
-      {tourinCms.statsEnabled !== false && (tourinCms.stats || []).filter((s: any) => s.enabled !== false && (s.value || s.label)).length > 0 && (
-        <section
-          style={{
-            padding: 'clamp(3.5rem, 6vw, 5.5rem) 0',
-            backgroundColor: '#fafafb',
-            borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
-          }}
-        >
-          <div className="padding-global" style={{ maxWidth: '1440px', margin: '0 auto' }}>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: '1.5rem',
-              }}
-            >
-              {(tourinCms.stats || []).filter((s: any) => s.enabled !== false && (s.value || s.label)).map((stat: any, idx: number) => (
-                <div
-                  key={idx}
-                  style={{
-                    padding: '1.75rem',
-                    borderRadius: '12px',
-                    backgroundColor: '#ffffff',
-                    border: '1px solid rgba(0, 0, 0, 0.07)',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.03)',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
-                      fontWeight: 700,
-                      color: '#DE322D',
-                      letterSpacing: '-0.02em',
-                      lineHeight: 1.1,
-                      marginBottom: '0.4rem',
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div style={{ fontSize: '0.85rem', color: '#555558', fontWeight: 550, lineHeight: 1.4 }}>
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ================================================================
            08 — SECTION: CTA BANNER ("Come travel differently.")

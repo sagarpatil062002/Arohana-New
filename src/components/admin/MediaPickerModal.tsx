@@ -21,7 +21,7 @@ interface MediaPickerModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (url: string) => void;
-  mediaType?: 'image' | 'video' | 'all';
+  mediaType?: 'image' | 'video' | 'pdf' | 'all';
   initialUrl?: string;
 }
 
@@ -89,6 +89,7 @@ export default function MediaPickerModal({
   const filteredAssets = assets.filter((item) => {
     if (mediaType === 'image' && item.type !== 'image') return false;
     if (mediaType === 'video' && item.type !== 'video') return false;
+    if (mediaType === 'pdf' && item.type !== 'pdf' && !item.url?.endsWith('.pdf')) return false;
     if (search && !item.name.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });

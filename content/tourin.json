@@ -13,17 +13,26 @@
     "image1": {
       "src": "/uploads/1790913662698-vertical-hero-tourin.png",
       "alt": "High altitude mountain landscape in Ladakh",
-      "enabled": true
+      "enabled": true,
+      "isClickable": false,
+      "redirectUrl": "",
+      "openInNewTab": false
     },
     "image2": {
       "src": "/images/tourin/dest-ladakh.jpg",
       "alt": "Pristine alpine landscape with turquoise lake",
-      "enabled": true
+      "enabled": true,
+      "isClickable": false,
+      "redirectUrl": "",
+      "openInNewTab": false
     },
     "image3": {
       "src": "/uploads/1790913673166-hero-ever-wondered-about-a-pangong-proposal.png",
       "alt": "High mountain pass and valley in Ladakh",
-      "enabled": true
+      "enabled": true,
+      "isClickable": true,
+      "redirectUrl": "/contact",
+      "openInNewTab": false
     }
   },
   "genesis": {
@@ -106,23 +115,5 @@
     "heading": "Journeys already taken.",
     "p1": "Tourin has successfully guided private cultural journeys, intimate escapes, and bespoke high-altitude expeditions across Ladakh's most remote valleys and mountain passes.",
     "p2": "Proven on high-altitude routes with trusted local relationships, tailored medical acclimatisation, and zero-compromise logistical care."
-  },
-  "stats": [
-    {
-      "value": "17,580 FT",
-      "label": "Maximum Altitude Reached"
-    },
-    {
-      "value": "100%",
-      "label": "Oxygen & Medical Readiness"
-    },
-    {
-      "value": "12",
-      "label": "Maximum Group Size"
-    },
-    {
-      "value": "Zero",
-      "label": "Single-Use Plastic Mandate"
-    }
-  ]
+  }
 }

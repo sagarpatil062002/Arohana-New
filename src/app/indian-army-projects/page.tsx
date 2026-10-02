@@ -15,7 +15,10 @@ import {
   ChevronLeft,
   Play,
   X,
+  FileText,
 } from 'lucide-react';
+import CoffeeTableBookFlipbook from '@/components/army/CoffeeTableBookFlipbook';
+import StandardPdfViewer from '@/components/army/StandardPdfViewer';
 
 const CATEGORIES = [
   { id: 'all', label: 'All Assignments' },
@@ -630,6 +633,30 @@ export default function IndianArmyProjectsPage() {
                     </Link>
                   </div>
                 )}
+
+                {(p3.pdfUrl || p3.pdf) && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <Link
+                      href={`/pdf-viewer?url=${encodeURIComponent(p3.pdfUrl || p3.pdf)}&title=${encodeURIComponent(p3.title)}&subtitle=${encodeURIComponent(p3.subtitle || '')}&back=/indian-army-projects`}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.55rem 1.25rem',
+                        borderRadius: '9999px',
+                        border: '1px solid rgba(0,0,0,0.15)',
+                        backgroundColor: '#111113',
+                        color: '#FFFFFF',
+                        fontSize: '0.82rem',
+                        fontWeight: 650,
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <FileText size={15} />
+                      <span>View PDF Document</span>
+                    </Link>
+                  </div>
+                )}
               </div>
 
               {/* Right Side: FIREFURY CORPS CAROUSEL (Min 2, Max 5 Images) */}
@@ -765,6 +792,30 @@ export default function IndianArmyProjectsPage() {
                       <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#DE322D', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <ArrowRight size={12} />
                       </div>
+                    </Link>
+                  </div>
+                )}
+
+                {(p4.pdfUrl || p4.pdf) && (
+                  <div style={{ marginTop: '1rem' }}>
+                    <Link
+                      href={`/pdf-viewer?url=${encodeURIComponent(p4.pdfUrl || p4.pdf)}&title=${encodeURIComponent(p4.title)}&subtitle=${encodeURIComponent(p4.subtitle || '')}&back=/indian-army-projects`}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        padding: '0.55rem 1.25rem',
+                        borderRadius: '9999px',
+                        border: 'none',
+                        backgroundColor: '#DE322D',
+                        color: '#FFFFFF',
+                        fontSize: '0.82rem',
+                        fontWeight: 650,
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <FileText size={15} />
+                      <span>View Rezang La PDF Document</span>
                     </Link>
                   </div>
                 )}
@@ -954,6 +1005,30 @@ export default function IndianArmyProjectsPage() {
                           </Link>
                         </div>
                       )}
+
+                      {(p.pdfUrl || p.pdf) && (
+                        <div style={{ marginTop: '1rem' }}>
+                          <Link
+                            href={`/pdf-viewer?url=${encodeURIComponent(p.pdfUrl || p.pdf)}&title=${encodeURIComponent(p.title)}&subtitle=${encodeURIComponent(p.subtitle || '')}&back=/indian-army-projects`}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.5rem',
+                              padding: '0.55rem 1.25rem',
+                              borderRadius: '9999px',
+                              border: '1px solid rgba(0,0,0,0.15)',
+                              backgroundColor: '#111113',
+                              color: '#FFFFFF',
+                              fontSize: '0.82rem',
+                              fontWeight: 650,
+                              textDecoration: 'none',
+                            }}
+                          >
+                            <FileText size={15} />
+                            <span>View PDF Document</span>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                     {p.image && (
                       <div style={{ position: 'relative', width: '100%', minHeight: '280px', borderRadius: '6px', border: '1px solid rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>
@@ -965,6 +1040,113 @@ export default function IndianArmyProjectsPage() {
               </article>
             );
           })}
+
+        {/* ----------------------------------------------------------------------
+            PDF PUBLICATIONS (Clean Button Action → Opens PDF Viewer)
+            ---------------------------------------------------------------------- */}
+        {armyCms.coffeeTableBookPdf?.enabled !== false && (
+          <div
+            style={{
+              marginTop: '3rem',
+              padding: '1.75rem 2rem',
+              borderRadius: '8px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1.25rem',
+            }}
+          >
+            <div>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#DE322D', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                INSTITUTIONAL PUBLICATION
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#111113', margin: 0 }}>
+                {armyCms.coffeeTableBookPdf?.title || 'Rezang La War Memorial Coffee Table Book'}
+              </h3>
+              {armyCms.coffeeTableBookPdf?.subtitle && (
+                <p style={{ fontSize: '0.86rem', color: '#71717A', margin: '0.25rem 0 0' }}>
+                  {armyCms.coffeeTableBookPdf.subtitle}
+                </p>
+              )}
+            </div>
+
+            <Link
+              href={`/pdf-viewer?url=${encodeURIComponent(armyCms.coffeeTableBookPdf?.pdfUrl || '/pdf/coffee-table-book.pdf')}&title=${encodeURIComponent(armyCms.coffeeTableBookPdf?.title || 'Coffee Table Book')}&subtitle=${encodeURIComponent(armyCms.coffeeTableBookPdf?.subtitle || '')}&back=/indian-army-projects`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.65rem 1.4rem',
+                borderRadius: '9999px',
+                backgroundColor: '#111113',
+                color: '#FFFFFF',
+                fontSize: '0.84rem',
+                fontWeight: 650,
+                textDecoration: 'none',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.15)',
+              }}
+            >
+              <FileText size={16} />
+              <span>View PDF Publication ↗</span>
+            </Link>
+          </div>
+        )}
+
+        {armyCms.secondPdf?.enabled !== false && (
+          <div
+            style={{
+              marginTop: '1.5rem',
+              padding: '1.75rem 2rem',
+              borderRadius: '8px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '1.25rem',
+            }}
+          >
+            <div>
+              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#DE322D', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+                DEFENCE ARCHIVE DOCUMENT
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#111113', margin: 0 }}>
+                {armyCms.secondPdf?.title || 'Indian Army Field Operations & Protocol Document'}
+              </h3>
+              {armyCms.secondPdf?.subtitle && (
+                <p style={{ fontSize: '0.86rem', color: '#71717A', margin: '0.25rem 0 0' }}>
+                  {armyCms.secondPdf.subtitle}
+                </p>
+              )}
+            </div>
+
+            <Link
+              href={`/pdf-viewer?url=${encodeURIComponent(armyCms.secondPdf?.pdfUrl || '/pdf/army-field-document.pdf')}&title=${encodeURIComponent(armyCms.secondPdf?.title || 'Defence Document')}&subtitle=${encodeURIComponent(armyCms.secondPdf?.subtitle || '')}&back=/indian-army-projects`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.65rem 1.4rem',
+                borderRadius: '9999px',
+                backgroundColor: '#DE322D',
+                color: '#FFFFFF',
+                fontSize: '0.84rem',
+                fontWeight: 650,
+                textDecoration: 'none',
+                boxShadow: '0 4px 14px rgba(222, 50, 45, 0.25)',
+              }}
+            >
+              <FileText size={16} />
+              <span>View PDF Document ↗</span>
+            </Link>
+          </div>
+        )}
       </main>
 
       {/* ==========================================================================

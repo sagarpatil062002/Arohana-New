@@ -9,7 +9,7 @@ export async function GET(
   try {
     const { section } = params;
     const searchParams = req.nextUrl.searchParams;
-    const includeDraft = searchParams.get('draft') !== 'false';
+    const includeDraft = searchParams.get('draft') === 'true';
 
     const content = getSectionContent(section, includeDraft);
     if (!content) {
@@ -33,13 +33,17 @@ export async function POST(
 
     if (action === 'publish') {
       const written = writeContentFile(`${section}.json`, body.data);
-      if (section === 'work') {
-        try {
-          revalidatePath('/work');
-          revalidatePath('/work/[slug]', 'page');
-          revalidatePath('/');
-        } catch (e) {}
-      }
+      try {
+        revalidatePath('/', 'layout');
+        revalidatePath('/');
+        revalidatePath('/work');
+        revalidatePath('/work/[slug]', 'page');
+        revalidatePath('/tourin');
+        revalidatePath('/army-projects');
+        revalidatePath('/services');
+        revalidatePath('/about');
+        revalidatePath('/contact');
+      } catch (e) {}
       return NextResponse.json({
         success: true,
         written,

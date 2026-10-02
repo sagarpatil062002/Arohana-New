@@ -238,27 +238,20 @@ export default function AdminWorkPage() {
 
   const handleSaveAndSync = async (dataToSave?: any) => {
     const target = dataToSave || workData;
-    await saveDraft('work', target);
-    if (publishSection) {
-      const pubRes = await publishSection('work', target);
-      if (pubRes) {
-        setSavedStatus(true);
-        setPreviewKey((k) => k + 1);
-        showToast('Changes saved and published live!', 'success');
-        setTimeout(() => setSavedStatus(false), 2200);
-        return;
-      }
+    const ok = await saveDraft('work', target);
+    if (ok) {
+      setSavedStatus(true);
+      setPreviewKey((k) => k + 1);
+      showToast('Work draft saved to CRM!', 'success');
+      setTimeout(() => setSavedStatus(false), 2200);
+    } else {
+      showToast('Failed to save draft', 'error');
     }
-    setSavedStatus(true);
-    setPreviewKey((k) => k + 1);
-    showToast('Work changes saved!', 'success');
-    setTimeout(() => setSavedStatus(false), 2200);
   };
 
   const handlePublishLive = async () => {
-    await saveDraft('work', workData);
-    const res = await publishAll();
-    if (res && res.success) {
+    const ok = await publishSection('work', workData);
+    if (ok) {
       setSavedStatus(true);
       setPreviewKey((k) => k + 1);
       showToast('Work page published live to website!', 'success');

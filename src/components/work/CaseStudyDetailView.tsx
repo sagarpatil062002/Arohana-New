@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, FileText } from 'lucide-react';
 import { useCmsContent } from '@/lib/cms/content-context';
 
 interface CaseStudyDetailViewProps {
@@ -269,6 +269,30 @@ export default function CaseStudyDetailView({
                     {caseStudy.subtitle}
                   </p>
                 )}
+
+                {caseStudy.pdfUrl && (
+                  <div style={{ marginTop: '1.25rem' }}>
+                    <Link
+                      href={`/pdf-viewer?url=${encodeURIComponent(caseStudy.pdfUrl)}&title=${encodeURIComponent(caseStudy.title)}&subtitle=${encodeURIComponent(caseStudy.subtitle || '')}`}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.55rem',
+                        padding: '0.6rem 1.35rem',
+                        borderRadius: '9999px',
+                        backgroundColor: '#DE322D',
+                        color: '#FFFFFF',
+                        fontSize: '0.82rem',
+                        fontWeight: 650,
+                        textDecoration: 'none',
+                        boxShadow: '0 4px 14px rgba(222, 50, 45, 0.25)',
+                      }}
+                    >
+                      <FileText size={15} />
+                      <span>View PDF Document</span>
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
 
@@ -321,29 +345,178 @@ export default function CaseStudyDetailView({
               </div>
             )}
 
-            {/* Hero Image */}
+            {/* Hero Media (Image, Video, or PDF) */}
             {showHeroImage && (
               <div style={{ marginBottom: 'clamp(3rem, 5vw, 4.5rem)' }}>
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    aspectRatio: '16 / 9',
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    boxShadow: '0 20px 50px rgba(0, 0, 0, 0.08)',
-                    border: '1px solid rgba(0, 0, 0, 0.08)',
-                  }}
-                >
-                  <Image
-                    src={caseStudy.heroImage}
-                    alt={caseStudy.title}
-                    fill
-                    priority
-                    sizes="(max-width: 1200px) 100vw, 1200px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
+                {(() => {
+                  const mediaType = caseStudy.mediaType || (caseStudy.pdfUrl ? 'pdf' : caseStudy.videoUrl ? 'video' : 'image');
+
+                  // 1. VIDEO MEDIA
+                  if (mediaType === 'video' && caseStudy.videoUrl) {
+                    const url = caseStudy.videoUrl;
+                    const isEmbed = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com');
+
+                    let embedSrc = url;
+                    if (url.includes('youtube.com/watch?v=')) {
+                      embedSrc = `https://www.youtube.com/embed/${url.split('v=')[1]?.split('&')[0]}`;
+                    } else if (url.includes('youtu.be/')) {
+                      embedSrc = `https://www.youtube.com/embed/${url.split('youtu.be/')[1]?.split('?')[0]}`;
+                    } else if (url.includes('vimeo.com/')) {
+                      embedSrc = `https://player.vimeo.com/video/${url.split('vimeo.com/')[1]?.split('?')[0]}`;
+                    }
+
+                    return (
+                      <div
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          aspectRatio: '16 / 9',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.08)',
+                          border: '1px solid rgba(0, 0, 0, 0.08)',
+                          backgroundColor: '#000000',
+                        }}
+                      >
+                        {isEmbed ? (
+                          <iframe
+                            src={embedSrc}
+                            title={caseStudy.title || 'Case Study Video'}
+                            style={{ width: '100%', height: '100%', border: 'none' }}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <video
+                            src={url}
+                            controls
+                            poster={caseStudy.heroImage || ''}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          />
+                        )}
+                      </div>
+                    );
+                  }
+
+                  // 2. PDF MEDIA WITH CLICKABLE COVER IMAGE
+                  if (mediaType === 'pdf' && caseStudy.pdfUrl) {
+                    const pdfTargetUrl = `/pdf-viewer?url=${encodeURIComponent(caseStudy.pdfUrl)}&title=${encodeURIComponent(caseStudy.title)}&subtitle=${encodeURIComponent(caseStudy.subtitle || '')}&back=/work/${caseStudy.slug || caseStudy.id}`;
+                    const coverImgSrc = caseStudy.pdfCoverImage || caseStudy.heroImage || caseStudy.image || '/images/work-placeholder.jpg';
+
+                    return (
+                      <Link
+                        href={pdfTargetUrl}
+                        style={{
+                          display: 'block',
+                          position: 'relative',
+                          width: '100%',
+                          aspectRatio: '16 / 9',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.12)',
+                          border: '1px solid rgba(0, 0, 0, 0.08)',
+                          textDecoration: 'none',
+                          cursor: 'pointer',
+                        }}
+                        className="pdf-cover-image-trigger"
+                      >
+                        <Image
+                          src={coverImgSrc}
+                          alt={caseStudy.title || 'PDF Document Cover'}
+                          fill
+                          priority
+                          sizes="(max-width: 1200px) 100vw, 1200px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                        {/* Vignette & Information Overlay */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.25) 100%)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            padding: 'clamp(1.25rem, 3vw, 2.25rem)',
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <span
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.45rem',
+                                padding: '0.45rem 1rem',
+                                borderRadius: '9999px',
+                                backgroundColor: '#DE322D',
+                                color: '#FFFFFF',
+                                fontSize: '0.78rem',
+                                fontWeight: 700,
+                                letterSpacing: '0.04em',
+                                textTransform: 'uppercase',
+                                boxShadow: '0 4px 14px rgba(222, 50, 45, 0.4)',
+                              }}
+                            >
+                              <FileText size={14} />
+                              <span>Click Cover to View PDF</span>
+                            </span>
+                          </div>
+
+                          <div>
+                            <h3 style={{ fontSize: 'clamp(1.3rem, 2.5vw, 2rem)', fontWeight: 650, color: '#FFFFFF', margin: 0, marginBottom: '0.35rem', lineHeight: 1.2 }}>
+                              {caseStudy.title}
+                            </h3>
+                            <p style={{ fontSize: '0.88rem', color: '#E4E4E7', margin: 0, marginBottom: '1.15rem', maxWidth: '650px', lineHeight: 1.45 }}>
+                              {caseStudy.subtitle || 'Official publication document. Click anywhere on this cover image to open in interactive PDF viewer.'}
+                            </p>
+                            <span
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.55rem',
+                                padding: '0.65rem 1.45rem',
+                                borderRadius: '9999px',
+                                backgroundColor: '#FFFFFF',
+                                color: '#111113',
+                                fontSize: '0.82rem',
+                                fontWeight: 700,
+                                boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+                              }}
+                            >
+                              <FileText size={16} color="#DE322D" />
+                              <span>Open Interactive PDF Viewer ↗</span>
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  }
+
+                  // 3. IMAGE MEDIA (DEFAULT)
+                  return (
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        aspectRatio: '16 / 9',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.08)',
+                        border: '1px solid rgba(0, 0, 0, 0.08)',
+                      }}
+                    >
+                      <Image
+                        src={caseStudy.heroImage || '/images/work-placeholder.jpg'}
+                        alt={caseStudy.title || 'Case Study Image'}
+                        fill
+                        priority
+                        sizes="(max-width: 1200px) 100vw, 1200px"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  );
+                })()}
+
                 {caseStudy.heroImageCaption && (
                   <p
                     style={{
@@ -534,11 +707,11 @@ export default function CaseStudyDetailView({
                       marginBottom: '0.5rem',
                     }}
                   >
-                    Stills from some of our work for {brandName}
+                    {caseStudy.stillsHeading || `Stills from some of our work for ${brandName}`}
                   </h2>
-                  {stillsSubtitleText && (
+                  {(caseStudy.stillsSubheading || stillsSubtitleText) && (
                     <p style={{ fontSize: 'clamp(0.92rem, 1.2vw, 1.05rem)', color: '#71717A', fontWeight: 500, margin: 0 }}>
-                      {stillsSubtitleText}
+                      {caseStudy.stillsSubheading || stillsSubtitleText}
                     </p>
                   )}
                 </div>
@@ -549,42 +722,63 @@ export default function CaseStudyDetailView({
                     gap: 'clamp(1.25rem, 2vw, 1.75rem)',
                   }}
                 >
-                  {activeGallery.map((item: any, gIdx: number) => (
-                    <div
-                      key={gIdx}
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        borderRadius: '6px',
-                        border: '1px solid rgba(0, 0, 0, 0.08)',
-                        overflow: 'hidden',
-                        boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
-                      }}
-                    >
+                  {activeGallery.map((item: any, gIdx: number) => {
+                    if (item.enabled === false) return null;
+                    const hasLink = Boolean(item.url || item.redirectUrl || item.link);
+                    const targetUrl = item.url || item.redirectUrl || item.link || '';
+                    const finalHref = targetUrl.endsWith('.pdf') || targetUrl.includes('/pdf/')
+                      ? `/pdf-viewer?url=${encodeURIComponent(targetUrl)}&title=${encodeURIComponent(item.caption || brandName)}`
+                      : targetUrl;
+
+                    const cardContent = (
                       <div
+                        key={gIdx}
                         style={{
-                          position: 'relative',
-                          width: '100%',
-                          aspectRatio: '16 / 10',
-                          backgroundColor: '#EBEAE6',
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: '6px',
+                          border: '1px solid rgba(0, 0, 0, 0.08)',
+                          overflow: 'hidden',
+                          boxShadow: '0 4px 18px rgba(0, 0, 0, 0.03)',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
                         }}
                       >
-                        <Image
-                          src={item.image}
-                          alt={item.alt || `${brandName} still`}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 420px"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </div>
-                      {item.caption && (
-                        <div style={{ padding: '0.85rem 1.15rem' }}>
-                          <p style={{ fontSize: '0.82rem', color: '#52525B', lineHeight: 1.45, margin: 0 }}>
-                            {item.caption}
-                          </p>
+                        <div
+                          style={{
+                            position: 'relative',
+                            width: '100%',
+                            aspectRatio: '16 / 10',
+                            backgroundColor: '#EBEAE6',
+                          }}
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.alt || `${brandName} still`}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 420px"
+                            style={{ objectFit: 'cover' }}
+                          />
                         </div>
-                      )}
-                    </div>
-                  ))}
+                        {item.caption && (
+                          <div style={{ padding: '0.85rem 1.15rem', flex: 1 }}>
+                            <p style={{ fontSize: '0.82rem', color: '#52525B', lineHeight: 1.45, margin: 0 }}>
+                              {item.caption}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+
+                    if (hasLink) {
+                      return (
+                        <Link key={gIdx} href={finalHref} style={{ textDecoration: 'none', color: 'inherit' }}>
+                          {cardContent}
+                        </Link>
+                      );
+                    }
+                    return cardContent;
+                  })}
                 </div>
               </section>
             )}

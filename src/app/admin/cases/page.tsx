@@ -99,7 +99,7 @@ export default function AdminCasesPage() {
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
   const [searchQuery, setSearchQuery] = useState('');
-  const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
+  const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' | 'pdf' | 'all' } | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [savedStatus, setSavedStatus] = useState(false);
   const [uploadingFor, setUploadingFor] = useState<string | null>(null);
@@ -189,17 +189,17 @@ export default function AdminCasesPage() {
       });
     }
 
-    // Auto-save so persistent server storage is kept up-to-date
+    // Auto-save draft so live preview iframe is kept up-to-date
     if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
     autoSaveTimerRef.current = setTimeout(() => {
-      publishSection('work', updated);
+      saveDraft('work', updated);
     }, 800);
   };
 
-  const handleSaveAndSync = async (dataToSave?: any) => {
+  const handleSaveDraft = async (dataToSave?: any) => {
     const target = dataToSave || workData;
     updateDraftInMemory('work', target);
-    const ok = await publishSection('work', target);
+    const ok = await saveDraft('work', target);
     if (ok) {
       setSavedStatus(true);
       setPreviewKey((k) => k + 1);
@@ -218,7 +218,7 @@ export default function AdminCasesPage() {
     const updated = { ...workData, caseStudies: cases };
     setWorkData(updated);
     updateDraftInMemory('work', updated);
-    await handleSaveAndSync(updated);
+    await handleSaveDraft(updated);
   };
 
   const toggleCaseEnabled = async (caseId: string) => {
@@ -237,7 +237,7 @@ export default function AdminCasesPage() {
     const updated = { ...workData, caseStudies: updatedCases };
     setWorkData(updated);
     updateDraftInMemory('work', updated);
-    await handleSaveAndSync(updated);
+    await handleSaveDraft(updated);
   };
 
   const handleAddNewCase = async () => {
@@ -297,7 +297,7 @@ export default function AdminCasesPage() {
     setWorkData(updated);
     setSelectedCaseId(newId);
     updateDraftInMemory('work', updated);
-    await handleSaveAndSync(updated);
+    await handleSaveDraft(updated);
   };
 
   const handleDeleteCase = async (id: string) => {
@@ -310,15 +310,16 @@ export default function AdminCasesPage() {
       setSelectedCaseId(updatedCases[0]?.id || updatedCases[0]?.slug || null);
     }
     updateDraftInMemory('work', updated);
-    await handleSaveAndSync(updated);
+    await handleSaveDraft(updated);
     setDeleteTargetId(null);
   };
 
   const handlePublishLive = async () => {
-    await handleSaveAndSync(workData);
-    const res = await publishAll();
-    if (res && res.success) {
-      alert('All case studies published live successfully!');
+    const ok = await publishSection('work', workData);
+    if (ok) {
+      setSavedStatus(true);
+      setPreviewKey((k) => k + 1);
+      setTimeout(() => setSavedStatus(false), 3000);
     }
   };
 
@@ -417,7 +418,7 @@ export default function AdminCasesPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
           <button
             type="button"
-            onClick={() => handleSaveAndSync()}
+            onClick={() => handleSaveDraft()}
             style={{
               padding: '0.5rem 1.1rem',
               borderRadius: '6px',
@@ -1005,11 +1006,11 @@ export default function AdminCasesPage() {
                         </div>
                       </div>
 
-                      {/* Hero Image Section */}
+                      {/* Hero & Media Section */}
                       <div style={{ padding: '0.85rem', backgroundColor: '#FFFFFF', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
                           <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
-                            DETAIL HERO BANNER IMAGE
+                            PRIMARY CASE STUDY MEDIA (IMAGE, VIDEO, OR PDF)
                           </span>
                           <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 600, color: selectedCase.showHeroImage !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
                             <input
@@ -1018,17 +1019,59 @@ export default function AdminCasesPage() {
                               onChange={(e) => handleCaseChange('showHeroImage', e.target.checked)}
                               style={{ width: '15px', height: '15px', accentColor: '#16A34A' }}
                             />
-                            <span>{selectedCase.showHeroImage !== false ? 'Hero Image: Enabled' : 'Hero Image: Disabled'}</span>
+                            <span>{selectedCase.showHeroImage !== false ? 'Hero Media: Enabled' : 'Hero Media: Disabled'}</span>
                           </label>
                         </div>
 
-                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.65rem' }}>
+                        {/* Media Type Selector */}
+                        <div style={{ marginBottom: '1rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                            SELECT MEDIA TYPE FOR THIS CASE STUDY
+                          </label>
+                          <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            {[
+                              { id: 'image', label: '🖼️ Image' },
+                              { id: 'video', label: '🎬 Video' },
+                              { id: 'pdf', label: '📄 PDF Document' },
+                            ].map((mt) => {
+                              const activeType = selectedCase.mediaType || (selectedCase.pdfUrl ? 'pdf' : selectedCase.videoUrl ? 'video' : 'image');
+                              const isSel = activeType === mt.id;
+                              return (
+                                <button
+                                  key={mt.id}
+                                  type="button"
+                                  onClick={() => handleCaseChange('mediaType', mt.id)}
+                                  style={{
+                                    flex: 1,
+                                    padding: '0.45rem 0.75rem',
+                                    borderRadius: '6px',
+                                    border: isSel ? '1.5px solid #DE322D' : '1px solid #E4E4E7',
+                                    backgroundColor: isSel ? '#DE322D' : '#F4F4F5',
+                                    color: isSel ? '#FFFFFF' : '#27272A',
+                                    fontSize: '0.76rem',
+                                    fontWeight: isSel ? 700 : 500,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.15s ease',
+                                  }}
+                                >
+                                  {mt.label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Image Option */}
+                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.85rem' }}>
                           <div style={{ width: '100px', height: '65px', position: 'relative', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#E4E4E7', flexShrink: 0 }}>
                             {activeCaseMerged.heroImage ? (
                               <Image src={activeCaseMerged.heroImage} alt="" fill style={{ objectFit: 'cover' }} />
                             ) : null}
                           </div>
                           <div style={{ flex: 1 }}>
+                            <label style={{ display: 'block', fontSize: '0.68rem', fontWeight: 600, color: '#52525B', marginBottom: '0.2rem' }}>
+                              HERO IMAGE URL
+                            </label>
                             <input
                               type="text"
                               value={activeCaseMerged.heroImage || ''}
@@ -1036,44 +1079,83 @@ export default function AdminCasesPage() {
                               style={{ ...inputStyle, marginBottom: '0.35rem' }}
                             />
                             <div style={{ display: 'flex', gap: '0.45rem' }}>
-                              <input
-                                ref={heroImgInputRef}
-                                type="file"
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                                onChange={(e) => {
-                                  const file = e.target.files?.[0];
-                                  if (file) handleDirectUpload(file, 'hero');
-                                }}
-                              />
                               <button
                                 type="button"
                                 onClick={() => heroImgInputRef.current?.click()}
                                 style={mediaBtnStyle}
                               >
-                                Upload
+                                Upload Image
                               </button>
                               <button
                                 type="button"
                                 onClick={() => setMediaPickerTarget({ path: 'heroImage', type: 'image' })}
                                 style={mediaBtnStyle}
                               >
-                                Pick
+                                Pick Image
                               </button>
                             </div>
                           </div>
                         </div>
 
+                        {/* Video Option */}
+                        <div style={{ marginBottom: '0.85rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                            VIDEO URL (MP4, YouTube, Vimeo, or Hosted Video)
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.videoUrl || ''}
+                            onChange={(e) => handleCaseChange('videoUrl', e.target.value)}
+                            style={{ ...inputStyle, marginBottom: '0.35rem' }}
+                            placeholder="e.g. https://www.youtube.com/watch?v=... or /uploads/video.mp4"
+                          />
+                          <div style={{ display: 'flex', gap: '0.45rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => setMediaPickerTarget({ path: 'videoUrl', type: 'video' })}
+                              style={mediaBtnStyle}
+                            >
+                              Pick / Upload Video
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* PDF Option */}
+                        <div style={{ marginBottom: '0.85rem' }}>
+                          <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
+                            PDF DOCUMENT URL (Opens in Reusable Website PDF Viewer)
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.pdfUrl || ''}
+                            onChange={(e) => handleCaseChange('pdfUrl', e.target.value)}
+                            style={{ ...inputStyle, marginBottom: '0.35rem' }}
+                            placeholder="e.g. /uploads/she-project-ladakh.pdf or https://..."
+                          />
+                          <div style={{ display: 'flex', gap: '0.45rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => setMediaPickerTarget({ path: 'pdfUrl', type: 'pdf' })}
+                              style={mediaBtnStyle}
+                            >
+                              Pick / Upload PDF
+                            </button>
+                          </div>
+                          <span style={{ fontSize: '0.68rem', color: '#71717A', marginTop: '4px', display: 'block' }}>
+                            Configures the PDF document displayed when visitors view this case study.
+                          </span>
+                        </div>
+
                         <div>
                           <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.3rem' }}>
-                            HERO IMAGE CAPTION
+                            HERO MEDIA CAPTION
                           </label>
                           <input
                             type="text"
                             value={activeCaseMerged.heroImageCaption || ''}
                             onChange={(e) => handleCaseChange('heroImageCaption', e.target.value)}
                             style={inputStyle}
-                            placeholder="Optional caption displayed under the hero image..."
+                            placeholder="Optional caption displayed under the hero media..."
                           />
                         </div>
                       </div>
@@ -1355,7 +1437,7 @@ export default function AdminCasesPage() {
                           onClick={() => {
                             const newG = [
                               ...(activeCaseMerged.gallery || []),
-                              { image: '/images/case-studies/raysons/neora-1.jpg', caption: 'New photo showcase', alt: '', enabled: true },
+                              { image: '/images/case-studies/raysons/neora-1.jpg', caption: 'New photo showcase', url: '', enabled: true },
                             ];
                             handleCaseChange('gallery', newG);
                           }}
@@ -1363,6 +1445,34 @@ export default function AdminCasesPage() {
                         >
                           + Add Media Asset
                         </button>
+                      </div>
+
+                      {/* Heading & Subheading inputs for Stills section */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', padding: '0.85rem', backgroundColor: '#F4F4F5', borderRadius: '8px' }}>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                            SECTION HEADING (&ldquo;Stills from some of our work..&rdquo;)
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.stillsHeading || ''}
+                            onChange={(e) => handleCaseChange('stillsHeading', e.target.value)}
+                            style={inputStyle}
+                            placeholder="Stills from some of our work.."
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
+                            SECTION SUBHEADING
+                          </label>
+                          <input
+                            type="text"
+                            value={activeCaseMerged.stillsSubheading || ''}
+                            onChange={(e) => handleCaseChange('stillsSubheading', e.target.value)}
+                            style={inputStyle}
+                            placeholder="Visual evidence & production stills..."
+                          />
+                        </div>
                       </div>
 
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -1405,6 +1515,17 @@ export default function AdminCasesPage() {
                                 }}
                                 style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
                                 placeholder="Caption / description text..."
+                              />
+                              <input
+                                type="text"
+                                value={item.url || item.redirectUrl || ''}
+                                onChange={(e) => {
+                                  const g = [...activeCaseMerged.gallery];
+                                  g[gIdx].url = e.target.value;
+                                  handleCaseChange('gallery', g);
+                                }}
+                                style={{ ...inputStyle, padding: '0.4rem 0.6rem' }}
+                                placeholder="Target Redirect URL or PDF Link (e.g. /pdf-viewer?url=... or https://...)"
                               />
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>

@@ -408,7 +408,7 @@
           "Menu Engineering",
           "Social Media"
         ],
-        "image": "/images/case-studies/misu/misu-hero.jpg",
+        "image": "/uploads/1790913377769-misu-ribandar.jfif",
         "link": "/work/misu"
       },
       {
@@ -440,7 +440,7 @@
       {
         "id": "rr-skins",
         "index": "05",
-        "title": "La Confidence",
+        "title": "RR Skins",
         "category": "Clinical Healthcare",
         "tags": [
           "Doctor-led Content",
@@ -460,20 +460,20 @@
           "Documentary",
           "Community Storytelling"
         ],
-        "image": "/images/case-studies/she/she-hero.jpg",
+        "image": "/uploads/1790913392964-she.jpg",
         "link": "/work/she"
       },
       {
         "id": "dtk",
         "index": "07",
-        "title": "DKT",
+        "title": "DTK",
         "category": "Heritage Retail",
         "tags": [
           "Brand Communication",
           "Social Media",
           "Content Production"
         ],
-        "image": "/images/work/dtk-thumb.jpg",
+        "image": "/uploads/1790913377769-misu-ribandar.jfif",
         "link": "/work"
       }
     ]

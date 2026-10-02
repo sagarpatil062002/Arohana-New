@@ -145,15 +145,16 @@ export default function BrandsMarquee() {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: brand.logo ? '0.85rem 2.25rem' : '0.85rem 1.75rem',
+        padding: brand.logo ? '1.25rem 3.25rem' : '1.1rem 2.25rem',
         backgroundColor: '#ffffff',
         border: '1px solid rgba(0, 0, 0, 0.08)',
-        borderRadius: '4px',
+        borderRadius: '6px',
         textDecoration: 'none',
         flexShrink: 0,
-        minHeight: '80px',
-        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04)',
-        transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease',
+        minHeight: '100px',
+        minWidth: '180px',
+        boxShadow: '0 4px 18px rgba(0, 0, 0, 0.04)',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
       }}
     >
       {brand.logo ? (
@@ -163,20 +164,20 @@ export default function BrandsMarquee() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            height: '58px',
-            minWidth: '90px',
+            height: '66px',
+            minWidth: '130px',
           }}
         >
           <Image
             src={brand.logo}
             alt={brand.name}
-            width={220}
-            height={58}
+            width={240}
+            height={66}
             loading="eager"
             priority={idx < 8}
             unoptimized={true}
             style={{
-              maxHeight: '56px',
+              maxHeight: '58px',
               width: 'auto',
               objectFit: 'contain',
               display: 'block',
@@ -184,19 +185,19 @@ export default function BrandsMarquee() {
           />
         </div>
       ) : (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           <div
             style={{
-              width: '28px',
-              height: '28px',
-              borderRadius: '3px',
+              width: '32px',
+              height: '32px',
+              borderRadius: '4px',
               border: '1px solid rgba(255, 255, 255, 0.1)',
               backgroundColor: '#18181b',
               color: '#ffffff',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '0.68rem',
+              fontSize: '0.74rem',
               fontWeight: 700,
               letterSpacing: '0.04em',
             }}
@@ -205,7 +206,7 @@ export default function BrandsMarquee() {
           </div>
           <span
             style={{
-              fontSize: '0.86rem',
+              fontSize: '0.92rem',
               fontWeight: 600,
               color: '#27272a',
               letterSpacing: '-0.01em',
@@ -226,8 +227,8 @@ export default function BrandsMarquee() {
       id="trusted-by"
       className="section-light brands-bottom-section"
       style={{
-        paddingTop: 'clamp(3rem, 4.5vw, 4.5rem)',
-        paddingBottom: 'clamp(3rem, 4.5vw, 4.5rem)',
+        paddingTop: 'clamp(3.5rem, 5vw, 5.5rem)',
+        paddingBottom: 'clamp(3.5rem, 5vw, 5.5rem)',
         borderTop: '1px solid rgba(0, 0, 0, 0.08)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
         backgroundColor: '#fafaf9',
@@ -236,7 +237,7 @@ export default function BrandsMarquee() {
       }}
     >
       {showHeading && (
-        <div className="padding-global container-large" style={{ marginBottom: '2.25rem' }}>
+        <div className="padding-global container-large" style={{ marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
             <h3
               style={{
@@ -254,57 +255,76 @@ export default function BrandsMarquee() {
         </div>
       )}
 
-      {/* Continuously Flowing Marquee Track - Never Sticks or Pauses */}
+      {/* Outer Wrapper for Both Opposite Moving Marquee Strips */}
       <div
-        className="brands-marquee-outer"
+        className="brands-double-marquee-container"
         style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.25rem',
           position: 'relative',
           width: '100%',
           overflow: 'hidden',
-          padding: '0.85rem 0',
-          display: 'flex',
         }}
       >
         <div className="marquee-edge-fade marquee-edge-left" />
         <div className="marquee-edge-fade marquee-edge-right" />
 
-        <div className="brands-marquee-track">
-          {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 't1'))}
+        {/* ── STRIP 1: MOVING LEFT (← ← ← ←) ── */}
+        <div className="brands-marquee-row">
+          <div className="brands-marquee-track track-left">
+            {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 's1-a'))}
+          </div>
+          <div className="brands-marquee-track track-left" aria-hidden="true">
+            {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 's1-b'))}
+          </div>
         </div>
-        <div className="brands-marquee-track" aria-hidden="true">
-          {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 't2'))}
+
+        {/* ── STRIP 2: MOVING RIGHT (→ → → →) ── */}
+        <div className="brands-marquee-row">
+          <div className="brands-marquee-track track-right">
+            {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 's2-a'))}
+          </div>
+          <div className="brands-marquee-track track-right" aria-hidden="true">
+            {activeBrands.map((brand, idx) => renderBrandCard(brand, idx, 's2-b'))}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .brands-marquee-outer {
-          display: flex;
+        .brands-double-marquee-container {
+          position: relative;
           width: 100%;
           overflow: hidden;
           user-select: none;
-          position: relative;
+        }
+
+        .brands-marquee-row {
+          display: flex;
+          width: 100%;
+          overflow: hidden;
         }
 
         .brands-marquee-track {
           display: flex;
           align-items: center;
-          gap: 1.25rem;
-          padding-right: 1.25rem;
+          gap: 1.5rem;
+          padding-right: 1.5rem;
           width: max-content;
           flex-shrink: 0;
-          animation: brandsMarqueeFlow 35s linear infinite !important;
-          animation-play-state: running !important;
           will-change: transform;
-          transform: translate3d(0, 0, 0);
           backface-visibility: hidden;
-          perspective: 1000px;
         }
 
-        .brands-marquee-outer:hover .brands-marquee-track {
-          animation-play-state: running !important;
+        .track-left {
+          animation: brandsMarqueeFlowLeft 40s linear infinite !important;
         }
 
-        @keyframes brandsMarqueeFlow {
+        .track-right {
+          animation: brandsMarqueeFlowRight 40s linear infinite !important;
+        }
+
+        @keyframes brandsMarqueeFlowLeft {
           0% {
             transform: translate3d(0, 0, 0);
           }
@@ -313,16 +333,26 @@ export default function BrandsMarquee() {
           }
         }
 
+        @keyframes brandsMarqueeFlowRight {
+          0% {
+            transform: translate3d(-100%, 0, 0);
+          }
+          100% {
+            transform: translate3d(0, 0, 0);
+          }
+        }
+
         .brand-card-item:hover {
           border-color: rgba(0, 0, 0, 0.28) !important;
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+          transform: translateY(-2px);
         }
 
         .marquee-edge-fade {
           position: absolute;
           top: 0;
           bottom: 0;
-          width: 90px;
+          width: 100px;
           z-index: 10;
           pointer-events: none;
         }
@@ -342,9 +372,11 @@ export default function BrandsMarquee() {
             width: 45px;
           }
           .brands-marquee-track {
-            gap: 0.85rem;
-            padding-right: 0.85rem;
-            animation-duration: 25s !important;
+            gap: 1rem;
+            padding-right: 1rem;
+          }
+          .track-left, .track-right {
+            animation-duration: 30s !important;
           }
         }
       `}</style>

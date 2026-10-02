@@ -126,7 +126,7 @@ export function readDraftFile<T = any>(sectionKey: string): T | null {
   }
 }
 
-export function getSectionContent<T = any>(sectionKey: string, includeDraft = true): T | null {
+export function getSectionContent<T = any>(sectionKey: string, includeDraft = false): T | null {
   if (includeDraft) {
     if (draftsInMemory[sectionKey] !== undefined) {
       return draftsInMemory[sectionKey] as T;

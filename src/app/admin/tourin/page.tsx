@@ -103,9 +103,9 @@ function FieldLabel({
 }
 
 export default function AdminTourinPage() {
-  const { content, saveDraft, updateDraftInMemory } = useCmsContent();
+  const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [tourinData, setTourinData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'destination' | 'philosophy' | 'journeys' | 'proof' | 'stats'>('hero');
+  const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'destination' | 'philosophy' | 'journeys' | 'proof'>('hero');
   const [selectedJourneyId, setSelectedJourneyId] = useState<string | null>('slow-ladakh');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [mediaTarget, setMediaTarget] = useState<'journey' | 'image1' | 'image2' | 'image3' | null>(null);
@@ -316,43 +316,21 @@ export default function AdminTourinPage() {
     applyTourinUpdate(updated);
   };
 
-  const handleStatChange = (index: number, field: string, val: string) => {
-    const updatedStats = [...(tourinData.stats || [])];
-    if (!updatedStats[index]) updatedStats[index] = { value: '', label: '', enabled: true };
-    updatedStats[index] = { ...updatedStats[index], [field]: val };
-    const updated = { ...tourinData, stats: updatedStats };
-    applyTourinUpdate(updated);
-  };
-
-  const handleToggleStat = (index: number, v: boolean) => {
-    const updatedStats = [...(tourinData.stats || [])];
-    if (!updatedStats[index]) return;
-    updatedStats[index] = { ...updatedStats[index], enabled: v };
-    const updated = { ...tourinData, stats: updatedStats };
-    applyTourinUpdate(updated);
-  };
-
-  const handleAddStat = () => {
-    const newStat = { value: '100%', label: 'New Metric Label', enabled: true };
-    const updated = {
-      ...tourinData,
-      stats: [...(tourinData.stats || []), newStat],
-    };
-    applyTourinUpdate(updated);
-  };
-
-  const handleDeleteStat = (index: number) => {
-    const updatedStats = [...(tourinData.stats || [])];
-    updatedStats.splice(index, 1);
-    const updated = { ...tourinData, stats: updatedStats };
-    applyTourinUpdate(updated);
-  };
-
   const handleSave = async () => {
     const ok = await saveDraft('tourin', tourinData);
     if (ok) {
       setSavedStatus(true);
       setTimeout(() => setSavedStatus(false), 2000);
+    }
+  };
+
+  const handlePublishLive = async () => {
+    if (publishSection) {
+      const ok = await publishSection('tourin', tourinData);
+      if (ok) {
+        setSavedStatus(true);
+        setTimeout(() => setSavedStatus(false), 2500);
+      }
     }
   };
 
@@ -413,7 +391,6 @@ export default function AdminTourinPage() {
                 <option value="philosophy">04: Philosophy</option>
                 <option value="journeys">05: Journeys</option>
                 <option value="proof">06: Journeys Taken (Proof)</option>
-                <option value="stats">07: Operational Readiness Stats</option>
               </select>
             </div>
           </div>
@@ -447,18 +424,38 @@ export default function AdminTourinPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1.15rem',
+                padding: '0.45rem 1rem',
                 borderRadius: '9999px',
-                border: 'none',
-                backgroundColor: savedStatus ? '#16A34A' : '#111113',
-                color: '#FFFFFF',
-                fontSize: '0.8rem',
+                border: '1px solid rgba(0, 0, 0, 0.15)',
+                backgroundColor: '#FFFFFF',
+                color: '#111113',
+                fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
               }}
             >
               {savedStatus ? <Check size={14} /> : <Save size={14} />}
-              {savedStatus ? 'Saved' : 'Save Draft'}
+              {savedStatus ? 'Draft Saved' : 'Save Draft'}
+            </button>
+            <button
+              type="button"
+              onClick={handlePublishLive}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.45rem 1.15rem',
+                borderRadius: '9999px',
+                border: 'none',
+                backgroundColor: '#16A34A',
+                color: '#FFFFFF',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              <Check size={14} />
+              Publish Live
             </button>
           </div>
         </div>
@@ -479,9 +476,7 @@ export default function AdminTourinPage() {
             { id: 'genesis', label: '02: The Genesis' },
             { id: 'destination', label: '03: Where We Go' },
             { id: 'philosophy', label: '04: Philosophy' },
-            { id: 'journeys', label: `05: Journeys (${tourinData.journeys?.length || 0})` },
-            { id: 'proof', label: '06: Journeys Taken' },
-            { id: 'stats', label: '07: Readiness Stats' },
+            { id: 'proof', label: '05: Journeys Taken' },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -667,6 +662,35 @@ export default function AdminTourinPage() {
                           placeholder="Alt text"
                           style={{ width: '100%', padding: '0.45rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.72rem' }}
                         />
+                        
+                        <div style={{ marginTop: '0.25rem', paddingTop: '0.5rem', borderTop: '1px dashed rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <span style={{ fontSize: '0.7rem', fontWeight: 600, color: '#3F3F46' }}>Clickable Banner</span>
+                            <ToggleSwitch
+                              checked={img.isClickable !== false}
+                              onChange={(v) => handleHeroImageChange(key, 'isClickable', v)}
+                            />
+                          </div>
+                          
+                          {img.isClickable !== false && (
+                            <>
+                              <input
+                                type="text"
+                                value={img.redirectUrl || ''}
+                                onChange={(e) => handleHeroImageChange(key, 'redirectUrl', e.target.value)}
+                                placeholder="Redirect URL (e.g. /army-projects or https://...)"
+                                style={{ width: '100%', padding: '0.45rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.72rem' }}
+                              />
+                              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Open in new tab</span>
+                                <ToggleSwitch
+                                  checked={!!img.openInNewTab}
+                                  onChange={(v) => handleHeroImageChange(key, 'openInNewTab', v)}
+                                />
+                              </div>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
@@ -1115,248 +1139,7 @@ export default function AdminTourinPage() {
           </div>
         )}
 
-        {/* ─── TAB 04: JOURNEYS DIRECTORY ─── */}
-        {activeTab === 'journeys' && (
-          <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '220px 1fr', overflow: 'hidden' }}>
-            {/* Journeys List */}
-            <div
-              style={{
-                borderRight: '1px solid rgba(0, 0, 0, 0.08)',
-                overflowY: 'auto',
-                padding: '0.75rem',
-                backgroundColor: '#FAFAFA',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.35rem',
-              }}
-            >
-              <div
-                style={{
-                  padding: '0.45rem 0.6rem',
-                  borderRadius: '8px',
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid rgba(0, 0, 0, 0.08)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '0.35rem',
-                }}
-              >
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#111113' }}>
-                  SECTION
-                </span>
-                <ToggleSwitch
-                  checked={tourinData.journeysEnabled !== false}
-                  onChange={(v) => {
-                    const updated = { ...tourinData, journeysEnabled: v };
-                    applyTourinUpdate(updated);
-                  }}
-                  label="Section Enabled"
-                />
-              </div>
 
-              {(tourinData.journeys || []).map((j: any) => {
-                const isSelected = j.id === selectedJourney?.id;
-                return (
-                  <div
-                    key={j.id}
-                    onClick={() => setSelectedJourneyId(j.id)}
-                    style={{
-                      padding: '0.65rem',
-                      borderRadius: '8px',
-                      backgroundColor: isSelected ? '#FFFFFF' : 'transparent',
-                      border: isSelected ? '1px solid rgba(0, 0, 0, 0.12)' : '1px solid transparent',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113' }}>
-                      {j.title}
-                    </div>
-                    <div style={{ fontSize: '0.72rem', color: '#71717A', marginTop: '2px' }}>
-                      {j.duration}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Journey Form Editor */}
-            {selectedJourney && (
-              <div style={{ overflowY: 'auto', padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#DE322D', letterSpacing: '0.1em' }}>
-                    JOURNEY: {selectedJourney.title}
-                  </div>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button
-                      type="button"
-                      onClick={() => handleTogglePublished(selectedJourney.id)}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.35rem',
-                        padding: '0.3rem 0.65rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(0, 0, 0, 0.1)',
-                        fontSize: '0.74rem',
-                        fontWeight: 600,
-                        backgroundColor: selectedJourney.published !== false ? '#DCFCE7' : '#F4F4F5',
-                        color: selectedJourney.published !== false ? '#16A34A' : '#71717A',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {selectedJourney.published !== false ? <Eye size={12} /> : <EyeOff size={12} />}
-                      {selectedJourney.published !== false ? 'Visible' : 'Hidden'}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDeleteTargetId(selectedJourney.id)}
-                      title="Delete Journey"
-                      style={{ border: 'none', backgroundColor: 'transparent', color: '#EF4444', cursor: 'pointer' }}
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      JOURNEY TITLE
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedJourney.title || ''}
-                      onChange={(e) => handleJourneyChange('title', e.target.value)}
-                      style={{ width: '100%', padding: '0.55rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      DURATION
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedJourney.duration || ''}
-                      onChange={(e) => handleJourneyChange('duration', e.target.value)}
-                      placeholder="8 Days / 7 Nights"
-                      style={{ width: '100%', padding: '0.55rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      TYPE / THEME
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedJourney.type || ''}
-                      onChange={(e) => handleJourneyChange('type', e.target.value)}
-                      placeholder="Cultural Immersion & Slow Exploration"
-                      style={{ width: '100%', padding: '0.55rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      ELEVATION
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedJourney.elevation || ''}
-                      onChange={(e) => handleJourneyChange('elevation', e.target.value)}
-                      placeholder="9,500 — 11,500 FT"
-                      style={{ width: '100%', padding: '0.55rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    DESCRIPTION
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={selectedJourney.desc || selectedJourney.overview || ''}
-                    onChange={(e) => handleJourneyChange('desc', e.target.value)}
-                    style={{ width: '100%', padding: '0.55rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontFamily: 'inherit' }}
-                  />
-                </div>
-
-                {/* Media Image */}
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    FEATURED DESTINATION PHOTO
-                  </label>
-                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '80px',
-                        height: '60px',
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        backgroundColor: '#F4F4F5',
-                        border: '1px solid rgba(0,0,0,0.1)',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {selectedJourney.image ? (
-                        <Image src={selectedJourney.image} alt={selectedJourney.title} fill style={{ objectFit: 'cover' }} />
-                      ) : (
-                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A1A1AA' }}>
-                          No Image
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        <input
-                          type="text"
-                          placeholder="/images/tourin/... or https://..."
-                          value={selectedJourney.image || ''}
-                          onChange={(e) => handleJourneyChange('image', e.target.value)}
-                          style={{
-                            flex: 1,
-                            padding: '0.45rem 0.75rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(0, 0, 0, 0.15)',
-                            fontSize: '0.82rem',
-                          }}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setMediaTarget('journey');
-                            setIsMediaPickerOpen(true);
-                          }}
-                          style={{
-                            padding: '0.45rem 0.85rem',
-                            borderRadius: '8px',
-                            border: '1px solid rgba(0, 0, 0, 0.15)',
-                            backgroundColor: '#FFFFFF',
-                            color: '#111113',
-                            fontSize: '0.78rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.35rem',
-                            whiteSpace: 'nowrap',
-                          }}
-                        >
-                          <Upload size={13} />
-                          Upload / Pick
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
 
         {/* ─── TAB 06: JOURNEYS TAKEN (PROOF) ─── */}
         {activeTab === 'proof' && (
@@ -1450,108 +1233,7 @@ export default function AdminTourinPage() {
           </div>
         )}
 
-        {/* ─── TAB 07: READINESS STATS ─── */}
-        {activeTab === 'stats' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
-              <div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Section 07: Operational Readiness Stats
-                </div>
-                <div style={{ fontSize: '0.74rem', color: '#71717A' }}>
-                  Key quantitative metrics displayed on the website.
-                </div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <button
-                  type="button"
-                  onClick={handleAddStat}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.35rem',
-                    padding: '0.35rem 0.75rem',
-                    borderRadius: '9999px',
-                    border: '1px solid rgba(0, 0, 0, 0.15)',
-                    backgroundColor: '#FFFFFF',
-                    color: '#111113',
-                    fontSize: '0.74rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Plus size={13} />
-                  Add Metric
-                </button>
-                <ToggleSwitch
-                  checked={tourinData.statsEnabled !== false}
-                  onChange={(v) => {
-                    const updated = { ...tourinData, statsEnabled: v };
-                    applyTourinUpdate(updated);
-                  }}
-                  label="Section Enabled"
-                />
-              </div>
-            </div>
 
-            {tourinData.statsEnabled === false && (
-              <div style={{ padding: '0.7rem 0.9rem', borderRadius: '8px', backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.8rem', fontWeight: 600 }}>
-                Section 07 is disabled and hidden on the website.
-              </div>
-            )}
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              {(tourinData.stats || []).map((stat: any, idx: number) => (
-                <div key={idx} style={{ padding: '1rem', border: '1px solid rgba(0,0,0,0.08)', borderRadius: '10px', backgroundColor: '#FAFAFA' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#DE322D' }}>
-                      METRIC CARD {String(idx + 1).padStart(2, '0')}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <ToggleSwitch
-                        checked={stat.enabled !== false}
-                        onChange={(v) => handleToggleStat(idx, v)}
-                        label="Metric Enabled"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteStat(idx)}
-                        title="Delete Metric"
-                        style={{ border: 'none', background: 'transparent', color: '#EF4444', cursor: 'pointer', padding: '0.2rem' }}
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
-                  </div>
-                  <div style={{ marginBottom: '0.75rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                      VALUE / METRIC
-                    </label>
-                    <input
-                      type="text"
-                      value={stat.value || ''}
-                      onChange={(e) => handleStatChange(idx, 'value', e.target.value)}
-                      placeholder="17,580 FT"
-                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                      LABEL
-                    </label>
-                    <input
-                      type="text"
-                      value={stat.label || ''}
-                      onChange={(e) => handleStatChange(idx, 'label', e.target.value)}
-                      placeholder="Maximum Altitude Reached"
-                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.82rem' }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
       {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
