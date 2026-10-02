@@ -1,6 +1,26 @@
 {
   "assets": [
     {
+      "id": "asset-1790932989359",
+      "name": "SHE.JPG",
+      "url": "/uploads/1790932989359-she.jpg",
+      "type": "image",
+      "size": "282 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T09:23:09.367Z",
+      "usedIn": "general"
+    },
+    {
+      "id": "asset-1790932859612",
+      "name": "DTK Card Work Proof.jpg.jpeg",
+      "url": "/uploads/1790932859612-dtk-card-work-proof.jpg.jpeg",
+      "type": "image",
+      "size": "98 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-02T09:20:59.619Z",
+      "usedIn": "Media Library"
+    },
+    {
       "id": "asset-1790930731017",
       "name": "SHE.JPG",
       "url": "/uploads/1790930731017-she.jpg",

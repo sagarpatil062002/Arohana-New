@@ -41,7 +41,7 @@
       "id": "reel-she",
       "hookTitle": "SHE Initiative",
       "subtitle": "Ladakh Border Villages & Operation Sadbhavana",
-      "coverImage": "/uploads/1790914503136-she.jpg",
+      "coverImage": "/uploads/1790932989359-she.jpg",
       "instagramUrl": "https://www.instagram.com/reel/DD_U5eeyHEd/?igsh=MWQ1MTNxa3V6Y2Vsdw==",
       "category": "Institutions & Government"
     },
@@ -397,7 +397,7 @@
       "tags": [
         "Hospitality"
       ],
-      "image": "/uploads/1790914513686-she.jpg",
+      "image": "/uploads/1790913377769-misu-ribandar.jfif",
       "published": true,
       "challenge": "Misu’s challenges went beyond marketing: the brand required operational structure, menu engineering, food-cost control, and consistent guest communication to build a commercially resilient restaurant model.",
       "whatWeDid": "Ārohana worked inside the business for nearly two years, partnering on hospitality consulting, menu re-engineering, food-cost discipline, kitchen systems, staff service SOPs, and culinary social media content.",
@@ -405,17 +405,7 @@
       "stillsSubtitle": "Hospitality Consulting · Menu Engineering · Food Cost Control · Concept Development · SOPs setup · Social Media · Content Production"
     },
     {
-      "id": "la-confidence",
-      "slug": "la-confidence",
-      "title": "La Confidence Derma Clinic — Case Study",
       "subtitle": "Doctor-Led Clinical Dermatological Care",
-      "client": "La Confidence",
-      "category": "Healthcare",
-      "desc": "Doctor-led medical education and patient-focused storytelling removing clinic advertising cliches.",
-      "tags": [
-        "Healthcare"
-      ],
-      "image": "/uploads/1790518446224-rrskins1.jpg",
       "heroImage": "/uploads/1790518446224-rrskins1.jpg",
       "heroImageCaption": "La Confidence Derma Clinic patient consultation and clinical dermatology in Leh, Ladakh.",
       "sector": "Healthcare & Clinical Dermatology",
@@ -473,8 +463,22 @@
           "alt": "La Confidence clinic"
         }
       ],
+      "proof": {
+        "verifiedText": "",
+        "metricsNote": ""
+      },
       "closingQuote": "La Confidence’s social presence evolved into a knowledge-led digital extension of the clinic, giving prospective patients a clearer understanding of treatments, technologies and dermatological concerns while strengthening the doctor and clinic’s credibility online.",
       "closingText": "Want to build patient trust through clear, doctor-led education? Let's talk.",
+      "id": "la-confidence",
+      "slug": "la-confidence",
+      "title": "RR SKINS — Case Study",
+      "client": "RR Skins",
+      "category": "Healthcare",
+      "desc": "Doctor-led medical education and patient-focused storytelling removing clinic advertising cliches.",
+      "tags": [
+        "Healthcare"
+      ],
+      "image": "/uploads/1790518446224-rrskins1.jpg",
       "published": true,
       "challenge": "Dermatology is an expertise-led category where patients often have questions, hesitations and misinformation, requiring credible, trust-building communication rather than aggressive retail sales tactics.",
       "whatWeDid": "Built social content around doctor-led education and patient-focused storytelling. We created clear video formats explaining treatments, skin health science, and clinical procedures in an approachable and reassuring voice.",
@@ -632,31 +636,10 @@
       "stillsSubtitle": "Community Storytelling · Visual Art Direction · Sports & Tournament Communication · Education & Training Content"
     },
     {
-      "id": "she",
-      "num": "08",
-      "slug": "she",
-      "title": "SHE Initiative — Case Study",
-      "client": "SHE Initiative / 14 Corps",
-      "category": "Institutional",
-      "desc": "Brand identity design, field documentary, and institutional communication for women-led development across Ladakh border villages.",
-      "tags": [
-        "Institutional",
-        "Community",
-        "Documentary"
-      ],
-      "image": "/images/case-studies/she/she-hero.jpg",
-      "published": true,
-      "featured": false,
-      "year": "2026",
-      "layoutStyle": "layout-1",
       "subtitle": "Self Help Empower · Ladakh Border Villages · Operation Sadbhavana",
       "heroImage": "/images/case-studies/she/she-hero.jpg",
       "heroImageCaption": "SHE Initiative — connecting Ladakh border village women through education, entrepreneurship, and documentary storytelling.",
       "sector": "Institutions · Social Impact · Community Development",
-      "challenge": "The SHE Initiative needed to communicate its work across border villages in Ladakh — translating the on-ground reality of women-led development programmes into a compelling, credible digital story for funders, government partners and wider audiences.",
-      "whatWeDid": "Ārohana designed the SHE Initiative brand identity, produced the field documentary capturing lives and stories across remote Ladakh border villages, and developed communication assets for Operation Sadbhavana-linked programmes under 14 Corps.",
-      "theResult": "A coherent brand identity and documentary record now represent the SHE Initiative’s work authentically — giving the organisation a credible communication foundation for institutional outreach, programme documentation, and storytelling at scale.",
-      "stillsSubtitle": "Identity Design · Documentary Production · Field Communication · Institutional Outreach",
       "snapshot": {
         "sector": "Community Development · Women Empowerment · Institutional",
         "location": "Ladakh Border Villages",
@@ -715,10 +698,6 @@
           ]
         }
       ],
-      "proof": {
-        "verifiedText": "The SHE Initiative now has a defined visual identity and a documented record of its field work — giving the organisation a credible foundation to communicate its impact, engage institutional partners, and build sustained visibility for the women and communities it serves.",
-        "metricsNote": "Identity design, field documentary, and institutional assets delivered for Operation Sadbhavana-linked programmes in Ladakh border villages."
-      },
       "gallery": [
         {
           "image": "/images/case-studies/she/she-hero.jpg",
@@ -757,9 +736,34 @@
           "enabled": true
         }
       ],
-      "videos": [],
+      "proof": {
+        "verifiedText": "The SHE Initiative now has a defined visual identity and a documented record of its field work — giving the organisation a credible foundation to communicate its impact, engage institutional partners, and build sustained visibility for the women and communities it serves.",
+        "metricsNote": "Identity design, field documentary, and institutional assets delivered for Operation Sadbhavana-linked programmes in Ladakh border villages."
+      },
       "closingQuote": "Authentic storytelling about communities requires the same precision and care as any brand brief — perhaps more, because the people in the frame deserve it.",
-      "closingText": "Working on institutional communication or community documentation? Let’s talk."
+      "closingText": "Working on institutional communication or community documentation? Let’s talk.",
+      "id": "she",
+      "num": "08",
+      "slug": "she",
+      "title": "SHE Initiative — Case Study",
+      "client": "SHE Initiative / 14 Corps",
+      "category": "Institutional",
+      "desc": "Brand identity design, field documentary, and institutional communication for women-led development across Ladakh border villages.",
+      "tags": [
+        "Institutional",
+        "Community",
+        "Documentary"
+      ],
+      "image": "/uploads/1790913392964-she.jpg",
+      "published": true,
+      "featured": false,
+      "year": "2026",
+      "layoutStyle": "layout-1",
+      "challenge": "The SHE Initiative needed to communicate its work across border villages in Ladakh — translating the on-ground reality of women-led development programmes into a compelling, credible digital story for funders, government partners and wider audiences.",
+      "whatWeDid": "Ārohana designed the SHE Initiative brand identity, produced the field documentary capturing lives and stories across remote Ladakh border villages, and developed communication assets for Operation Sadbhavana-linked programmes under 14 Corps.",
+      "theResult": "A coherent brand identity and documentary record now represent the SHE Initiative’s work authentically — giving the organisation a credible communication foundation for institutional outreach, programme documentation, and storytelling at scale.",
+      "stillsSubtitle": "Identity Design · Documentary Production · Field Communication · Institutional Outreach",
+      "videos": []
     }
   ]
 }
