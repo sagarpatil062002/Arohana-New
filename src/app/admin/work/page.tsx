@@ -6,6 +6,7 @@ import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import CmsToggle from '@/components/admin/CmsToggle';
 import {
   Plus,
   Trash2,
@@ -25,6 +26,7 @@ import {
   HelpCircle,
   ChevronUp,
   ChevronDown,
+  GripVertical,
 } from 'lucide-react';
 
 const DEFAULT_CASE_DETAILS: Record<string, any> = {
@@ -93,7 +95,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
 export default function AdminWorkPage() {
   const { content, saveDraft, updateDraftInMemory, publishAll, publishSection } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'reels' | 'header' | 'cases'>('reels');
+  const [activeTab, setActiveTab] = useState<'reels' | 'header' | 'cases' | 'order'>('cases');
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
   const [searchQuery, setSearchQuery] = useState('');
@@ -431,32 +433,11 @@ export default function AdminWorkPage() {
     enabled: boolean;
     onToggle: () => void;
   }) => (
-    <button
-      type="button"
-      onClick={onToggle}
-      title={enabled ? 'Field is visible on website. Click to disable.' : 'Field is hidden. Click to enable.'}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-        padding: '2px 7px',
-        borderRadius: '9999px',
-        border: 'none',
-        backgroundColor: enabled ? '#ECFDF5' : '#FEE2E2',
-        color: enabled ? '#047857' : '#DC2626',
-        fontSize: '0.68rem',
-        fontWeight: 650,
-        cursor: 'pointer',
-        transition: 'all 0.15s ease',
-      }}
-    >
-      {enabled ? <Eye size={11} /> : <EyeOff size={11} />}
-      {enabled ? 'Visible' : 'Hidden'}
-    </button>
+    <CmsToggle checked={enabled} onChange={onToggle} size="sm" />
   );
 
   return (
-    <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
+    <div className="admin-split-grid">
       {/* ─── LEFT COLUMN: WORK SECTIONS & FORM EDITOR ─── */}
       <div
         style={{
@@ -465,10 +446,9 @@ export default function AdminWorkPage() {
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
-          overflow: 'hidden',
-          height: '100%',
-          minHeight: 0,
           position: 'relative',
+          minWidth: 0,
+          width: '100%',
         }}
       >
         {/* Toast notification banner */}
@@ -501,20 +481,85 @@ export default function AdminWorkPage() {
         {/* Top Header */}
         <div
           style={{
-            padding: '1.15rem 1.5rem',
+            padding: '0.85rem 1.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#FFFFFF',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
+            flexShrink: 0,
           }}
         >
-          <div>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-              Work &amp; Case Studies Editor
-            </h2>
-            <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
-              Edit portfolio cards, reels carousel, and full detail pages (/work/[slug]).
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
+              Work Page &amp; Reels
+            </div>
+            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', backgroundColor: '#F4F4F5', color: '#52525B', fontWeight: 600 }}>
+              {workData?.caseStudies?.length || 0} Case Studies
+            </span>
+            <a
+              href="/admin/cases"
+              style={{
+                fontSize: '0.78rem',
+                color: '#DE322D',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.3rem',
+                marginLeft: '0.25rem',
+                fontWeight: 600,
+              }}
+            >
+              <FileText size={13} />
+              <span>Go to Case Studies Directory</span>
+            </a>
+
+            {/* Segmented Toggle: Editor vs Order & Visibility */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab(activeTab === 'order' ? 'cases' : activeTab)}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab !== 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab !== 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab !== 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <FileText size={12} />
+                Editor
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('order')}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab === 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <GripVertical size={12} />
+                Order &amp; Visibility
+              </button>
             </div>
           </div>
 
@@ -542,28 +587,32 @@ export default function AdminWorkPage() {
               </button>
             )}
 
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
               onClick={() => handleSaveAndSync()}
+              title="Save draft changes to CRM"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1.15rem',
+                padding: '0.45rem 0.95rem',
                 borderRadius: '9999px',
-                border: 'none',
-                backgroundColor: savedStatus ? '#16A34A' : '#111113',
-                color: '#FFFFFF',
+                border: '1px solid #D97706',
+                backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: savedStatus ? '#16A34A' : '#92400E',
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {savedStatus ? <Check size={14} /> : <Sparkles size={14} />}
-              {savedStatus ? 'Saved & Synced' : 'Save Changes'}
+              {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
 
+            {/* Red pill: Publish Live */}
             <button
               type="button"
               onClick={handlePublishLive}
@@ -579,9 +628,11 @@ export default function AdminWorkPage() {
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               }}
             >
-              Publish Live
+              <Upload size={13} />
+              <span>Publish This Page</span>
             </button>
           </div>
         </div>
@@ -593,6 +644,7 @@ export default function AdminWorkPage() {
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             backgroundColor: '#FFFFFF',
             padding: '0 1rem',
+            overflowX: 'auto',
           }}
         >
           <button
@@ -610,6 +662,7 @@ export default function AdminWorkPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem',
+              whiteSpace: 'nowrap',
             }}
           >
             <Layers size={14} />
@@ -631,6 +684,7 @@ export default function AdminWorkPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem',
+              whiteSpace: 'nowrap',
             }}
           >
             <ImageIcon size={14} />
@@ -652,10 +706,33 @@ export default function AdminWorkPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.4rem',
+              whiteSpace: 'nowrap',
             }}
           >
             <FileText size={14} />
             Page Header
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('order')}
+            style={{
+              padding: '0.75rem 1rem',
+              border: 'none',
+              borderBottom: activeTab === 'order' ? '2px solid #111113' : '2px solid transparent',
+              backgroundColor: 'transparent',
+              fontSize: '0.82rem',
+              fontWeight: activeTab === 'order' ? 650 : 500,
+              color: activeTab === 'order' ? '#111113' : '#71717A',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <GripVertical size={14} />
+            Order &amp; Visibility
           </button>
         </div>
 
@@ -682,30 +759,15 @@ export default function AdminWorkPage() {
                   {workData.header?.enabled !== false ? 'Currently Visible on live /work' : 'Currently Hidden on live /work'}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => {
+              <CmsToggle
+                checked={workData.header?.enabled !== false}
+                onChange={() => {
                   const isEnabled = workData.header?.enabled !== false;
                   updateField(['header', 'enabled'], !isEnabled);
                   showToast(`Header Section ${!isEnabled ? 'Enabled' : 'Disabled'}`, 'info');
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.95rem',
-                  borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: workData.header?.enabled !== false ? '#047857' : '#DC2626',
-                  color: '#FFFFFF',
-                  fontSize: '0.76rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {workData.header?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {workData.header?.enabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+                size="md"
+              />
             </div>
 
             <div>
@@ -787,30 +849,15 @@ export default function AdminWorkPage() {
                   {workData.reelsSection?.enabled !== false ? 'Currently Visible on live /work' : 'Currently Hidden on live /work'}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => {
+              <CmsToggle
+                checked={workData.reelsSection?.enabled !== false}
+                onChange={() => {
                   const isEnabled = workData.reelsSection?.enabled !== false;
                   updateField(['reelsSection', 'enabled'], !isEnabled);
                   showToast(`Reels Section ${!isEnabled ? 'Enabled' : 'Disabled'}`, 'info');
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.95rem',
-                  borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: workData.reelsSection?.enabled !== false ? '#047857' : '#DC2626',
-                  color: '#FFFFFF',
-                  fontSize: '0.76rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {workData.reelsSection?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {workData.reelsSection?.enabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+                size="md"
+              />
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1042,26 +1089,11 @@ export default function AdminWorkPage() {
                   Case Studies Section: {workData.caseStudiesSection?.enabled !== false ? 'ENABLED (Visible on Website)' : 'DISABLED (Hidden from Website)'}
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={toggleCasesSection}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.35rem 0.85rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: workData.caseStudiesSection?.enabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#FFFFFF',
-                  fontSize: '0.74rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {workData.caseStudiesSection?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {workData.caseStudiesSection?.enabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+              <CmsToggle
+                checked={workData.caseStudiesSection?.enabled !== false}
+                onChange={toggleCasesSection}
+                size="md"
+              />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', flex: 1, overflow: 'hidden' }}>
@@ -2164,6 +2196,141 @@ export default function AdminWorkPage() {
         </div>
         )}
 
+        {/* ── TAB 4: ORDER & VISIBILITY ── */}
+        {activeTab === 'order' && (
+          <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Section Sequence &amp; Visibility Controls
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                Reorder or toggle visibility for each of the live /work sections. Live preview updates instantly.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {[
+                { id: 'header', name: '01: Hero Banner & Page Header', type: 'hero', visible: workData.hero?.enabled !== false, onToggle: () => updateField(['hero', 'enabled'], workData.hero?.enabled === false) },
+                { id: 'reels', name: '02: Reels Showcase Carousel', type: 'reels', visible: workData.reelsEnabled !== false, onToggle: () => updateField(['reelsEnabled'], workData.reelsEnabled === false) },
+                { id: 'cases', name: `03: Case Studies & Portfolio Grid (${workData.caseStudies?.length || 0})`, type: 'portfolio', visible: workData.showcaseEnabled !== false, onToggle: () => updateField(['showcaseEnabled'], workData.showcaseEnabled === false) },
+                { id: 'filters', name: '04: Category Filter Bar', type: 'navigation', visible: workData.filtersEnabled !== false, onToggle: () => updateField(['filtersEnabled'], workData.filtersEnabled === false) },
+                { id: 'cta', name: '05: Closing Inquire Banner & CTA', type: 'cta', visible: workData.ctaEnabled !== false, onToggle: () => updateField(['ctaEnabled'], workData.ctaEnabled === false) },
+              ].map((sec, idx) => (
+                <div
+                  key={sec.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '10px',
+                    backgroundColor: sec.visible ? '#FFFFFF' : '#FAFAFA',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    opacity: sec.visible ? 1 : 0.6,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                        {sec.name}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                        ID: {sec.id} &bull; Type: {sec.type}
+                      </div>
+                    </div>
+                  </div>
+
+                  <CmsToggle
+                    checked={sec.visible}
+                    onChange={sec.onToggle}
+                    size="sm"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Case Studies Reordering Section */}
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    Case Studies Sequence ({workData.caseStudies?.length || 0} Projects)
+                  </h4>
+                  <p style={{ fontSize: '0.74rem', color: '#71717A', margin: '0.15rem 0 0 0' }}>
+                    Use the arrows to adjust project display sequence on the live website.
+                  </p>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                {(workData.caseStudies || []).map((cs: any, idx: number, arr: any[]) => (
+                  <div
+                    key={cs.id || idx}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.65rem 0.85rem',
+                      borderRadius: '8px',
+                      backgroundColor: cs.published !== false ? '#FFFFFF' : '#FAFAFA',
+                      border: '1px solid rgba(0,0,0,0.08)',
+                      opacity: cs.published !== false ? 1 : 0.65,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => handleMoveCase(idx, 'up')}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === 0 ? 'not-allowed' : 'pointer', padding: 0 }}
+                        >
+                          <ChevronUp size={13} color={idx === 0 ? '#D4D4D8' : '#71717A'} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === arr.length - 1}
+                          onClick={() => handleMoveCase(idx, 'down')}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
+                        >
+                          <ChevronDown size={13} color={idx === arr.length - 1 ? '#D4D4D8' : '#71717A'} />
+                        </button>
+                      </div>
+                      <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                      <div>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
+                          {cs.title || 'Untitled Case Study'}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#71717A' }}>
+                          {cs.client || 'Client'} &bull; {cs.category || 'Category'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <CmsToggle
+                      checked={cs.published !== false}
+                      onChange={() => {
+                        const updatedCases = workData.caseStudies.map((c: any) =>
+                          c.id === cs.id ? { ...c, published: c.published === false ? true : false } : c
+                        );
+                        const updated = { ...workData, caseStudies: updatedCases };
+                        setWorkData(updated);
+                        updateDraftInMemory('work', updated);
+                      }}
+                      size="sm"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Hidden inputs for native file uploads */}
         <input
           ref={caseImgInputRef}
@@ -2212,7 +2379,7 @@ export default function AdminWorkPage() {
       </div>
 
       {/* ─── RIGHT COLUMN: LIVE PREVIEW WITH INSTANT TOGGLE ─── */}
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div className="admin-preview-sticky">
         {/* Preview Switcher Bar */}
         <div
           style={{
@@ -2306,7 +2473,7 @@ export default function AdminWorkPage() {
           </div>
         </div>
 
-        <div style={{ flex: 1, minHeight: 0 }}>
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', height: '100%' }}>
           <LivePreviewPanel key={`${effectivePreviewUrl}-${previewKey}`} previewUrl={effectivePreviewUrl} />
         </div>
       </div>

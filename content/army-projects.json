@@ -16,7 +16,7 @@
       "title": "Investiture Ceremony",
       "subtitle": "Shoot · Production · Post-production",
       "description": "Ārohana handled the ceremonial shoot, protocol direction, and rapid post-production for the prestigious Western Command Investiture Ceremony in February 2026.",
-      "videoUrl": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+      "videoUrl": "",
       "redirectionUrl": "",
       "thumbnail": "/images/army/western-command-1.jpg",
       "image": "/images/army/western-command-1.jpg",
@@ -36,9 +36,9 @@
       "title": "Communication & Production",
       "subtitle": "Design · Scripting · films",
       "description": "Ārohana has undertaken visual communication, editorial design and film production work for 14 Corps Headquarters, including visual campaigns, outreach documentation, and First Villages outreach across border regions.",
-      "caseStudyEnabled": true,
-      "caseStudyUrl": "/work/she",
-      "caseStudyLabel": "View case study ↗",
+      "caseStudyEnabled": false,
+      "caseStudyUrl": "",
+      "caseStudyLabel": "",
       "videoUrl": "",
       "image": "/uploads/1790515799187-high-alltitude-1.jpg",
       "interactiveCards": [
@@ -47,7 +47,7 @@
           "title": "First Villages",
           "description": "Comprehensive outreach documentation across border settlements.",
           "image": "/images/army/adgpi-firstvillages.jpg",
-          "link": "/work",
+          "link": "",
           "enabled": true
         },
         {
@@ -55,7 +55,7 @@
           "title": "SHE Ladakh",
           "description": "Women empowerment and healthcare visual communications initiative.",
           "image": "/images/army/firefury-changthang-health.jpg",
-          "link": "/work/she",
+          "link": "",
           "enabled": true
         },
         {
@@ -63,7 +63,7 @@
           "title": "Border Health",
           "description": "On-ground medical support campaigns in remote high-altitude sectors.",
           "image": "/images/army/adgpi-she-thumb-2.jpg",
-          "link": "/work",
+          "link": "",
           "enabled": true
         }
       ],

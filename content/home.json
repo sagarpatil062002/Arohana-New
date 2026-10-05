@@ -68,7 +68,7 @@
         "buttonUrl": "/work",
         "buttonEnabled": true,
         "imageEnabled": true,
-        "enabled": true
+        "enabled": false
       },
       {
         "id": "banner-2",
@@ -296,7 +296,9 @@
         "label": "Commercial Engagements",
         "desc": "Hospitality, enterprise & consumer brands",
         "detail": "Hospitality, enterprise & consumer brands",
-        "enabled": true
+        "enabled": true,
+        "value": 25,
+        "number": 25
       },
       {
         "id": "sectors",
@@ -486,44 +488,23 @@
       {
         "num": "1",
         "title": "Digital Brand Growth",
-        "tags": [
-          "Content strategy",
-          "Social Media Management",
-          "Performance Marketing",
-          "Digital production",
-          "Website management and branding"
-        ],
+        "tags": [],
         "image": "/uploads/1790912051772-digital-brand-growth.png",
-        "description": "Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding",
+        "description": "Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.",
         "href": "/services#digital-growth"
       },
       {
         "num": "2",
         "title": "Content Production",
-        "tags": [
-          "Content Ideation",
-          "Scripting",
-          "Shoot",
-          "Post-production",
-          "Art Direction",
-          "Photography",
-          "Influencer & UGC content",
-          "AI content"
-        ],
+        "tags": [],
         "image": "/uploads/1790913249447-content-production.png",
-        "description": "Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content",
+        "description": "Taking brand stories from concept and scripting to production, post-production and multi-platform communication.",
         "href": "/services#content-production"
       },
       {
         "num": "3",
         "title": "Hospitality & Experience",
-        "tags": [
-          "Concept & Menu",
-          "Food & Space Shoots",
-          "Operating Systems",
-          "Revenue Optimisation",
-          "Guest Journeys"
-        ],
+        "tags": [],
         "image": "/uploads/1790913265172-hospitality---experience.png",
         "description": "Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.",
         "href": "/services#hospitality-consulting"

@@ -277,13 +277,7 @@ export default function IndianArmyProjectsPage() {
               {/* Left Text */}
               <div>
                 <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                  {p1.caseStudyEnabled !== false && (p1.caseStudyUrl || '/work/western-command') ? (
-                    <Link href={p1.caseStudyUrl || '/work/western-command'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
-                      {p1.title}
-                    </Link>
-                  ) : (
-                    p1.title
-                  )}
+                  {p1.title}
                 </h2>
                 <div className="card-subhead">
                   {p1.subtitle}
@@ -291,54 +285,9 @@ export default function IndianArmyProjectsPage() {
                 <p className="card-description">
                   {p1.description}
                 </p>
-
-                {(p1.videoUrl || p1.redirectionUrl || (p1.caseStudyEnabled !== false && p1.caseStudyUrl)) && (
-                  <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    {(p1.videoUrl || p1.redirectionUrl) && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (p1.videoUrl) setActiveVideoUrl(p1.videoUrl);
-                          else if (p1.redirectionUrl) window.open(p1.redirectionUrl, '_blank');
-                        }}
-                        className="hero-primary-btn"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
-                      >
-                        <Play size={15} fill="currentColor" />
-                        <span>{p1.videoUrl ? 'Watch Film' : 'View Assignment'}</span>
-                        <ArrowRight size={15} />
-                      </button>
-                    )}
-
-                    {p1.caseStudyEnabled !== false && p1.caseStudyUrl && (
-                      <Link
-                        href={p1.caseStudyUrl}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.45rem',
-                          padding: '0.55rem 1.15rem',
-                          borderRadius: '9999px',
-                          border: '1px solid rgba(0,0,0,0.14)',
-                          backgroundColor: '#FFFFFF',
-                          color: '#111113',
-                          fontSize: '0.82rem',
-                          fontWeight: 650,
-                          textDecoration: 'none',
-                          transition: 'all 0.2s ease',
-                        }}
-                      >
-                        <span>{p1.caseStudyLabel || 'View case study ↗'}</span>
-                        <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <ArrowRight size={12} />
-                        </div>
-                      </Link>
-                    )}
-                  </div>
-                )}
               </div>
 
-              {/* Right Media Collage / Clickable Video Thumbnail */}
+              {/* Right Media Collage */}
               <div className="card-1-media-group">
                 {/* Main Photo Card */}
                 <div
@@ -346,11 +295,6 @@ export default function IndianArmyProjectsPage() {
                   style={{
                     position: 'relative',
                     overflow: 'hidden',
-                    cursor: (p1.videoUrl || p1.redirectionUrl) ? 'pointer' : 'default',
-                  }}
-                  onClick={() => {
-                    if (p1.videoUrl) setActiveVideoUrl(p1.videoUrl);
-                    else if (p1.redirectionUrl) window.open(p1.redirectionUrl, '_blank');
                   }}
                 >
                   <Image
@@ -360,17 +304,9 @@ export default function IndianArmyProjectsPage() {
                     sizes="(max-width: 768px) 100vw, 450px"
                     style={{ objectFit: 'cover' }}
                   />
-                  {/* Clickable Play / Arrow Overlay */}
-                  {(p1.videoUrl || p1.redirectionUrl) && (
-                    <div className="video-thumb-overlay">
-                      <div className="video-play-pulse-btn">
-                        <Play size={22} fill="#ffffff" color="#ffffff" style={{ marginLeft: '3px' }} />
-                      </div>
-                    </div>
-                  )}
                   <div className="photo-bottom-caption">
                     <span className="p-label">{p1.title}</span>
-                    <span className="p-tag">{p1.videoUrl ? 'Click to Play Film' : 'Ceremonial Protocol & Honours'}</span>
+                    <span className="p-tag">Ceremonial Protocol & Honours</span>
                   </div>
                 </div>
 
@@ -432,13 +368,7 @@ export default function IndianArmyProjectsPage() {
             <div className="card-2-top-grid">
               <div className="card-2-content-col">
                 <h2 className="card-title card-2-title">
-                  {p2.caseStudyEnabled !== false && (p2.caseStudyUrl || '/work/she') ? (
-                    <Link href={p2.caseStudyUrl || '/work/she'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
-                      {p2.title}
-                    </Link>
-                  ) : (
-                    p2.title
-                  )}
+                  {p2.title}
                 </h2>
                 <div className="card-subhead">
                   {p2.subtitle}
@@ -446,33 +376,6 @@ export default function IndianArmyProjectsPage() {
                 <p className="card-description">
                   {p2.description}
                 </p>
-
-                {(p2.caseStudyEnabled !== false && (p2.caseStudyUrl || '/work/she')) && (
-                  <div style={{ marginTop: '1.25rem', marginBottom: '1.25rem' }}>
-                    <Link
-                      href={p2.caseStudyUrl || '/work/she'}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        padding: '0.55rem 1.25rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(255,255,255,0.25)',
-                        backgroundColor: 'rgba(255,255,255,0.08)',
-                        color: '#FFFFFF',
-                        fontSize: '0.82rem',
-                        fontWeight: 650,
-                        textDecoration: 'none',
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      <span>{p2.caseStudyLabel || 'View case study ↗'}</span>
-                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#DE322D', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ArrowRight size={12} />
-                      </div>
-                    </Link>
-                  </div>
-                )}
 
                 {/* Visual Communication Featured Image */}
                 <div
@@ -499,7 +402,7 @@ export default function IndianArmyProjectsPage() {
                       title: 'First Villages',
                       description: 'Comprehensive outreach documentation across border settlements.',
                       image: p2.sidePhotos?.[0] || '/images/army/adgpi-firstvillages.jpg',
-                      link: '/work',
+                      link: '',
                       enabled: true,
                     },
                     {
@@ -507,7 +410,7 @@ export default function IndianArmyProjectsPage() {
                       title: 'SHE Ladakh',
                       description: 'Women empowerment and healthcare visual communications initiative.',
                       image: p2.sidePhotos?.[1] || '/images/army/firefury-changthang-health.jpg',
-                      link: '/work/she',
+                      link: '',
                       enabled: true,
                     },
                     {
@@ -515,7 +418,7 @@ export default function IndianArmyProjectsPage() {
                       title: 'Border Health',
                       description: 'On-ground medical support campaigns in remote high-altitude sectors.',
                       image: p2.sidePhotos?.[2] || '/images/army/adgpi-she-thumb-2.jpg',
-                      link: '/work',
+                      link: '',
                       enabled: true,
                     },
                   ];
@@ -592,13 +495,7 @@ export default function IndianArmyProjectsPage() {
               {/* Left Side: Title & Info */}
               <div>
                 <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                  {p3.caseStudyEnabled !== false && (p3.caseStudyUrl || '/work/firefury') ? (
-                    <Link href={p3.caseStudyUrl || '/work/firefury'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
-                      {p3.title}
-                    </Link>
-                  ) : (
-                    p3.title
-                  )}
+                  {p3.title}
                 </h2>
                 <div className="card-subhead">
                   {p3.subtitle}
@@ -606,33 +503,6 @@ export default function IndianArmyProjectsPage() {
                 <p className="card-description">
                   {p3.description}
                 </p>
-
-                {p3.caseStudyEnabled !== false && p3.caseStudyUrl && (
-                  <div style={{ marginTop: '1.25rem' }}>
-                    <Link
-                      href={p3.caseStudyUrl}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.45rem',
-                        padding: '0.55rem 1.15rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(0,0,0,0.14)',
-                        backgroundColor: '#FFFFFF',
-                        color: '#111113',
-                        fontSize: '0.82rem',
-                        fontWeight: 650,
-                        textDecoration: 'none',
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      <span>{p3.caseStudyLabel || 'View case study ↗'}</span>
-                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ArrowRight size={12} />
-                      </div>
-                    </Link>
-                  </div>
-                )}
 
                 {(p3.pdfUrl || p3.pdf) && (
                   <div style={{ marginTop: '1rem' }}>
@@ -754,13 +624,7 @@ export default function IndianArmyProjectsPage() {
               {/* Left Side: Title & Description */}
               <div>
                 <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                  {p4.caseStudyEnabled !== false && (p4.caseStudyUrl || '/work/rezang-la-memorial') ? (
-                    <Link href={p4.caseStudyUrl || '/work/rezang-la-memorial'} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
-                      {p4.title}
-                    </Link>
-                  ) : (
-                    p4.title
-                  )}
+                  {p4.title}
                 </h2>
                 <div className="card-subhead">
                   {p4.subtitle}
@@ -768,33 +632,6 @@ export default function IndianArmyProjectsPage() {
                 <p className="card-description">
                   {p4.description}
                 </p>
-
-                {p4.caseStudyEnabled !== false && p4.caseStudyUrl && (
-                  <div style={{ marginTop: '1.25rem' }}>
-                    <Link
-                      href={p4.caseStudyUrl}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        padding: '0.55rem 1.25rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(255,255,255,0.25)',
-                        backgroundColor: 'rgba(255,255,255,0.08)',
-                        color: '#FFFFFF',
-                        fontSize: '0.82rem',
-                        fontWeight: 650,
-                        textDecoration: 'none',
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      <span>{p4.caseStudyLabel || 'View case study ↗'}</span>
-                      <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#DE322D', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <ArrowRight size={12} />
-                      </div>
-                    </Link>
-                  </div>
-                )}
 
                 {(p4.pdfUrl || p4.pdf) && (
                   <div style={{ marginTop: '1rem' }}>
@@ -881,56 +718,10 @@ export default function IndianArmyProjectsPage() {
                   <div className="card-4-grid" style={{ alignItems: 'center' }}>
                     <div>
                       <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>
-                        {p.caseStudyEnabled !== false && p.caseStudyUrl ? (
-                          <Link href={p.caseStudyUrl} style={{ textDecoration: 'none', color: 'inherit' }} className="title-case-link">
-                            {p.title}
-                          </Link>
-                        ) : (
-                          p.title
-                        )}
+                        {p.title}
                       </h2>
                       <div className="card-subhead">{p.subtitle}</div>
                       <p className="card-description">{p.description}</p>
-                      {hasVideo && (
-                        <div style={{ marginTop: '1.25rem' }}>
-                          <button
-                            type="button"
-                            onClick={() => setActiveVideoUrl(p.videoUrl)}
-                            className="hero-primary-btn"
-                            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
-                          >
-                            <Play size={14} fill="currentColor" />
-                            <span>Play Project Video</span>
-                          </button>
-                        </div>
-                      )}
-
-                      {p.caseStudyEnabled !== false && p.caseStudyUrl && (
-                        <div style={{ marginTop: '1.25rem' }}>
-                          <Link
-                            href={p.caseStudyUrl}
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.45rem',
-                              padding: '0.55rem 1.15rem',
-                              borderRadius: '9999px',
-                              border: '1px solid rgba(0,0,0,0.14)',
-                              backgroundColor: '#FFFFFF',
-                              color: '#111113',
-                              fontSize: '0.82rem',
-                              fontWeight: 650,
-                              textDecoration: 'none',
-                              transition: 'all 0.2s ease',
-                            }}
-                          >
-                            <span>{p.caseStudyLabel || 'View case study ↗'}</span>
-                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <ArrowRight size={12} />
-                            </div>
-                          </Link>
-                        </div>
-                      )}
                     </div>
 
                     <div className="rezang-la-dual-media-grid">
@@ -945,28 +736,17 @@ export default function IndianArmyProjectsPage() {
                         />
                       </div>
 
-                      {/* 1 Landscape Image (Video Thumbnail with Play/Arrow Button) */}
-                      <div
-                        className="rezang-landscape-video-wrap"
-                        style={{ cursor: hasVideo ? 'pointer' : 'default' }}
-                        onClick={() => hasVideo && setActiveVideoUrl(p.videoUrl)}
-                      >
+                      {/* 1 Landscape Image */}
+                      <div className="rezang-landscape-video-wrap">
                         <Image
                           src={p.landscapeImage || p.videoThumbnail || p.sidePhotos?.[0] || '/uploads/1790516827847-rezang-la-memorial.jpg'}
-                          alt={`${p.title} Video Thumbnail`}
+                          alt={`${p.title} Archival Image`}
                           fill
                           sizes="400px"
                           style={{ objectFit: 'cover' }}
                         />
-                        {hasVideo && (
-                          <div className="video-thumb-overlay">
-                            <div className="video-play-pulse-btn">
-                              <Play size={22} fill="#ffffff" color="#ffffff" style={{ marginLeft: '3px' }} />
-                            </div>
-                          </div>
-                        )}
                         <div className="landscape-caption-pill">
-                          <span>{hasVideo ? 'Click to Watch Video' : p.title}</span>
+                          <span>{p.title}</span>
                         </div>
                       </div>
                     </div>
@@ -978,33 +758,6 @@ export default function IndianArmyProjectsPage() {
                       <h2 className="card-title" style={{ whiteSpace: 'pre-line' }}>{p.title}</h2>
                       <div className="card-subhead">{p.subtitle}</div>
                       <p className="card-description">{p.description}</p>
-
-                      {p.caseStudyEnabled !== false && p.caseStudyUrl && (
-                        <div style={{ marginTop: '1.25rem' }}>
-                          <Link
-                            href={p.caseStudyUrl}
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.45rem',
-                              padding: '0.55rem 1.15rem',
-                              borderRadius: '9999px',
-                              border: '1px solid rgba(0,0,0,0.14)',
-                              backgroundColor: '#FFFFFF',
-                              color: '#111113',
-                              fontSize: '0.82rem',
-                              fontWeight: 650,
-                              textDecoration: 'none',
-                              transition: 'all 0.2s ease',
-                            }}
-                          >
-                            <span>{p.caseStudyLabel || 'View case study ↗'}</span>
-                            <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#111113', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <ArrowRight size={12} />
-                            </div>
-                          </Link>
-                        </div>
-                      )}
 
                       {(p.pdfUrl || p.pdf) && (
                         <div style={{ marginTop: '1rem' }}>

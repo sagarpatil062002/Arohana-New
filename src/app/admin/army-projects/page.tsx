@@ -2,75 +2,57 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import CmsToggle from '@/components/admin/CmsToggle';
+import CmsSectionCard from '@/components/admin/CmsSectionCard';
 import {
   Plus,
   Trash2,
-  Eye,
-  EyeOff,
-  ChevronUp,
-  ChevronDown,
   Save,
   Check,
   Upload,
-  Film,
-  X,
-  ExternalLink,
   Play,
   ArrowRight,
-  Layers,
+  ExternalLink,
   Image as ImageIcon,
-  Sliders,
+  FileText,
+  Video,
+  Layers,
+  ChevronDown,
+  ChevronUp,
+  X,
   Sparkles,
+  GripVertical,
+  Briefcase,
 } from 'lucide-react';
 
 export default function AdminArmyProjectsPage() {
   const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [armyData, setArmyData] = useState<any>(null);
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>('western-command-investiture');
-  const [activeTab, setActiveTab] = useState<
-    'projects' | 'armyVideos' | 'firefuryCarousel' | 'communicationCards' | 'rezangLaMemorial' | 'hero' | 'closingBanner' | 'pdfViewers'
-  >('projects');
-  const [savedStatus, setSavedStatus] = useState(false);
+  const [activeTab, setActiveTab] = useState<'all' | 'hero' | 'western-command' | '14-corps' | 'corps-publications' | 'rezang-la' | 'closing' | 'order'>('all');
+  const [isDirty, setIsDirty] = useState(false);
+  const [draftSavedStatus, setDraftSavedStatus] = useState(false);
+  const [publishedStatus, setPublishedStatus] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' | 'info' } | null>(null);
-
-  const showToast = (msg: string, type: 'success' | 'error' | 'info' = 'success') => {
-    setToast({ msg, type });
-    setTimeout(() => setToast(null), 3500);
-  };
-
-  const projectGalleryInputRef = useRef<HTMLInputElement>(null);
-  const activeProjectGalleryIdxRef = useRef<number>(-1);
-
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+  const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
+  const [isAddSectionOpen, setIsAddSectionOpen] = useState(false);
   const [mediaPickerConfig, setMediaPickerConfig] = useState<{
     isOpen: boolean;
-    mediaType: 'image' | 'video' | 'all';
-    target:
-      | 'image'
-      | 'videoUrl'
-      | 'addSidePhoto'
-      | { replaceSidePhotoIndex: number }
-      | 'bannerImage'
-      | 'landscapeImage'
-      | 'verticalImage'
-      | 'armyVideoThumbnail'
-      | 'pdfUrl'
-      | 'coffeeTablePdfUrl'
-      | 'secondPdfUrl'
-      | { cardImageIndex: number }
-      | { carouselImageIndex: number }
-      | 'addCarouselImage'
-      | { galleryImageIndex: number }
-      | 'addGalleryImage';
+    mediaType: 'image' | 'video' | 'pdf' | 'all';
+    targetPath: any[];
   }>({
     isOpen: false,
-    mediaType: 'image',
-    target: 'image',
+    mediaType: 'all',
+    targetPath: [],
   });
+
+  const editorScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (content['army-projects']) {
@@ -79,2679 +61,1659 @@ export default function AdminArmyProjectsPage() {
     }
   }, [content['army-projects']]);
 
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
   if (!armyData) {
-    return <div style={{ padding: '2rem', textAlign: 'center', color: '#71717A' }}>Loading Indian Army Projects...</div>;
+    return (
+      <div style={{ padding: '3rem', textAlign: 'center', color: '#71717A' }}>
+        Loading Indian Army Projects CMS...
+      </div>
+    );
   }
 
-  const selectedProject =
-    armyData.projects?.find((p: any) => p.id === selectedProjectId) || armyData.projects?.[0];
-
-  // Specific featured projects
-  const videoProject = armyData.projects?.find((p: any) => p.id === 'western-command-investiture') || armyData.projects?.[0];
-  const commsProject = armyData.projects?.find((p: any) => p.id === '14-corps-communication') || armyData.projects?.[1];
-  const firefuryProject = armyData.projects?.find((p: any) => p.id === 'corps-publications') || armyData.projects?.[2];
-  const rezangLaProject = armyData.projects?.find((p: any) => p.id === 'rezang-la-memorial') || armyData.projects?.[3];
-
-  const handleHeroChange = (field: string, val: string) => {
-    const updated = {
-      ...armyData,
-      hero: {
-        ...(armyData.hero || {}),
-        [field]: val,
-      },
-    };
+  // Deep update helper
+  const updateField = (path: any[], val: any) => {
+    const updated = JSON.parse(JSON.stringify(armyData));
+    let current = updated;
+    for (let i = 0; i < path.length - 1; i++) {
+      if (current[path[i]] === undefined) {
+        current[path[i]] = typeof path[i + 1] === 'number' ? [] : {};
+      }
+      current = current[path[i]];
+    }
+    current[path[path.length - 1]] = val;
     setArmyData(updated);
+    setIsDirty(true);
     updateDraftInMemory('army-projects', updated);
   };
 
-  const handleClosingBannerChange = (field: string, val: string) => {
-    const updated = {
-      ...armyData,
-      closingBanner: {
-        ...(armyData.closingBanner || {}),
-        [field]: val,
-      },
-    };
-    setArmyData(updated);
-    updateDraftInMemory('army-projects', updated);
-  };
-
-  /* Project handlers */
-  const handleProjectChange = (field: string, val: any, projectId = selectedProject?.id) => {
-    if (!projectId) return;
-    const updatedProjects = (armyData.projects || []).map((p: any) =>
-      p.id === projectId ? { ...p, [field]: val } : p
-    );
-    const updated = { ...armyData, projects: updatedProjects };
-    setArmyData(updated);
-    updateDraftInMemory('army-projects', updated);
-  };
-
-  const handleTogglePublished = (id: string) => {
-    const updatedProjects = (armyData.projects || []).map((p: any) =>
-      p.id === id ? { ...p, published: p.published === false ? true : false } : p
-    );
-    const updated = { ...armyData, projects: updatedProjects };
-    setArmyData(updated);
-    updateDraftInMemory('army-projects', updated);
-  };
-
+  // Reorder Army Project Section (↑ Move Up / ↓ Move Down)
   const moveProject = (index: number, direction: 'up' | 'down') => {
     const targetIdx = direction === 'up' ? index - 1 : index + 1;
-    if (targetIdx < 0 || targetIdx >= armyData.projects.length) return;
-    const newProjects = [...armyData.projects];
+    const projects = armyData.projects || [];
+    if (targetIdx < 0 || targetIdx >= projects.length) return;
+
+    const newProjects = [...projects];
     const temp = newProjects[index];
     newProjects[index] = newProjects[targetIdx];
     newProjects[targetIdx] = temp;
+
     const updated = { ...armyData, projects: newProjects };
     setArmyData(updated);
+    setIsDirty(true);
     updateDraftInMemory('army-projects', updated);
+    showToast(`✓ Section moved ${direction}`);
   };
 
-  const handleAddNewProject = () => {
+  // Toggle collapse state for a section
+  const toggleCollapse = (secId: string) => {
+    setCollapsedSections((prev) => ({
+      ...prev,
+      [secId]: !prev[secId],
+    }));
+  };
+
+  // Collapse or Expand All Sections
+  const handleToggleAllCollapse = (collapseAll: boolean) => {
+    const newMap: Record<string, boolean> = {
+      hero: collapseAll,
+      disclaimer: collapseAll,
+      closingBanner: collapseAll,
+    };
+    (armyData.projects || []).forEach((p: any) => {
+      newMap[p.id] = collapseAll;
+    });
+    setCollapsedSections(newMap);
+  };
+
+  // Save draft to Centralized CRM Draft Store
+  const handleSaveDraft = async () => {
+    try {
+      await saveDraft('army-projects', armyData);
+      setIsDirty(false);
+      setDraftSavedStatus(true);
+      showToast('✓ Army Projects draft saved to Centralized Draft Store');
+      setTimeout(() => setDraftSavedStatus(false), 3000);
+    } catch {
+      showToast('✕ Error saving draft');
+    }
+  };
+
+  // Publish Army Projects to Live Website
+  const handlePublishLive = async () => {
+    try {
+      await publishSection('army-projects', armyData);
+      setIsDirty(false);
+      setPublishedStatus(true);
+      showToast('✓ Indian Army Projects published LIVE to website!');
+      setTimeout(() => setPublishedStatus(false), 3500);
+    } catch {
+      showToast('✕ Error publishing live');
+    }
+  };
+
+  // Add a new project section
+  const handleAddNewProject = (type: 'video' | 'pdf' | 'carousel' | 'image') => {
     const newId = `army-proj-${Date.now()}`;
-    const newNum = String((armyData.projects?.length || 0) + 1).padStart(2, '0');
-    const newProj = {
+    let newProject: any = {
       id: newId,
-      num: newNum,
-      command: '14 CORPS HEADQUARTERS',
+      command: 'INDIAN ARMY',
       location: 'Ladakh',
       date: '2026',
-      title: 'New Institutional Project',
-      subtitle: 'Ceremonial protocol shoot and documentary production.',
-      description: 'Detailed description of authorized institutional shoot direction.',
-      category: 'Institutional Media',
-      layoutStyle: 'layout-1',
-      videoUrl: '',
-      image: '/images/army/army-hero.jpg',
-      landscapeImage: '',
-      verticalImage: '',
-      sidePhotos: [],
+      title: 'New Army Assignment',
+      subtitle: 'Documentation · Content creation',
+      description: 'Comprehensive assignment documentation executed with authorized military protocol.',
       published: true,
+      caseStudyEnabled: true,
+      caseStudyUrl: '',
+      caseStudyLabel: 'View case study ↗',
     };
-    const updated = {
-      ...armyData,
-      projects: [...(armyData.projects || []), newProj],
-    };
+
+    if (type === 'video') {
+      newProject = {
+        ...newProject,
+        title: 'New Video Production',
+        subtitle: 'Shoot · Production · Master Delivery',
+        videoUrl: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+        thumbnail: '/images/army/western-command-1.jpg',
+        image: '/images/army/western-command-1.jpg',
+        sidePhotos: ['/images/army/western-command-official.jpg', '/images/army/western-command-2.jpg'],
+        layoutStyle: 'video-investiture',
+      };
+    } else if (type === 'pdf') {
+      newProject = {
+        ...newProject,
+        title: 'New PDF Publication & Memorial',
+        subtitle: 'Editorial publication · Tactile archival',
+        pdfUrl: '/uploads/1790923450984-69-armoured-regimet-.pdf',
+        landscapeImage: '/uploads/1790516827847-rezang-la-memorial.jpg',
+        image: '/uploads/1790516737581-rezangla.jpg',
+        layoutStyle: 'rezang-la',
+      };
+    } else if (type === 'carousel') {
+      newProject = {
+        ...newProject,
+        title: 'New Regiment Publication & Carousel',
+        subtitle: 'Collateral designing · Publications',
+        carouselEnabled: true,
+        carouselImages: [
+          { id: '1', image: '/uploads/1790516375474-firefury1.jpg', caption: 'Publication Architecture', enabled: true },
+          { id: '2', image: '/images/army/69armoured-2.jpg', caption: 'Alpine Desert Formations', enabled: true },
+        ],
+        layoutStyle: 'publications-carousel',
+      };
+    } else {
+      newProject = {
+        ...newProject,
+        image: '/uploads/1790515799187-high-alltitude-1.jpg',
+        layoutStyle: 'standard',
+      };
+    }
+
+    const updatedProjects = [...(armyData.projects || []), newProject];
+    const updated = { ...armyData, projects: updatedProjects };
     setArmyData(updated);
-    setSelectedProjectId(newId);
-    setActiveTab('projects');
+    setIsDirty(true);
     updateDraftInMemory('army-projects', updated);
-    showToast('New project added — fill in the details below.', 'info');
+    setIsAddSectionOpen(false);
+    showToast('✓ New Army section added to stack');
   };
 
-  const handleDeleteProject = () => {
+  // Delete project confirmation
+  const confirmDeleteProject = () => {
     if (!deleteTargetId) return;
     const updatedProjects = (armyData.projects || []).filter((p: any) => p.id !== deleteTargetId);
     const updated = { ...armyData, projects: updatedProjects };
     setArmyData(updated);
-    if (selectedProjectId === deleteTargetId) {
-      setSelectedProjectId(updatedProjects[0]?.id || null);
-    }
+    setIsDirty(true);
+    updateDraftInMemory('army-projects', updated);
     setDeleteTargetId(null);
-    updateDraftInMemory('army-projects', updated);
-    showToast('Project deleted successfully.', 'success');
+    showToast('✓ Section removed from page');
   };
 
-  const handleRemoveSidePhoto = (index: number) => {
-    if (!selectedProject) return;
-    const existing = [...(selectedProject.sidePhotos || [])];
-    existing.splice(index, 1);
-    handleProjectChange('sidePhotos', existing);
-  };
-
-  const handleProjectDirectUpload = async (file: File, type: 'gallery' | 'image' | 'vertical' | 'landscape') => {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch('/api/upload', { method: 'POST', body: formData });
-      const data = await res.json();
-      if (res.ok && data.url) {
-        if (type === 'gallery') {
-          const idx = activeProjectGalleryIdxRef.current;
-          if (idx >= 0 && selectedProject?.gallery?.[idx]) {
-            const updated = [...(selectedProject.gallery || [])];
-            updated[idx].image = data.url;
-            handleProjectChange('gallery', updated);
-          } else {
-            const updated = [...(selectedProject?.gallery || []), { image: data.url, caption: '', enabled: true }];
-            handleProjectChange('gallery', updated);
-          }
-        } else if (type === 'image') {
-          handleProjectChange('image', data.url);
-        } else if (type === 'vertical') {
-          handleProjectChange('verticalImage', data.url);
-        } else if (type === 'landscape') {
-          handleProjectChange('landscapeImage', data.url);
-        }
-        showToast('Image uploaded successfully!', 'success');
-      } else {
-        showToast(data.error || 'Upload failed', 'error');
-      }
-    } catch {
-      showToast('Error uploading file', 'error');
-    }
-  };
-
-  const handleCreateCaseStudyForProject = (proj: any) => {
-    if (!proj) return;
-    const slug = proj.slug || proj.id;
-    const workData = content.work ? JSON.parse(JSON.stringify(content.work)) : { caseStudies: [] };
-    const existing = (workData.caseStudies || []).find((c: any) => c.slug === slug || c.id === slug);
-
-    if (!existing) {
-      const newCase = {
-        id: slug,
-        slug: slug,
-        title: proj.title || 'Indian Army Project',
-        subtitle: proj.subtitle || proj.description || '',
-        category: 'Institutional',
-        tags: [proj.command || '14 Corps', 'Institutional'],
-        image: proj.image || proj.landscapeImage || '/images/army/army-hero.jpg',
-        heroImage: proj.image || proj.landscapeImage || '/images/army/army-hero.jpg',
-        layoutStyle: proj.layoutStyle || 'layout-1',
-        published: true,
-        isClickable: true,
-        challenge: proj.challenge || proj.description || '',
-        whatWeDid: proj.whatWeDid || '',
-        theResult: proj.theResult || '',
-        gallery: proj.gallery || (proj.sidePhotos ? proj.sidePhotos.map((p: string) => ({ image: p, caption: '' })) : []),
-        closingQuote: proj.closingQuote || '',
-        caseStudyBtnText: proj.caseStudyLabel || 'View case study ↗',
-      };
-      workData.caseStudies = [...(workData.caseStudies || []), newCase];
-      updateDraftInMemory('work', workData);
-      saveDraft('work', workData);
-    }
-
-    handleProjectChange('caseStudyUrl', `/work/${slug}`);
-    handleProjectChange('caseStudyEnabled', true);
-    showToast(`Case study created & linked: /work/${slug}`, 'success');
-  };
-
-  const handleSave = async () => {
-    const ok = await saveDraft('army-projects', armyData);
-    if (ok) {
-      setSavedStatus(true);
-      setTimeout(() => setSavedStatus(false), 2500);
-      showToast('Draft saved successfully.', 'success');
-    } else {
-      showToast('Failed to save draft. Please retry.', 'error');
-    }
-  };
-
-  const handlePublish = async () => {
-    const ok = await publishSection('army-projects', armyData);
-    if (ok) {
-      showToast('Army Projects published live!', 'success');
-    } else {
-      showToast('Publish failed. Please retry.', 'error');
-    }
-  };
-
-  const updateField = (path: string[], value: any) => {
-    const updated = JSON.parse(JSON.stringify(armyData));
-    let node: any = updated;
-    for (let i = 0; i < path.length - 1; i++) {
-      if (node[path[i]] === undefined) node[path[i]] = {};
-      node = node[path[i]];
-    }
-    node[path[path.length - 1]] = value;
-    setArmyData(updated);
-    updateDraftInMemory('army-projects', updated);
-  };
-
-  const inputStyle = {
+  // Input styles
+  const inputStyle: React.CSSProperties = {
     width: '100%',
-    padding: '0.55rem 0.85rem',
+    padding: '0.42rem 0.65rem',
     borderRadius: '6px',
     border: '1px solid rgba(0, 0, 0, 0.12)',
-    fontSize: '0.82rem',
     backgroundColor: '#FFFFFF',
+    fontSize: '0.78rem',
     color: '#111113',
+    boxSizing: 'border-box',
     outline: 'none',
   };
 
-  const hasProjectVideo = Boolean(selectedProject?.videoUrl && selectedProject.videoUrl.trim() !== '');
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    fontSize: '0.7rem',
+    fontWeight: 650,
+    color: '#52525B',
+    marginBottom: '0.25rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.03em',
+  };
+
+  const mediaBtnStyle: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.35rem',
+    padding: '0.35rem 0.65rem',
+    borderRadius: '6px',
+    border: '1px solid rgba(0,0,0,0.12)',
+    backgroundColor: '#F8F8FA',
+    color: '#27272A',
+    fontSize: '0.74rem',
+    fontWeight: 600,
+    cursor: 'pointer',
+    flexShrink: 0,
+    transition: 'all 0.15s ease',
+  };
+
+  const projects = armyData.projects || [];
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: '1.25rem', height: 'calc(100vh - 120px)' }}>
-      {/* ── TOAST NOTIFICATION ── */}
-      {toast && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '1.5rem',
-            right: '1.5rem',
-            zIndex: 9999,
-            padding: '0.85rem 1.35rem',
-            borderRadius: '8px',
-            backgroundColor: toast.type === 'success' ? '#15803D' : toast.type === 'error' ? '#DC2626' : '#2563EB',
-            color: '#fff',
-            fontSize: '0.85rem',
-            fontWeight: 600,
-            boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            animation: 'slideIn 0.25s ease',
-          }}
-        >
-          {toast.type === 'success' ? <Check size={14} /> : <X size={14} />}
-          {toast.msg}
-        </div>
-      )}
-      {/* ─── LEFT COLUMN: ARMY PROJECTS & SECTION MANAGERS ─── */}
+    <div className="admin-split-grid">
+      {/* ─── LEFT COLUMN: RESTRUCTURED ARMY SECTION EDITOR ─── */}
       <div
+        className="admin-editor-panel"
         style={{
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: '#FFFFFF',
-          borderRadius: '12px',
+          borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
           overflow: 'hidden',
-          height: '100%',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
+          minWidth: 0,
+          width: '100%',
         }}
       >
-        {/* Header Bar */}
+        {/* Editor Top Bar */}
         <div
           style={{
-            padding: '1rem 1.25rem',
+            padding: '0.85rem 1.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#FFFFFF',
             flexWrap: 'wrap',
             gap: '0.75rem',
+            flexShrink: 0,
           }}
         >
-          <div>
-            <h2 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: '#111113' }}>
-              Indian Army Projects &amp; Work
-            </h2>
-            <div style={{ fontSize: '0.75rem', color: '#71717A', marginTop: '2px' }}>
-              Verified assignments, videos, carousels, cards &amp; media layouts.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
+              Indian Army Projects
+            </div>
+            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', backgroundColor: '#F4F4F5', color: '#52525B', fontWeight: 600 }}>
+              {armyData.projects?.length || 4} Projects
+            </span>
+
+            {/* Segmented Toggle: Editor vs Order & Visibility */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab(activeTab === 'order' ? 'all' : activeTab)}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab !== 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab !== 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab !== 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <FileText size={12} />
+                Editor
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('order')}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab === 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <GripVertical size={12} />
+                Order &amp; Visibility
+              </button>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            {/* Add Section Quick Action */}
             <button
               type="button"
-              onClick={handleAddNewProject}
+              onClick={() => setIsAddSectionOpen(true)}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.35rem',
                 padding: '0.45rem 0.85rem',
-                borderRadius: '6px',
-                border: '1px solid #FECACA',
-                backgroundColor: '#FEF2F2',
-                color: '#DE322D',
-                fontSize: '0.78rem',
+                borderRadius: '8px',
+                border: '1px solid rgba(0, 0, 0, 0.12)',
+                backgroundColor: '#FFFFFF',
+                color: '#111113',
+                fontSize: '0.76rem',
                 fontWeight: 650,
                 cursor: 'pointer',
               }}
             >
-              <Plus size={14} />
-              New Project
+              <Plus size={14} /> Add Section
             </button>
 
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
-              onClick={handleSave}
+              onClick={handleSaveDraft}
+              title="Save draft to CRM"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1.15rem',
-                borderRadius: '6px',
-                border: 'none',
-                backgroundColor: savedStatus ? '#16A34A' : '#111113',
-                color: '#FFFFFF',
-                fontSize: '0.8rem',
+                padding: '0.45rem 0.95rem',
+                borderRadius: '9999px',
+                border: '1px solid #D97706',
+                backgroundColor: draftSavedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: draftSavedStatus ? '#16A34A' : '#92400E',
+                fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'background-color 0.2s',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {savedStatus ? <Check size={14} /> : <Save size={14} />}
-              {savedStatus ? 'Draft Saved!' : 'Save Draft'}
+              {draftSavedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{draftSavedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
 
+            {/* Red pill: Publish This Page */}
             <button
               type="button"
-              onClick={handlePublish}
+              onClick={handlePublishLive}
+              title="Publish live to production"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
                 padding: '0.45rem 1.15rem',
-                borderRadius: '6px',
+                borderRadius: '9999px',
                 border: 'none',
                 backgroundColor: '#DE322D',
                 color: '#FFFFFF',
-                fontSize: '0.8rem',
+                fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               }}
             >
-              <ExternalLink size={14} />
-              Publish Live
+              <Upload size={13} />
+              <span>Publish This Page</span>
             </button>
           </div>
         </div>
 
-        {/* Section Tabs */}
+        {/* Section Tabs Row */}
         <div
+          className="admin-tabs-row"
           style={{
             display: 'flex',
-            gap: '0.2rem',
-            padding: '0.4rem 0.75rem',
+            gap: '0.25rem',
+            padding: '0.4rem 1rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             backgroundColor: '#F4F4F5',
             overflowX: 'auto',
           }}
         >
           {[
-            { id: 'projects', label: `Projects Directory (${armyData.projects?.length || 0})` },
-            { id: 'armyVideos', label: '11. Army Videos' },
-            { id: 'firefuryCarousel', label: '12. Firefury Carousel' },
-            { id: 'communicationCards', label: '13. 3 Interactive Cards' },
-            { id: 'rezangLaMemorial', label: '14. Rezang La Memorial' },
-            { id: 'hero', label: 'Page Hero' },
-            { id: 'closingBanner', label: 'Closing Banner' },
-          ].map((tab) => {
-            const active = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as any)}
-                style={{
-                  padding: '0.45rem 0.75rem',
-                  fontSize: '0.76rem',
-                  fontWeight: active ? 700 : 500,
-                  color: active ? '#111113' : '#71717A',
-                  background: active ? '#FFFFFF' : 'transparent',
-                  border: active ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid transparent',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+            { id: 'all', label: 'All Sections' },
+            { id: 'hero', label: '01: Hero & Notice', isSecEnabled: armyData.heroEnabled !== false },
+            { id: 'western-command', label: '02: Western Command', isSecEnabled: (projects[0]?.published !== false) },
+            { id: '14-corps', label: '03: 14 Corps HQ', isSecEnabled: (projects[1]?.published !== false) },
+            { id: 'corps-publications', label: '04: Fire & Fury', isSecEnabled: (projects[2]?.published !== false) },
+            { id: 'rezang-la', label: '05: Rezang La', isSecEnabled: (projects[3]?.published !== false) },
+            { id: 'closing', label: '06: Closing Banner', isSecEnabled: armyData.closingBannerEnabled !== false },
+            { id: 'order', label: 'Order & Visibility', icon: GripVertical },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as any)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.45rem 0.85rem',
+                fontSize: '0.78rem',
+                fontWeight: activeTab === tab.id ? 700 : 500,
+                color: activeTab === tab.id ? '#111113' : '#71717A',
+                background: activeTab === tab.id ? '#FFFFFF' : 'transparent',
+                border: activeTab === tab.id ? '1px solid rgba(0, 0, 0, 0.1)' : '1px solid transparent',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {tab.isSecEnabled !== undefined && (
+                <span
+                  style={{
+                    width: '7px',
+                    height: '7px',
+                    borderRadius: '50%',
+                    backgroundColor: tab.isSecEnabled ? '#10B981' : '#EF4444',
+                  }}
+                />
+              )}
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        {/* ─── TAB 1: ALL PROJECTS DIRECTORY & NEW PROJECT CREATION ─── */}
-        {activeTab === 'projects' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', flex: 1, overflow: 'hidden' }}>
-            {/* Sub-list of Projects */}
-            <div style={{ borderRight: '1px solid rgba(0, 0, 0, 0.08)', overflowY: 'auto', backgroundColor: '#FAFAFA' }}>
-              {(armyData.projects || []).map((p: any, idx: number) => {
-                const isSelected = p.id === (selectedProject?.id || selectedProjectId);
-                return (
-                  <div
-                    key={p.id}
-                    onClick={() => setSelectedProjectId(p.id)}
-                    style={{
-                      padding: '0.85rem 1rem',
-                      borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
-                      cursor: 'pointer',
-                      backgroundColor: isSelected ? '#FFFFFF' : 'transparent',
-                      borderLeft: isSelected ? '3px solid #DE322D' : '3px solid transparent',
-                      transition: 'background-color 0.15s',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
-                      <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', fontWeight: 700, color: '#DE322D' }}>
-                        {p.num || String(idx + 1).padStart(2, '0')}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: '0.66rem',
-                          padding: '1px 6px',
-                          borderRadius: '4px',
-                          backgroundColor: p.published !== false ? '#DCFCE7' : '#F4F4F5',
-                          color: p.published !== false ? '#16A34A' : '#71717A',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {p.published !== false ? 'Live' : 'Hidden'}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 650, color: '#111113', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {p.title}
-                    </div>
-                    <div style={{ fontSize: '0.72rem', color: '#71717A', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {p.category || p.command || 'Institutional'}
-                    </div>
-                  </div>
-                );
-              })}
+        {/* Global Toast Notification */}
+        {toastMessage && (
+          <div
+            style={{
+              padding: '0.6rem 1.25rem',
+              backgroundColor: '#111113',
+              color: '#FFFFFF',
+              fontSize: '0.76rem',
+              fontWeight: 500,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderBottom: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ color: '#4ADE80', fontWeight: 700 }}>●</span>
+              <span>{toastMessage}</span>
             </div>
+            <button
+              type="button"
+              onClick={() => setToastMessage('')}
+              style={{ background: 'transparent', border: 'none', color: '#A1A1AA', cursor: 'pointer' }}
+            >
+              ✕
+            </button>
+          </div>
+        )}
 
-            {/* Sub-Editor for Selected Project */}
-            {selectedProject && (
-              <div style={{ flex: 1, overflowY: 'auto', padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-                {/* Project Header Bar */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0, 0, 0, 0.08)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 700, color: '#DE322D' }}>
-                      {selectedProject.num}
-                    </span>
-                    <h3 style={{ fontSize: '1.05rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                      {selectedProject.title}
-                    </h3>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <button
-                      type="button"
-                      title="Move Up"
-                      onClick={() => moveProject(armyData.projects.findIndex((p: any) => p.id === selectedProject.id), 'up')}
-                      style={{ padding: '0.35rem', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.1)', background: '#fff', cursor: 'pointer' }}
-                    >
-                      <ChevronUp size={14} />
-                    </button>
-                    <button
-                      type="button"
-                      title="Move Down"
-                      onClick={() => moveProject(armyData.projects.findIndex((p: any) => p.id === selectedProject.id), 'down')}
-                      style={{ padding: '0.35rem', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.1)', background: '#fff', cursor: 'pointer' }}
-                    >
-                      <ChevronDown size={14} />
-                    </button>
-                    <button
-                      type="button"
-                      title={selectedProject.published !== false ? 'Hide from Live' : 'Show on Live'}
-                      onClick={() => handleTogglePublished(selectedProject.id)}
-                      style={{
-                        padding: '0.35rem 0.65rem',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(0,0,0,0.1)',
-                        background: selectedProject.published !== false ? '#ECFDF5' : '#F4F4F5',
-                        color: selectedProject.published !== false ? '#059669' : '#71717A',
-                        fontSize: '0.72rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                      }}
-                    >
-                      {selectedProject.published !== false ? <Eye size={12} /> : <EyeOff size={12} />}
-                      {selectedProject.published !== false ? 'Live' : 'Hidden'}
-                    </button>
-                    <button
-                      type="button"
-                      title="Delete Project"
-                      onClick={() => setDeleteTargetId(selectedProject.id)}
-                      style={{ padding: '0.35rem', borderRadius: '4px', border: '1px solid rgba(222,50,45,0.2)', background: '#FEF2F2', color: '#DE322D', cursor: 'pointer' }}
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </div>
-
-                {/* 1. COMMAND / FORMATION & LOCATION */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.85rem' }}>
+        {/* Natural Vertical Content Container */}
+        <div
+          ref={editorScrollRef}
+          className="admin-editor-scroll"
+          style={{
+            padding: '1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          }}
+        >
+          {/* ════════════════════════════════════════════════════════════
+              SECTION 01: HERO / INTRODUCTION & DISCLAIMER
+             ════════════════════════════════════════════════════════════ */}
+          {(activeTab === 'all' || activeTab === 'hero') && (
+            <>
+              <CmsSectionCard
+                id="hero"
+                title="Hero / Introduction"
+                subtitle="Himalayan soldier atmospheric banner, headline & eyebrow"
+                badge="SECTION 01"
+                enabled={armyData.heroEnabled !== false}
+                onToggleEnabled={(next) => updateField(['heroEnabled'], next)}
+                isCollapsed={collapsedSections['hero']}
+                onToggleCollapse={() => toggleCollapse('hero')}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      COMMAND / FORMATION
-                    </label>
+                    <label style={labelStyle}>Eyebrow Protocol Badge</label>
                     <input
                       type="text"
-                      value={selectedProject.command || ''}
-                      onChange={(e) => handleProjectChange('command', e.target.value)}
-                      placeholder="e.g. WESTERN COMMAND or 14 CORPS HEADQUARTERS"
+                      value={armyData.hero?.eyebrow || ''}
+                      placeholder="DEFENCE & INSTITUTIONAL PRODUCTION"
+                      onChange={(e) => updateField(['hero', 'eyebrow'], e.target.value)}
                       style={inputStyle}
                     />
                   </div>
+
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      LOCATION
-                    </label>
+                    <label style={labelStyle}>Hero Headline</label>
                     <input
                       type="text"
-                      value={selectedProject.location || ''}
-                      onChange={(e) => handleProjectChange('location', e.target.value)}
-                      placeholder="e.g. HQ Western Command or Ladakh"
+                      value={armyData.hero?.title || ''}
+                      placeholder="Stories of service"
+                      onChange={(e) => updateField(['hero', 'title'], e.target.value)}
                       style={inputStyle}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={labelStyle}>Hero Description</label>
+                    <textarea
+                      rows={2}
+                      value={armyData.hero?.description || ''}
+                      placeholder="On-location film direction, ceremonial protocol documentation..."
+                      onChange={(e) => updateField(['hero', 'description'], e.target.value)}
+                      style={{ ...inputStyle, resize: 'vertical' }}
                     />
                   </div>
                 </div>
+              </CmsSectionCard>
 
-                {/* 2. PROJECT TITLE & TIMELINE */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: '0.85rem' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      PROJECT TITLE
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedProject.title || ''}
-                      onChange={(e) => handleProjectChange('title', e.target.value)}
-                      placeholder="e.g. Investiture Ceremony"
-                      style={inputStyle}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                      TIMELINE / DATE
-                    </label>
-                    <input
-                      type="text"
-                      value={selectedProject.date || ''}
-                      onChange={(e) => handleProjectChange('date', e.target.value)}
-                      placeholder="e.g. February 2026 or Ongoing"
-                      style={inputStyle}
-                    />
-                  </div>
-                </div>
-
-                {/* 3. CATEGORY (STRICTLY NORMAL TEXT FIELD, NOT A DROPDOWN) */}
+              {/* SECTION 02: INSTITUTIONAL INTEGRITY STATEMENT */}
+              <CmsSectionCard
+                id="disclaimer"
+                title="Institutional Integrity Disclaimer"
+                subtitle="Verified assignment protocol and authorized disclosure statement"
+                badge="SECTION 02"
+                enabled={armyData.disclaimerEnabled !== false}
+                onToggleEnabled={(next) => updateField(['disclaimerEnabled'], next)}
+                isCollapsed={collapsedSections['disclaimer']}
+                onToggleCollapse={() => toggleCollapse('disclaimer')}
+              >
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                    <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
-                      CATEGORY (TEXT FIELD)
-                    </label>
-                    <span style={{ fontSize: '0.68rem', color: '#71717A', fontStyle: 'italic' }}>
-                      Normal text field — no restrictive dropdowns
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    value={selectedProject.category || ''}
-                    onChange={(e) => handleProjectChange('category', e.target.value)}
-                    placeholder="Enter custom category name (e.g. Western Command, 14 Corps, Border Initiatives)"
-                    style={inputStyle}
-                  />
-                </div>
-
-                {/* 4. BRIEF SUBTITLE */}
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    BRIEF SUBTITLE
-                  </label>
-                  <input
-                    type="text"
-                    value={selectedProject.subtitle || ''}
-                    onChange={(e) => handleProjectChange('subtitle', e.target.value)}
-                    placeholder="e.g. Shoot · Production · Post-production"
-                    style={inputStyle}
-                  />
-                </div>
-
-                {/* 5. DESCRIPTION */}
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    DESCRIPTION
-                  </label>
+                  <label style={labelStyle}>Disclaimer Statement Text</label>
                   <textarea
                     rows={3}
-                    value={selectedProject.description || ''}
-                    onChange={(e) => handleProjectChange('description', e.target.value)}
-                    placeholder="Provide detailed description of the project brief, narrative, and execution..."
-                    style={inputStyle}
+                    value={armyData.disclaimer || ''}
+                    placeholder="Institutional Integrity: All presented Indian Army project materials represent verified shoot direction..."
+                    onChange={(e) => updateField(['disclaimer'], e.target.value)}
+                    style={{ ...inputStyle, resize: 'vertical' }}
                   />
                 </div>
+              </CmsSectionCard>
+            </>
+          )}
 
-                {/* 5B. PDF DOCUMENT URL */}
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    PDF DOCUMENT URL (Opens in Reusable Website PDF Viewer)
-                  </label>
-                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <input
-                      type="text"
-                      value={selectedProject.pdfUrl || ''}
-                      onChange={(e) => handleProjectChange('pdfUrl', e.target.value)}
-                      placeholder="e.g. /pdf/69-armoured-regiment.pdf or https://..."
-                      style={{ ...inputStyle, flex: 1 }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMediaPickerConfig({
-                          isOpen: true,
-                          mediaType: 'all',
-                          target: 'pdfUrl',
-                        })
-                      }
-                      style={{
-                        padding: '0.5rem 0.85rem',
-                        borderRadius: '6px',
-                        border: '1px solid rgba(0,0,0,0.15)',
-                        backgroundColor: '#111113',
-                        color: '#FFFFFF',
-                        fontSize: '0.76rem',
-                        fontWeight: 650,
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      Upload / Pick PDF
-                    </button>
-                  </div>
-                  <span style={{ fontSize: '0.68rem', color: '#71717A', marginTop: '2px', display: 'block' }}>
-                    Configures the PDF document displayed when visitors click &ldquo;View PDF&rdquo; on this project.
-                  </span>
-                </div>
+          {/* ════════════════════════════════════════════════════════════
+              ARMY PROJECT SECTIONS (DYNAMICALLY ORDERED BY CMS)
+             ════════════════════════════════════════════════════════════ */}
+          {projects.map((project: any, index: number) => {
+            if (activeTab === 'western-command' && project.id !== 'western-command-investiture' && index !== 0) return null;
+            if (activeTab === '14-corps' && project.id !== '14-corps-communication' && index !== 1) return null;
+            if (activeTab === 'corps-publications' && project.id !== 'corps-publications' && index !== 2) return null;
+            if (activeTab === 'rezang-la' && project.id !== 'rezang-la-memorial' && index !== 3) return null;
+            if (activeTab === 'hero' || activeTab === 'closing' || activeTab === 'order') return null;
+            const isVideoSection = Boolean(project.videoUrl) || project.layoutStyle === 'video-investiture';
+            const isCarouselSection = Boolean(project.carouselImages) || project.layoutStyle === 'publications-carousel';
+            const isInteractiveCardsSection = Boolean(project.interactiveCards) || project.layoutStyle === 'interactive-cards';
+            const isPdfSection = Boolean(project.pdfUrl || project.pdf) && !isCarouselSection;
 
-                {/* 6. CLICKABLE CASE STUDY FLOW & ACTIONS */}
-                <div style={{ padding: '1rem', backgroundColor: '#FDF4FF', borderRadius: '10px', border: '1px solid rgba(192, 38, 211, 0.2)', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <ExternalLink size={15} color="#A21CAF" />
-                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#A21CAF', letterSpacing: '0.04em' }}>
-                        CASE STUDY CLICKABLE &amp; DIRECT LINK
-                      </span>
-                    </div>
+            const badgeText = isVideoSection
+              ? 'VIDEO SECTION'
+              : isCarouselSection
+              ? 'PDF + CAROUSEL'
+              : isInteractiveCardsSection
+              ? 'INTERACTIVE CARDS'
+              : isPdfSection
+              ? 'PDF + IMAGE'
+              : 'PROJECT CARD';
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      {selectedProject.caseStudyUrl && (
-                        <a
-                          href={selectedProject.caseStudyUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            padding: '3px 9px',
-                            borderRadius: '4px',
-                            border: '1px solid rgba(162, 28, 175, 0.3)',
-                            backgroundColor: '#FFFFFF',
-                            color: '#A21CAF',
-                            fontSize: '0.7rem',
-                            fontWeight: 650,
-                            textDecoration: 'none',
-                          }}
-                        >
-                          View Case Study <ExternalLink size={11} />
-                        </a>
-                      )}
+            const sectionNum = `SECTION ${String(index + 3).padStart(2, '0')}`;
 
-                      <button
-                        type="button"
-                        onClick={() => handleCreateCaseStudyForProject(selectedProject)}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                          padding: '3px 9px',
-                          borderRadius: '4px',
-                          border: 'none',
-                          backgroundColor: '#9333EA',
-                          color: '#FFFFFF',
-                          fontSize: '0.7rem',
-                          fontWeight: 650,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <Plus size={12} />
-                        Create New Case Study
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const cur = selectedProject.caseStudyEnabled !== false && Boolean(selectedProject.caseStudyUrl);
-                          handleProjectChange('caseStudyEnabled', !cur);
-                          showToast(!cur ? 'Case study redirection enabled' : 'Case study redirection disabled', 'info');
-                        }}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                          padding: '3px 8px',
-                          borderRadius: '4px',
-                          border: 'none',
-                          backgroundColor: (selectedProject.caseStudyEnabled !== false && Boolean(selectedProject.caseStudyUrl)) ? '#F0FDF4' : '#FEE2E2',
-                          color: (selectedProject.caseStudyEnabled !== false && Boolean(selectedProject.caseStudyUrl)) ? '#15803D' : '#DC2626',
-                          fontSize: '0.7rem',
-                          fontWeight: 650,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {(selectedProject.caseStudyEnabled !== false && Boolean(selectedProject.caseStudyUrl)) ? <Eye size={11} /> : <EyeOff size={11} />}
-                        {(selectedProject.caseStudyEnabled !== false && Boolean(selectedProject.caseStudyUrl)) ? 'Case Study Active' : 'Case Study Disabled'}
-                      </button>
-                    </div>
-                  </div>
-
-                  <p style={{ margin: 0, fontSize: '0.72rem', color: '#701A75', lineHeight: 1.4 }}>
-                    When enabled, renders a clickable "View case study ↗" button and card link like on the Work page, redirecting visitors directly to the detailed case study page.
-                  </p>
-
-                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem' }}>
+            return (
+              <CmsSectionCard
+                key={project.id || index}
+                id={project.id}
+                title={project.title || `Project #${index + 1}`}
+                subtitle={`${project.command || 'Indian Army'} • ${project.location || 'Ladakh'}`}
+                badge={`${sectionNum} • ${badgeText}`}
+                enabled={project.published !== false}
+                onToggleEnabled={(next) => {
+                  const updatedProjects = [...projects];
+                  updatedProjects[index] = { ...updatedProjects[index], published: next };
+                  updateField(['projects'], updatedProjects);
+                }}
+                onMoveUp={() => moveProject(index, 'up')}
+                onMoveDown={() => moveProject(index, 'down')}
+                canMoveUp={index > 0}
+                canMoveDown={index < projects.length - 1}
+                canDelete={projects.length > 1}
+                onDelete={() => setDeleteTargetId(project.id)}
+                isCollapsed={collapsedSections[project.id]}
+                onToggleCollapse={() => toggleCollapse(project.id)}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {/* Row 1: Command, Location & Date */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: '0.65rem' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                        PRESET CASE STUDY
-                      </label>
-                      <select
-                        value={selectedProject.caseStudyUrl || ''}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          handleProjectChange('caseStudyUrl', val);
-                          if (val) handleProjectChange('caseStudyEnabled', true);
-                          showToast(val ? `Selected: ${val}` : 'Case study cleared', 'info');
-                        }}
-                        style={{ ...inputStyle, fontSize: '0.78rem', backgroundColor: '#FFFFFF', cursor: 'pointer' }}
-                      >
-                        <option value="">-- No Case Study Attached --</option>
-                        <option value="/work/she">Project SHE (Sadbhavana &amp; Women's Health) — /work/she</option>
-                        <option value={`/work/${selectedProject.slug || selectedProject.id}`}>Custom: /work/{selectedProject.slug || selectedProject.id}</option>
-                        <option value="/work/raysons-group">Raysons Group — /work/raysons-group</option>
-                        <option value="/work/picturetime">PictureTime Cinema — /work/picturetime</option>
-                        <option value="/work/loom-crafts">Loom Crafts — /work/loom-crafts</option>
-                        <option value="/work/misu">Misu Pan-Asian Dining — /work/misu</option>
-                        <option value="/work/rr-skins">RR Skins Dermatology — /work/rr-skins</option>
-                        <option value="/work/ladakh-football-association">Ladakh Football Association — /work/ladakh-football-association</option>
-                        <option value="/work/save-changthang">Save Changthang — /work/save-changthang</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                        BUTTON LABEL
-                      </label>
+                      <label style={labelStyle}>Command / Formation</label>
                       <input
                         type="text"
-                        value={selectedProject.caseStudyLabel || 'View case study ↗'}
-                        onChange={(e) => handleProjectChange('caseStudyLabel', e.target.value)}
-                        placeholder="View case study ↗"
-                        style={{ ...inputStyle, fontSize: '0.78rem' }}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                      CUSTOM REDIRECTION URL (INTERNAL OR EXTERNAL)
-                    </label>
-                    <div style={{ display: 'flex', gap: '0.45rem' }}>
-                      <input
-                        type="text"
-                        value={selectedProject.caseStudyUrl || ''}
+                        value={project.command || ''}
+                        placeholder="e.g. 69 Armoured, WESTERN COMMAND"
                         onChange={(e) => {
-                          handleProjectChange('caseStudyUrl', e.target.value);
-                          if (e.target.value) handleProjectChange('caseStudyEnabled', true);
-                        }}
-                        placeholder="e.g. /work/she or /work/your-slug"
-                        style={{ ...inputStyle, flex: 1, fontSize: '0.78rem' }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 03 NARRATIVE & APPROACH */}
-                <div style={{ padding: '1rem', backgroundColor: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0F172A' }}>
-                        03 NARRATIVE &amp; APPROACH
-                      </div>
-                      <div style={{ fontSize: '0.68rem', color: '#64748B' }}>
-                        Configure the narrative breakdown for this project case study.
-                      </div>
-                    </div>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 650, color: selectedProject.showNarrative !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                      <input
-                        type="checkbox"
-                        checked={selectedProject.showNarrative !== false}
-                        onChange={(e) => handleProjectChange('showNarrative', e.target.checked)}
-                        style={{ width: '16px', height: '16px', accentColor: '#16A34A', cursor: 'pointer' }}
-                      />
-                      <span>{selectedProject.showNarrative !== false ? 'Section: Enabled' : 'Section: Disabled'}</span>
-                    </label>
-                  </div>
-
-                  {/* 1. THE CHALLENGE */}
-                  <div style={{ padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B' }}>
-                        1. THE CHALLENGE (PROBLEM CONTEXT)
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleProjectChange('challenge', '')}
-                          style={{ background: 'transparent', border: 'none', color: '#EF4444', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                        >
-                          <Trash2 size={12} /> Clear Challenge
-                        </button>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedProject.showChallenge !== false ? '#16A34A' : '#71717A' }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedProject.showChallenge !== false}
-                            onChange={(e) => handleProjectChange('showChallenge', e.target.checked)}
-                            style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                          />
-                          <span>{selectedProject.showChallenge !== false ? 'Visible' : 'Hidden'}</span>
-                        </label>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={3}
-                      value={selectedProject.challenge || ''}
-                      onChange={(e) => handleProjectChange('challenge', e.target.value)}
-                      placeholder="Initial challenge context, operational terrain, institutional protocol brief..."
-                      style={inputStyle}
-                    />
-                  </div>
-
-                  {/* 2. CREATIVE APPROACH / WHAT WE DID */}
-                  <div style={{ padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B' }}>
-                        2. CREATIVE APPROACH / WHAT WE DID
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleProjectChange('whatWeDid', '')}
-                          style={{ background: 'transparent', border: 'none', color: '#EF4444', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                        >
-                          <Trash2 size={12} /> Clear Approach
-                        </button>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedProject.showWhatWeDid !== false ? '#16A34A' : '#71717A' }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedProject.showWhatWeDid !== false}
-                            onChange={(e) => handleProjectChange('showWhatWeDid', e.target.checked)}
-                            style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                          />
-                          <span>{selectedProject.showWhatWeDid !== false ? 'Visible' : 'Hidden'}</span>
-                        </label>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={3}
-                      value={selectedProject.whatWeDid || ''}
-                      onChange={(e) => handleProjectChange('whatWeDid', e.target.value)}
-                      placeholder="Strategic shoot plan, alpine cinematography, ceremonial protocols documented..."
-                      style={inputStyle}
-                    />
-                  </div>
-
-                  {/* 3. OUTCOME / THE RESULT */}
-                  <div style={{ padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B' }}>
-                        3. EXECUTION DISCIPLINE / THE RESULT
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleProjectChange('theResult', '')}
-                          style={{ background: 'transparent', border: 'none', color: '#EF4444', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                        >
-                          <Trash2 size={12} /> Clear Result
-                        </button>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedProject.showResult !== false ? '#16A34A' : '#71717A' }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedProject.showResult !== false}
-                            onChange={(e) => handleProjectChange('showResult', e.target.checked)}
-                            style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                          />
-                          <span>{selectedProject.showResult !== false ? 'Visible' : 'Hidden'}</span>
-                        </label>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={3}
-                      value={selectedProject.theResult || ''}
-                      onChange={(e) => handleProjectChange('theResult', e.target.value)}
-                      placeholder="Authorized archives delivered, high-retention public release, command documentation..."
-                      style={inputStyle}
-                    />
-                  </div>
-                </div>
-
-                {/* 04 VISUAL GALLERY */}
-                <div style={{ padding: '1rem', backgroundColor: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.65rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0F172A' }}>
-                        04 VISUAL GALLERY ({(selectedProject.gallery || []).length} Assets)
-                      </span>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.72rem', fontWeight: 600, color: selectedProject.galleryEnabled !== false ? '#16A34A' : '#71717A' }}>
-                        <input
-                          type="checkbox"
-                          checked={selectedProject.galleryEnabled !== false}
-                          onChange={(e) => handleProjectChange('galleryEnabled', e.target.checked)}
-                          style={{ width: '15px', height: '15px', accentColor: '#16A34A' }}
-                        />
-                        <span>{selectedProject.galleryEnabled !== false ? 'Gallery: Enabled' : 'Gallery: Disabled'}</span>
-                      </label>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const existing = [...(selectedProject.gallery || [])];
-                        existing.push({ image: '/images/army/army-hero.jpg', caption: 'Archival Still', enabled: true });
-                        handleProjectChange('gallery', existing);
-                      }}
-                      style={{
-                        padding: '0.35rem 0.75rem',
-                        borderRadius: '6px',
-                        backgroundColor: '#111113',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        fontSize: '0.74rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      + Add Media Asset
-                    </button>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    {(selectedProject.gallery || []).map((item: any, gIdx: number) => (
-                      <div key={gIdx} style={{ display: 'flex', gap: '0.75rem', padding: '0.75rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: item.enabled !== false ? '#FFFFFF' : '#F1F5F9', alignItems: 'center' }}>
-                        <div style={{ width: '70px', height: '52px', position: 'relative', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#E2E8F0', flexShrink: 0 }}>
-                          {item.image ? <Image src={item.image} alt="" fill style={{ objectFit: 'cover' }} /> : null}
-                        </div>
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                          <div style={{ display: 'flex', gap: '0.45rem', alignItems: 'center' }}>
-                            <input
-                              type="text"
-                              value={item.image || ''}
-                              onChange={(e) => {
-                                const g = [...(selectedProject.gallery || [])];
-                                g[gIdx] = { ...g[gIdx], image: e.target.value };
-                                handleProjectChange('gallery', g);
-                              }}
-                              placeholder="Image URL (/images/... or https://...)"
-                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.75rem', flex: 1 }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                activeProjectGalleryIdxRef.current = gIdx;
-                                projectGalleryInputRef.current?.click();
-                              }}
-                              style={{ padding: '0.35rem 0.65rem', borderRadius: '4px', border: '1px solid #CBD5E1', backgroundColor: '#FFFFFF', fontSize: '0.72rem', cursor: 'pointer' }}
-                            >
-                              Upload
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setMediaPickerConfig({
-                                  isOpen: true,
-                                  mediaType: 'image',
-                                  target: { galleryImageIndex: gIdx },
-                                })
-                              }
-                              style={{ padding: '0.35rem 0.65rem', borderRadius: '4px', border: '1px solid #CBD5E1', backgroundColor: '#FFFFFF', fontSize: '0.72rem', cursor: 'pointer' }}
-                            >
-                              Pick
-                            </button>
-                          </div>
-                          <input
-                            type="text"
-                            value={item.caption || ''}
-                            onChange={(e) => {
-                              const g = [...(selectedProject.gallery || [])];
-                              g[gIdx] = { ...g[gIdx], caption: e.target.value };
-                              handleProjectChange('gallery', g);
-                            }}
-                            placeholder="Caption / description text..."
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.75rem' }}
-                          />
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.45rem', flexShrink: 0 }}>
-                          <button
-                            type="button"
-                            title={item.enabled !== false ? 'Hide image' : 'Show image'}
-                            onClick={() => {
-                              const g = [...(selectedProject.gallery || [])];
-                              g[gIdx] = { ...g[gIdx], enabled: g[gIdx].enabled === false ? true : false };
-                              handleProjectChange('gallery', g);
-                            }}
-                            style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: item.enabled !== false ? '#16A34A' : '#94A3B8' }}
-                          >
-                            {item.enabled !== false ? <Eye size={15} /> : <EyeOff size={15} />}
-                          </button>
-                          <button
-                            type="button"
-                            title="Delete image"
-                            onClick={() => {
-                              const g = (selectedProject.gallery || []).filter((_: any, idx: number) => idx !== gIdx);
-                              handleProjectChange('gallery', g);
-                            }}
-                            style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#EF4444' }}
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 05 OUTCOMES & QUOTE */}
-                <div style={{ padding: '1rem', backgroundColor: '#F8FAFC', borderRadius: '10px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0F172A' }}>
-                        05 OUTCOMES &amp; QUOTE
-                      </div>
-                      <div style={{ fontSize: '0.68rem', color: '#64748B' }}>
-                        Configure the verified outcome statement, metrics note, and closing quote.
-                      </div>
-                    </div>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.74rem', fontWeight: 650, color: selectedProject.showOutcomes !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                      <input
-                        type="checkbox"
-                        checked={selectedProject.showOutcomes !== false}
-                        onChange={(e) => handleProjectChange('showOutcomes', e.target.checked)}
-                        style={{ width: '16px', height: '16px', accentColor: '#16A34A', cursor: 'pointer' }}
-                      />
-                      <span>{selectedProject.showOutcomes !== false ? 'Section: Enabled' : 'Section: Disabled'}</span>
-                    </label>
-                  </div>
-
-                  {/* VERIFIED OUTCOMES STATEMENT */}
-                  <div style={{ padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B' }}>
-                        VERIFIED OUTCOMES STATEMENT
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleProjectChange('proofText', '')}
-                          style={{ background: 'transparent', border: 'none', color: '#EF4444', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                        >
-                          <Trash2 size={12} /> Clear Statement
-                        </button>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedProject.showProof !== false ? '#16A34A' : '#71717A' }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedProject.showProof !== false}
-                            onChange={(e) => handleProjectChange('showProof', e.target.checked)}
-                            style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                          />
-                          <span>{selectedProject.showProof !== false ? 'Visible' : 'Hidden'}</span>
-                        </label>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={3}
-                      value={selectedProject.proofText || ''}
-                      onChange={(e) => handleProjectChange('proofText', e.target.value)}
-                      placeholder="e.g. Delivered 14 high-altitude documentary features across two military commands with zero security clearance delays..."
-                      style={inputStyle}
-                    />
-                  </div>
-
-                  {/* METRICS NOTE */}
-                  <div style={{ padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B' }}>
-                        METRICS / HIGHLIGHTS NOTE
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleProjectChange('metricsNote', '')}
-                          style={{ background: 'transparent', border: 'none', color: '#EF4444', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                        >
-                          <Trash2 size={12} /> Clear Metrics
-                        </button>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedProject.showMetrics !== false ? '#16A34A' : '#71717A' }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedProject.showMetrics !== false}
-                            onChange={(e) => handleProjectChange('showMetrics', e.target.checked)}
-                            style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                          />
-                          <span>{selectedProject.showMetrics !== false ? 'Visible' : 'Hidden'}</span>
-                        </label>
-                      </div>
-                    </div>
-                    <input
-                      type="text"
-                      value={selectedProject.metricsNote || ''}
-                      onChange={(e) => handleProjectChange('metricsNote', e.target.value)}
-                      placeholder="e.g. 2 Commands · 14 Production Assets · 100% Retainer Retention"
-                      style={inputStyle}
-                    />
-                  </div>
-
-                  {/* CLOSING QUOTE */}
-                  <div style={{ padding: '0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FFFFFF' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                      <label style={{ fontSize: '0.72rem', fontWeight: 650, color: '#52525B' }}>
-                        CLOSING QUOTE / TESTIMONIAL
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <button
-                          type="button"
-                          onClick={() => handleProjectChange('closingQuote', '')}
-                          style={{ background: 'transparent', border: 'none', color: '#EF4444', fontSize: '0.68rem', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
-                        >
-                          <Trash2 size={12} /> Clear Quote
-                        </button>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, color: selectedProject.showClosingQuote !== false ? '#16A34A' : '#71717A' }}>
-                          <input
-                            type="checkbox"
-                            checked={selectedProject.showClosingQuote !== false}
-                            onChange={(e) => handleProjectChange('showClosingQuote', e.target.checked)}
-                            style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                          />
-                          <span>{selectedProject.showClosingQuote !== false ? 'Visible' : 'Hidden'}</span>
-                        </label>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={3}
-                      value={selectedProject.closingQuote || ''}
-                      onChange={(e) => handleProjectChange('closingQuote', e.target.value)}
-                      placeholder="e.g. Long-term institutional trust is built on quiet operational precision..."
-                      style={inputStyle}
-                    />
-                  </div>
-                </div>
-
-                {/* 7. IMAGE LAYOUT STYLE SELECTOR */}
-                <div style={{ padding: '0.85rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 700, color: '#1E293B', marginBottom: '0.35rem' }}>
-                    IMAGE LAYOUT STYLE
-                  </label>
-                  <select
-                    value={hasProjectVideo ? 'rezang-la' : (selectedProject.layoutStyle || 'layout-1')}
-                    disabled={hasProjectVideo}
-                    onChange={(e) => handleProjectChange('layoutStyle', e.target.value)}
-                    style={{
-                      ...inputStyle,
-                      fontWeight: 600,
-                      backgroundColor: hasProjectVideo ? '#F1F5F9' : '#FFFFFF',
-                      cursor: hasProjectVideo ? 'not-allowed' : 'pointer',
-                    }}
-                  >
-                    <option value="layout-1">Layout 1 — Classic Editorial (Primary Hero + Horizontal Stills)</option>
-                    <option value="layout-2">Layout 2 — Split Gallery (Wide banner + side mosaic)</option>
-                    <option value="layout-3">Layout 3 — Panoramic Spread (Full-width cinema visual)</option>
-                    <option value="rezang-la">Rezang La Style (Dual Media: 1 Vertical Image + 1 Landscape Image)</option>
-                  </select>
-                  {hasProjectVideo ? (
-                    <div style={{ fontSize: '0.72rem', color: '#DE322D', marginTop: '0.4rem', fontWeight: 600 }}>
-                      ⚡ Rezang La Style is automatically enforced because a Project Video URL is configured.
-                    </div>
-                  ) : (
-                    <div style={{ fontSize: '0.7rem', color: '#64748B', marginTop: '0.35rem' }}>
-                      Choose how photos and visual assets are arranged when no video is attached.
-                    </div>
-                  )}
-                </div>
-
-                {/* 7. PROJECT VIDEO (YOUTUBE / VIDEO URL) */}
-                <div style={{ padding: '1rem', backgroundColor: '#FDF8F6', borderRadius: '10px', border: '1px solid rgba(222, 50, 45, 0.2)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.45rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <Film size={15} color="#DE322D" />
-                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#DE322D', letterSpacing: '0.04em' }}>
-                        PROJECT VIDEO (YOUTUBE / VIDEO URL)
-                      </span>
-                    </div>
-                    {hasProjectVideo && (
-                      <span style={{ fontSize: '0.68rem', padding: '2px 8px', borderRadius: '9999px', backgroundColor: '#DCFCE7', color: '#16A34A', fontWeight: 700 }}>
-                        Video Active
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ fontSize: '0.72rem', color: '#71717A', marginBottom: '0.65rem', lineHeight: 1.4 }}>
-                    Enter a YouTube link (e.g. <code>https://youtu.be/...</code>) or MP4 URL. If added, the Rezang La dual media layout will be enforced.
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <input
-                      type="text"
-                      placeholder="e.g. https://www.youtube.com/watch?v=ScMzIvxBSi4 or /videos/project.mp4"
-                      value={selectedProject.videoUrl || ''}
-                      onChange={(e) => handleProjectChange('videoUrl', e.target.value)}
-                      style={{ flex: 1, ...inputStyle }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMediaPickerConfig({
-                          isOpen: true,
-                          mediaType: 'video',
-                          target: 'videoUrl',
-                        })
-                      }
-                      style={{
-                        padding: '0.45rem 0.85rem',
-                        borderRadius: '6px',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#FFFFFF',
-                        color: '#111113',
-                        fontSize: '0.76rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      Pick Video
-                    </button>
-                    {hasProjectVideo && (
-                      <button
-                        type="button"
-                        onClick={() => handleProjectChange('videoUrl', '')}
-                        style={{
-                          padding: '0.45rem 0.65rem',
-                          borderRadius: '6px',
-                          border: '1px solid #FECACA',
-                          backgroundColor: '#FEF2F2',
-                          color: '#DE322D',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-
-                  {hasProjectVideo && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '0.45rem 0.65rem', backgroundColor: '#FFFFFF', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.08)' }}>
-                      <Play size={13} color="#DE322D" />
-                      <span style={{ fontSize: '0.72rem', color: '#18181B', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-                        {selectedProject.videoUrl}
-                      </span>
-                      <a
-                        href={selectedProject.videoUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '0.7rem', color: '#DE322D', textDecoration: 'none', fontWeight: 600 }}
-                      >
-                        Open <ExternalLink size={11} />
-                      </a>
-                    </div>
-                  )}
-                </div>
-
-                {/* 8. MEDIA CONTROLS — REZANG LA VIDEO LAYOUT OR STANDARD LAYOUT */}
-                {hasProjectVideo ? (
-                  /* ENFORCED REZANG LA DUAL MEDIA LAYOUT */
-                  <div style={{ padding: '1rem', backgroundColor: '#FEF2F2', borderRadius: '10px', border: '1px solid #FECACA' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '0.35rem' }}>
-                      <Layers size={15} color="#DE322D" />
-                      <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#991B1B' }}>
-                        REZANG LA IMAGE LAYOUT (ENFORCED FOR VIDEO)
-                      </span>
-                    </div>
-                    <div style={{ fontSize: '0.72rem', color: '#7F1D1D', marginBottom: '1rem', lineHeight: 1.4 }}>
-                      As required: Projects with a video use exactly <strong>1 Landscape Image</strong> (which acts as the video thumbnail with the clickable play/arrow button) and <strong>1 Vertical Image</strong> placed beside it.
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                      {/* 1 Landscape Image (Video Thumbnail) */}
-                      <div style={{ padding: '0.85rem', backgroundColor: '#FFFFFF', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)' }}>
-                        <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113', marginBottom: '0.25rem' }}>
-                          1. LANDSCAPE IMAGE (VIDEO THUMBNAIL)
-                        </div>
-                        <div style={{ fontSize: '0.68rem', color: '#71717A', marginBottom: '0.5rem' }}>
-                          Displays video play button &amp; launches player on click.
-                        </div>
-
-                        <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#000', marginBottom: '0.5rem' }}>
-                          {selectedProject.landscapeImage || selectedProject.thumbnail || selectedProject.image ? (
-                            <Image
-                              src={selectedProject.landscapeImage || selectedProject.thumbnail || selectedProject.image}
-                              alt="Landscape Thumbnail"
-                              fill
-                              style={{ objectFit: 'cover' }}
-                            />
-                          ) : (
-                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '0.72rem' }}>
-                              No Landscape Image
-                            </div>
-                          )}
-                          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <div style={{ width: '36px', height: '36px', borderRadius: '9999px', backgroundColor: '#DE322D', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <Play size={16} fill="#fff" />
-                            </div>
-                          </div>
-                        </div>
-
-                        <input
-                          type="text"
-                          value={selectedProject.landscapeImage || selectedProject.thumbnail || selectedProject.image || ''}
-                          onChange={(e) => {
-                            handleProjectChange('landscapeImage', e.target.value);
-                            handleProjectChange('thumbnail', e.target.value);
-                            handleProjectChange('image', e.target.value);
-                          }}
-                          placeholder="/uploads/... or https://..."
-                          style={{ ...inputStyle, marginBottom: '0.4rem' }}
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setMediaPickerConfig({
-                              isOpen: true,
-                              mediaType: 'image',
-                              target: 'landscapeImage',
-                            })
-                          }
-                          style={{
-                            width: '100%',
-                            padding: '0.45rem',
-                            borderRadius: '6px',
-                            border: '1px solid rgba(0, 0, 0, 0.12)',
-                            backgroundColor: '#F8FAFC',
-                            fontSize: '0.74rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                          }}
-                        >
-                          Pick Landscape Image
-                        </button>
-                      </div>
-
-                      {/* 1 Vertical Image */}
-                      <div style={{ padding: '0.85rem', backgroundColor: '#FFFFFF', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)' }}>
-                        <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113', marginBottom: '0.25rem' }}>
-                          2. VERTICAL IMAGE
-                        </div>
-                        <div style={{ fontSize: '0.68rem', color: '#71717A', marginBottom: '0.5rem' }}>
-                          Displays adjacent vertical still according to Rezang La layout.
-                        </div>
-
-                        <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#000', marginBottom: '0.5rem' }}>
-                          {selectedProject.verticalImage || selectedProject.sidePhotos?.[0] ? (
-                            <Image
-                              src={selectedProject.verticalImage || selectedProject.sidePhotos?.[0]}
-                              alt="Vertical Still"
-                              fill
-                              style={{ objectFit: 'cover' }}
-                            />
-                          ) : (
-                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '0.72rem' }}>
-                              No Vertical Image
-                            </div>
-                          )}
-                        </div>
-
-                        <input
-                          type="text"
-                          value={selectedProject.verticalImage || selectedProject.sidePhotos?.[0] || ''}
-                          onChange={(e) => {
-                            handleProjectChange('verticalImage', e.target.value);
-                            const updatedSides = [e.target.value, ...(selectedProject.sidePhotos?.slice(1) || [])];
-                            handleProjectChange('sidePhotos', updatedSides);
-                          }}
-                          placeholder="/uploads/... or https://..."
-                          style={{ ...inputStyle, marginBottom: '0.4rem' }}
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setMediaPickerConfig({
-                              isOpen: true,
-                              mediaType: 'image',
-                              target: 'verticalImage',
-                            })
-                          }
-                          style={{
-                            width: '100%',
-                            padding: '0.45rem',
-                            borderRadius: '6px',
-                            border: '1px solid rgba(0, 0, 0, 0.12)',
-                            backgroundColor: '#F8FAFC',
-                            fontSize: '0.74rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                          }}
-                        >
-                          Pick Vertical Image
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  /* NORMAL PROJECT IMAGES (PRIMARY + SIDE PHOTOS) */
-                  <>
-                    {/* Primary Photo */}
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                        PRIMARY PROJECT PHOTO
-                      </label>
-                      <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-                        <div
-                          style={{
-                            position: 'relative',
-                            width: '100px',
-                            height: '75px',
-                            borderRadius: '6px',
-                            overflow: 'hidden',
-                            backgroundColor: '#F4F4F5',
-                            border: '1px solid rgba(0, 0, 0, 0.1)',
-                            flexShrink: 0,
-                          }}
-                        >
-                          {selectedProject.image ? (
-                            <Image src={selectedProject.image} alt={selectedProject.title} fill style={{ objectFit: 'cover' }} />
-                          ) : (
-                            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A1A1AA', fontSize: '0.7rem' }}>
-                              No Image
-                            </div>
-                          )}
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <input
-                            type="text"
-                            placeholder="/images/army/... or https://..."
-                            value={selectedProject.image || ''}
-                            onChange={(e) => handleProjectChange('image', e.target.value)}
-                            style={{ ...inputStyle, marginBottom: '0.4rem' }}
-                          />
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setMediaPickerConfig({
-                                isOpen: true,
-                                mediaType: 'image',
-                                target: 'image',
-                              })
-                            }
-                            style={{
-                              padding: '0.4rem 0.85rem',
-                              borderRadius: '6px',
-                              border: '1px solid rgba(0, 0, 0, 0.15)',
-                              backgroundColor: '#FFFFFF',
-                              color: '#111113',
-                              fontSize: '0.76rem',
-                              fontWeight: 600,
-                              cursor: 'pointer',
-                            }}
-                          >
-                            Pick Image
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Side Photos */}
-                    <div style={{ padding: '0.9rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid rgba(0, 0, 0, 0.08)' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                        <div>
-                          <span style={{ fontSize: '0.76rem', fontWeight: 700, color: '#1E293B' }}>
-                            ADDITIONAL GALLERY STILLS &amp; PHOTOS
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setMediaPickerConfig({
-                              isOpen: true,
-                              mediaType: 'image',
-                              target: 'addSidePhoto',
-                            })
-                          }
-                          style={{
-                            padding: '0.35rem 0.75rem',
-                            borderRadius: '6px',
-                            border: '1px solid rgba(0, 0, 0, 0.12)',
-                            backgroundColor: '#FFFFFF',
-                            color: '#111113',
-                            fontSize: '0.74rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.3rem',
-                          }}
-                        >
-                          <Plus size={12} />
-                          Add Photo
-                        </button>
-                      </div>
-
-                      {(!selectedProject.sidePhotos || selectedProject.sidePhotos.length === 0) ? (
-                        <div style={{ padding: '1rem', textAlign: 'center', backgroundColor: '#FFFFFF', borderRadius: '6px', border: '1px dashed rgba(0, 0, 0, 0.15)', color: '#94A3B8', fontSize: '0.74rem' }}>
-                          No additional stills added. Click &quot;Add Photo&quot; to pick from Media Library.
-                        </div>
-                      ) : (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '0.65rem' }}>
-                          {selectedProject.sidePhotos.map((photoUrl: string, pIdx: number) => (
-                            <div
-                              key={pIdx}
-                              style={{
-                                position: 'relative',
-                                aspectRatio: '4/3',
-                                borderRadius: '6px',
-                                overflow: 'hidden',
-                                backgroundColor: '#E2E8F0',
-                                border: '1px solid rgba(0, 0, 0, 0.1)',
-                              }}
-                            >
-                              <Image src={photoUrl} alt={`Side photo ${pIdx + 1}`} fill style={{ objectFit: 'cover' }} />
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveSidePhoto(pIdx)}
-                                title="Delete photo"
-                                style={{
-                                  position: 'absolute',
-                                  top: '4px',
-                                  right: '4px',
-                                  width: '20px',
-                                  height: '20px',
-                                  borderRadius: '4px',
-                                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                  color: '#FFFFFF',
-                                  border: 'none',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  cursor: 'pointer',
-                                }}
-                              >
-                                <X size={11} />
-                              </button>
-                              <div
-                                onClick={() =>
-                                  setMediaPickerConfig({
-                                    isOpen: true,
-                                    mediaType: 'image',
-                                    target: { replaceSidePhotoIndex: pIdx },
-                                  })
-                                }
-                                style={{
-                                  position: 'absolute',
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                                  color: '#FFFFFF',
-                                  fontSize: '0.62rem',
-                                  textAlign: 'center',
-                                  padding: '2px 0',
-                                  cursor: 'pointer',
-                                }}
-                              >
-                                Replace
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ─── TAB 2: ARMY RELATED VIDEOS (SECTION 11) ─── */}
-        {activeTab === 'armyVideos' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ padding: '0.85rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#991B1B' }}>
-                11. Army Related Videos Section
-              </div>
-              <div style={{ fontSize: '0.73rem', color: '#7F1D1D', marginTop: '3px', lineHeight: 1.4 }}>
-                Configure video URL, clickable thumbnail, redirection link, and play/arrow button for institutional video assignments.
-              </div>
-            </div>
-
-            {videoProject && (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: '#F8FAFC', borderRadius: '6px', border: '1px solid #E2E8F0' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 650, color: '#1E293B' }}>
-                    Enable / Display Video Section on Website
-                  </span>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: videoProject.published !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={videoProject.published !== false}
-                      onChange={(e) => handleProjectChange('published', e.target.checked, videoProject.id)}
-                      style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
-                    />
-                    <span>{videoProject.published !== false ? 'Enabled' : 'Disabled'}</span>
-                  </label>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    VIDEO / LINK URL (YOUTUBE / DIRECT VIDEO)
-                  </label>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <input
-                      type="text"
-                      value={videoProject.videoUrl || ''}
-                      onChange={(e) => handleProjectChange('videoUrl', e.target.value, videoProject.id)}
-                      placeholder="e.g. https://www.youtube.com/watch?v=ScMzIvxBSi4"
-                      style={{ ...inputStyle, flex: 1 }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMediaPickerConfig({
-                          isOpen: true,
-                          mediaType: 'video',
-                          target: 'videoUrl',
-                        })
-                      }
-                      style={{
-                        padding: '0.45rem 0.85rem',
-                        borderRadius: '6px',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#FFFFFF',
-                        color: '#111113',
-                        fontSize: '0.76rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      Pick Video
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    CLICKABLE THUMBNAIL IMAGE (OPENS VIDEO LIGHTBOX)
-                  </label>
-                  <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
-                    <div style={{ position: 'relative', width: '120px', height: '80px', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#000', flexShrink: 0 }}>
-                      <Image
-                        src={videoProject.thumbnail || videoProject.image || '/images/army/western-command-1.jpg'}
-                        alt="Thumbnail"
-                        fill
-                        style={{ objectFit: 'cover' }}
-                      />
-                      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div style={{ width: '32px', height: '32px', borderRadius: '9999px', backgroundColor: '#DE322D', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-                          <Play size={14} fill="#fff" />
-                        </div>
-                      </div>
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <input
-                        type="text"
-                        value={videoProject.thumbnail || videoProject.image || ''}
-                        onChange={(e) => {
-                          handleProjectChange('thumbnail', e.target.value, videoProject.id);
-                          handleProjectChange('image', e.target.value, videoProject.id);
-                        }}
-                        style={{ ...inputStyle, marginBottom: '0.4rem' }}
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMediaPickerConfig({
-                            isOpen: true,
-                            mediaType: 'image',
-                            target: 'armyVideoThumbnail',
-                          })
-                        }
-                        style={{
-                          padding: '0.4rem 0.85rem',
-                          borderRadius: '6px',
-                          border: '1px solid rgba(0, 0, 0, 0.15)',
-                          backgroundColor: '#FFFFFF',
-                          fontSize: '0.76rem',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Upload / Replace Thumbnail
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    REDIRECTION LINK (OPTIONAL EXTERNAL OR WORK LINK)
-                  </label>
-                  <input
-                    type="text"
-                    value={videoProject.redirectionUrl || ''}
-                    onChange={(e) => handleProjectChange('redirectionUrl', e.target.value, videoProject.id)}
-                    placeholder="e.g. /work or https://..."
-                    style={inputStyle}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* ─── TAB 3: FIREFURY CORPS CAROUSEL (SECTION 12) ─── */}
-        {activeTab === 'firefuryCarousel' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ padding: '0.85rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#991B1B' }}>
-                12. Firefury Corps Carousel Manager
-              </div>
-              <div style={{ fontSize: '0.73rem', color: '#7F1D1D', marginTop: '3px', lineHeight: 1.4 }}>
-                Requirements: Minimum 2 images, Maximum 5 images. Support for reordering, adding, removing, replacing, and per-image enable/disable.
-              </div>
-            </div>
-
-            {firefuryProject && (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: '#F8FAFC', borderRadius: '6px', border: '1px solid #E2E8F0' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 650, color: '#1E293B' }}>
-                    Enable / Display Entire Carousel
-                  </span>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: firefuryProject.carouselEnabled !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={firefuryProject.carouselEnabled !== false}
-                      onChange={(e) => handleProjectChange('carouselEnabled', e.target.checked, firefuryProject.id)}
-                      style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
-                    />
-                    <span>{firefuryProject.carouselEnabled !== false ? 'Carousel: Enabled' : 'Carousel: Disabled'}</span>
-                  </label>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#111113' }}>
-                    CAROUSEL IMAGES ({firefuryProject.carouselImages?.length || 0} of 5)
-                  </div>
-                  {(firefuryProject.carouselImages?.length || 0) < 5 && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMediaPickerConfig({
-                          isOpen: true,
-                          mediaType: 'image',
-                          target: 'addCarouselImage',
-                        })
-                      }
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.3rem',
-                        padding: '0.35rem 0.75rem',
-                        borderRadius: '6px',
-                        border: '1px solid #FECACA',
-                        backgroundColor: '#FEF2F2',
-                        color: '#DE322D',
-                        fontSize: '0.74rem',
-                        fontWeight: 650,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Plus size={13} />
-                      Add Carousel Image
-                    </button>
-                  )}
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {(firefuryProject.carouselImages || []).map((slide: any, sIdx: number) => (
-                    <div
-                      key={slide.id || sIdx}
-                      style={{
-                        padding: '0.85rem',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(0, 0, 0, 0.08)',
-                        backgroundColor: '#FFFFFF',
-                        display: 'flex',
-                        gap: '0.85rem',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <div style={{ position: 'relative', width: '100px', height: '65px', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#000', flexShrink: 0 }}>
-                        <Image src={slide.image} alt={slide.caption || ''} fill style={{ objectFit: 'cover' }} />
-                      </div>
-
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#52525B' }}>
-                            SLIDE {sIdx + 1}
-                          </span>
-                          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.72rem', color: slide.enabled !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                            <input
-                              type="checkbox"
-                              checked={slide.enabled !== false}
-                              onChange={(e) => {
-                                const updated = [...firefuryProject.carouselImages];
-                                updated[sIdx] = { ...updated[sIdx], enabled: e.target.checked };
-                                handleProjectChange('carouselImages', updated, firefuryProject.id);
-                              }}
-                              style={{ width: '14px', height: '14px', accentColor: '#16A34A' }}
-                            />
-                            <span>{slide.enabled !== false ? 'Active' : 'Disabled'}</span>
-                          </label>
-                        </div>
-
-                        <input
-                          type="text"
-                          value={slide.caption || ''}
-                          onChange={(e) => {
-                            const updated = [...firefuryProject.carouselImages];
-                            updated[sIdx] = { ...updated[sIdx], caption: e.target.value };
-                            handleProjectChange('carouselImages', updated, firefuryProject.id);
-                          }}
-                          placeholder="Slide caption..."
-                          style={inputStyle}
-                        />
-                      </div>
-
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                        <button
-                          type="button"
-                          disabled={sIdx === 0}
-                          onClick={() => {
-                            const updated = [...firefuryProject.carouselImages];
-                            const temp = updated[sIdx];
-                            updated[sIdx] = updated[sIdx - 1];
-                            updated[sIdx - 1] = temp;
-                            handleProjectChange('carouselImages', updated, firefuryProject.id);
-                          }}
-                          style={{ padding: '0.25rem', borderRadius: '4px', border: '1px solid #E2E8F0', cursor: sIdx === 0 ? 'not-allowed' : 'pointer' }}
-                        >
-                          <ChevronUp size={13} />
-                        </button>
-                        <button
-                          type="button"
-                          disabled={sIdx === firefuryProject.carouselImages.length - 1}
-                          onClick={() => {
-                            const updated = [...firefuryProject.carouselImages];
-                            const temp = updated[sIdx];
-                            updated[sIdx] = updated[sIdx + 1];
-                            updated[sIdx + 1] = temp;
-                            handleProjectChange('carouselImages', updated, firefuryProject.id);
-                          }}
-                          style={{ padding: '0.25rem', borderRadius: '4px', border: '1px solid #E2E8F0', cursor: sIdx === firefuryProject.carouselImages.length - 1 ? 'not-allowed' : 'pointer' }}
-                        >
-                          <ChevronDown size={13} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setMediaPickerConfig({
-                              isOpen: true,
-                              mediaType: 'image',
-                              target: { carouselImageIndex: sIdx },
-                            })
-                          }
-                          title="Replace Image"
-                          style={{ padding: '0.25rem 0.4rem', borderRadius: '4px', border: '1px solid #E2E8F0', fontSize: '0.68rem', cursor: 'pointer' }}
-                        >
-                          Replace
-                        </button>
-                        {(firefuryProject.carouselImages?.length || 0) > 2 && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const updated = firefuryProject.carouselImages.filter((_: any, idx: number) => idx !== sIdx);
-                              handleProjectChange('carouselImages', updated, firefuryProject.id);
-                            }}
-                            title="Delete Image"
-                            style={{ padding: '0.25rem', borderRadius: '4px', border: '1px solid #FECACA', background: '#FEF2F2', color: '#DE322D', cursor: 'pointer' }}
-                          >
-                            <Trash2 size={13} />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* ─── TAB 4: COMMUNICATION & PRODUCTION (3 INTERACTIVE CARDS) ─── */}
-        {activeTab === 'communicationCards' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ padding: '0.85rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#991B1B' }}>
-                13. Communication &amp; Production Section (3 Interactive Cards)
-              </div>
-              <div style={{ fontSize: '0.73rem', color: '#7F1D1D', marginTop: '3px', lineHeight: 1.4 }}>
-                Control all 3 cards: Card title, description, image, redirection link, and enable/disable. Scope of work, creative approach, and production discipline have been completely removed.
-              </div>
-            </div>
-
-            {commsProject && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {(commsProject.interactiveCards || []).map((card: any, cIdx: number) => (
-                  <div
-                    key={card.id || cIdx}
-                    style={{
-                      padding: '1rem',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(0, 0, 0, 0.08)',
-                      backgroundColor: '#FFFFFF',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.75rem',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #F4F4F5', paddingBottom: '0.5rem' }}>
-                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#111113' }}>
-                        CARD {cIdx + 1}: {card.title || 'Untitled'}
-                      </span>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.75rem', color: card.enabled !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                        <input
-                          type="checkbox"
-                          checked={card.enabled !== false}
-                          onChange={(e) => {
-                            const updated = [...commsProject.interactiveCards];
-                            updated[cIdx] = { ...updated[cIdx], enabled: e.target.checked };
-                            handleProjectChange('interactiveCards', updated, commsProject.id);
-                          }}
-                          style={{ width: '15px', height: '15px', accentColor: '#16A34A' }}
-                        />
-                        <span>{card.enabled !== false ? 'Card: Enabled' : 'Card: Disabled'}</span>
-                      </label>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '0.75rem' }}>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                          CARD TITLE
-                        </label>
-                        <input
-                          type="text"
-                          value={card.title || ''}
-                          onChange={(e) => {
-                            const updated = [...commsProject.interactiveCards];
-                            updated[cIdx] = { ...updated[cIdx], title: e.target.value };
-                            handleProjectChange('interactiveCards', updated, commsProject.id);
-                          }}
-                          style={inputStyle}
-                        />
-                      </div>
-                      <div>
-                        <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                          REDIRECTION LINK
-                        </label>
-                        <input
-                          type="text"
-                          value={card.link || ''}
-                          onChange={(e) => {
-                            const updated = [...commsProject.interactiveCards];
-                            updated[cIdx] = { ...updated[cIdx], link: e.target.value };
-                            handleProjectChange('interactiveCards', updated, commsProject.id);
-                          }}
-                          style={inputStyle}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                        CARD DESCRIPTION
-                      </label>
-                      <textarea
-                        rows={2}
-                        value={card.description || ''}
-                        onChange={(e) => {
-                          const updated = [...commsProject.interactiveCards];
-                          updated[cIdx] = { ...updated[cIdx], description: e.target.value };
-                          handleProjectChange('interactiveCards', updated, commsProject.id);
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], command: e.target.value };
+                          updateField(['projects'], updated);
                         }}
                         style={inputStyle}
                       />
                     </div>
-
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>
-                        CARD IMAGE
-                      </label>
-                      <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                        <div style={{ position: 'relative', width: '90px', height: '60px', borderRadius: '4px', overflow: 'hidden', backgroundColor: '#000', flexShrink: 0 }}>
-                          <Image src={card.image} alt={card.title} fill style={{ objectFit: 'cover' }} />
+                      <label style={labelStyle}>Location</label>
+                      <input
+                        type="text"
+                        value={project.location || ''}
+                        placeholder="e.g. Ladakh"
+                        onChange={(e) => {
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], location: e.target.value };
+                          updateField(['projects'], updated);
+                        }}
+                        style={inputStyle}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Date / Period</label>
+                      <input
+                        type="text"
+                        value={project.date || ''}
+                        placeholder="e.g. February 2026"
+                        onChange={(e) => {
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], date: e.target.value };
+                          updateField(['projects'], updated);
+                        }}
+                        style={inputStyle}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 2: Title & Subtitle */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.2fr', gap: '0.65rem' }}>
+                    <div>
+                      <label style={labelStyle}>Project Title / Headline</label>
+                      <input
+                        type="text"
+                        value={project.title || ''}
+                        placeholder="e.g. 69 Armoured Regiment"
+                        onChange={(e) => {
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], title: e.target.value };
+                          updateField(['projects'], updated);
+                        }}
+                        style={inputStyle}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Subtitle / Scope Tags</label>
+                      <input
+                        type="text"
+                        value={project.subtitle || ''}
+                        placeholder="e.g. Collateral designing · Publications"
+                        onChange={(e) => {
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], subtitle: e.target.value };
+                          updateField(['projects'], updated);
+                        }}
+                        style={inputStyle}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Description */}
+                  <div>
+                    <label style={labelStyle}>Description</label>
+                    <textarea
+                      rows={2}
+                      value={project.description || ''}
+                      placeholder="Summary of assignment, archival production, or field documentation..."
+                      onChange={(e) => {
+                        const updated = [...projects];
+                        updated[index] = { ...updated[index], description: e.target.value };
+                        updateField(['projects'], updated);
+                      }}
+                      style={{ ...inputStyle, resize: 'vertical' }}
+                    />
+                  </div>
+
+                  {/* ─── MEDIA TYPE SPECIFIC CONTROLS ─── */}
+
+                  {/* 1. VIDEO CONTROLS */}
+                  {(isVideoSection || project.videoUrl !== undefined) && (
+                    <div style={{ padding: '0.85rem', backgroundColor: '#F9FAFB', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.5rem', color: '#DE322D', fontWeight: 650, fontSize: '0.78rem' }}>
+                        <Video size={14} /> Video Assignment Media Controls
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.5rem', marginBottom: '0.65rem' }}>
+                        <div>
+                          <label style={labelStyle}>Video URL (YouTube, Vimeo, MP4)</label>
+                          <input
+                            type="text"
+                            value={project.videoUrl || ''}
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            onChange={(e) => {
+                              const updated = [...projects];
+                              updated[index] = { ...updated[index], videoUrl: e.target.value };
+                              updateField(['projects'], updated);
+                            }}
+                            style={inputStyle}
+                          />
                         </div>
+                        {project.videoUrl && (
+                          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                            <button
+                              type="button"
+                              onClick={() => setActiveVideoModal(project.videoUrl)}
+                              style={{ ...mediaBtnStyle, backgroundColor: '#111113', color: '#fff' }}
+                            >
+                              <Play size={12} fill="#fff" /> Test Play
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Video Thumbnail Image */}
+                      <div>
+                        <label style={labelStyle}>Video Thumbnail / Cover Image</label>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <input
+                            type="text"
+                            value={project.thumbnail || project.image || ''}
+                            placeholder="/images/army/..."
+                            onChange={(e) => {
+                              const updated = [...projects];
+                              updated[index] = { ...updated[index], thumbnail: e.target.value, image: e.target.value };
+                              updateField(['projects'], updated);
+                            }}
+                            style={{ ...inputStyle, flex: 1 }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setMediaPickerConfig({
+                              isOpen: true,
+                              mediaType: 'image',
+                              targetPath: ['projects', index, 'thumbnail'],
+                            })}
+                            style={mediaBtnStyle}
+                          >
+                            <ImageIcon size={13} /> Pick Image
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Stacked Side Photos 1 & 2 */}
+                      <div style={{ marginTop: '0.65rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem' }}>
+                        <div>
+                          <label style={labelStyle}>Side Photo 01 (Official Contingent)</label>
+                          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                            <input
+                              type="text"
+                              value={project.sidePhotos?.[0] || ''}
+                              placeholder="/images/army/western-command-official.jpg"
+                              onChange={(e) => {
+                                const updated = [...projects];
+                                const currentSides = [...(updated[index].sidePhotos || [])];
+                                currentSides[0] = e.target.value;
+                                updated[index] = { ...updated[index], sidePhotos: currentSides };
+                                updateField(['projects'], updated);
+                              }}
+                              style={{ ...inputStyle, flex: 1 }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setMediaPickerConfig({
+                                isOpen: true,
+                                mediaType: 'image',
+                                targetPath: ['projects', index, 'sidePhotos', 0],
+                              })}
+                              style={mediaBtnStyle}
+                            >
+                              <ImageIcon size={13} /> Pick
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label style={labelStyle}>Side Photo 02 (Parade March)</label>
+                          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                            <input
+                              type="text"
+                              value={project.sidePhotos?.[1] || ''}
+                              placeholder="/images/army/western-command-2.jpg"
+                              onChange={(e) => {
+                                const updated = [...projects];
+                                const currentSides = [...(updated[index].sidePhotos || [])];
+                                currentSides[1] = e.target.value;
+                                updated[index] = { ...updated[index], sidePhotos: currentSides };
+                                updateField(['projects'], updated);
+                              }}
+                              style={{ ...inputStyle, flex: 1 }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setMediaPickerConfig({
+                                isOpen: true,
+                                mediaType: 'image',
+                                targetPath: ['projects', index, 'sidePhotos', 1],
+                              })}
+                              style={mediaBtnStyle}
+                            >
+                              <ImageIcon size={13} /> Pick
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 2. PDF CONTROLS */}
+                  {(project.pdfUrl !== undefined || project.pdf !== undefined || isPdfSection || isCarouselSection) && (
+                    <div style={{ padding: '0.85rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', color: '#0369A1', fontWeight: 650, fontSize: '0.78rem' }}>
+                          <FileText size={14} /> PDF Document Controls
+                        </div>
+                        {(project.pdfUrl || project.pdf) && (
+                          <a
+                            href={`/pdf-viewer?url=${encodeURIComponent(project.pdfUrl || project.pdf)}&title=${encodeURIComponent(project.title)}&subtitle=${encodeURIComponent(project.subtitle || '')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ fontSize: '0.72rem', color: '#0369A1', textDecoration: 'none', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+                          >
+                            Open PDF Viewer <ExternalLink size={11} />
+                          </a>
+                        )}
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <input
                           type="text"
-                          value={card.image || ''}
+                          value={project.pdfUrl || project.pdf || ''}
+                          placeholder="/uploads/...pdf"
                           onChange={(e) => {
-                            const updated = [...commsProject.interactiveCards];
-                            updated[cIdx] = { ...updated[cIdx], image: e.target.value };
-                            handleProjectChange('interactiveCards', updated, commsProject.id);
+                            const updated = [...projects];
+                            updated[index] = { ...updated[index], pdfUrl: e.target.value, pdf: e.target.value };
+                            updateField(['projects'], updated);
                           }}
                           style={{ ...inputStyle, flex: 1 }}
                         />
                         <button
                           type="button"
-                          onClick={() =>
-                            setMediaPickerConfig({
-                              isOpen: true,
-                              mediaType: 'image',
-                              target: { cardImageIndex: cIdx },
-                            })
-                          }
-                          style={{
-                            padding: '0.45rem 0.85rem',
-                            borderRadius: '6px',
-                            border: '1px solid rgba(0, 0, 0, 0.12)',
-                            backgroundColor: '#FFFFFF',
-                            fontSize: '0.74rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                            whiteSpace: 'nowrap',
-                          }}
+                          onClick={() => setMediaPickerConfig({
+                            isOpen: true,
+                            mediaType: 'pdf',
+                            targetPath: ['projects', index, 'pdfUrl'],
+                          })}
+                          style={mediaBtnStyle}
                         >
-                          Replace Image
+                          <FileText size={13} /> Pick PDF
                         </button>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+                  )}
 
-        {/* ─── TAB 5: REZANG LA MEMORIAL (SECTION 14) ─── */}
-        {activeTab === 'rezangLaMemorial' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ padding: '0.85rem', backgroundColor: '#FEF2F2', borderRadius: '8px', border: '1px solid #FECACA' }}>
-              <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#991B1B' }}>
-                14. Rezang La War Memorial — Single Landscape Image
-              </div>
-              <div style={{ fontSize: '0.73rem', color: '#7F1D1D', marginTop: '3px', lineHeight: 1.4 }}>
-                Replaced the two square images with one expansive landscape image that utilizes the available space better.
-              </div>
-            </div>
+                  {/* 3. LANDSCAPE ARCHIVAL IMAGE CONTROLS (Rezang La style) */}
+                  {project.landscapeImage !== undefined && (
+                    <div style={{ padding: '0.85rem', backgroundColor: '#FDF8F6', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      <label style={labelStyle}>Single Archival Landscape Image</label>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <input
+                          type="text"
+                          value={project.landscapeImage || ''}
+                          placeholder="/uploads/...jpg"
+                          onChange={(e) => {
+                            const updated = [...projects];
+                            updated[index] = { ...updated[index], landscapeImage: e.target.value };
+                            updateField(['projects'], updated);
+                          }}
+                          style={{ ...inputStyle, flex: 1 }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setMediaPickerConfig({
+                            isOpen: true,
+                            mediaType: 'image',
+                            targetPath: ['projects', index, 'landscapeImage'],
+                          })}
+                          style={mediaBtnStyle}
+                        >
+                          <ImageIcon size={13} /> Pick Image
+                        </button>
+                      </div>
 
-            {rezangLaProject && (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', backgroundColor: '#F8FAFC', borderRadius: '6px', border: '1px solid #E2E8F0' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 650, color: '#1E293B' }}>
-                    Enable / Display Rezang La Landscape Section
-                  </span>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.76rem', fontWeight: 600, color: rezangLaProject.landscapeImageEnabled !== false ? '#16A34A' : '#71717A', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={rezangLaProject.landscapeImageEnabled !== false}
-                      onChange={(e) => handleProjectChange('landscapeImageEnabled', e.target.checked, rezangLaProject.id)}
-                      style={{ width: '16px', height: '16px', accentColor: '#16A34A' }}
+                      <div>
+                        <label style={labelStyle}>Optional Image Click Destination URL</label>
+                        <input
+                          type="text"
+                          value={project.landscapeImageLink || ''}
+                          placeholder="e.g. /work or https://..."
+                          onChange={(e) => {
+                            const updated = [...projects];
+                            updated[index] = { ...updated[index], landscapeImageLink: e.target.value };
+                            updateField(['projects'], updated);
+                          }}
+                          style={inputStyle}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 4. CAROUSEL IMAGES CONTROLS (69 Armoured style) */}
+                  {Array.isArray(project.carouselImages) && (
+                    <div style={{ padding: '0.85rem', backgroundColor: '#F9FAFB', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontWeight: 650, fontSize: '0.78rem', color: '#111113' }}>
+                          <Layers size={14} /> Publication Carousel Images ({project.carouselImages.length} images)
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = [...(project.carouselImages || [])];
+                            current.push({
+                              id: String(Date.now()),
+                              image: '/images/army/69armoured-2.jpg',
+                              caption: 'New Archival Photo',
+                              enabled: true,
+                            });
+                            const updated = [...projects];
+                            updated[index] = { ...updated[index], carouselImages: current };
+                            updateField(['projects'], updated);
+                          }}
+                          style={mediaBtnStyle}
+                        >
+                          <Plus size={12} /> Add Carousel Image
+                        </button>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {project.carouselImages.map((cImg: any, cIdx: number) => (
+                          <div
+                            key={cImg.id || cIdx}
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '60px 1fr 1fr auto auto',
+                              gap: '0.5rem',
+                              alignItems: 'center',
+                              padding: '0.45rem',
+                              backgroundColor: '#FFFFFF',
+                              borderRadius: '6px',
+                              border: '1px solid rgba(0,0,0,0.08)',
+                            }}
+                          >
+                            <div style={{ width: 60, height: 40, position: 'relative', borderRadius: 4, overflow: 'hidden', backgroundColor: '#000' }}>
+                              {cImg.image && <Image src={cImg.image} alt={cImg.caption || ''} fill style={{ objectFit: 'cover' }} />}
+                            </div>
+                            <input
+                              type="text"
+                              value={cImg.caption || ''}
+                              placeholder="Caption..."
+                              onChange={(e) => {
+                                const current = [...project.carouselImages];
+                                current[cIdx] = { ...current[cIdx], caption: e.target.value };
+                                const updated = [...projects];
+                                updated[index] = { ...updated[index], carouselImages: current };
+                                updateField(['projects'], updated);
+                              }}
+                              style={inputStyle}
+                            />
+                            <div style={{ display: 'flex', gap: '4px' }}>
+                              <input
+                                type="text"
+                                value={cImg.image || ''}
+                                placeholder="Image URL..."
+                                onChange={(e) => {
+                                  const current = [...project.carouselImages];
+                                  current[cIdx] = { ...current[cIdx], image: e.target.value };
+                                  const updated = [...projects];
+                                  updated[index] = { ...updated[index], carouselImages: current };
+                                  updateField(['projects'], updated);
+                                }}
+                                style={{ ...inputStyle, flex: 1 }}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setMediaPickerConfig({
+                                  isOpen: true,
+                                  mediaType: 'image',
+                                  targetPath: ['projects', index, 'carouselImages', cIdx, 'image'],
+                                })}
+                                style={{ ...mediaBtnStyle, padding: '0 6px' }}
+                              >
+                                Pick
+                              </button>
+                            </div>
+                            <CmsToggle
+                              checked={cImg.enabled !== false}
+                              onChange={(val) => {
+                                const current = [...project.carouselImages];
+                                current[cIdx] = { ...current[cIdx], enabled: val };
+                                const updated = [...projects];
+                                updated[index] = { ...updated[index], carouselImages: current };
+                                updateField(['projects'], updated);
+                              }}
+                              size="sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const current = project.carouselImages.filter((_: any, i: number) => i !== cIdx);
+                                const updated = [...projects];
+                                updated[index] = { ...updated[index], carouselImages: current };
+                                updateField(['projects'], updated);
+                              }}
+                              style={{ background: 'transparent', border: 'none', color: '#EF4444', cursor: 'pointer', padding: '4px' }}
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 5. INTERACTIVE CARDS CONTROLS (14 Corps style) */}
+                  {Array.isArray(project.interactiveCards) && (
+                    <div style={{ padding: '0.85rem', backgroundColor: '#F9FAFB', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontWeight: 650, fontSize: '0.78rem', color: '#111113' }}>
+                          <Sparkles size={14} /> Interactive Story Cards ({project.interactiveCards.length} cards)
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {project.interactiveCards.map((card: any, cardIdx: number) => (
+                          <div
+                            key={card.id || cardIdx}
+                            style={{
+                              padding: '0.65rem',
+                              backgroundColor: '#FFFFFF',
+                              borderRadius: '6px',
+                              border: '1px solid rgba(0,0,0,0.08)',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '0.45rem',
+                            }}
+                          >
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113' }}>
+                                Card #{cardIdx + 1}: {card.title || 'Untitled'}
+                              </span>
+                              <CmsToggle
+                                checked={card.enabled !== false}
+                                onChange={(val) => {
+                                  const current = [...project.interactiveCards];
+                                  current[cardIdx] = { ...current[cardIdx], enabled: val };
+                                  const updated = [...projects];
+                                  updated[index] = { ...updated[index], interactiveCards: current };
+                                  updateField(['projects'], updated);
+                                }}
+                                size="sm"
+                              />
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                              <input
+                                type="text"
+                                value={card.title || ''}
+                                placeholder="Title..."
+                                onChange={(e) => {
+                                  const current = [...project.interactiveCards];
+                                  current[cardIdx] = { ...current[cardIdx], title: e.target.value };
+                                  const updated = [...projects];
+                                  updated[index] = { ...updated[index], interactiveCards: current };
+                                  updateField(['projects'], updated);
+                                }}
+                                style={inputStyle}
+                              />
+                              <input
+                                type="text"
+                                value={card.link || ''}
+                                placeholder="Link (e.g. /work/she)..."
+                                onChange={(e) => {
+                                  const current = [...project.interactiveCards];
+                                  current[cardIdx] = { ...current[cardIdx], link: e.target.value };
+                                  const updated = [...projects];
+                                  updated[index] = { ...updated[index], interactiveCards: current };
+                                  updateField(['projects'], updated);
+                                }}
+                                style={inputStyle}
+                              />
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                              <input
+                                type="text"
+                                value={card.image || ''}
+                                placeholder="Card image URL..."
+                                onChange={(e) => {
+                                  const current = [...project.interactiveCards];
+                                  current[cardIdx] = { ...current[cardIdx], image: e.target.value };
+                                  const updated = [...projects];
+                                  updated[index] = { ...updated[index], interactiveCards: current };
+                                  updateField(['projects'], updated);
+                                }}
+                                style={{ ...inputStyle, flex: 1 }}
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setMediaPickerConfig({
+                                  isOpen: true,
+                                  mediaType: 'image',
+                                  targetPath: ['projects', index, 'interactiveCards', cardIdx, 'image'],
+                                })}
+                                style={mediaBtnStyle}
+                              >
+                                Pick
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 6. CASE STUDY & ASSIGNMENT LINK */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.2fr auto', gap: '0.65rem', alignItems: 'flex-end', paddingTop: '0.5rem', borderTop: '1px dashed rgba(0,0,0,0.06)' }}>
+                    <div>
+                      <label style={labelStyle}>Case Study / Redirection Link</label>
+                      <input
+                        type="text"
+                        value={project.caseStudyUrl || project.redirectionUrl || ''}
+                        placeholder="e.g. /work/western-command"
+                        onChange={(e) => {
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], caseStudyUrl: e.target.value, redirectionUrl: e.target.value };
+                          updateField(['projects'], updated);
+                        }}
+                        style={inputStyle}
+                      />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Button Label</label>
+                      <input
+                        type="text"
+                        value={project.caseStudyLabel || 'View case study ↗'}
+                        placeholder="View case study ↗"
+                        onChange={(e) => {
+                          const updated = [...projects];
+                          updated[index] = { ...updated[index], caseStudyLabel: e.target.value };
+                          updateField(['projects'], updated);
+                        }}
+                        style={inputStyle}
+                      />
+                    </div>
+                    <CmsToggle
+                      label="Link Button"
+                      checked={project.caseStudyEnabled !== false}
+                      onChange={(val) => {
+                        const updated = [...projects];
+                        updated[index] = { ...updated[index], caseStudyEnabled: val };
+                        updateField(['projects'], updated);
+                      }}
+                      size="sm"
                     />
-                    <span>{rezangLaProject.landscapeImageEnabled !== false ? 'Enabled' : 'Disabled'}</span>
-                  </label>
+                  </div>
+                </div>
+              </CmsSectionCard>
+            );
+          })}
+
+          {/* ════════════════════════════════════════════════════════════
+              SECTION: CLOSING PANORAMIC BANNER
+             ════════════════════════════════════════════════════════════ */}
+          {(activeTab === 'all' || activeTab === 'closing') && (
+            <CmsSectionCard
+              id="closingBanner"
+              title="Closing Panoramic Banner"
+              subtitle="Full-width sunset horizon photo, institutional statement & contact CTA"
+              badge="FOOTER BANNER"
+              enabled={armyData.closingBannerEnabled !== false}
+              onToggleEnabled={(next) => updateField(['closingBannerEnabled'], next)}
+              isCollapsed={collapsedSections['closingBanner']}
+              onToggleCollapse={() => toggleCollapse('closingBanner')}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                <div>
+                  <label style={labelStyle}>Eyebrow Slogan</label>
+                  <input
+                    type="text"
+                    value={armyData.closingBanner?.eyebrow || ''}
+                    placeholder="PEOPLE · PLACES · SACRIFICE · A STRONGER TOMORROW"
+                    onChange={(e) => updateField(['closingBanner', 'eyebrow'], e.target.value)}
+                    style={inputStyle}
+                  />
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    LANDSCAPE IMAGE PREVIEW
-                  </label>
-                  <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9.5', borderRadius: '8px', overflow: 'hidden', backgroundColor: '#000', marginBottom: '0.65rem' }}>
-                    <Image
-                      src={rezangLaProject.landscapeImage || '/uploads/1790516827847-rezang-la-memorial.jpg'}
-                      alt="Rezang La Memorial"
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
+                  <label style={labelStyle}>Headline (Supports line breaks)</label>
+                  <textarea
+                    rows={2}
+                    value={armyData.closingBanner?.heading || ''}
+                    placeholder="Documenting\na stronger tomorrow"
+                    onChange={(e) => updateField(['closingBanner', 'heading'], e.target.value)}
+                    style={{ ...inputStyle, resize: 'vertical' }}
+                  />
+                </div>
 
+                <div>
+                  <label style={labelStyle}>Description Statement</label>
+                  <textarea
+                    rows={2}
+                    value={armyData.closingBanner?.description || ''}
+                    placeholder="Whether covering an investiture, archiving veteran history..."
+                    onChange={(e) => updateField(['closingBanner', 'description'], e.target.value)}
+                    style={{ ...inputStyle, resize: 'vertical' }}
+                  />
+                </div>
+
+                {/* Panoramic Background Photo */}
+                <div>
+                  <label style={labelStyle}>Panoramic Background Image</label>
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     <input
                       type="text"
-                      value={rezangLaProject.landscapeImage || ''}
-                      onChange={(e) => handleProjectChange('landscapeImage', e.target.value, rezangLaProject.id)}
+                      value={armyData.closingBanner?.image || ''}
+                      placeholder="/uploads/...jpg"
+                      onChange={(e) => updateField(['closingBanner', 'image'], e.target.value)}
                       style={{ ...inputStyle, flex: 1 }}
                     />
                     <button
                       type="button"
-                      onClick={() =>
-                        setMediaPickerConfig({
-                          isOpen: true,
-                          mediaType: 'image',
-                          target: 'landscapeImage',
-                        })
-                      }
-                      style={{
-                        padding: '0.45rem 0.95rem',
-                        borderRadius: '6px',
-                        border: '1px solid rgba(0, 0, 0, 0.15)',
-                        backgroundColor: '#FFFFFF',
-                        fontSize: '0.76rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                      }}
+                      onClick={() => setMediaPickerConfig({
+                        isOpen: true,
+                        mediaType: 'image',
+                        targetPath: ['closingBanner', 'image'],
+                      })}
+                      style={mediaBtnStyle}
                     >
-                      Upload / Replace
+                      <ImageIcon size={13} /> Pick Image
                     </button>
                   </div>
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                    OPTIONAL REDIRECTION LINK
-                  </label>
-                  <input
-                    type="text"
-                    value={rezangLaProject.landscapeImageLink || ''}
-                    onChange={(e) => handleProjectChange('landscapeImageLink', e.target.value, rezangLaProject.id)}
-                    placeholder="e.g. /work or external memorial archive link"
-                    style={inputStyle}
+                {/* CTA Button */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.65rem' }}>
+                  <div>
+                    <label style={labelStyle}>Button Label</label>
+                    <input
+                      type="text"
+                      value={armyData.closingBanner?.buttonText || ''}
+                      placeholder="Start a conversation"
+                      onChange={(e) => updateField(['closingBanner', 'buttonText'], e.target.value)}
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Button URL</label>
+                    <input
+                      type="text"
+                      value={armyData.closingBanner?.buttonUrl || ''}
+                      placeholder="/contact"
+                      onChange={(e) => updateField(['closingBanner', 'buttonUrl'], e.target.value)}
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CmsSectionCard>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════
+              SECTION SEQUENCE & VISIBILITY CONTROLS (ORDER TAB)
+             ════════════════════════════════════════════════════════════ */}
+          {activeTab === 'order' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+              <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                  Section Sequence &amp; Visibility Controls
+                </h3>
+                <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                  Reorder or toggle visibility for each live army section. Live preview updates instantly.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {/* Hero */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '10px',
+                    backgroundColor: armyData.heroEnabled !== false ? '#FFFFFF' : '#FAFAFA',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    opacity: armyData.heroEnabled !== false ? 1 : 0.6,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                      01
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                        Hero Banner &amp; Protocol Notice
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                        ID: hero &bull; Type: atmospheric-hero
+                      </div>
+                    </div>
+                  </div>
+                  <CmsToggle
+                    checked={armyData.heroEnabled !== false}
+                    onChange={(val) => updateField(['heroEnabled'], val)}
+                    size="sm"
                   />
                 </div>
-              </>
-            )}
-          </div>
-        )}
 
-        {/* ─── TAB 6: HERO SECTION ─── */}
-        {activeTab === 'hero' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {/* Section Master Toggle Bar */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0.75rem 1rem',
-                borderRadius: '8px',
-                backgroundColor: armyData.heroEnabled !== false ? '#F0FDF4' : '#FEF2F2',
-                borderBottom: armyData.heroEnabled !== false ? '1px solid #BBF7D0' : '1px solid #FECACA',
-              }}
-            >
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: armyData.heroEnabled !== false ? '#15803D' : '#B91C1C' }}>
-                Hero Section: {armyData.heroEnabled !== false ? 'ENABLED (Visible)' : 'DISABLED (Hidden)'}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  const cur = armyData.heroEnabled !== false;
-                  updateField(['heroEnabled'], !cur);
-                  showToast(`Hero section ${cur ? 'disabled' : 'enabled'}.`, 'info');
-                }}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-                  padding: '0.4rem 0.9rem', borderRadius: '5px', border: 'none',
-                  backgroundColor: armyData.heroEnabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#fff', fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer',
-                }}
-              >
-                {armyData.heroEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {armyData.heroEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
-            </div>
-
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Header &amp; Headline
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                EYEBROW
-              </label>
-              <input
-                type="text"
-                value={armyData.hero?.eyebrow || ''}
-                onChange={(e) => handleHeroChange('eyebrow', e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                MAIN TITLE
-              </label>
-              <input
-                type="text"
-                value={armyData.hero?.title || ''}
-                onChange={(e) => handleHeroChange('title', e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                DESCRIPTION
-              </label>
-              <textarea
-                rows={3}
-                value={armyData.hero?.description || ''}
-                onChange={(e) => handleHeroChange('description', e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* ─── TAB 7: CLOSING BANNER ─── */}
-        {activeTab === 'closingBanner' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            {/* Section Master Toggle Bar */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0.75rem 1rem',
-                borderRadius: '8px',
-                backgroundColor: armyData.closingBannerEnabled !== false ? '#F0FDF4' : '#FEF2F2',
-                borderBottom: armyData.closingBannerEnabled !== false ? '1px solid #BBF7D0' : '1px solid #FECACA',
-              }}
-            >
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: armyData.closingBannerEnabled !== false ? '#15803D' : '#B91C1C' }}>
-                Closing Banner: {armyData.closingBannerEnabled !== false ? 'ENABLED (Visible)' : 'DISABLED (Hidden)'}
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  const cur = armyData.closingBannerEnabled !== false;
-                  updateField(['closingBannerEnabled'], !cur);
-                  showToast(`Closing banner ${cur ? 'disabled' : 'enabled'}.`, 'info');
-                }}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
-                  padding: '0.4rem 0.9rem', borderRadius: '5px', border: 'none',
-                  backgroundColor: armyData.closingBannerEnabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#fff', fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer',
-                }}
-              >
-                {armyData.closingBannerEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {armyData.closingBannerEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
-            </div>
-
-            <div style={{ fontSize: '0.85rem', fontWeight: 650, color: '#DE322D', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Closing Banner &amp; CTA
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                EYEBROW
-              </label>
-              <input
-                type="text"
-                value={armyData.closingBanner?.eyebrow || ''}
-                onChange={(e) => handleClosingBannerChange('eyebrow', e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                HEADING
-              </label>
-              <textarea
-                rows={2}
-                value={armyData.closingBanner?.heading || ''}
-                onChange={(e) => handleClosingBannerChange('heading', e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                DESCRIPTION
-              </label>
-              <textarea
-                rows={3}
-                value={armyData.closingBanner?.description || ''}
-                onChange={(e) => handleClosingBannerChange('description', e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.85rem' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  BUTTON LABEL
-                </label>
-                <input
-                  type="text"
-                  value={armyData.closingBanner?.buttonText || ''}
-                  onChange={(e) => handleClosingBannerChange('buttonText', e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  BUTTON URL
-                </label>
-                <input
-                  type="text"
-                  value={armyData.closingBanner?.buttonUrl || ''}
-                  onChange={(e) => handleClosingBannerChange('buttonUrl', e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                BACKGROUND IMAGE
-              </label>
-              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                <div style={{ position: 'relative', width: '120px', height: '65px', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#000' }}>
-                  <Image src={armyData.closingBanner?.image || '/images/army/symbolic-army-terrain.jpg'} alt="Banner Preview" fill style={{ objectFit: 'cover' }} />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <input
-                    type="text"
-                    value={armyData.closingBanner?.image || ''}
-                    onChange={(e) => handleClosingBannerChange('image', e.target.value)}
-                    style={{ ...inputStyle, marginBottom: '0.35rem' }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setMediaPickerConfig({
-                        isOpen: true,
-                        mediaType: 'image',
-                        target: 'bannerImage',
-                      })
-                    }
+                {/* Project cards in current sequence */}
+                {projects.map((p: any, idx: number) => (
+                  <div
+                    key={p.id || idx}
                     style={{
-                      padding: '0.35rem 0.75rem',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(0,0,0,0.12)',
-                      backgroundColor: '#FFFFFF',
-                      fontSize: '0.75rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '10px',
+                      backgroundColor: p.published !== false ? '#FFFFFF' : '#FAFAFA',
+                      border: '1px solid rgba(0, 0, 0, 0.08)',
+                      opacity: p.published !== false ? 1 : 0.6,
                     }}
                   >
-                    Choose from Library
-                  </button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => moveProject(idx, 'up')}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === 0 ? 'not-allowed' : 'pointer', padding: 0 }}
+                        >
+                          <ChevronUp size={14} color={idx === 0 ? '#D4D4D8' : '#71717A'} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === projects.length - 1}
+                          onClick={() => moveProject(idx, 'down')}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === projects.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
+                        >
+                          <ChevronDown size={14} color={idx === projects.length - 1 ? '#D4D4D8' : '#71717A'} />
+                        </button>
+                      </div>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                        0{idx + 2}
+                      </span>
+                      <div>
+                        <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                          {p.title || `Project #${idx + 1}`}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                          ID: {p.id} &bull; Formation: {p.command || 'Indian Army'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <CmsToggle
+                      checked={p.published !== false}
+                      onChange={(val) => {
+                        const updated = [...projects];
+                        updated[idx] = { ...updated[idx], published: val };
+                        updateField(['projects'], updated);
+                      }}
+                      size="sm"
+                    />
+                  </div>
+                ))}
+
+                {/* Closing Banner */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '10px',
+                    backgroundColor: armyData.closingBannerEnabled !== false ? '#FFFFFF' : '#FAFAFA',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    opacity: armyData.closingBannerEnabled !== false ? 1 : 0.6,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                      0{projects.length + 2}
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                        Closing Banner CTA &amp; Panoramic Archive
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                        ID: closingBanner &bull; Type: cta-banner
+                      </div>
+                    </div>
+                  </div>
+                  <CmsToggle
+                    checked={armyData.closingBannerEnabled !== false}
+                    onChange={(val) => updateField(['closingBannerEnabled'], val)}
+                    size="sm"
+                  />
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {/* ─── TAB: PDF VIEWERS (COFFEE TABLE BOOK & SECOND PDF) ─── */}
-        {activeTab === 'pdfViewers' && (
-          <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div style={{ borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: '0.75rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: '#DE322D' }}>
-                PDF Viewers Management (Army Projects)
-              </h3>
-              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '4px 0 0' }}>
-                Manage interactive PDF documents embedded in the Army section. Draft changes require clicking &ldquo;Publish Live&rdquo; to reflect on the live site.
-              </p>
-            </div>
-
-            {/* Coffee Table Book PDF (Flipbook) */}
-            <div style={{ padding: '1.25rem', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.1)', backgroundColor: '#FAFAFA' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <div>
-                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: 0, color: '#111113' }}>
-                    1. Coffee Table Book (3D Flipbook Experience)
-                  </h4>
-                  <span style={{ fontSize: '0.74rem', color: '#71717A' }}>Realistic double-page spread with page-turning animation</span>
-                </div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', cursor: 'pointer', fontWeight: 600 }}>
-                  <input
-                    type="checkbox"
-                    checked={armyData.coffeeTableBookPdf?.enabled !== false}
-                    onChange={(e) => updateField(['coffeeTableBookPdf', 'enabled'], e.target.checked)}
-                  />
-                  Enable Flipbook
-                </label>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Title</label>
-                  <input
-                    type="text"
-                    style={inputStyle}
-                    value={armyData.coffeeTableBookPdf?.title || ''}
-                    onChange={(e) => updateField(['coffeeTableBookPdf', 'title'], e.target.value)}
-                    placeholder="Rezang La War Memorial Coffee Table Book"
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Subtitle</label>
-                  <input
-                    type="text"
-                    style={inputStyle}
-                    value={armyData.coffeeTableBookPdf?.subtitle || ''}
-                    onChange={(e) => updateField(['coffeeTableBookPdf', 'subtitle'], e.target.value)}
-                    placeholder="Interactive High-Altitude Commemorative Flipbook"
-                  />
-                </div>
-              </div>
-              <div style={{ marginTop: '0.75rem' }}>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>PDF Document URL</label>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <input
-                    type="text"
-                    style={{ ...inputStyle, flex: 1 }}
-                    value={armyData.coffeeTableBookPdf?.pdfUrl || ''}
-                    onChange={(e) => updateField(['coffeeTableBookPdf', 'pdfUrl'], e.target.value)}
-                    placeholder="/pdf/coffee-table-book.pdf or https://..."
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setMediaPickerConfig({
-                        isOpen: true,
-                        mediaType: 'all',
-                        target: 'coffeeTablePdfUrl',
-                      })
-                    }
-                    style={{
-                      padding: '0.45rem 0.85rem',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(0,0,0,0.15)',
-                      backgroundColor: '#111113',
-                      color: '#FFFFFF',
-                      fontSize: '0.76rem',
-                      fontWeight: 650,
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    Upload / Pick PDF
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Second PDF (Standard Viewer) */}
-            <div style={{ padding: '1.25rem', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.1)', backgroundColor: '#FAFAFA' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <div>
-                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: 0, color: '#111113' }}>
-                    2. Second PDF Document (Standard Reader View)
-                  </h4>
-                  <span style={{ fontSize: '0.74rem', color: '#71717A' }}>Clean single-page document reader with page navigation &amp; zoom</span>
-                </div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.78rem', cursor: 'pointer', fontWeight: 600 }}>
-                  <input
-                    type="checkbox"
-                    checked={armyData.secondPdf?.enabled !== false}
-                    onChange={(e) => updateField(['secondPdf', 'enabled'], e.target.checked)}
-                  />
-                  Enable Document Viewer
-                </label>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Title</label>
-                  <input
-                    type="text"
-                    style={inputStyle}
-                    value={armyData.secondPdf?.title || ''}
-                    onChange={(e) => updateField(['secondPdf', 'title'], e.target.value)}
-                    placeholder="Indian Army Field Operations & Protocol Document"
-                  />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>Subtitle</label>
-                  <input
-                    type="text"
-                    style={inputStyle}
-                    value={armyData.secondPdf?.subtitle || ''}
-                    onChange={(e) => updateField(['secondPdf', 'subtitle'], e.target.value)}
-                    placeholder="Official Defence Publication Archive"
-                  />
-                </div>
-              </div>
-              <div style={{ marginTop: '0.75rem' }}>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 600, color: '#52525B', marginBottom: '0.25rem' }}>PDF Document URL</label>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <input
-                    type="text"
-                    style={{ ...inputStyle, flex: 1 }}
-                    value={armyData.secondPdf?.pdfUrl || ''}
-                    onChange={(e) => updateField(['secondPdf', 'pdfUrl'], e.target.value)}
-                    placeholder="/pdf/army-field-document.pdf or https://..."
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setMediaPickerConfig({
-                        isOpen: true,
-                        mediaType: 'all',
-                        target: 'secondPdfUrl',
-                      })
-                    }
-                    style={{
-                      padding: '0.45rem 0.85rem',
-                      borderRadius: '6px',
-                      border: '1px solid rgba(0,0,0,0.15)',
-                      backgroundColor: '#111113',
-                      color: '#FFFFFF',
-                      fontSize: '0.76rem',
-                      fontWeight: 650,
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    Upload / Pick PDF
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
-      <div style={{ height: '100%' }}>
-        <LivePreviewPanel previewUrl="/indian-army-projects" />
+      {/* ─── RIGHT COLUMN: CRM PREVIEW PANEL ─── */}
+      <div className="admin-preview-sticky">
+        <LivePreviewPanel previewUrl="/indian-army-projects" title="Indian Army Projects" />
       </div>
 
       {/* Media Picker Modal */}
       <MediaPickerModal
         isOpen={mediaPickerConfig.isOpen}
-        onClose={() => setMediaPickerConfig((prev) => ({ ...prev, isOpen: false }))}
         mediaType={mediaPickerConfig.mediaType}
-        initialUrl={''}
-        onSelect={(url) => {
-          if (mediaPickerConfig.target === 'image') {
-            handleProjectChange('image', url);
-          } else if (mediaPickerConfig.target === 'videoUrl') {
-            handleProjectChange('videoUrl', url);
-          } else if (mediaPickerConfig.target === 'landscapeImage') {
-            if (activeTab === 'rezangLaMemorial' && rezangLaProject) {
-              handleProjectChange('landscapeImage', url, rezangLaProject.id);
-            } else if (selectedProject) {
-              handleProjectChange('landscapeImage', url);
-              handleProjectChange('thumbnail', url);
-              handleProjectChange('image', url);
-            }
-          } else if (mediaPickerConfig.target === 'verticalImage') {
-            if (selectedProject) {
-              handleProjectChange('verticalImage', url);
-              const updatedSides = [url, ...(selectedProject.sidePhotos?.slice(1) || [])];
-              handleProjectChange('sidePhotos', updatedSides);
-            }
-          } else if (mediaPickerConfig.target === 'armyVideoThumbnail') {
-            if (videoProject) {
-              handleProjectChange('thumbnail', url, videoProject.id);
-              handleProjectChange('image', url, videoProject.id);
-            }
-          } else if (mediaPickerConfig.target === 'addSidePhoto') {
-            const existing = [...(selectedProject.sidePhotos || [])];
-            existing.push(url);
-            handleProjectChange('sidePhotos', existing);
-          } else if (typeof mediaPickerConfig.target === 'object' && 'replaceSidePhotoIndex' in mediaPickerConfig.target) {
-            const idx = mediaPickerConfig.target.replaceSidePhotoIndex;
-            const existing = [...(selectedProject.sidePhotos || [])];
-            existing[idx] = url;
-            handleProjectChange('sidePhotos', existing);
-          } else if (typeof mediaPickerConfig.target === 'object' && 'cardImageIndex' in mediaPickerConfig.target) {
-            const idx = mediaPickerConfig.target.cardImageIndex;
-            if (commsProject) {
-              const updated = [...(commsProject.interactiveCards || [])];
-              updated[idx] = { ...updated[idx], image: url };
-              handleProjectChange('interactiveCards', updated, commsProject.id);
-            }
-          } else if (typeof mediaPickerConfig.target === 'object' && 'carouselImageIndex' in mediaPickerConfig.target) {
-            const idx = mediaPickerConfig.target.carouselImageIndex;
-            if (firefuryProject) {
-              const updated = [...(firefuryProject.carouselImages || [])];
-              updated[idx] = { ...updated[idx], image: url };
-              handleProjectChange('carouselImages', updated, firefuryProject.id);
-            }
-          } else if (mediaPickerConfig.target === 'addCarouselImage') {
-            if (firefuryProject) {
-              const existing = [...(firefuryProject.carouselImages || [])];
-              existing.push({
-                id: String(Date.now()),
-                image: url,
-                caption: 'Visual Documentation Still',
-                enabled: true,
-              });
-              handleProjectChange('carouselImages', existing, firefuryProject.id);
-            }
-          } else if (typeof mediaPickerConfig.target === 'object' && 'galleryImageIndex' in mediaPickerConfig.target) {
-            const idx = (mediaPickerConfig.target as any).galleryImageIndex;
-            if (selectedProject) {
-              const updated = [...(selectedProject.gallery || [])];
-              updated[idx] = { ...updated[idx], image: url };
-              handleProjectChange('gallery', updated);
-            }
-          } else if (mediaPickerConfig.target === 'addGalleryImage') {
-            if (selectedProject) {
-              const existing = [...(selectedProject.gallery || [])];
-              existing.push({ image: url, caption: 'Archival Still', enabled: true });
-              handleProjectChange('gallery', existing);
-            }
-          } else if (mediaPickerConfig.target === 'pdfUrl') {
-            if (selectedProject) {
-              handleProjectChange('pdfUrl', url);
-            }
-          } else if (mediaPickerConfig.target === 'coffeeTablePdfUrl') {
-            updateField(['coffeeTableBookPdf', 'pdfUrl'], url);
-          } else if (mediaPickerConfig.target === 'secondPdfUrl') {
-            updateField(['secondPdf', 'pdfUrl'], url);
-          } else if (mediaPickerConfig.target === 'bannerImage') {
-            handleClosingBannerChange('image', url);
+        onClose={() => setMediaPickerConfig((prev) => ({ ...prev, isOpen: false }))}
+        onSelect={(selectedUrl) => {
+          if (mediaPickerConfig.targetPath.length > 0) {
+            updateField(mediaPickerConfig.targetPath, selectedUrl);
           }
           setMediaPickerConfig((prev) => ({ ...prev, isOpen: false }));
         }}
       />
 
-      {/* Hidden Upload Input for Project Gallery */}
-      <input
-        ref={projectGalleryInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) handleProjectDirectUpload(file, 'gallery');
-        }}
-      />
+      {/* Video Modal Player */}
+      {activeVideoModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.85)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2rem',
+          }}
+          onClick={() => setActiveVideoModal(null)}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '850px',
+              aspectRatio: '16/9',
+              backgroundColor: '#000',
+              borderRadius: '12px',
+              overflow: 'hidden',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setActiveVideoModal(null)}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                background: 'rgba(0,0,0,0.6)',
+                border: 'none',
+                color: '#fff',
+                cursor: 'pointer',
+                borderRadius: '50%',
+                width: 32,
+                height: 32,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10,
+              }}
+            >
+              <X size={18} />
+            </button>
+            {activeVideoModal.includes('youtube') || activeVideoModal.includes('youtu.be') ? (
+              <iframe
+                src={
+                  activeVideoModal.includes('watch?v=')
+                    ? `https://www.youtube.com/embed/${activeVideoModal.split('watch?v=')[1]?.split('&')[0]}?autoplay=1`
+                    : activeVideoModal
+                }
+                title="Army Project Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ width: '100%', height: '100%', border: 'none' }}
+              />
+            ) : (
+              <video src={activeVideoModal} controls autoPlay style={{ width: '100%', height: '100%' }} />
+            )}
+          </div>
+        </div>
+      )}
 
-      {/* Confirm Delete Project */}
+      {/* Add New Section Modal */}
+      {isAddSectionOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.6)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.5rem',
+          }}
+          onClick={() => setIsAddSectionOpen(false)}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '460px',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '16px',
+              padding: '1.5rem',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#111113' }}>
+                  Add New Army Section
+                </h3>
+                <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.78rem', color: '#71717A' }}>
+                  Select the media type for this new section card:
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddSectionOpen(false)}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#71717A' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <button
+                type="button"
+                onClick={() => handleAddNewProject('video')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.85rem',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  backgroundColor: '#FAFAFA',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: '#FEE2E2', color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Video size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 650, color: '#111113' }}>Video Assignment Section</div>
+                  <div style={{ fontSize: '0.72rem', color: '#71717A' }}>Clickable video thumbnail, YouTube/Vimeo embed, protocol coverage</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleAddNewProject('pdf')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.85rem',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  backgroundColor: '#FAFAFA',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: '#E0F2FE', color: '#0369A1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <FileText size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 650, color: '#111113' }}>PDF Publication &amp; Memorial Section</div>
+                  <div style={{ fontSize: '0.72rem', color: '#71717A' }}>PDF document viewer, archival landscape cover, war memorial focus</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleAddNewProject('carousel')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.85rem',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  backgroundColor: '#FAFAFA',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: '#F3E8FF', color: '#7E22CE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Layers size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 650, color: '#111113' }}>Regiment Publications &amp; Carousel</div>
+                  <div style={{ fontSize: '0.72rem', color: '#71717A' }}>Multi-image slideshow carousel, regiment collateral and design</div>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleAddNewProject('image')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.85rem',
+                  padding: '0.85rem 1rem',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  backgroundColor: '#FAFAFA',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: '#ECFDF5', color: '#047857', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <ImageIcon size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 650, color: '#111113' }}>Standard Photographic Section</div>
+                  <div style={{ fontSize: '0.72rem', color: '#71717A' }}>High-definition photography, case study assignment link</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
       <ConfirmDialog
-        isOpen={!!deleteTargetId}
-        title="Delete Army Project?"
-        message="This verified institutional assignment will be removed from your portfolio."
-        confirmLabel="Delete"
-        onConfirm={handleDeleteProject}
+        isOpen={Boolean(deleteTargetId)}
+        title="Delete Army Section?"
+        message="Are you sure you want to remove this project section from the page? This action will take effect in your Draft."
+        confirmLabel="Delete Section"
+        isDestructive={true}
+        onConfirm={confirmDeleteProject}
         onCancel={() => setDeleteTargetId(null)}
       />
     </div>

@@ -6,6 +6,7 @@ import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import CmsToggle from '@/components/admin/CmsToggle';
 import {
   Plus,
   Trash2,
@@ -20,12 +21,17 @@ import {
   Sparkles,
   Layers,
   ArrowRight,
+  GripVertical,
+  Briefcase,
+  FileText,
 } from 'lucide-react';
 
 export default function AdminAboutPage() {
-  const { content, saveDraft, updateDraftInMemory, publishAll } = useCmsContent();
+  const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [aboutData, setAboutData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'hero' | 'chapters' | 'team' | 'cta'>('hero');
+  const [activeTab, setActiveTab] = useState<'hero' | 'chapters' | 'team' | 'cta' | 'order'>('hero');
+  const [isDirty, setIsDirty] = useState(false);
+  const [sectionOrder, setSectionOrder] = useState<string[]>(['hero', 'chapters', 'team', 'cta']);
   const [activeChapterIdx, setActiveChapterIdx] = useState(0);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>('abijitha');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
@@ -65,7 +71,7 @@ export default function AdminAboutPage() {
     const ok = await saveDraft('about', aboutData);
     if (ok) {
       setSavedStatus(true);
-      showToast('About draft saved to CRM!', 'success');
+      showToast('About draft saved to Central CRM Store!', 'success');
       setTimeout(() => setSavedStatus(false), 2000);
     } else {
       showToast('Failed to save draft', 'error');
@@ -73,9 +79,8 @@ export default function AdminAboutPage() {
   };
 
   const handlePublishLive = async () => {
-    // Save draft first then publish
     await saveDraft('about', aboutData);
-    const ok = await publishAll();
+    const ok = await publishSection('about', aboutData);
     if (ok) {
       setPublishedStatus(true);
       showToast('About page published live to website!', 'success');
@@ -365,32 +370,16 @@ export default function AdminAboutPage() {
     onToggle: () => void;
     label?: string;
   }) => (
-    <button
-      type="button"
-      onClick={onToggle}
-      title={enabled ? 'Field is visible on website. Click to disable.' : 'Field is hidden. Click to enable.'}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-        padding: '2px 7px',
-        borderRadius: '9999px',
-        border: 'none',
-        backgroundColor: enabled ? '#ECFDF5' : '#FEE2E2',
-        color: enabled ? '#047857' : '#DC2626',
-        fontSize: '0.68rem',
-        fontWeight: 650,
-        cursor: 'pointer',
-        transition: 'all 0.15s ease',
-      }}
-    >
-      {enabled ? <Eye size={11} /> : <EyeOff size={11} />}
-      {enabled ? 'Visible' : 'Hidden'}
-    </button>
+    <CmsToggle
+      checked={enabled}
+      onChange={onToggle}
+      label={label}
+      size="sm"
+    />
   );
 
   return (
-    <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
+    <div className="admin-split-grid">
       {/* ─── LEFT COLUMN: ABOUT / STUDIO SECTION EDITOR ─── */}
       <div
         style={{
@@ -400,9 +389,9 @@ export default function AdminAboutPage() {
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
-          height: '100%',
-          minHeight: 0,
           position: 'relative',
+          minWidth: 0,
+          width: '100%',
         }}
       >
         {/* Toast notification banner */}
@@ -436,78 +425,103 @@ export default function AdminAboutPage() {
         {/* Header Bar */}
         <div
           style={{
-            padding: '1.15rem 1.5rem',
+            padding: '0.85rem 1.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#FFFFFF',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
+            flexShrink: 0,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <div>
-              <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                About / Studio Page
-              </h2>
-              <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
-                Every section, card, metric &amp; field editable with enable/disable switches.
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
+              Studio / About Us
             </div>
+            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', backgroundColor: '#F4F4F5', color: '#52525B', fontWeight: 600 }}>
+              {chapters.length} Chapters
+            </span>
 
-            {/* Quick Section Dropdown Selector */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#52525B' }}>Section:</span>
-              <select
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as any)}
+            {/* Segmented Toggle: Editor vs Order & Visibility */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab(activeTab === 'order' ? 'hero' : activeTab)}
                 style={{
-                  padding: '0.35rem 0.65rem',
+                  padding: '0.3rem 0.75rem',
                   borderRadius: '6px',
-                  border: '1px solid rgba(0, 0, 0, 0.15)',
-                  backgroundColor: '#FFFFFF',
-                  color: '#111113',
-                  fontSize: '0.78rem',
-                  fontWeight: 650,
+                  border: 'none',
+                  backgroundColor: activeTab !== 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab !== 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
                   cursor: 'pointer',
-                  outline: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab !== 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
                 }}
               >
-                <option value="hero">01: Founder &amp; Studio Origin</option>
-                <option value="chapters">02: The 3 Core Chapters</option>
-                <option value="team">03: Team Directory</option>
-                <option value="cta">04: Closing Statement &amp; CTA</option>
-              </select>
+                <FileText size={12} />
+                Editor
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('order')}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab === 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <GripVertical size={12} />
+                Order &amp; Visibility
+              </button>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            {/* Save Draft Button */}
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
               onClick={handleSaveDraft}
+              title="Save draft to CRM"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1rem',
+                padding: '0.45rem 0.95rem',
                 borderRadius: '9999px',
-                border: '1px solid rgba(0, 0, 0, 0.15)',
-                backgroundColor: savedStatus ? '#16A34A' : '#FFFFFF',
-                color: savedStatus ? '#FFFFFF' : '#111113',
+                border: '1px solid #D97706',
+                backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: savedStatus ? '#16A34A' : '#92400E',
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {savedStatus ? <Check size={14} /> : <Save size={14} />}
-              {savedStatus ? 'Draft Saved' : 'Save Draft'}
+              {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
 
-            {/* Publish Live Button */}
+            {/* Red pill: Publish This Page */}
             <button
               type="button"
               onClick={handlePublishLive}
+              title="Publish live to production"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -515,16 +529,16 @@ export default function AdminAboutPage() {
                 padding: '0.45rem 1.15rem',
                 borderRadius: '9999px',
                 border: 'none',
-                backgroundColor: publishedStatus ? '#16A34A' : '#DE322D',
+                backgroundColor: '#DE322D',
                 color: '#FFFFFF',
                 fontSize: '0.78rem',
-                fontWeight: 650,
+                fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               }}
             >
-              {publishedStatus ? <Check size={14} /> : <Sparkles size={14} />}
-              {publishedStatus ? 'Published Live' : 'Publish Live'}
+              <Upload size={13} />
+              <span>Publish This Page</span>
             </button>
           </div>
         </div>
@@ -542,10 +556,11 @@ export default function AdminAboutPage() {
           }}
         >
           {[
-            { id: 'hero', label: '01: Founder Hero & Stats', active: activeTab === 'hero', isSecEnabled: aboutData.hero?.enabled !== false },
+            { id: 'hero', label: '01: Founder Hero & Story', active: activeTab === 'hero', isSecEnabled: aboutData.hero?.enabled !== false },
             { id: 'chapters', label: `02: Core Chapters (${chapters.length})`, active: activeTab === 'chapters', isSecEnabled: aboutData.chaptersEnabled !== false },
             { id: 'team', label: `03: Team Directory (${aboutData.team?.members?.length || 0})`, active: activeTab === 'team', isSecEnabled: aboutData.team?.enabled !== false },
             { id: 'cta', label: '04: Closing CTA', active: activeTab === 'cta', isSecEnabled: aboutData.cta?.enabled !== false },
+            { id: 'order', label: 'Order & Visibility', active: activeTab === 'order', isSecEnabled: true, icon: GripVertical },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -579,14 +594,12 @@ export default function AdminAboutPage() {
           ))}
         </div>
 
-        {/* ─── TAB 01: HERO & STATS ─── */}
+        {/* ─── TAB 01: HERO & STORY ─── */}
         {activeTab === 'hero' && (
           <div
             className="admin-editor-scroll"
             style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '1.5rem 1.5rem 6rem 1.5rem',
+              padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '1.25rem',
@@ -612,26 +625,11 @@ export default function AdminAboutPage() {
                   {aboutData.hero?.enabled !== false ? 'Currently Visible on live /about page' : 'Currently Hidden on live /about page'}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={toggleHeroSection}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.95rem',
-                  borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: aboutData.hero?.enabled !== false ? '#047857' : '#DC2626',
-                  color: '#FFFFFF',
-                  fontSize: '0.76rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {aboutData.hero?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {aboutData.hero?.enabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+              <CmsToggle
+                checked={aboutData.hero?.enabled !== false}
+                onChange={toggleHeroSection}
+                size="md"
+              />
             </div>
 
             {/* Eyebrow */}
@@ -755,112 +753,7 @@ export default function AdminAboutPage() {
               </div>
             </div>
 
-            {/* Stats Block */}
-            <div style={{ padding: '1rem', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FAFAFA' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <label style={{ fontSize: '0.76rem', fontWeight: 700, color: '#111113' }}>
-                    EXPERIENCE &amp; SCALE METRICS
-                  </label>
-                  <FieldToggle
-                    enabled={aboutData.hero?.showStats !== false}
-                    onToggle={() => handleHeroChange('showStats', aboutData.hero?.showStats === false)}
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={handleAddStat}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.3rem',
-                    padding: '0.35rem 0.75rem',
-                    borderRadius: '9999px',
-                    backgroundColor: '#111113',
-                    color: '#FFFFFF',
-                    fontSize: '0.72rem',
-                    fontWeight: 600,
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Plus size={12} /> Add Metric
-                </button>
-              </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
-                {(aboutData.hero?.stats || []).map((st: any, idx: number) => {
-                  const isStEnabled = st.enabled !== false;
-                  return (
-                    <div
-                      key={idx}
-                      style={{
-                        padding: '0.75rem',
-                        borderRadius: '8px',
-                        border: isStEnabled ? '1px solid rgba(0,0,0,0.12)' : '1px dashed #FECACA',
-                        backgroundColor: isStEnabled ? '#FFFFFF' : '#FEF2F2',
-                        position: 'relative',
-                      }}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
-                        <span style={{ fontSize: '0.68rem', fontWeight: 700, color: '#71717A' }}>STAT 0{idx + 1}</span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <button
-                            type="button"
-                            onClick={() => handleStatChange(idx, 'enabled', !isStEnabled)}
-                            style={{
-                              border: 'none',
-                              backgroundColor: isStEnabled ? '#ECFDF5' : '#FEE2E2',
-                              color: isStEnabled ? '#047857' : '#DC2626',
-                              borderRadius: '4px',
-                              padding: '2px 5px',
-                              fontSize: '0.65rem',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            {isStEnabled ? <Eye size={11} /> : <EyeOff size={11} />}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setDeleteConfirm({
-                                type: 'stat',
-                                id: idx,
-                                title: 'Delete Metric?',
-                                message: `Remove metric "${st.label || st.value}" from the about hero?`,
-                              })
-                            }
-                            style={{
-                              border: 'none',
-                              backgroundColor: 'transparent',
-                              color: '#EF4444',
-                              cursor: 'pointer',
-                              padding: '2px',
-                            }}
-                          >
-                            <Trash2 size={12} />
-                          </button>
-                        </div>
-                      </div>
-                      <input
-                        type="text"
-                        value={st.value || ''}
-                        onChange={(e) => handleStatChange(idx, 'value', e.target.value)}
-                        placeholder="6+"
-                        style={{ width: '100%', padding: '0.4rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem', fontWeight: 700, marginBottom: '0.4rem' }}
-                      />
-                      <input
-                        type="text"
-                        value={st.label || ''}
-                        onChange={(e) => handleStatChange(idx, 'label', e.target.value)}
-                        placeholder="Years of Experience"
-                        style={{ width: '100%', padding: '0.4rem 0.6rem', borderRadius: '6px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.75rem' }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
 
             {/* Founder Hero Image */}
             <div style={{ padding: '1rem', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)', backgroundColor: '#FAFAFA' }}>
@@ -971,9 +864,7 @@ export default function AdminAboutPage() {
           <div
             className="admin-editor-scroll"
             style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '1.5rem 1.5rem 6rem 1.5rem',
+              padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '1.25rem',
@@ -999,26 +890,11 @@ export default function AdminAboutPage() {
                   {aboutData.chaptersEnabled !== false ? 'Currently Visible on live /about page' : 'Currently Hidden on live /about page'}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={toggleChaptersSection}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.95rem',
-                  borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: aboutData.chaptersEnabled !== false ? '#047857' : '#DC2626',
-                  color: '#FFFFFF',
-                  fontSize: '0.76rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {aboutData.chaptersEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {aboutData.chaptersEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+              <CmsToggle
+                checked={aboutData.chaptersEnabled !== false}
+                onChange={toggleChaptersSection}
+                size="md"
+              />
             </div>
 
             {/* Chapters Navigation & Add Chapter */}
@@ -1296,26 +1172,11 @@ export default function AdminAboutPage() {
                   {aboutData.team?.enabled !== false ? 'Currently Visible on live /about page' : 'Currently Hidden on live /about page'}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={toggleTeamSection}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.95rem',
-                  borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: aboutData.team?.enabled !== false ? '#047857' : '#DC2626',
-                  color: '#FFFFFF',
-                  fontSize: '0.76rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {aboutData.team?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {aboutData.team?.enabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+              <CmsToggle
+                checked={aboutData.team?.enabled !== false}
+                onChange={toggleTeamSection}
+                size="md"
+              />
             </div>
 
             {/* Team Meta: Eyebrow & Title */}
@@ -1683,9 +1544,7 @@ export default function AdminAboutPage() {
           <div
             className="admin-editor-scroll"
             style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '1.5rem 1.5rem 6rem 1.5rem',
+              padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '1.25rem',
@@ -1711,26 +1570,11 @@ export default function AdminAboutPage() {
                   {aboutData.cta?.enabled !== false ? 'Currently Visible on live /about page' : 'Currently Hidden on live /about page'}
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={toggleCtaSection}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  padding: '0.45rem 0.95rem',
-                  borderRadius: '9999px',
-                  border: 'none',
-                  backgroundColor: aboutData.cta?.enabled !== false ? '#047857' : '#DC2626',
-                  color: '#FFFFFF',
-                  fontSize: '0.76rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {aboutData.cta?.enabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {aboutData.cta?.enabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+              <CmsToggle
+                checked={aboutData.cta?.enabled !== false}
+                onChange={toggleCtaSection}
+                size="md"
+              />
             </div>
 
             <div>
@@ -1767,42 +1611,194 @@ export default function AdminAboutPage() {
               />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>BUTTON TEXT</label>
-                  <FieldToggle
-                    enabled={aboutData.cta?.showButton !== false}
-                    onToggle={() => handleCtaChange('showButton', aboutData.cta?.showButton === false)}
+            {/* Primary Action Button */}
+            <div style={{ padding: '0.85rem', backgroundColor: '#FAFAFA', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113', marginBottom: '0.65rem' }}>
+                PRIMARY BUTTON (START CONVERSATION)
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                    <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>BUTTON TEXT</label>
+                    <FieldToggle
+                      enabled={aboutData.cta?.showButton !== false}
+                      onToggle={() => handleCtaChange('showButton', aboutData.cta?.showButton === false)}
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.buttonText || ''}
+                    onChange={(e) => handleCtaChange('buttonText', e.target.value)}
+                    placeholder="Start a Conversation"
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
                   />
                 </div>
-                <input
-                  type="text"
-                  value={aboutData.cta?.buttonText || ''}
-                  onChange={(e) => handleCtaChange('buttonText', e.target.value)}
-                  placeholder="Start a Conversation"
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    BUTTON DESTINATION URL
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.buttonUrl || ''}
+                    onChange={(e) => handleCtaChange('buttonUrl', e.target.value)}
+                    placeholder="/contact"
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Secondary Action Button (Explore Selected Work) */}
+            <div style={{ padding: '0.85rem', backgroundColor: '#FAFAFA', borderRadius: '10px', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
+                <div style={{ fontSize: '0.74rem', fontWeight: 700, color: '#111113' }}>
+                  SECONDARY ACTION BUTTON (EXPLORE WORK)
+                </div>
+                <FieldToggle
+                  enabled={aboutData.cta?.showSecondaryButton !== false}
+                  onToggle={() => handleCtaChange('showSecondaryButton', aboutData.cta?.showSecondaryButton === false)}
                 />
               </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
-                  BUTTON DESTINATION URL
-                </label>
-                <input
-                  type="text"
-                  value={aboutData.cta?.buttonUrl || ''}
-                  onChange={(e) => handleCtaChange('buttonUrl', e.target.value)}
-                  placeholder="/contact"
-                  style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    BUTTON TEXT
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.secondaryButtonText || ''}
+                    onChange={(e) => handleCtaChange('secondaryButtonText', e.target.value)}
+                    placeholder="Explore Selected Work"
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.74rem', fontWeight: 600, color: '#52525B', marginBottom: '0.35rem' }}>
+                    BUTTON DESTINATION URL
+                  </label>
+                  <input
+                    type="text"
+                    value={aboutData.cta?.secondaryButtonUrl || ''}
+                    onChange={(e) => handleCtaChange('secondaryButtonUrl', e.target.value)}
+                    placeholder="/work"
+                    style={{ width: '100%', padding: '0.6rem 0.85rem', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.12)', fontSize: '0.85rem' }}
+                  />
+                </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 05: ORDER & VISIBILITY ─── */}
+        {activeTab === 'order' && (
+          <div
+            className="admin-editor-scroll"
+            style={{
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.15rem',
+            }}
+          >
+            <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Section Sequence &amp; Visibility Controls
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                Reorder or toggle visibility for each of the 4 live /about sections. Live preview updates instantly.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {[
+                { id: 'hero', name: '01: Founder & Studio Origin', type: 'hero', visible: aboutData.hero?.enabled !== false, toggle: toggleHeroSection },
+                { id: 'chapters', name: '02: The 3 Core Chapters', type: 'chapters', visible: aboutData.chaptersEnabled !== false, toggle: toggleChaptersSection },
+                { id: 'team', name: '03: Team Directory', type: 'team', visible: aboutData.team?.enabled !== false, toggle: toggleTeamSection },
+                { id: 'cta', name: '04: Closing Statement & CTA', type: 'cta', visible: aboutData.cta?.enabled !== false, toggle: toggleCtaSection },
+              ]
+                .sort((a, b) => sectionOrder.indexOf(a.id) - sectionOrder.indexOf(b.id))
+                .map((sec, idx, arr) => (
+                  <div
+                    key={sec.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '10px',
+                      backgroundColor: sec.visible ? '#FFFFFF' : '#FAFAFA',
+                      border: '1px solid rgba(0, 0, 0, 0.08)',
+                      opacity: sec.visible ? 1 : 0.6,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => {
+                            const newOrder = [...sectionOrder];
+                            const currentIdx = newOrder.indexOf(sec.id);
+                            if (currentIdx > 0) {
+                              const temp = newOrder[currentIdx];
+                              newOrder[currentIdx] = newOrder[currentIdx - 1];
+                              newOrder[currentIdx - 1] = temp;
+                              setSectionOrder(newOrder);
+                              setIsDirty(true);
+                              showToast('✓ Section order updated');
+                            }
+                          }}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === 0 ? 'not-allowed' : 'pointer', padding: 0 }}
+                        >
+                          <ChevronUp size={14} color={idx === 0 ? '#D4D4D8' : '#71717A'} />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === arr.length - 1}
+                          onClick={() => {
+                            const newOrder = [...sectionOrder];
+                            const currentIdx = newOrder.indexOf(sec.id);
+                            if (currentIdx < newOrder.length - 1) {
+                              const temp = newOrder[currentIdx];
+                              newOrder[currentIdx] = newOrder[currentIdx + 1];
+                              newOrder[currentIdx + 1] = temp;
+                              setSectionOrder(newOrder);
+                              setIsDirty(true);
+                              showToast('✓ Section order updated');
+                            }
+                          }}
+                          style={{ border: 'none', background: 'transparent', cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
+                        >
+                          <ChevronDown size={14} color={idx === arr.length - 1 ? '#D4D4D8' : '#71717A'} />
+                        </button>
+                      </div>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                        0{idx + 1}
+                      </span>
+                      <div>
+                        <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                          {sec.name}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                          ID: {sec.id} &bull; Type: {sec.type}
+                        </div>
+                      </div>
+                    </div>
+
+                    <CmsToggle
+                      checked={sec.visible}
+                      onChange={sec.toggle}
+                      size="sm"
+                    />
+                  </div>
+                ))}
             </div>
           </div>
         )}
       </div>
 
       {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
-      <div style={{ height: '100%' }}>
+      <div className="admin-preview-sticky">
         <LivePreviewPanel previewUrl="/about" />
       </div>
 

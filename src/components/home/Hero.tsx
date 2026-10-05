@@ -26,6 +26,7 @@ interface HeroSlide {
   buttonEnabled?: boolean;
   imageEnabled?: boolean;
   enabled?: boolean;
+  openInNewTab?: boolean;
 }
 
 export default function Hero() {
@@ -76,6 +77,7 @@ export default function Hero() {
         buttonEnabled: s.buttonEnabled !== false,
         imageEnabled: s.imageEnabled !== false,
         enabled: s.enabled !== false,
+        openInNewTab: Boolean(s.openInNewTab),
       };
     });
 
@@ -208,6 +210,8 @@ export default function Hero() {
                             return (
                               <Link
                                 href={slide.clickableUrl}
+                                target={slide.openInNewTab ? '_blank' : undefined}
+                                rel={slide.openInNewTab ? 'noopener noreferrer' : undefined}
                                 style={{ display: 'block', width: '100%', height: '100%', position: 'relative', cursor: 'pointer' }}
                                 aria-label={slide.caption || 'Hero banner'}
                               >
@@ -292,17 +296,33 @@ export default function Hero() {
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
+                      gap: '0.5rem',
                       marginBottom: '1.25rem',
+                      padding: '0.35rem 0.85rem',
+                      borderRadius: '9999px',
+                      backgroundColor: 'rgba(0, 0, 0, 0.55)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
                     }}
                   >
                     <span
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: '#DE322D',
+                        boxShadow: '0 0 8px rgba(222, 50, 45, 0.8)',
+                      }}
+                    />
+                    <span
                       className="tag-mono"
                       style={{
-                        color: '#DE322D',
-                        fontSize: '0.82rem',
+                        color: '#FFFFFF',
+                        fontSize: '0.78rem',
                         letterSpacing: '0.14em',
                         fontWeight: 700,
-                        textShadow: '0 1px 8px rgba(0, 0, 0, 0.75)',
+                        textShadow: '0 1px 4px rgba(0, 0, 0, 0.9)',
                       }}
                     >
                       {tag}

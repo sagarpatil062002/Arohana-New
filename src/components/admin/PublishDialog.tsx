@@ -136,10 +136,10 @@ export default function PublishDialog({ isOpen, onClose, onPublishSuccess }: Pub
               </div>
               <div>
                 <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 650, color: '#111113' }}>
-                  Publish Changes?
+                  Publish All Changes?
                 </h3>
                 <span style={{ fontSize: '0.78rem', color: '#71717A' }}>
-                  Commit all drafts to live website
+                  Commit all saved CRM drafts across the website to live
                 </span>
               </div>
             </div>
@@ -197,23 +197,24 @@ export default function PublishDialog({ isOpen, onClose, onPublishSuccess }: Pub
                   padding: '0.6rem 1.5rem',
                   borderRadius: '9999px',
                   border: 'none',
-                  backgroundColor: '#111113',
+                  backgroundColor: '#DE322D',
                   color: '#FFFFFF',
                   fontSize: '0.85rem',
-                  fontWeight: 600,
+                  fontWeight: 650,
                   cursor: 'pointer',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
+                  boxShadow: '0 4px 14px rgba(222, 50, 45, 0.28)',
                 }}
               >
                 {isPublishing ? (
                   <>
                     <Loader2 size={16} className="animate-spin" />
-                    Publishing...
+                    Publishing All Changes...
                   </>
                 ) : (
-                  'Publish Changes'
+                  'Publish All Changes'
                 )}
               </button>
             </div>

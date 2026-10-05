@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { getSectionContent, saveSectionDraft, writeContentFile } from '@/lib/cms/content-manager';
+import {
+  getSectionContent,
+  saveSectionDraft,
+  publishSectionContent,
+  discardSectionDraft,
+} from '@/lib/cms/content-manager';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   req: NextRequest,
@@ -16,7 +23,7 @@ export async function GET(
       return NextResponse.json({ error: `Section '${section}' not found` }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, section, data: content });
+    return NextResponse.json({ success: true, section, data: content, isDraft: includeDraft });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -32,7 +39,8 @@ export async function POST(
     const action = body.action || 'draft';
 
     if (action === 'publish') {
-      const written = writeContentFile(`${section}.json`, body.data);
+      // Publishes ONLY this single section to live
+      const result = publishSectionContent(section, body.data);
       try {
         revalidatePath('/', 'layout');
         revalidatePath('/');
@@ -44,23 +52,33 @@ export async function POST(
         revalidatePath('/about');
         revalidatePath('/contact');
       } catch (e) {}
+
       return NextResponse.json({
-        success: true,
-        written,
+        success: result.success,
         section,
         published: true,
         live: true,
         message: `${section} published live successfully`,
       });
+    } else if (action === 'discard') {
+      discardSectionDraft(section);
+      const published = getSectionContent(section, false);
+      return NextResponse.json({
+        success: true,
+        section,
+        discarded: true,
+        data: published,
+        message: `${section} draft discarded; reverted to published state`,
+      });
     } else {
-      // Save to admin CRM draft store (both memory & content/drafts/)
+      // Save to centralized CRM draft store only (memory + content/drafts/)
       saveSectionDraft(section, body.data);
       return NextResponse.json({
         success: true,
         section,
         draftSaved: true,
         published: false,
-        message: `${section} draft saved to Admin CRM`,
+        message: `${section} draft saved to Central CRM Store`,
       });
     }
   } catch (error: any) {

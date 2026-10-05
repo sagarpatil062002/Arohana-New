@@ -1,0 +1,32 @@
+[
+  {
+    "id": "lead-1728042100000",
+    "name": "Vikramaditya Singhania",
+    "email": "vikram@neorahospitality.com",
+    "organization": "Neora Hospitality Group",
+    "serviceInterest": "Hospitality & Dining Positioning",
+    "message": "We are expanding our experiential dining concepts into North Goa and want to discuss a 360-degree brand, architectural photo/video, and social media retainer engagement similar to what you accomplished with Raysons Group.",
+    "status": "new",
+    "createdAt": "2026-10-04T12:30:00.000Z"
+  },
+  {
+    "id": "lead-1728038500000",
+    "name": "Captain Ananya Rathore",
+    "email": "rathore.communications@outlook.com",
+    "organization": "Ladakh Cultural Heritage Initiative",
+    "serviceInterest": "Content Production & Shoots",
+    "message": "Looking to partner on documentary cinematography and high-altitude publication design for community programmes in Eastern Ladakh.",
+    "status": "contacted",
+    "createdAt": "2026-10-03T18:45:00.000Z"
+  },
+  {
+    "id": "lead-1728012000000",
+    "name": "Rohan Deshmukh",
+    "email": "rohan@crestviewrealty.in",
+    "organization": "Crestview Real Estate Developers",
+    "serviceInterest": "Digital Brand Growth",
+    "message": "Inquiring about full-scope digital marketing, project launch films, and technical architectural walkthrough scripting for an upcoming luxury residential project.",
+    "status": "new",
+    "createdAt": "2026-10-02T10:15:00.000Z"
+  }
+]

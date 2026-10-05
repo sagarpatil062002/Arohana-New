@@ -24,6 +24,7 @@ import {
   ExternalLink,
   Check,
   FileText,
+  MessageSquare,
 } from 'lucide-react';
 import PublishDialog from './PublishDialog';
 import { useCmsContent } from '@/lib/cms/content-context';
@@ -49,6 +50,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   // Home -> Studio/About -> Work -> Case Studies -> Services -> Tourin -> Army Projects -> Contact
   const navItems = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+    { label: 'Client Inquiries', href: '/admin/leads', icon: MessageSquare },
     { label: 'Home Page', href: '/admin/home', icon: Home },
     { label: 'Studio / About', href: '/admin/about', icon: Users },
     { label: 'Work Page', href: '/admin/work', icon: Briefcase },
@@ -242,20 +244,21 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* ─── MAIN CONTENT AREA ─── */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, minHeight: '100vh' }}>
         {/* Top Sticky Header */}
         <header
           style={{
             height: '68px',
+            flexShrink: 0,
+            position: 'sticky',
+            top: 0,
+            zIndex: 40,
             backgroundColor: '#FFFFFF',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '0 1.75rem',
-            position: 'sticky',
-            top: 0,
-            zIndex: 40,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -282,28 +285,31 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <button
               type="button"
               onClick={handleTopSave}
+              title="Save current page changes into Centralized CRM Draft Store (does NOT publish to live)"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
                 padding: '0.5rem 1rem',
                 borderRadius: '9999px',
-                border: '1px solid rgba(0, 0, 0, 0.12)',
+                border: '1px solid rgba(0, 0, 0, 0.15)',
                 backgroundColor: '#FFFFFF',
                 color: '#111113',
                 fontSize: '0.8rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
               }}
             >
               <Save size={14} />
-              Save Changes
+              Save Draft
             </button>
 
             <button
               type="button"
               onClick={() => setIsPublishDialogOpen(true)}
+              title="Publish all saved draft changes across the entire website to live"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -314,14 +320,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 backgroundColor: '#DE322D',
                 color: '#FFFFFF',
                 fontSize: '0.8rem',
-                fontWeight: 600,
+                fontWeight: 650,
                 cursor: 'pointer',
-                boxShadow: '0 4px 14px rgba(222, 50, 45, 0.25)',
+                boxShadow: '0 4px 14px rgba(222, 50, 45, 0.28)',
                 transition: 'all 0.2s ease',
               }}
             >
               <UploadCloud size={15} />
-              Publish
+              Publish All Changes
             </button>
           </div>
         </header>
@@ -332,9 +338,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           style={{
             flex: 1,
             padding: '1.25rem 1.5rem',
-            overflowY: 'auto',
-            height: 'calc(100vh - 65px)',
             boxSizing: 'border-box',
+            minHeight: 'calc(100vh - 68px)',
           }}
         >
           {children}
@@ -431,16 +436,39 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           height: 0 !important;
         }
 
-        @media (max-width: 1024px) {
+        /* Natural page scrolling with sticky preview on desktop */
+        .admin-split-grid {
+          display: grid;
+          grid-template-columns: 1.08fr 0.92fr;
+          gap: 1.5rem;
+          align-items: start;
+          width: 100%;
+        }
+
+        .admin-preview-sticky {
+          position: sticky;
+          top: 80px;
+          height: calc(100vh - 100px);
+          max-height: 920px;
+          min-height: 660px;
+          display: flex !important;
+          flex-direction: column !important;
+          width: 100%;
+        }
+
+        @media (max-width: 1120px) {
           .admin-split-grid {
             grid-template-columns: 1fr !important;
-            height: auto !important;
-            min-height: 100% !important;
+          }
+          .admin-preview-sticky {
+            position: relative !important;
+            top: 0 !important;
+            height: 720px !important;
+            width: 100% !important;
           }
           .admin-main-viewport {
             height: auto !important;
-            min-height: calc(100vh - 65px) !important;
-            overflow-y: auto !important;
+            min-height: calc(100vh - 68px) !important;
             padding: 1rem !important;
           }
         }

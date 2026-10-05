@@ -97,12 +97,37 @@ export default function RealWorldImpact() {
   const impactCms = content?.home?.impactStats;
   const activeEyebrow = impactCms?.eyebrow || 'PROOF OF WORK  ·  COMMERCIAL & SECTOR IMPACT';
   const activeHeading = impactCms?.heading || 'Real-world execution across sectors.';
-  const activeItems: CounterItem[] = (impactCms?.counters && impactCms.counters.length > 0) ? impactCms.counters : IMPACT_ITEMS;
+  const parseStatNumber = (val: any, fallback: number = 0): number => {
+    if (val === undefined || val === null || val === '') return fallback;
+    const num = typeof val === 'number' ? val : Number(val);
+    return isNaN(num) ? fallback : num;
+  };
+
+  const rawCounters = (impactCms?.counters && impactCms.counters.length > 0) ? impactCms.counters : IMPACT_ITEMS;
+  const activeItems: CounterItem[] = rawCounters.map((item: any, i: number) => {
+    const rawVal = item.target !== undefined ? item.target : (item.value !== undefined ? item.value : (item.number !== undefined ? item.number : item.count));
+    const fallbackVal = IMPACT_ITEMS[i]?.target ?? 0;
+    return {
+      ...item,
+      id: item.id || `impact-${i}`,
+      tag: item.tag || `0${i + 1}`,
+      target: parseStatNumber(rawVal, fallbackVal),
+      suffix: item.suffix !== undefined ? item.suffix : (IMPACT_ITEMS[i]?.suffix ?? ''),
+      twoDigits: item.twoDigits ?? IMPACT_ITEMS[i]?.twoDigits ?? false,
+      title: item.title || item.label || IMPACT_ITEMS[i]?.title || '',
+      desc: item.desc || item.detail || IMPACT_ITEMS[i]?.desc || '',
+    };
+  });
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
-  const [counts, setCounts] = useState<number[]>([0, 0, 0, 0]);
+  const [counts, setCounts] = useState<number[]>(() => activeItems.map((item) => item.target));
+  const hasAnimatedRef = useRef(false);
+
+  useEffect(() => {
+    setCounts(activeItems.map((item) => item.target));
+  }, [activeItems]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -147,21 +172,27 @@ export default function RealWorldImpact() {
         start: 'top 85%',
         once: true,
         onEnter: () => {
-          gsap.to(obj, {
-            v0: activeItems[0]?.target || 0,
-            v1: activeItems[1]?.target || 0,
-            v2: activeItems[2]?.target || 0,
-            v3: activeItems[3]?.target || 0,
-            duration: 2.2,
-            ease: 'power3.out',
-            onUpdate: () =>
-              setCounts([
-                Math.round(obj.v0),
-                Math.round(obj.v1),
-                Math.round(obj.v2),
-                Math.round(obj.v3),
-              ]),
-          });
+          if (!hasAnimatedRef.current) {
+            hasAnimatedRef.current = true;
+            gsap.to(obj, {
+              v0: activeItems[0]?.target ?? 0,
+              v1: activeItems[1]?.target ?? 0,
+              v2: activeItems[2]?.target ?? 0,
+              v3: activeItems[3]?.target ?? 0,
+              duration: 2.2,
+              ease: 'power3.out',
+              onUpdate: () =>
+                setCounts([
+                  Math.round(obj.v0),
+                  Math.round(obj.v1),
+                  Math.round(obj.v2),
+                  Math.round(obj.v3),
+                ]),
+              onComplete: () => {
+                setCounts(activeItems.map((it) => it.target));
+              },
+            });
+          }
         },
       });
     }, sectionRef);
@@ -255,7 +286,7 @@ export default function RealWorldImpact() {
             ============================================================ */}
         <div ref={gridRef} className="rwi-stats-grid">
           {activeItems.map((item, idx) => {
-            const v = counts[idx] ?? 0;
+            const v = counts[idx] !== undefined && counts[idx] !== null ? counts[idx] : item.target;
             const numStr = item.twoDigits && v < 10 ? `0${v}` : `${v}`;
             const digits = numStr.split('');
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useCmsContent } from '@/lib/cms/content-context';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
-import { Plus, Trash2, ChevronUp, ChevronDown, Save, Check, Upload, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, ChevronUp, ChevronDown, Save, Check, Upload, ExternalLink, FileText } from 'lucide-react';
 
 export default function AdminPartnersPage() {
   const { content, saveDraft, updateDraftInMemory } = useCmsContent();
@@ -120,6 +120,7 @@ export default function AdminPartnersPage() {
               <Plus size={14} />
               Add Logo
             </button>
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
               onClick={handleSave}
@@ -127,18 +128,20 @@ export default function AdminPartnersPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1.25rem',
+                padding: '0.45rem 0.95rem',
                 borderRadius: '9999px',
-                border: 'none',
-                backgroundColor: savedStatus ? '#16A34A' : '#111113',
-                color: '#FFFFFF',
-                fontSize: '0.8rem',
+                border: '1px solid #D97706',
+                backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: savedStatus ? '#16A34A' : '#92400E',
+                fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {savedStatus ? <Check size={14} /> : <Save size={14} />}
-              {savedStatus ? 'Saved' : 'Save Draft'}
+              {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import CmsToggle from '@/components/admin/CmsToggle';
 import {
   Plus,
   Trash2,
@@ -22,12 +23,15 @@ import {
   Users,
   ExternalLink,
   RotateCcw,
+  GripVertical,
+  Briefcase,
+  FileText,
 } from 'lucide-react';
 
 export default function AdminServicesPage() {
-  const { content, saveDraft, updateDraftInMemory, publishAll } = useCmsContent();
+  const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [servicesData, setServicesData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'team' | 'cta'>('services');
+  const [activeTab, setActiveTab] = useState<'overview' | 'services' | 'team' | 'cta' | 'order'>('services');
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>('digital-marketing');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<string | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
@@ -187,9 +191,9 @@ export default function AdminServicesPage() {
   const handlePublishLive = async () => {
     setIsPublishing(true);
     await saveDraft('services', servicesData);
-    const res = await publishAll();
+    const ok = await publishSection('services', servicesData);
     setIsPublishing(false);
-    if (res && res.success) {
+    if (ok) {
       setSavedStatus(true);
       setPreviewKey((k) => k + 1);
       showToast('Services page published live to website!', 'success');
@@ -206,32 +210,11 @@ export default function AdminServicesPage() {
     enabled: boolean;
     onToggle: () => void;
   }) => (
-    <button
-      type="button"
-      onClick={onToggle}
-      title={enabled ? 'Field is visible on website. Click to disable.' : 'Field is hidden. Click to enable.'}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-        padding: '2px 7px',
-        borderRadius: '9999px',
-        border: 'none',
-        backgroundColor: enabled ? '#ECFDF5' : '#FEE2E2',
-        color: enabled ? '#047857' : '#DC2626',
-        fontSize: '0.68rem',
-        fontWeight: 650,
-        cursor: 'pointer',
-        transition: 'all 0.15s ease',
-      }}
-    >
-      {enabled ? <Eye size={11} /> : <EyeOff size={11} />}
-      {enabled ? 'Visible' : 'Hidden'}
-    </button>
+    <CmsToggle checked={enabled} onChange={onToggle} size="sm" />
   );
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: 'calc(100vh - 120px)', position: 'relative' }}>
+    <div className="admin-split-grid">
       {/* Floating Toast Notification */}
       {toastMessage && (
         <div
@@ -266,73 +249,128 @@ export default function AdminServicesPage() {
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
+          minWidth: 0,
+          width: '100%',
         }}
       >
         {/* Top Header */}
         <div
           style={{
-            padding: '0.85rem 1.25rem',
+            padding: '0.85rem 1.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#FAFAFA',
-            gap: '0.75rem',
+            backgroundColor: '#FFFFFF',
             flexWrap: 'wrap',
+            gap: '0.75rem',
+            flexShrink: 0,
           }}
         >
-          <div>
-            <h2 style={{ fontSize: '1.05rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-              Practice Areas &amp; Capabilities Editor
-            </h2>
-            <div style={{ fontSize: '0.72rem', color: '#71717A' }}>
-              Strategic overview, consulting scopes, deliverables &amp; images.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
+              Practice Areas &amp; Capabilities
+            </div>
+            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', backgroundColor: '#F4F4F5', color: '#52525B', fontWeight: 600 }}>
+              {servicesData.services?.length || 3} Practice Areas
+            </span>
+
+            {/* Segmented Toggle: Editor vs Order & Visibility */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab(activeTab === 'order' ? 'services' : activeTab)}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab !== 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab !== 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab !== 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <FileText size={12} />
+                Editor
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('order')}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab === 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <GripVertical size={12} />
+                Order &amp; Visibility
+              </button>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
               onClick={handleSave}
+              title="Save draft to CRM"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1rem',
-                borderRadius: '8px',
-                border: '1px solid rgba(0, 0, 0, 0.15)',
-                backgroundColor: savedStatus ? '#16A34A' : '#FFFFFF',
-                color: savedStatus ? '#FFFFFF' : '#111113',
+                padding: '0.45rem 0.95rem',
+                borderRadius: '9999px',
+                border: '1px solid #D97706',
+                backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: savedStatus ? '#16A34A' : '#92400E',
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {savedStatus ? <Check size={13} /> : <Save size={13} />}
-              {savedStatus ? 'Saved Draft' : 'Save Draft'}
+              {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
 
+            {/* Red pill: Publish This Page */}
             <button
               type="button"
               onClick={handlePublishLive}
               disabled={isPublishing}
+              title="Publish live to production"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
                 padding: '0.45rem 1.15rem',
-                borderRadius: '8px',
+                borderRadius: '9999px',
                 border: 'none',
                 backgroundColor: '#DE322D',
                 color: '#FFFFFF',
                 fontSize: '0.78rem',
-                fontWeight: 650,
+                fontWeight: 600,
                 cursor: isPublishing ? 'wait' : 'pointer',
                 boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               }}
             >
-              <Send size={13} />
-              {isPublishing ? 'Publishing...' : 'Publish Live'}
+              <Upload size={13} />
+              <span>Publish This Page</span>
             </button>
           </div>
         </div>
@@ -344,6 +382,7 @@ export default function AdminServicesPage() {
             { id: 'services', label: `02: Practice Areas (${servicesData.services?.length || 0})`, icon: Layers },
             { id: 'team', label: '03: Team Structure', icon: Users },
             { id: 'cta', label: '04: Engagement & CTA', icon: Send },
+            { id: 'order', label: 'Order & Visibility', icon: GripVertical },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -391,30 +430,15 @@ export default function AdminServicesPage() {
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: servicesData.heroEnabled !== false ? '#15803D' : '#B91C1C' }}>
                 Hero &amp; Overview Section: {servicesData.heroEnabled !== false ? 'ENABLED (Visible)' : 'DISABLED (Hidden)'}
               </span>
-              <button
-                type="button"
-                onClick={() => {
+              <CmsToggle
+                checked={servicesData.heroEnabled !== false}
+                onChange={() => {
                   const current = servicesData.heroEnabled !== false;
                   updateField(['heroEnabled'], !current);
                   showToast(`Hero section ${!current ? 'enabled' : 'disabled'}`, 'info');
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.35rem 0.85rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: servicesData.heroEnabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#FFFFFF',
-                  fontSize: '0.74rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {servicesData.heroEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {servicesData.heroEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+                size="md"
+              />
             </div>
 
             <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
@@ -563,30 +587,15 @@ export default function AdminServicesPage() {
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: servicesData.practiceAreasEnabled !== false ? '#15803D' : '#B91C1C' }}>
                 Practice Areas Section: {servicesData.practiceAreasEnabled !== false ? 'ENABLED (Visible)' : 'DISABLED (Hidden)'}
               </span>
-              <button
-                type="button"
-                onClick={() => {
+              <CmsToggle
+                checked={servicesData.practiceAreasEnabled !== false}
+                onChange={() => {
                   const current = servicesData.practiceAreasEnabled !== false;
                   updateField(['practiceAreasEnabled'], !current);
                   showToast(`Practice Areas section ${!current ? 'enabled' : 'disabled'}`, 'info');
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.35rem 0.85rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: servicesData.practiceAreasEnabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#FFFFFF',
-                  fontSize: '0.74rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {servicesData.practiceAreasEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {servicesData.practiceAreasEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+                size="md"
+              />
             </div>
 
             <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '240px 1fr', overflow: 'hidden' }}>
@@ -879,30 +888,15 @@ export default function AdminServicesPage() {
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: servicesData.teamStructureEnabled !== false ? '#15803D' : '#B91C1C' }}>
                 Team Structure Section: {servicesData.teamStructureEnabled !== false ? 'ENABLED (Visible)' : 'DISABLED (Hidden)'}
               </span>
-              <button
-                type="button"
-                onClick={() => {
+              <CmsToggle
+                checked={servicesData.teamStructureEnabled !== false}
+                onChange={() => {
                   const current = servicesData.teamStructureEnabled !== false;
                   updateField(['teamStructureEnabled'], !current);
                   showToast(`Team Structure section ${!current ? 'enabled' : 'disabled'}`, 'info');
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.35rem 0.85rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: servicesData.teamStructureEnabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#FFFFFF',
-                  fontSize: '0.74rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {servicesData.teamStructureEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {servicesData.teamStructureEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+                size="md"
+              />
             </div>
 
             <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
@@ -989,30 +983,15 @@ export default function AdminServicesPage() {
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: servicesData.ctaEnabled !== false ? '#15803D' : '#B91C1C' }}>
                 Closing CTA Section: {servicesData.ctaEnabled !== false ? 'ENABLED (Visible)' : 'DISABLED (Hidden)'}
               </span>
-              <button
-                type="button"
-                onClick={() => {
+              <CmsToggle
+                checked={servicesData.ctaEnabled !== false}
+                onChange={() => {
                   const current = servicesData.ctaEnabled !== false;
                   updateField(['ctaEnabled'], !current);
                   showToast(`Closing CTA section ${!current ? 'enabled' : 'disabled'}`, 'info');
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.35rem 0.85rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  backgroundColor: servicesData.ctaEnabled !== false ? '#DC2626' : '#16A34A',
-                  color: '#FFFFFF',
-                  fontSize: '0.74rem',
-                  fontWeight: 650,
-                  cursor: 'pointer',
-                }}
-              >
-                {servicesData.ctaEnabled !== false ? <EyeOff size={13} /> : <Eye size={13} />}
-                {servicesData.ctaEnabled !== false ? 'Disable Section' : 'Enable Section'}
-              </button>
+                size="md"
+              />
             </div>
 
             <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
@@ -1115,62 +1094,68 @@ export default function AdminServicesPage() {
             </div>
           </div>
         )}
+
+        {/* ─── TAB 05: ORDER & VISIBILITY ─── */}
+        {activeTab === 'order' && (
+          <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
+            <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Section Sequence &amp; Visibility Controls
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                Reorder or toggle visibility for each of the 4 live /services sections. Live preview updates instantly.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {[
+                { id: 'overview', name: '01: Hero & Overview', type: 'hero', visible: servicesData.heroEnabled !== false, onToggle: () => updateField(['heroEnabled'], servicesData.heroEnabled === false) },
+                { id: 'services', name: '02: Practice Areas & Capabilities', type: 'capabilities', visible: servicesData.servicesEnabled !== false, onToggle: () => updateField(['servicesEnabled'], servicesData.servicesEnabled === false) },
+                { id: 'team', name: '03: Team Structure', type: 'team', visible: servicesData.team?.enabled !== false, onToggle: () => updateField(['team', 'enabled'], servicesData.team?.enabled === false) },
+                { id: 'cta', name: '04: Engagement & CTA', type: 'cta', visible: servicesData.cta?.enabled !== false, onToggle: () => updateField(['cta', 'enabled'], servicesData.cta?.enabled === false) },
+              ].map((sec, idx) => (
+                <div
+                  key={sec.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '10px',
+                    backgroundColor: sec.visible ? '#FFFFFF' : '#FAFAFA',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    opacity: sec.visible ? 1 : 0.6,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                        {sec.name}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                        ID: {sec.id} &bull; Type: {sec.type}
+                      </div>
+                    </div>
+                  </div>
+
+                  <CmsToggle
+                    checked={sec.visible}
+                    onChange={sec.onToggle}
+                    size="sm"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ─── RIGHT COLUMN: LIVE PREVIEW ─── */}
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0.45rem 0.85rem',
-            backgroundColor: '#1E1E24',
-            borderRadius: '16px 16px 0 0',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          }}
-        >
-          <span style={{ fontSize: '0.7rem', color: '#A1A1AA', fontWeight: 600 }}>PREVIEW: /services</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <button
-              type="button"
-              onClick={() => setPreviewKey((k) => k + 1)}
-              title="Reload preview"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#A1A1AA',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '4px',
-              }}
-            >
-              <RotateCcw size={13} />
-            </button>
-            <a
-              href="/services"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open in new tab"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#A1A1AA',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '4px',
-                textDecoration: 'none',
-              }}
-            >
-              <ExternalLink size={13} />
-            </a>
-          </div>
-        </div>
-        <div style={{ flex: 1, minHeight: 0 }}>
-          <LivePreviewPanel key={`/services-${previewKey}`} previewUrl="/services" />
-        </div>
+      <div className="admin-preview-sticky">
+        <LivePreviewPanel key={`/services-${previewKey}`} previewUrl="/services" title="Services Preview" />
       </div>
 
       {/* Confirm Delete Dialog */}

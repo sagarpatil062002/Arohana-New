@@ -6,7 +6,20 @@ const DRAFTS_DIR = path.join(CONTENT_DIR, 'drafts');
 const TMP_CONTENT_DIR = path.join('/tmp', 'arohana_content');
 const TMP_DRAFTS_DIR = path.join(TMP_CONTENT_DIR, 'drafts');
 
-// Try creating local or fallback directories
+export const CMS_SECTIONS = [
+  'home',
+  'about',
+  'work',
+  'services',
+  'tourin',
+  'army-projects',
+  'partners',
+  'contact',
+  'footer',
+  'settings',
+] as const;
+
+// Ensure directories exist
 try {
   if (!fs.existsSync(CONTENT_DIR)) {
     fs.mkdirSync(CONTENT_DIR, { recursive: true });
@@ -15,54 +28,75 @@ try {
     fs.mkdirSync(DRAFTS_DIR, { recursive: true });
   }
 } catch (e) {
-  // If process.cwd() is read-only, ensure /tmp directories exist
   try {
     if (!fs.existsSync(TMP_CONTENT_DIR)) fs.mkdirSync(TMP_CONTENT_DIR, { recursive: true });
     if (!fs.existsSync(TMP_DRAFTS_DIR)) fs.mkdirSync(TMP_DRAFTS_DIR, { recursive: true });
   } catch (err) {}
 }
 
-// In-memory active storage for fast, responsive multi-step editing & preview
+// In-memory caches to prevent repeated disk hits while maintaining speed
 const draftsInMemory: Record<string, any> = {};
 const publishedInMemory: Record<string, any> = {};
 
+/**
+ * Deep clone utility to guarantee completely isolated, non-shared mutable references
+ * between Editor state, Draft state, and Published state.
+ */
+export function deepClone<T>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') return obj;
+  return JSON.parse(JSON.stringify(obj));
+}
+
+/**
+ * Read published content file.
+ * NEVER returns draft data.
+ */
 export function readContentFile<T = any>(filename: string): T | null {
   const cleanName = filename.endsWith('.json') ? filename : `${filename}.json`;
   const key = cleanName.replace('.json', '');
 
   if (publishedInMemory[key] !== undefined) {
-    return publishedInMemory[key] as T;
+    return deepClone(publishedInMemory[key]) as T;
   }
 
-  // 1. Check /tmp fallback first if present
+  // 1. Primary check: CONTENT_DIR
+  try {
+    const filePath = path.join(CONTENT_DIR, cleanName);
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      const parsed = JSON.parse(data) as T;
+      publishedInMemory[key] = deepClone(parsed);
+      return deepClone(parsed);
+    }
+  } catch (err) {
+    console.error(`Error reading ${filename} from CONTENT_DIR:`, err);
+  }
+
+  // 2. Fallback check: TMP_CONTENT_DIR
   try {
     const tmpPath = path.join(TMP_CONTENT_DIR, cleanName);
     if (fs.existsSync(tmpPath)) {
       const data = fs.readFileSync(tmpPath, 'utf-8');
       const parsed = JSON.parse(data) as T;
-      publishedInMemory[key] = parsed;
-      return parsed;
+      publishedInMemory[key] = deepClone(parsed);
+      return deepClone(parsed);
     }
   } catch (e) {}
 
-  // 2. Check main CONTENT_DIR
-  try {
-    const filePath = path.join(CONTENT_DIR, cleanName);
-    if (!fs.existsSync(filePath)) return null;
-    const data = fs.readFileSync(filePath, 'utf-8');
-    const parsed = JSON.parse(data) as T;
-    publishedInMemory[key] = parsed;
-    return parsed;
-  } catch (err) {
-    console.error(`Error reading ${filename}:`, err);
-    return null;
-  }
+  return null;
 }
 
+/**
+ * Write published content file.
+ * Commits changes to the live published dataset and cleans up any section draft.
+ */
 export function writeContentFile(filename: string, content: any): boolean {
   const cleanName = filename.endsWith('.json') ? filename : `${filename}.json`;
   const key = cleanName.replace('.json', '');
-  publishedInMemory[key] = content;
+  
+  // Clone to prevent external mutations from affecting cached published data
+  publishedInMemory[key] = deepClone(content);
+  // Clear any draft from memory once published
   delete draftsInMemory[key];
 
   let written = false;
@@ -84,7 +118,7 @@ export function writeContentFile(filename: string, content: any): boolean {
       } catch (e) {}
     }
   } catch (err) {
-    // If primary is read-only (e.g. AWS Lambda / Vercel), write to /tmp fallback
+    // Fallback if read-only filesystem
     try {
       if (!fs.existsSync(TMP_CONTENT_DIR)) {
         fs.mkdirSync(TMP_CONTENT_DIR, { recursive: true });
@@ -107,60 +141,132 @@ export function writeContentFile(filename: string, content: any): boolean {
   return written;
 }
 
+/**
+ * Read draft file from persistent storage if exists.
+ */
 export function readDraftFile<T = any>(sectionKey: string): T | null {
+  // Check memory first
+  if (draftsInMemory[sectionKey] !== undefined) {
+    return deepClone(draftsInMemory[sectionKey]) as T;
+  }
+
+  // Check persistent DRAFTS_DIR
+  try {
+    const filePath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf-8');
+      const parsed = JSON.parse(data) as T;
+      draftsInMemory[sectionKey] = deepClone(parsed);
+      return deepClone(parsed);
+    }
+  } catch (err) {}
+
+  // Check fallback TMP_DRAFTS_DIR
   try {
     const tmpPath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
     if (fs.existsSync(tmpPath)) {
       const data = fs.readFileSync(tmpPath, 'utf-8');
-      return JSON.parse(data) as T;
+      const parsed = JSON.parse(data) as T;
+      draftsInMemory[sectionKey] = deepClone(parsed);
+      return deepClone(parsed);
     }
   } catch (e) {}
 
-  try {
-    const filePath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
-    if (!fs.existsSync(filePath)) return null;
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data) as T;
-  } catch (err) {
-    return null;
-  }
+  return null;
 }
 
+/**
+ * Get section content.
+ * When includeDraft = true: returns Draft if available, else falls back to Published.
+ * When includeDraft = false: STRICTLY returns Published content.
+ */
 export function getSectionContent<T = any>(sectionKey: string, includeDraft = false): T | null {
   if (includeDraft) {
-    if (draftsInMemory[sectionKey] !== undefined) {
-      return draftsInMemory[sectionKey] as T;
-    }
-    const draftFromFile = readDraftFile<T>(sectionKey);
-    if (draftFromFile) {
-      draftsInMemory[sectionKey] = draftFromFile;
-      return draftFromFile;
+    const draft = readDraftFile<T>(sectionKey);
+    if (draft !== null && draft !== undefined) {
+      return deepClone(draft);
     }
   }
   return readContentFile<T>(`${sectionKey}.json`);
 }
 
+/**
+ * Save draft for a single section into the centralized CRM Draft Store.
+ * NEVER writes to published content and NEVER affects the live website.
+ */
 export function saveSectionDraft(sectionKey: string, draftData: any): void {
-  draftsInMemory[sectionKey] = draftData;
+  const cloned = deepClone(draftData);
+  draftsInMemory[sectionKey] = cloned;
+
   try {
     if (!fs.existsSync(DRAFTS_DIR)) {
       fs.mkdirSync(DRAFTS_DIR, { recursive: true });
     }
     const filePath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(draftData, null, 2), 'utf-8');
+    fs.writeFileSync(filePath, JSON.stringify(cloned, null, 2), 'utf-8');
   } catch (err) {
     try {
       if (!fs.existsSync(TMP_DRAFTS_DIR)) {
         fs.mkdirSync(TMP_DRAFTS_DIR, { recursive: true });
       }
       const tmpFilePath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
-      fs.writeFileSync(tmpFilePath, JSON.stringify(draftData, null, 2), 'utf-8');
+      fs.writeFileSync(tmpFilePath, JSON.stringify(cloned, null, 2), 'utf-8');
     } catch (tmpErr) {
       console.error(`Error writing draft for ${sectionKey} to /tmp:`, tmpErr);
     }
   }
 }
 
+/**
+ * Discard draft for a single section and revert it to published.
+ */
+export function discardSectionDraft(sectionKey: string): void {
+  delete draftsInMemory[sectionKey];
+  try {
+    const draftPath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
+    if (fs.existsSync(draftPath)) {
+      fs.unlinkSync(draftPath);
+    }
+    const tmpDraftPath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
+    if (fs.existsSync(tmpDraftPath)) {
+      fs.unlinkSync(tmpDraftPath);
+    }
+  } catch (e) {}
+}
+
+/**
+ * Publish a SINGLE section to live.
+ * Only the specified section becomes published; all other sections' drafts remain untouched.
+ */
+export function publishSectionContent(sectionKey: string, specificData?: any): { success: boolean; section: string } {
+  const dataToPublish = specificData !== undefined
+    ? specificData
+    : (draftsInMemory[sectionKey] || readDraftFile(sectionKey) || readContentFile(`${sectionKey}.json`));
+
+  if (!dataToPublish) {
+    return { success: false, section: sectionKey };
+  }
+
+  const written = writeContentFile(`${sectionKey}.json`, deepClone(dataToPublish));
+  // Clean up draft file for this section
+  delete draftsInMemory[sectionKey];
+  try {
+    const draftPath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
+    if (fs.existsSync(draftPath)) {
+      fs.unlinkSync(draftPath);
+    }
+    const tmpDraftPath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
+    if (fs.existsSync(tmpDraftPath)) {
+      fs.unlinkSync(tmpDraftPath);
+    }
+  } catch (e) {}
+
+  return { success: written, section: sectionKey };
+}
+
+/**
+ * Returns summary of all pending draft changes across the website.
+ */
 export function getPendingChangesSummary(): {
   hasChanges: boolean;
   sectionsModified: string[];
@@ -194,6 +300,10 @@ export function getPendingChangesSummary(): {
   };
 }
 
+/**
+ * Publish ALL saved draft changes across the entire CMS.
+ * Unchanged pages remain completely untouched and intact.
+ */
 export function publishAllDrafts(): { success: boolean; publishedSections: string[] } {
   const published: string[] = [];
   const keys = new Set<string>(Object.keys(draftsInMemory));
@@ -210,7 +320,7 @@ export function publishAllDrafts(): { success: boolean; publishedSections: strin
   for (const key of Array.from(keys)) {
     const draftData = draftsInMemory[key] || readDraftFile(key);
     if (draftData) {
-      const success = writeContentFile(`${key}.json`, draftData);
+      const success = writeContentFile(`${key}.json`, deepClone(draftData));
       if (success) {
         published.push(key);
       }
@@ -223,3 +333,28 @@ export function publishAllDrafts(): { success: boolean; publishedSections: strin
   };
 }
 
+/**
+ * Returns complete published state of the website.
+ * Used exclusively by the Live Website.
+ */
+export function getPublishedSiteData(): Record<string, any> {
+  const result: Record<string, any> = {};
+  for (const sec of CMS_SECTIONS) {
+    const val = readContentFile(`${sec}.json`);
+    if (val) result[sec] = deepClone(val);
+  }
+  return result;
+}
+
+/**
+ * Returns complete draft state of the website (drafts merged over published).
+ * Used exclusively by the Admin CRM & Preview.
+ */
+export function getDraftSiteData(): Record<string, any> {
+  const result: Record<string, any> = {};
+  for (const sec of CMS_SECTIONS) {
+    const val = getSectionContent(sec, true);
+    if (val) result[sec] = deepClone(val);
+  }
+  return result;
+}

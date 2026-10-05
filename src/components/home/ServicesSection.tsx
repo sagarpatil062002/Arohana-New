@@ -20,29 +20,29 @@ interface CapabilityItemData {
 const CAPABILITIES_DATA: CapabilityItemData[] = [
   {
     title: 'Digital Brand Growth',
-    tags: ['Content Strategy', 'Social Media Management', 'Performance Marketing', 'Digital Production', 'Website Management & Branding'],
+    tags: [],
     image: '/images/services/digital-growth.jpg',
     alt: 'Digital brand growth and social media management',
     description:
-      'Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding',
+      'Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.',
     href: '/services#digital-growth',
   },
   {
     title: 'Content Production',
-    tags: ['Content Ideation', 'Scripting', 'Shoot', 'Post-Production', 'Art Direction', 'Photography', 'Influencer & UGC Content', 'AI Content'],
+    tags: [],
     image: '/images/services/content-production.jpg',
     alt: 'Content and brand production from scripting through post-production',
     description:
-      'Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content',
-    href: '/services#brand-production',
+      'Taking brand stories from concept and scripting to production, post-production and multi-platform communication.',
+    href: '/services#content-production',
   },
   {
     title: 'Hospitality & Experience',
-    tags: ['Concept & Menu', 'Food & Space Shoots', 'Kitchen Pass', 'Guest Journeys'],
+    tags: [],
     image: '/images/case-studies/raysons/neora-1.jpg',
     alt: 'Neora Deck hospitality consulting and visual storytelling',
     description:
-      'Menu design, operational systems, staff workflows, revenue optimisation and digital marketing for hospitality brands.',
+      'Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.',
     href: '/services#hospitality-consulting',
   },
 ];
@@ -139,20 +139,32 @@ export default function ServicesSection() {
     ? srvCms.description
     : 'Ārohana combines commercial thinking, sector experience and creative execution to build brands and operational systems across environments.';
 
-  // Dynamic stats from CMS: memoized so references stay stable and prevent animation cancellation
+  // Helper to safely parse statistic numbers distinguishing 0 from empty/undefined
+  const parseStatNumber = (val: any, fallback: number = 0): number => {
+    if (val === undefined || val === null || val === '') return fallback;
+    const num = typeof val === 'number' ? val : Number(val);
+    return isNaN(num) ? fallback : num;
+  };
+
+  // Dynamic stats from CMS: memoized with stable references
   const statsList: StatData[] = useMemo(() => {
     const raw = content?.home?.impactStats?.counters || srvCms?.stats;
     const source = (raw && Array.isArray(raw))
       ? raw.filter((s: any) => s && s.enabled !== false)
       : SHARP_STATS;
-    return source.map((s: any, i: number) => ({
-      id: s.id || `stat-${i}`,
-      target: typeof s.target === 'number' ? s.target : (parseInt(s.target, 10) || SHARP_STATS[i]?.target || 0),
-      suffix: s.suffix ?? SHARP_STATS[i]?.suffix ?? '',
-      twoDigits: s.twoDigits ?? SHARP_STATS[i]?.twoDigits ?? false,
-      label: s.label || s.title || SHARP_STATS[i]?.label || '',
-      detail: s.detail || s.desc || SHARP_STATS[i]?.detail || '',
-    }));
+
+    return source.map((s: any, i: number) => {
+      const rawNum = s.target !== undefined ? s.target : (s.value !== undefined ? s.value : (s.number !== undefined ? s.number : s.count));
+      const fallbackNum = SHARP_STATS[i]?.target ?? 0;
+      return {
+        id: s.id || `stat-${i}`,
+        target: parseStatNumber(rawNum, fallbackNum),
+        suffix: s.suffix !== undefined ? s.suffix : (SHARP_STATS[i]?.suffix ?? ''),
+        twoDigits: s.twoDigits ?? SHARP_STATS[i]?.twoDigits ?? false,
+        label: s.label || s.title || SHARP_STATS[i]?.label || '',
+        detail: s.detail || s.desc || SHARP_STATS[i]?.detail || '',
+      };
+    });
   }, [srvCms?.stats, content?.home?.impactStats?.counters]);
 
   const rawCapabilities = (srvCms?.items && srvCms.items.length > 0) ? srvCms.items : CAPABILITIES_DATA;
@@ -171,13 +183,16 @@ export default function ServicesSection() {
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const statsGridRef = useRef<HTMLDivElement>(null);
-  const [counts, setCounts] = useState<number[]>(() => statsList.map(() => 0));
+  // Default directly to target values so preview and initial render NEVER show 0 unless the target is 0
+  const [counts, setCounts] = useState<number[]>(() => statsList.map((s) => s.target));
   const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const hasAnimatedRef = useRef<boolean>(false);
 
-  // Store latest statsList in ref so animation callbacks have stable identities
+  // Store latest statsList in ref and synchronize counts whenever targets change
   const statsListRef = useRef(statsList);
   useEffect(() => {
     statsListRef.current = statsList;
+    setCounts(statsList.map((s) => s.target));
   }, [statsList]);
 
   const animateCounters = useCallback(() => {
@@ -194,7 +209,10 @@ export default function ServicesSection() {
       duration: 1.8,
       ease: 'power3.out',
       onUpdate: () => {
-        setCounts(targets.map((_, idx) => Math.round(obj[`v${idx}`] || 0)));
+        setCounts(targets.map((_, idx) => Math.round(obj[`v${idx}`] ?? 0)));
+      },
+      onComplete: () => {
+        setCounts(targets);
       },
     };
     targets.forEach((target, idx) => {
@@ -202,11 +220,6 @@ export default function ServicesSection() {
     });
 
     tweenRef.current = gsap.to(obj, toVars);
-  }, []);
-
-  const resetCounters = useCallback(() => {
-    if (tweenRef.current) tweenRef.current.kill();
-    setCounts(new Array(statsListRef.current.length).fill(0));
   }, []);
 
   useEffect(() => {
@@ -232,16 +245,18 @@ export default function ServicesSection() {
         );
       });
 
-      // Sharp numbers animation - triggers every single time section enters view
+      // Sharp numbers animation - triggers smoothly when section enters view
       if (statsGridRef.current) {
         ScrollTrigger.create({
           trigger: statsGridRef.current,
           start: 'top 88%',
           end: 'bottom 12%',
-          onEnter: () => animateCounters(),
-          onEnterBack: () => animateCounters(),
-          onLeave: () => resetCounters(),
-          onLeaveBack: () => resetCounters(),
+          onEnter: () => {
+            if (!hasAnimatedRef.current) {
+              hasAnimatedRef.current = true;
+              animateCounters();
+            }
+          },
         });
       }
     }, sectionRef);
@@ -250,7 +265,7 @@ export default function ServicesSection() {
       if (tweenRef.current) tweenRef.current.kill();
       ctx.revert();
     };
-  }, [animateCounters, resetCounters]);
+  }, [animateCounters]);
 
   if (!isEnabled) return null;
 
@@ -359,7 +374,7 @@ export default function ServicesSection() {
           {isStatsEnabled && statsList.length > 0 && (
             <div ref={statsGridRef} className="sharp-stats-grid">
               {statsList.map((stat, idx) => {
-                const countVal = counts[idx] ?? 0;
+                const countVal = counts[idx] !== undefined && counts[idx] !== null ? counts[idx] : stat.target;
                 const formattedNum = stat.twoDigits && countVal < 10 ? `0${countVal}` : `${countVal}`;
                 const digits = formattedNum.split('');
 

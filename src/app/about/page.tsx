@@ -33,11 +33,6 @@ const BORDER = '1px solid rgba(0, 0, 0, 0.08)';
 const BG_PAGE = '#FBF9F5';
 const BG_CARD = '#FFFFFF';
 
-const STATS = [
-  { value: '6+', label: 'Years of Experience' },
-  { value: '50+', label: 'Brands Worked With' },
-  { value: '5', label: 'Core Verticals' },
-];
 
 interface ChapterData {
   number: string;
@@ -168,7 +163,6 @@ export default function StudioPage() {
     founderName: aboutCms.hero?.founderName || "Madhura Hawal",
     founderTitle: aboutCms.hero?.founderTitle || "Founder & Strategic Director",
     image: aboutCms.hero?.image || aboutCms.hero?.founderImage || '/images/about/madhura-portrait.jpg',
-    stats: aboutCms.hero?.stats || STATS,
   };
 
   const rawChapters: ChapterData[] = (aboutCms.chapters && aboutCms.chapters.length > 0)
@@ -1129,36 +1123,38 @@ export default function StudioPage() {
                   </Link>
                 )}
 
-                <Link
-                  href="/work"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    height: '50px',
-                    padding: '0 1.85rem',
-                    backgroundColor: '#111113',
-                    color: '#ffffff',
-                    borderRadius: '4px',
-                    fontSize: '0.9rem',
-                    fontWeight: 600,
-                    textDecoration: 'none',
-                    border: '1px solid rgba(255, 255, 255, 0.18)',
-                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
-                    transition: 'all 0.25s ease',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#222226';
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#111113';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <span>Explore Selected Work</span>
-                  <ArrowRight size={16} color="#ffffff" />
-                </Link>
+                {aboutCms.cta?.showSecondaryButton !== false && (
+                  <Link
+                    href={aboutCms.cta?.secondaryButtonUrl || '/work'}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.75rem',
+                      height: '50px',
+                      padding: '0 1.85rem',
+                      backgroundColor: '#111113',
+                      color: '#ffffff',
+                      borderRadius: '4px',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      border: '1px solid rgba(255, 255, 255, 0.18)',
+                      boxShadow: '0 4px 14px rgba(0, 0, 0, 0.2)',
+                      transition: 'all 0.25s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#222226';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#111113';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <span>{aboutCms.cta?.secondaryButtonText || 'Explore Selected Work'}</span>
+                    <ArrowRight size={16} color="#ffffff" />
+                  </Link>
+                )}
               </div>
 
 

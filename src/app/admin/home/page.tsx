@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
+import CmsToggle from '@/components/admin/CmsToggle';
 import {
   GripVertical,
   Eye,
@@ -38,6 +39,7 @@ export default function AdminHomePage() {
   const [heroSlideIndex, setHeroSlideIndex] = useState<number | null>(null);
   const [draftSavedStatus, setDraftSavedStatus] = useState(false);
   const [publishedStatus, setPublishedStatus] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
   const [toastMessage, setToastMessage] = useState<string>('');
   const editorScrollRef = useRef<HTMLDivElement>(null);
 
@@ -70,6 +72,7 @@ export default function AdminHomePage() {
     }
     current[path[path.length - 1]] = val;
     setHomeData(updated);
+    setIsDirty(true);
     updateDraftInMemory('home', updated);
   };
 
@@ -249,8 +252,9 @@ export default function AdminHomePage() {
   const handleSaveDraft = async () => {
     const ok = await saveDraft('home', homeData);
     if (ok) {
+      setIsDirty(false);
       setDraftSavedStatus(true);
-      setToastMessage('✓ Draft saved to Admin CRM! Click "Publish Live" to make changes live on the website.');
+      setToastMessage('✓ Homepage draft saved to Central CRM Store! Live website remains unchanged.');
       setTimeout(() => setDraftSavedStatus(false), 2400);
       setTimeout(() => setToastMessage(''), 5000);
     }
@@ -259,8 +263,9 @@ export default function AdminHomePage() {
   const handlePublishLive = async () => {
     const ok = await publishSection('home', homeData);
     if (ok) {
+      setIsDirty(false);
       setPublishedStatus(true);
-      setToastMessage('🚀 Homepage Published Live! Changes are now live on the website.');
+      setToastMessage('🚀 Homepage published live! Other page drafts remain intact.');
       setTimeout(() => setPublishedStatus(false), 2400);
       setTimeout(() => setToastMessage(''), 5000);
     }
@@ -278,7 +283,7 @@ export default function AdminHomePage() {
   ];
 
   return (
-    <div className="admin-split-grid" style={{ display: 'grid', gridTemplateColumns: '1.08fr 0.92fr', gap: '1.5rem', height: '100%', minHeight: 0 }}>
+    <div className="admin-split-grid">
       {/* ─── LEFT COLUMN: SECTION-BY-SECTION EDITOR ─── */}
       <div
         style={{
@@ -287,10 +292,9 @@ export default function AdminHomePage() {
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
-          overflow: 'hidden',
           boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
-          height: '100%',
-          minHeight: 0,
+          minWidth: 0,
+          width: '100%',
         }}
       >
         {/* Editor Top Bar */}
@@ -304,97 +308,109 @@ export default function AdminHomePage() {
             backgroundColor: '#FAFAFA',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <h2 style={{ fontSize: '1.1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                  Homepage Section Editor
-                </h2>
-                <span style={{ fontSize: '0.72rem', backgroundColor: '#ECFDF5', padding: '2px 8px', borderRadius: '6px', color: '#047857', fontWeight: 600 }}>
-                  7 Live Sections
-                </span>
-              </div>
-              <div style={{ fontSize: '0.75rem', color: '#71717A', marginTop: '0.15rem' }}>
-                Select any section to edit copy, sharp metric numbers, images, and brand logos in real-time.
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
+              Homepage Sections
             </div>
+            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', backgroundColor: '#F4F4F5', color: '#52525B', fontWeight: 600 }}>
+              {homeData.sections?.length || 7} Sections
+            </span>
 
-            {/* Quick Section Dropdown Selector */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#52525B' }}>Section:</span>
-              <select
-                value={activeSectionId}
-                onChange={(e) => setActiveSectionId(e.target.value)}
+            {/* Segmented Toggle: Editor vs Order & Visibility */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setActiveSectionId(activeSectionId === 'order' ? 'hero' : activeSectionId)}
                 style={{
-                  padding: '0.4rem 0.75rem',
+                  padding: '0.3rem 0.75rem',
                   borderRadius: '6px',
-                  border: '1px solid rgba(0, 0, 0, 0.15)',
-                  backgroundColor: '#FFFFFF',
-                  color: '#111113',
-                  fontSize: '0.78rem',
+                  border: 'none',
+                  backgroundColor: activeSectionId !== 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeSectionId !== 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  outline: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeSectionId !== 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
                 }}
               >
-                {sectionTabs.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
+                <FileText size={12} />
+                Editor
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSectionId('order')}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeSectionId === 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeSectionId === 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeSectionId === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <GripVertical size={12} />
+                Order &amp; Visibility
+              </button>
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            {/* Save Draft Button (Saves to Admin CRM side) */}
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
               onClick={handleSaveDraft}
-              title="Save draft to Admin CRM without pushing live"
+              title="Save draft to CRM"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.5rem 1rem',
+                padding: '0.45rem 0.95rem',
                 borderRadius: '9999px',
-                border: '1px solid rgba(0, 0, 0, 0.15)',
-                backgroundColor: draftSavedStatus ? '#F0FDF4' : '#FFFFFF',
-                color: draftSavedStatus ? '#16A34A' : '#18181B',
-                fontSize: '0.8rem',
+                border: '1px solid #D97706',
+                backgroundColor: draftSavedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: draftSavedStatus ? '#16A34A' : '#92400E',
+                fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {draftSavedStatus ? <Check size={14} /> : <Save size={14} />}
-              {draftSavedStatus ? 'Draft Saved' : 'Save Draft'}
+              {draftSavedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{draftSavedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
 
-            {/* Publish Live Button (Makes changes live on website) */}
+            {/* Red pill: Publish This Page */}
             <button
               type="button"
               onClick={handlePublishLive}
-              title="Publish all changes live to the website"
+              title="Publish live to production"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.5rem 1.25rem',
+                padding: '0.45rem 1.15rem',
                 borderRadius: '9999px',
                 border: 'none',
-                backgroundColor: publishedStatus ? '#16A34A' : '#DE322D',
+                backgroundColor: '#DE322D',
                 color: '#FFFFFF',
-                fontSize: '0.82rem',
-                fontWeight: 650,
+                fontSize: '0.78rem',
+                fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
                 boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               }}
             >
-              {publishedStatus ? <Check size={15} /> : <Upload size={15} />}
-              {publishedStatus ? 'Published Live!' : 'Publish Live'}
+              <Upload size={13} />
+              <span>Publish This Page</span>
             </button>
           </div>
         </div>
@@ -497,7 +513,7 @@ export default function AdminHomePage() {
           style={{
             flex: 1,
             overflowY: 'auto',
-            padding: '1.4rem 1.6rem 6rem 1.6rem',
+            padding: '1.25rem 1.4rem 2.5rem 1.4rem',
             scrollBehavior: 'smooth',
             overscrollBehavior: 'contain',
           }}
@@ -516,26 +532,11 @@ export default function AdminHomePage() {
                     Manage the creative agency photographic hero banner, typography, and dynamic action buttons.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={toggleHeroSection}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '6px',
-                    border: '1px solid ' + (homeData.hero?.enabled === false ? '#EF4444' : 'rgba(0,0,0,0.12)'),
-                    backgroundColor: homeData.hero?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                    color: homeData.hero?.enabled === false ? '#DC2626' : '#047857',
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {homeData.hero?.enabled === false ? <EyeOff size={13} /> : <Eye size={13} />}
-                  {homeData.hero?.enabled === false ? 'Hero Section Hidden' : 'Hero Section Active'}
-                </button>
+                <CmsToggle
+                  checked={homeData.hero?.enabled !== false}
+                  onChange={toggleHeroSection}
+                  size="md"
+                />
               </div>
 
               <div>
@@ -818,30 +819,15 @@ export default function AdminHomePage() {
                           <span style={{ fontSize: '0.78rem', fontWeight: 700, backgroundColor: '#111113', color: '#FFFFFF', padding: '2px 8px', borderRadius: '4px' }}>
                             Banner #{idx + 1}
                           </span>
-                          <button
-                            type="button"
-                            onClick={() => {
+                          <CmsToggle
+                            checked={slide.enabled !== false}
+                            onChange={(val) => {
                               const list = [...arr];
-                              list[idx] = { ...list[idx], enabled: list[idx].enabled === false ? true : false };
+                              list[idx] = { ...list[idx], enabled: val };
                               updateField(['hero', 'bannerImages'], list);
                             }}
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '4px',
-                              padding: '2px 8px',
-                              borderRadius: '4px',
-                              border: 'none',
-                              backgroundColor: slide.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                              color: slide.enabled === false ? '#DC2626' : '#047857',
-                              fontSize: '0.72rem',
-                              fontWeight: 600,
-                              cursor: 'pointer',
-                            }}
-                          >
-                            {slide.enabled === false ? <EyeOff size={12} /> : <Eye size={12} />}
-                            {slide.enabled === false ? 'Disabled' : 'Active Banner'}
-                          </button>
+                            size="sm"
+                          />
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -1112,46 +1098,43 @@ export default function AdminHomePage() {
                           </div>
                         </div>
 
-                        <div>
-                          <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', marginBottom: '0.2rem', fontWeight: 600 }}>
-                            URL LINK
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                          <span style={{ fontSize: '0.68rem', color: '#71717A', display: 'block', fontWeight: 600 }}>
+                            CAROUSEL ITEM LINK &amp; NAVIGATION
                           </span>
-                          <input
-                            type="text"
-                            value={slide.clickableUrl || ''}
-                            placeholder="e.g. /work or https://..."
-                            onChange={(e) => {
-                              const list = [...arr];
-                              list[idx] = { ...list[idx], clickableUrl: e.target.value };
-                              updateField(['hero', 'bannerImages'], list);
-                            }}
-                            style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
-                          />
-                        </div>
-
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', paddingTop: '0.9rem' }}>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const list = [...arr];
-                              list[idx] = { ...list[idx], isImageClickable: list[idx].isImageClickable === false ? true : false };
-                              updateField(['hero', 'bannerImages'], list);
-                            }}
-                            title="Make image clickable through URL link"
-                            style={{
-                              padding: '0.35rem 0.65rem',
-                              borderRadius: '6px',
-                              border: '1px solid rgba(0,0,0,0.12)',
-                              backgroundColor: slide.isImageClickable === false ? '#F4F4F5' : '#EFF6FF',
-                              color: slide.isImageClickable === false ? '#71717A' : '#1D4ED8',
-                              fontSize: '0.72rem',
-                              fontWeight: 600,
-                              cursor: 'pointer',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {slide.isImageClickable === false ? 'Image Not Clickable' : '✓ Clickable Image'}
-                          </button>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr auto auto', gap: '0.65rem', alignItems: 'center' }}>
+                            <input
+                              type="text"
+                              value={slide.clickableUrl || ''}
+                              placeholder="e.g. /work or https://example.com"
+                              onChange={(e) => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], clickableUrl: e.target.value };
+                                updateField(['hero', 'bannerImages'], list);
+                              }}
+                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
+                            />
+                            <CmsToggle
+                              label="Clickable Image"
+                              checked={slide.isImageClickable !== false}
+                              onChange={(val) => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], isImageClickable: val };
+                                updateField(['hero', 'bannerImages'], list);
+                              }}
+                              size="sm"
+                            />
+                            <CmsToggle
+                              label="Open in new tab"
+                              checked={Boolean(slide.openInNewTab)}
+                              onChange={(val) => {
+                                const list = [...arr];
+                                list[idx] = { ...list[idx], openInNewTab: val };
+                                updateField(['hero', 'bannerImages'], list);
+                              }}
+                              size="sm"
+                            />
+                          </div>
                         </div>
                       </div>
 
@@ -1189,26 +1172,16 @@ export default function AdminHomePage() {
                             style={{ ...inputStyle, padding: '0.35rem 0.55rem', fontSize: '0.78rem' }}
                           />
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => {
+                        <CmsToggle
+                          label="Button"
+                          checked={slide.buttonEnabled !== false}
+                          onChange={(val) => {
                             const list = [...arr];
-                            list[idx] = { ...list[idx], buttonEnabled: list[idx].buttonEnabled === false ? true : false };
+                            list[idx] = { ...list[idx], buttonEnabled: val };
                             updateField(['hero', 'bannerImages'], list);
                           }}
-                          style={{
-                            padding: '0.4rem 0.65rem',
-                            borderRadius: '6px',
-                            border: '1px solid rgba(0,0,0,0.12)',
-                            backgroundColor: slide.buttonEnabled === false ? '#FEE2E2' : '#F4F4F5',
-                            color: slide.buttonEnabled === false ? '#DC2626' : '#52525B',
-                            fontSize: '0.72rem',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                          }}
-                        >
-                          {slide.buttonEnabled === false ? 'Button Hidden' : 'Button Enabled'}
-                        </button>
+                          size="sm"
+                        />
                       </div>
                     </div>
                   ))}
@@ -1748,26 +1721,11 @@ export default function AdminHomePage() {
                 </div>
 
                 {/* Section Level Enable/Disable Toggle */}
-                <button
-                  type="button"
-                  onClick={toggleBrandsSection}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '6px',
-                    border: '1px solid ' + (homeData.brands?.enabled === false ? '#EF4444' : 'rgba(0,0,0,0.12)'),
-                    backgroundColor: homeData.brands?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                    color: homeData.brands?.enabled === false ? '#DC2626' : '#047857',
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {homeData.brands?.enabled === false ? <EyeOff size={13} /> : <Eye size={13} />}
-                  {homeData.brands?.enabled === false ? 'Section Hidden' : 'Section Active'}
-                </button>
+                <CmsToggle
+                  checked={homeData.brands?.enabled !== false}
+                  onChange={toggleBrandsSection}
+                  size="md"
+                />
               </div>
 
               <div>
@@ -2277,26 +2235,11 @@ export default function AdminHomePage() {
                 </div>
 
                 {/* Section Level Enable / Disable Toggle */}
-                <button
-                  type="button"
-                  onClick={toggleArmySection}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '6px',
-                    border: 'none',
-                    backgroundColor: homeData.armySpotlight?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                    color: homeData.armySpotlight?.enabled === false ? '#DC2626' : '#047857',
-                    fontSize: '0.76rem',
-                    fontWeight: 650,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {homeData.armySpotlight?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
-                  {homeData.armySpotlight?.enabled === false ? 'Section Hidden' : 'Section Active'}
-                </button>
+                <CmsToggle
+                  checked={homeData.armySpotlight?.enabled !== false}
+                  onChange={toggleArmySection}
+                  size="md"
+                />
               </div>
 
               {/* Eyebrow with Enable/Disable */}
@@ -2756,26 +2699,11 @@ export default function AdminHomePage() {
                 </div>
 
                 {/* Section Level Enable/Disable Toggle */}
-                <button
-                  type="button"
-                  onClick={togglePovSection}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '6px',
-                    border: '1px solid ' + (homeData.pov?.enabled === false ? '#EF4444' : 'rgba(0,0,0,0.12)'),
-                    backgroundColor: homeData.pov?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                    color: homeData.pov?.enabled === false ? '#DC2626' : '#047857',
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {homeData.pov?.enabled === false ? <EyeOff size={13} /> : <Eye size={13} />}
-                  {homeData.pov?.enabled === false ? 'Section Hidden' : 'Section Active'}
-                </button>
+                <CmsToggle
+                  checked={homeData.pov?.enabled !== false}
+                  onChange={togglePovSection}
+                  size="md"
+                />
               </div>
 
               {/* Founder Portrait & Profile Card (Live on Homepage Right Column) */}
@@ -3155,26 +3083,11 @@ export default function AdminHomePage() {
                 </div>
 
                 {/* Section Level Enable / Disable Toggle */}
-                <button
-                  type="button"
-                  onClick={toggleWorkSection}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '6px',
-                    border: 'none',
-                    backgroundColor: homeData.selectedWork?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                    color: homeData.selectedWork?.enabled === false ? '#DC2626' : '#047857',
-                    fontSize: '0.76rem',
-                    fontWeight: 650,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {homeData.selectedWork?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
-                  {homeData.selectedWork?.enabled === false ? 'Section Hidden' : 'Section Active'}
-                </button>
+                <CmsToggle
+                  checked={homeData.selectedWork?.enabled !== false}
+                  onChange={toggleWorkSection}
+                  size="md"
+                />
               </div>
 
               {/* Eyebrow with Enable/Disable */}
@@ -3597,26 +3510,11 @@ export default function AdminHomePage() {
                 </div>
 
                 {/* Section Level Enable / Disable Toggle */}
-                <button
-                  type="button"
-                  onClick={toggleServicesSection}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '5px',
-                    padding: '0.4rem 0.85rem',
-                    borderRadius: '6px',
-                    border: 'none',
-                    backgroundColor: homeData.services?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                    color: homeData.services?.enabled === false ? '#DC2626' : '#047857',
-                    fontSize: '0.76rem',
-                    fontWeight: 650,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {homeData.services?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
-                  {homeData.services?.enabled === false ? 'Section Hidden' : 'Section Active'}
-                </button>
+                <CmsToggle
+                  checked={homeData.services?.enabled !== false}
+                  onChange={toggleServicesSection}
+                  size="md"
+                />
               </div>
 
               {/* Eyebrow with Enable/Disable */}
@@ -3815,9 +3713,9 @@ export default function AdminHomePage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {(() => {
                     const defaultStats = [
-                      { id: 'commercial', target: 25, suffix: '+', title: 'Commercial Engagements', desc: 'Hospitality, enterprise & consumer brands', enabled: true },
-                      { id: 'sectors', target: 6, suffix: '', title: 'Industry Sectors', desc: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence', enabled: true },
-                      { id: 'expeditions', target: 15, suffix: '+', title: 'Himalayan Expeditions', desc: 'Curated mountain journeys and border initiatives', enabled: true },
+                      { id: 'commercial', target: 25, suffix: '+', title: 'Commercial Engagements', label: 'Commercial Engagements', desc: 'Hospitality, enterprise & consumer brands', detail: 'Hospitality, enterprise & consumer brands', enabled: true },
+                      { id: 'sectors', target: 10, suffix: '+', title: 'Industry Sectors', label: 'Industry Sectors', desc: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence', detail: 'Hospitality, Real Estate, Healthcare, Media, Travel & Defence', enabled: true },
+                      { id: 'expeditions', target: 15, suffix: '+', title: 'Himalayan Expeditions', label: 'Himalayan Expeditions', desc: 'Curated mountain journeys and border initiatives', detail: 'Curated mountain journeys and border initiatives', enabled: true },
                     ];
                     const rawList = homeData.impactStats?.counters && homeData.impactStats.counters.length > 0
                       ? homeData.impactStats.counters
@@ -3967,10 +3865,17 @@ export default function AdminHomePage() {
                             </div>
                             <input
                               type="number"
-                              value={cnt.target ?? 0}
+                              value={cnt.target !== undefined && cnt.target !== null ? cnt.target : (cnt.value !== undefined ? cnt.value : 0)}
                               onChange={(e) => {
+                                const valStr = e.target.value;
+                                const parsed = valStr === '' ? 0 : (isNaN(Number(valStr)) ? 0 : Number(valStr));
                                 const counters = [...list];
-                                counters[idx] = { ...counters[idx], target: parseInt(e.target.value) || 0 };
+                                counters[idx] = {
+                                  ...counters[idx],
+                                  target: parsed,
+                                  value: parsed,
+                                  number: parsed,
+                                };
                                 updateField(['impactStats', 'counters'], counters);
                               }}
                               style={{ ...inputStyle, padding: '0.35rem 0.55rem' }}
@@ -4532,26 +4437,11 @@ export default function AdminHomePage() {
                   </div>
 
                   {/* Section Enable/Disable toggle */}
-                  <button
-                    type="button"
-                    onClick={toggleCtaSection}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                      padding: '0.4rem 0.85rem',
-                      borderRadius: '6px',
-                      border: 'none',
-                      backgroundColor: homeData.cta?.enabled === false ? '#FEE2E2' : '#ECFDF5',
-                      color: homeData.cta?.enabled === false ? '#DC2626' : '#047857',
-                      fontSize: '0.76rem',
-                      fontWeight: 650,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {homeData.cta?.enabled === false ? <EyeOff size={14} /> : <Eye size={14} />}
-                    {homeData.cta?.enabled === false ? 'Section Hidden' : 'Section Active'}
-                  </button>
+                  <CmsToggle
+                    checked={homeData.cta?.enabled !== false}
+                    onChange={toggleCtaSection}
+                    size="md"
+                  />
                 </div>
                 <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
                   Control the closing CTA section, background image, copy, links, and element visibility.
@@ -5079,26 +4969,11 @@ export default function AdminHomePage() {
                       </div>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleSectionVisibility(sec.id)}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.35rem',
-                        padding: '0.35rem 0.75rem',
-                        borderRadius: '9999px',
-                        border: '1px solid rgba(0, 0, 0, 0.1)',
-                        backgroundColor: sec.visible ? '#FFFFFF' : '#F4F4F5',
-                        color: sec.visible ? '#16A34A' : '#71717A',
-                        fontSize: '0.74rem',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {sec.visible ? <Eye size={13} /> : <EyeOff size={13} />}
-                      {sec.visible ? 'Visible' : 'Hidden'}
-                    </button>
+                    <CmsToggle
+                      checked={sec.visible !== false}
+                      onChange={() => handleSectionVisibility(sec.id)}
+                      size="sm"
+                    />
                   </div>
                 ))}
               </div>
@@ -5108,7 +4983,7 @@ export default function AdminHomePage() {
       </div>
 
       {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
-      <div style={{ height: '100%' }}>
+      <div className="admin-preview-sticky">
         <LivePreviewPanel previewUrl="/" />
       </div>
 

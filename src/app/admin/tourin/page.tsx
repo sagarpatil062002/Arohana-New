@@ -6,11 +6,12 @@ import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
-import { Plus, Trash2, Eye, EyeOff, Save, Check, Upload, Compass, ChevronUp, ChevronDown } from 'lucide-react';
+import CmsToggle from '@/components/admin/CmsToggle';
+import { Plus, Trash2, Eye, EyeOff, Save, Check, Upload, Compass, ChevronUp, ChevronDown, GripVertical, FileText, Briefcase } from 'lucide-react';
 
 /**
  * Reusable enable / disable switch used across every Tourin field.
- * Every Tourin element is individually controllable from the Admin CRM.
+ * Standardized across the entire Admin CRM using CmsToggle.
  */
 function ToggleSwitch({
   checked,
@@ -22,55 +23,11 @@ function ToggleSwitch({
   label?: string;
 }) {
   return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      onClick={() => onChange(!checked)}
-      title={label || 'Enable / Disable'}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '0.4rem',
-        padding: '0.22rem 0.6rem 0.22rem 0.3rem',
-        borderRadius: '9999px',
-        border: `1px solid ${checked ? 'rgba(22,163,74,0.35)' : 'rgba(0,0,0,0.15)'}`,
-        backgroundColor: checked ? 'rgba(22,163,74,0.08)' : '#F4F4F5',
-        color: checked ? '#15803D' : '#8A8A92',
-        fontSize: '0.66rem',
-        fontWeight: 700,
-        letterSpacing: '0.05em',
-        textTransform: 'uppercase',
-        cursor: 'pointer',
-        whiteSpace: 'nowrap',
-      }}
-    >
-      <span
-        style={{
-          width: '30px',
-          height: '16px',
-          borderRadius: '9999px',
-          backgroundColor: checked ? '#16A34A' : '#D4D4D8',
-          position: 'relative',
-          transition: 'background-color 0.2s ease',
-          flexShrink: 0,
-        }}
-      >
-        <span
-          style={{
-            position: 'absolute',
-            top: '2px',
-            left: checked ? '16px' : '2px',
-            width: '12px',
-            height: '12px',
-            borderRadius: '50%',
-            backgroundColor: '#FFFFFF',
-            transition: 'left 0.2s ease',
-          }}
-        />
-      </span>
-      {checked ? 'ON' : 'OFF'}
-    </button>
+    <CmsToggle
+      checked={checked}
+      onChange={() => onChange(!checked)}
+      size="sm"
+    />
   );
 }
 
@@ -105,7 +62,7 @@ function FieldLabel({
 export default function AdminTourinPage() {
   const { content, saveDraft, updateDraftInMemory, publishSection } = useCmsContent();
   const [tourinData, setTourinData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'destination' | 'philosophy' | 'journeys' | 'proof'>('hero');
+  const [activeTab, setActiveTab] = useState<'hero' | 'genesis' | 'destination' | 'philosophy' | 'journeys' | 'proof' | 'order'>('hero');
   const [selectedJourneyId, setSelectedJourneyId] = useState<string | null>('slow-ladakh');
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const [mediaTarget, setMediaTarget] = useState<'journey' | 'image1' | 'image2' | 'image3' | null>(null);
@@ -335,7 +292,7 @@ export default function AdminTourinPage() {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: '1.5rem', height: 'calc(100vh - 120px)' }}>
+    <div className="admin-split-grid">
       {/* ─── LEFT COLUMN: SECTION-BY-SECTION TOURIN EDITOR ─── */}
       <div
         style={{
@@ -344,57 +301,78 @@ export default function AdminTourinPage() {
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
           border: '1px solid rgba(0, 0, 0, 0.08)',
-          overflow: 'hidden',
+          minWidth: 0,
+          width: '100%',
         }}
       >
         <div
           style={{
-            padding: '1.15rem 1.5rem',
+            padding: '0.85rem 1.5rem',
             borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#FFFFFF',
+            flexWrap: 'wrap',
+            gap: '0.75rem',
+            flexShrink: 0,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-            <div>
-              <h2 style={{ fontSize: '1.15rem', fontWeight: 650, margin: 0, color: '#111113' }}>
-                Tourin Venture &amp; Journeys
-              </h2>
-              <div style={{ fontSize: '0.76rem', color: '#71717A' }}>
-                Destination thinking, high-altitude expeditions &amp; philosophy.
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
+              Tourin Journeys
             </div>
+            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', backgroundColor: '#F4F4F5', color: '#52525B', fontWeight: 600 }}>
+              {tourinData.journeys?.length || 3} Journeys
+            </span>
 
-            {/* Quick Section Dropdown Selector */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#52525B' }}>Section:</span>
-              <select
-                value={activeTab}
-                onChange={(e) => setActiveTab(e.target.value as any)}
+            {/* Segmented Toggle: Editor vs Order & Visibility */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab(activeTab === 'order' ? 'hero' : activeTab)}
                 style={{
-                  padding: '0.35rem 0.65rem',
+                  padding: '0.3rem 0.75rem',
                   borderRadius: '6px',
-                  border: '1px solid rgba(0, 0, 0, 0.15)',
-                  backgroundColor: '#FFFFFF',
-                  color: '#111113',
-                  fontSize: '0.78rem',
-                  fontWeight: 650,
+                  border: 'none',
+                  backgroundColor: activeTab !== 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab !== 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
                   cursor: 'pointer',
-                  outline: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab !== 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
                 }}
               >
-                <option value="hero">01: Hero &amp; Story</option>
-                <option value="genesis">02: The Genesis</option>
-                <option value="destination">03: Where We Go</option>
-                <option value="philosophy">04: Philosophy</option>
-                <option value="journeys">05: Journeys</option>
-                <option value="proof">06: Journeys Taken (Proof)</option>
-              </select>
+                <FileText size={12} />
+                Editor
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('order')}
+                style={{
+                  padding: '0.3rem 0.75rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: activeTab === 'order' ? '#FFFFFF' : 'transparent',
+                  color: activeTab === 'order' ? '#111113' : '#71717A',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  boxShadow: activeTab === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+                }}
+              >
+                <GripVertical size={12} />
+                Order &amp; Visibility
+              </button>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.65rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
             {activeTab === 'journeys' && (
               <button
                 type="button"
@@ -417,6 +395,8 @@ export default function AdminTourinPage() {
                 Add Journey
               </button>
             )}
+
+            {/* Amber pill: Save Draft */}
             <button
               type="button"
               onClick={handleSave}
@@ -424,19 +404,23 @@ export default function AdminTourinPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                padding: '0.45rem 1rem',
+                padding: '0.45rem 0.95rem',
                 borderRadius: '9999px',
-                border: '1px solid rgba(0, 0, 0, 0.15)',
-                backgroundColor: '#FFFFFF',
-                color: '#111113',
+                border: '1px solid #D97706',
+                backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+                color: savedStatus ? '#16A34A' : '#92400E',
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                transition: 'all 0.15s ease',
               }}
             >
-              {savedStatus ? <Check size={14} /> : <Save size={14} />}
-              {savedStatus ? 'Draft Saved' : 'Save Draft'}
+              {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+              <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
             </button>
+
+            {/* Red pill: Publish Live */}
             <button
               type="button"
               onClick={handlePublishLive}
@@ -447,15 +431,16 @@ export default function AdminTourinPage() {
                 padding: '0.45rem 1.15rem',
                 borderRadius: '9999px',
                 border: 'none',
-                backgroundColor: '#16A34A',
+                backgroundColor: '#DE322D',
                 color: '#FFFFFF',
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               }}
             >
-              <Check size={14} />
-              Publish Live
+              <Upload size={13} />
+              <span>Publish This Page</span>
             </button>
           </div>
         </div>
@@ -476,7 +461,9 @@ export default function AdminTourinPage() {
             { id: 'genesis', label: '02: The Genesis' },
             { id: 'destination', label: '03: Where We Go' },
             { id: 'philosophy', label: '04: Philosophy' },
-            { id: 'proof', label: '05: Journeys Taken' },
+            { id: 'journeys', label: `05: Curated Journeys (${tourinData.journeys?.length || 0})` },
+            { id: 'proof', label: '06: Journeys Taken' },
+            { id: 'order', label: 'Order & Visibility' },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
@@ -494,8 +481,12 @@ export default function AdminTourinPage() {
                   borderRadius: '6px',
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
                 }}
               >
+                {tab.id === 'order' && <GripVertical size={13} />}
                 {tab.label}
               </button>
             );
@@ -1233,11 +1224,141 @@ export default function AdminTourinPage() {
           </div>
         )}
 
+        {/* ─── TAB 07: ORDER & VISIBILITY ─── */}
+        {activeTab === 'order' && (
+          <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Section Sequence &amp; Visibility Controls
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                Reorder or toggle visibility for each of the live /tourin venture sections. Live preview updates instantly.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {[
+                { id: 'hero', name: '01: Hero & Strategic Story', type: 'hero', visible: tourinData.hero?.enabled !== false, onToggle: () => handleHeroChange('enabled', tourinData.hero?.enabled === false) },
+                { id: 'genesis', name: '02: The Genesis & Foundation', type: 'story', visible: tourinData.genesis?.enabled !== false, onToggle: () => handleGenesisChange('enabled', tourinData.genesis?.enabled === false) },
+                { id: 'destination', name: '03: Where We Go (High-Altitude Destinations)', type: 'showcase', visible: tourinData.destination?.enabled !== false, onToggle: () => handleDestinationChange('enabled', tourinData.destination?.enabled === false) },
+                { id: 'philosophy', name: '04: Operating Philosophy (5 Pillars)', type: 'philosophy', visible: tourinData.philosophy?.enabled !== false, onToggle: () => handlePhilosophyChange('enabled', tourinData.philosophy?.enabled === false) },
+                { id: 'journeys', name: `05: Curated Journeys (${tourinData.journeys?.length || 0} Itineraries)`, type: 'itineraries', visible: tourinData.journeysEnabled !== false, onToggle: () => applyTourinUpdate({ ...tourinData, journeysEnabled: tourinData.journeysEnabled === false }) },
+                { id: 'proof', name: '06: Journeys Taken (Proof & Visual Field Log)', type: 'proof', visible: tourinData.proof?.enabled !== false, onToggle: () => applyTourinUpdate({ ...tourinData, proof: { ...(tourinData.proof || {}), enabled: tourinData.proof?.enabled === false } }) },
+              ].map((sec, idx) => (
+                <div
+                  key={sec.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '10px',
+                    backgroundColor: sec.visible ? '#FFFFFF' : '#FAFAFA',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    opacity: sec.visible ? 1 : 0.6,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                      0{idx + 1}
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                        {sec.name}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>
+                        ID: {sec.id} &bull; Type: {sec.type}
+                      </div>
+                    </div>
+                  </div>
+
+                  <CmsToggle
+                    checked={sec.visible}
+                    onChange={sec.onToggle}
+                    size="sm"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Curated Journeys Reordering */}
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                    Curated Journeys List ({tourinData.journeys?.length || 0} Itineraries)
+                  </h4>
+                  <p style={{ fontSize: '0.74rem', color: '#71717A', margin: '0.15rem 0 0 0' }}>
+                    Toggle individual journey visibility or jump to edit details.
+                  </p>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                {(tourinData.journeys || []).map((j: any, idx: number) => (
+                  <div
+                    key={j.id || idx}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0.65rem 0.85rem',
+                      borderRadius: '8px',
+                      backgroundColor: j.published !== false ? '#FFFFFF' : '#FAFAFA',
+                      border: '1px solid rgba(0,0,0,0.08)',
+                      opacity: j.published !== false ? 1 : 0.65,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                      <div>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
+                          {j.title || 'Untitled Journey'}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#71717A' }}>
+                          {j.duration || ''} &bull; {j.type || ''}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedJourneyId(j.id);
+                          setActiveTab('journeys');
+                        }}
+                        style={{
+                          padding: '0.25rem 0.6rem',
+                          borderRadius: '6px',
+                          border: '1px solid rgba(0,0,0,0.12)',
+                          backgroundColor: '#FFFFFF',
+                          fontSize: '0.72rem',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <CmsToggle
+                        checked={j.published !== false}
+                        onChange={() => handleTogglePublished(j.id)}
+                        size="sm"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
 
       {/* ─── RIGHT COLUMN: REAL-TIME LIVE PREVIEW ─── */}
-      <div style={{ height: '100%' }}>
+      <div className="admin-preview-sticky">
         <LivePreviewPanel previewUrl="/tourin" />
       </div>
 

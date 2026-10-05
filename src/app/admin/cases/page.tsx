@@ -7,6 +7,7 @@ import { useCmsContent } from '@/lib/cms/content-context';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 import MediaPickerModal from '@/components/admin/MediaPickerModal';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import CmsToggle from '@/components/admin/CmsToggle';
 import {
   Plus,
   Trash2,
@@ -28,6 +29,7 @@ import {
   ArrowRight,
   ChevronUp,
   ChevronDown,
+  GripVertical,
 } from 'lucide-react';
 
 const DEFAULT_CASE_DETAILS: Record<string, any> = {
@@ -92,7 +94,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
     closingText: 'Have a multi-entity or diversified business challenge? Let’s talk.',
   },
   'she': {
-    subtitle: 'Self Help Empower · Ladakh Border Villages · Operation Sadbhavana',
+    subtitle: 'Health initiative from concept to communities - On ground',
     heroImage: '/images/case-studies/she/she-hero.jpg',
     heroImageCaption: 'SHE Initiative — connecting Ladakh border village women through education, entrepreneurship, and documentary storytelling.',
     sector: 'Institutions · Social Impact · Community Development',
@@ -102,7 +104,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
       duration: 'Project-Based Engagement',
       coreCapabilities: [
         'Brand Identity Design',
-        'Documentary Production & Storytelling',
+        'Documentary Production',
         'Field Cinematography',
         'Institutional Communication',
         'Operation Sadbhavana Documentation',
@@ -113,7 +115,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
       'The organisation had meaningful work on the ground but lacked a coherent brand identity and documented communication assets to represent that work to institutional funders, government partners and wider audiences.',
     ],
     realChallenge: [
-      'Communicating the reality of life and development programmes across high-altitude border villages requires on-ground presence, not remote production. The stories exist but needed careful documentation and narrative structure.',
+      'Communicating the reality of health, education and community development initiatives across high-altitude border villages requires on-ground presence, not remote production. The stories exist but needed careful documentation and narrative structure.',
       'The identity had to feel both institutionally credible and human — reflecting the dignity of the women and communities being served.',
     ],
     thinking: [
@@ -158,6 +160,7 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
 export default function AdminCasesPage() {
   const { content, saveDraft, publishSection, updateDraftInMemory, publishAll } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
+  const [viewMode, setViewMode] = useState<'editor' | 'order'>('editor');
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
   const [searchQuery, setSearchQuery] = useState('');
@@ -454,7 +457,7 @@ export default function AdminCasesPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 72px)', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {/* ── TOP ACTION HEADER ── */}
       <div
         style={{
@@ -464,10 +467,12 @@ export default function AdminCasesPage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
           flexShrink: 0,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
           <div style={{ fontSize: '1rem', fontWeight: 700, color: '#111113' }}>
             Case Studies Directory
           </div>
@@ -483,59 +488,218 @@ export default function AdminCasesPage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.3rem',
-              marginLeft: '0.5rem',
+              marginLeft: '0.25rem',
               fontWeight: 600,
             }}
           >
             <Briefcase size={13} />
-            <span>Go to Work Page & Reels</span>
+            <span>Go to Work Page &amp; Reels</span>
           </Link>
+
+          {/* View Mode: Editor vs Order & Visibility */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', backgroundColor: '#F4F4F5', borderRadius: '8px', padding: '2px', marginLeft: '0.5rem' }}>
+            <button
+              type="button"
+              onClick={() => setViewMode('editor')}
+              style={{
+                padding: '0.3rem 0.75rem',
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: viewMode === 'editor' ? '#FFFFFF' : 'transparent',
+                color: viewMode === 'editor' ? '#111113' : '#71717A',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                boxShadow: viewMode === 'editor' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+              }}
+            >
+              <FileText size={12} />
+              Editor
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('order')}
+              style={{
+                padding: '0.3rem 0.75rem',
+                borderRadius: '6px',
+                border: 'none',
+                backgroundColor: viewMode === 'order' ? '#FFFFFF' : 'transparent',
+                color: viewMode === 'order' ? '#111113' : '#71717A',
+                fontSize: '0.76rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                boxShadow: viewMode === 'order' ? '0 1px 3px rgba(0,0,0,0.06)' : 'none',
+              }}
+            >
+              <GripVertical size={12} />
+              Order &amp; Visibility
+            </button>
+          </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          {/* Amber pill: Save Draft */}
           <button
             type="button"
             onClick={() => handleSaveDraft()}
+            title="Save draft to CRM"
             style={{
-              padding: '0.5rem 1.1rem',
-              borderRadius: '6px',
-              backgroundColor: '#111113',
-              color: '#FFFFFF',
-              fontSize: '0.82rem',
-              fontWeight: 600,
-              border: 'none',
-              cursor: 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.45rem',
+              padding: '0.45rem 0.95rem',
+              borderRadius: '9999px',
+              border: '1px solid #D97706',
+              backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+              color: savedStatus ? '#16A34A' : '#92400E',
+              fontSize: '0.78rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              transition: 'all 0.15s ease',
             }}
           >
-            {savedStatus ? <Check size={14} color="#4ADE80" /> : null}
-            <span>{savedStatus ? 'Saved & Synced' : 'Save Changes'}</span>
+            {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+            <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
           </button>
+
+          {/* Red pill: Publish Live */}
           <button
             type="button"
             onClick={handlePublishLive}
             style={{
-              padding: '0.5rem 1.1rem',
-              borderRadius: '6px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.45rem 1.15rem',
+              borderRadius: '9999px',
+              border: 'none',
               backgroundColor: '#DE322D',
               color: '#FFFFFF',
-              fontSize: '0.82rem',
+              fontSize: '0.78rem',
               fontWeight: 600,
-              border: 'none',
               cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
             }}
           >
-            Publish Live
+            <Upload size={13} />
+            <span>Publish This Page</span>
           </button>
         </div>
       </div>
 
       {/* ── SPLIT MAIN WORKSPACE: LEFT EDITOR | RIGHT LIVE PREVIEW ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', flex: 1, overflow: 'hidden' }}>
-        {/* LEFT COLUMN: CASE STUDIES SELECTOR + SUBTABS EDITOR */}
-        <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', height: '100%', overflow: 'hidden', borderRight: '1px solid rgba(0, 0, 0, 0.08)' }}>
+      <div className="admin-split-grid" style={{ padding: '1rem' }}>
+        {/* LEFT COLUMN: CASE STUDIES SELECTOR + SUBTABS EDITOR OR ORDER VIEW */}
+        {viewMode === 'order' ? (
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '16px',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.25rem',
+              minWidth: 0,
+              width: '100%',
+            }}
+          >
+            <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                Case Studies Sequence &amp; Visibility Controls
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.2rem 0 0 0' }}>
+                Reorder or toggle visibility for each of the {workData.caseStudies?.length || 0} case studies. Live preview and website update instantly.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {(workData.caseStudies || []).map((cs: any, idx: number, arr: any[]) => (
+                <div
+                  key={cs.id || idx}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.75rem 1rem',
+                    borderRadius: '10px',
+                    backgroundColor: cs.enabled !== false && cs.published !== false ? '#FFFFFF' : '#FAFAFA',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    opacity: cs.enabled !== false && cs.published !== false ? 1 : 0.65,
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      <button
+                        type="button"
+                        disabled={idx === 0}
+                        onClick={() => handleMoveCase(idx, 'up')}
+                        style={{ border: 'none', background: 'transparent', cursor: idx === 0 ? 'not-allowed' : 'pointer', padding: 0 }}
+                      >
+                        <ChevronUp size={14} color={idx === 0 ? '#D4D4D8' : '#71717A'} />
+                      </button>
+                      <button
+                        type="button"
+                        disabled={idx === arr.length - 1}
+                        onClick={() => handleMoveCase(idx, 'down')}
+                        style={{ border: 'none', background: 'transparent', cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
+                      >
+                        <ChevronDown size={14} color={idx === arr.length - 1 ? '#D4D4D8' : '#71717A'} />
+                      </button>
+                    </div>
+
+                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#71717A', width: '22px' }}>
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 600, color: '#111113' }}>
+                        {cs.title || 'Untitled Project'}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#71717A' }}>
+                        {cs.client || 'Client'} &bull; {cs.category || 'Category'} &bull; Slug: /{cs.slug || cs.id}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedCaseId(cs.id || cs.slug);
+                        setViewMode('editor');
+                      }}
+                      style={{
+                        padding: '0.3rem 0.65rem',
+                        borderRadius: '6px',
+                        border: '1px solid rgba(0,0,0,0.12)',
+                        backgroundColor: '#FFFFFF',
+                        fontSize: '0.74rem',
+                        fontWeight: 600,
+                        color: '#111113',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Edit Content
+                    </button>
+                    <CmsToggle
+                      checked={cs.enabled !== false && cs.published !== false}
+                      onChange={() => toggleCaseEnabled(cs.id || cs.slug)}
+                      size="sm"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', backgroundColor: '#FFFFFF', borderRadius: '16px', border: '1px solid rgba(0, 0, 0, 0.08)', overflow: 'hidden' }}>
           {/* Sub-Sidebar: Project Cards List */}
           <div
             style={{
@@ -829,26 +993,11 @@ export default function AdminCasesPage() {
                             >
                               {selectedCase.enabled !== false && selectedCase.published !== false ? 'Active on Website' : 'Hidden / Disabled'}
                             </span>
-                            <button
-                              type="button"
-                              onClick={() => toggleCaseEnabled(selectedCase.id || selectedCase.slug)}
-                              style={{
-                                border: 'none',
-                                padding: '0.25rem 0.6rem',
-                                borderRadius: '4px',
-                                fontSize: '0.72rem',
-                                fontWeight: 650,
-                                cursor: 'pointer',
-                                backgroundColor: selectedCase.enabled !== false && selectedCase.published !== false ? '#FEE2E2' : '#DCFCE7',
-                                color: selectedCase.enabled !== false && selectedCase.published !== false ? '#DC2626' : '#15803D',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.3rem',
-                              }}
-                            >
-                              {selectedCase.enabled !== false && selectedCase.published !== false ? <EyeOff size={12} /> : <Eye size={12} />}
-                              {selectedCase.enabled !== false && selectedCase.published !== false ? 'Disable Work' : 'Enable Work'}
-                            </button>
+                            <CmsToggle
+                              checked={selectedCase.enabled !== false && selectedCase.published !== false}
+                              onChange={() => toggleCaseEnabled(selectedCase.id || selectedCase.slug)}
+                              size="sm"
+                            />
                           </div>
                         </div>
                         <div style={{ fontSize: '0.7rem', color: '#64748B', lineHeight: 1.4 }}>
@@ -990,20 +1139,18 @@ export default function AdminCasesPage() {
                         </div>
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', paddingTop: '0.5rem' }}>
-                        <input
-                          type="checkbox"
-                          id="publish-toggle"
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.5rem' }}>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 500, color: '#111113' }}>
+                          Publish on website:
+                        </span>
+                        <CmsToggle
                           checked={selectedCase.enabled !== false && selectedCase.published !== false}
-                          onChange={(e) => {
-                            handleCaseChange('published', e.target.checked);
-                            handleCaseChange('enabled', e.target.checked);
+                          onChange={(next) => {
+                            handleCaseChange('published', next);
+                            handleCaseChange('enabled', next);
                           }}
-                          style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                          size="sm"
                         />
-                        <label htmlFor="publish-toggle" style={{ fontSize: '0.82rem', fontWeight: 500, color: '#111113', cursor: 'pointer' }}>
-                          Publish on website (Uncheck to hide)
-                        </label>
                       </div>
 
                       <div style={{ paddingTop: '1rem', borderTop: '1px solid rgba(0, 0, 0, 0.08)' }}>
@@ -1943,9 +2090,10 @@ export default function AdminCasesPage() {
             )}
           </div>
         </div>
+        )}
 
         {/* RIGHT COLUMN: INTERACTIVE LIVE PREVIEW */}
-        <div style={{ height: '100%', overflow: 'hidden', backgroundColor: '#F4F4F5' }}>
+        <div className="admin-preview-sticky">
           <LivePreviewPanel
             key={previewKey}
             previewUrl={`/work/${selectedCase?.slug || selectedCase?.id || 'raysons-group'}`}

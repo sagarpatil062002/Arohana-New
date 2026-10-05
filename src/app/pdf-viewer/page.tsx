@@ -6,10 +6,10 @@ import ReusablePdfViewer from '@/components/pdf/ReusablePdfViewer';
 
 function PdfViewerContent() {
   const searchParams = useSearchParams();
-  const url = searchParams.get('url') || searchParams.get('pdf') || '';
-  const title = searchParams.get('title') || 'PDF Document Viewer';
-  const subtitle = searchParams.get('subtitle') || 'Institutional Publication Archive';
-  const backUrl = searchParams.get('back') || searchParams.get('returnUrl') || '/indian-army-projects';
+  const url = searchParams?.get('url') || searchParams?.get('pdf') || '';
+  const title = searchParams?.get('title') || 'PDF Document Viewer';
+  const subtitle = searchParams?.get('subtitle') || 'Institutional Publication Archive';
+  const backUrl = searchParams?.get('back') || searchParams?.get('returnUrl') || '/indian-army-projects';
 
   return (
     <ReusablePdfViewer

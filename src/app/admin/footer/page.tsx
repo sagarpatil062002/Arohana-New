@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCmsContent } from '@/lib/cms/content-context';
-import { Save, Check, ExternalLink, X } from 'lucide-react';
+import { Save, Check, ExternalLink, X, FileText, Upload } from 'lucide-react';
 import LivePreviewPanel from '@/components/admin/LivePreviewPanel';
 
 export default function AdminFooterPage() {
@@ -127,6 +127,7 @@ export default function AdminFooterPage() {
             <ExternalLink size={14} /> Open Site
           </a>
 
+          {/* Amber pill: Save Draft */}
           <button
             type="button"
             onClick={handleSave}
@@ -134,21 +135,23 @@ export default function AdminFooterPage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.45rem',
-              padding: '0.55rem 1.4rem',
+              padding: '0.45rem 0.95rem',
               borderRadius: '9999px',
-              border: 'none',
-              backgroundColor: savedStatus ? '#16A34A' : '#DE322D',
-              color: '#FFFFFF',
-              fontSize: '0.82rem',
+              border: '1px solid #D97706',
+              backgroundColor: savedStatus ? '#F0FDF4' : '#FEF3C7',
+              color: savedStatus ? '#16A34A' : '#92400E',
+              fontSize: '0.78rem',
               fontWeight: 600,
               cursor: 'pointer',
-              transition: 'all 0.2s ease',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              transition: 'all 0.15s ease',
             }}
           >
-            {savedStatus ? <Check size={15} /> : <Save size={15} />}
-            {savedStatus ? 'Draft Saved!' : 'Save Draft'}
+            {savedStatus ? <Check size={13} /> : <FileText size={13} />}
+            <span>{savedStatus ? 'Draft Saved' : 'Save Draft'}</span>
           </button>
 
+          {/* Red pill: Publish Live */}
           <button
             type="button"
             onClick={handlePublish}
@@ -156,19 +159,20 @@ export default function AdminFooterPage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.45rem',
-              padding: '0.55rem 1.4rem',
+              padding: '0.45rem 1.15rem',
               borderRadius: '9999px',
               border: 'none',
               backgroundColor: '#DE322D',
               color: '#FFFFFF',
-              fontSize: '0.82rem',
+              fontSize: '0.78rem',
               fontWeight: 600,
               cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(222, 50, 45, 0.25)',
               transition: 'all 0.2s ease',
             }}
           >
-            <ExternalLink size={15} />
-            Publish Live
+            <Upload size={13} />
+            <span>Publish This Page</span>
           </button>
         </div>
       </div>
@@ -278,7 +282,7 @@ export default function AdminFooterPage() {
         </div>
 
         {/* Live Preview Panel */}
-        <div style={{ position: 'sticky', top: '1.5rem', height: 'calc(100vh - 7rem)' }}>
+        <div className="admin-preview-sticky">
           <LivePreviewPanel previewUrl="/" title="Site Footer Preview" />
         </div>
       </div>
