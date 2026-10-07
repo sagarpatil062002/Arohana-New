@@ -20,30 +20,30 @@ interface CapabilityItemData {
 const CAPABILITIES_DATA: CapabilityItemData[] = [
   {
     title: 'Digital Brand Growth',
-    tags: [],
-    image: '/images/services/digital-growth.jpg',
+    tags: ['Brand Strategy', 'Social Media', 'Performance Marketing'],
+    image: '/uploads/1790912051772-digital-brand-growth.png',
     alt: 'Digital brand growth and social media management',
     description:
       'Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.',
     href: '/services#digital-growth',
   },
   {
-    title: 'Content Production',
-    tags: [],
-    image: '/images/services/content-production.jpg',
+    title: 'Hospitality Consulting',
+    tags: ['Menu Engineering', 'Operational SOPs', 'Guest Experience'],
+    image: '/uploads/1790913265172-hospitality---experience.png',
+    alt: 'Hospitality consulting and experiential systems',
+    description:
+      'Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.',
+    href: '/services#hospitality-consulting',
+  },
+  {
+    title: 'Content & Brand Production',
+    tags: ['Cinematic Films', 'Scripting', 'Multi-Platform Storytelling'],
+    image: '/uploads/1790913249447-content-production.png',
     alt: 'Content and brand production from scripting through post-production',
     description:
       'Taking brand stories from concept and scripting to production, post-production and multi-platform communication.',
     href: '/services#content-production',
-  },
-  {
-    title: 'Hospitality & Experience',
-    tags: [],
-    image: '/images/case-studies/raysons/neora-1.jpg',
-    alt: 'Neora Deck hospitality consulting and visual storytelling',
-    description:
-      'Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.',
-    href: '/services#hospitality-consulting',
   },
 ];
 
@@ -134,8 +134,8 @@ export default function ServicesSection() {
   const isPillarsEnabled = srvCms?.pillarsEnabled !== false;
 
   const activeEyebrow = srvCms?.eyebrow || 'CAPABILITIES & PRACTICE AREAS';
-  const activeTitle = srvCms?.title || 'Three distinct capabilities. One strategic spine.';
-  const activeDesc = srvCms?.description && srvCms.description.length < 200
+  const activeTitle = srvCms?.title || srvCms?.headline || 'Three distinct capabilities. One strategic spine.';
+  const activeDesc = srvCms?.description
     ? srvCms.description
     : 'Ārohana combines commercial thinking, sector experience and creative execution to build brands and operational systems across environments.';
 
@@ -271,6 +271,7 @@ export default function ServicesSection() {
 
   return (
     <section
+      id="practice-areas"
       ref={sectionRef}
       style={{
         position: 'relative',
@@ -366,6 +367,8 @@ export default function ServicesSection() {
               </div>
             </div>
           )}
+
+
 
           {/* ============================================================
               SHARP FLIPPING NUMBERS GRID (ANIMATES EVERY TIME IN VIEW)

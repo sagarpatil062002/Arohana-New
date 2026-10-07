@@ -30,6 +30,9 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { getSectionContent } from '@/lib/cms/content-manager';
 
 export default function RootLayout({

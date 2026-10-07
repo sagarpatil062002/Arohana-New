@@ -19,28 +19,31 @@ export default function AdminRootLayout({ children }: { children: React.ReactNod
       return;
     }
 
-    // If browser was closed, sessionStorage is automatically wiped
-    if (typeof window !== 'undefined' && !sessionStorage.getItem('arohana_admin_session')) {
-      fetch('/api/auth/login', { method: 'DELETE' }).finally(() => {
-        setIsAuthenticated(false);
-        router.push('/admin/login');
-      });
-      return;
-    }
-
+    // Verify authentication via HTTP cookie check API
     fetch('/api/auth/check')
       .then((r) => r.json())
       .then((data) => {
         if (data.isAuthenticated) {
           setIsAuthenticated(true);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('arohana_admin_session', 'active');
+          }
         } else {
           setIsAuthenticated(false);
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('arohana_admin_session');
+          }
           router.push('/admin/login');
         }
       })
       .catch(() => {
-        setIsAuthenticated(false);
-        router.push('/admin/login');
+        // Fallback: check localStorage before redirecting to prevent network blip logouts
+        if (typeof window !== 'undefined' && localStorage.getItem('arohana_admin_session') === 'active') {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          router.push('/admin/login');
+        }
       });
   }, [pathname, isLoginPage, router]);
 

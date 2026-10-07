@@ -8,37 +8,43 @@
     },
     {
       "id": "pov",
-      "name": "02: What We Do",
+      "name": "02: Point of View (Philosophy & Approach)",
       "visible": true,
       "type": "philosophy"
     },
     {
+      "id": "whatWeDo",
+      "name": "03: What We Do (Visual & Scope)",
+      "visible": true,
+      "type": "whatWeDo"
+    },
+    {
       "id": "work",
-      "name": "03: Work Proof",
+      "name": "04: Work Proof (The work is the proof.)",
       "visible": true,
       "type": "showcase"
     },
     {
       "id": "services",
-      "name": "04: Practice Areas and Scope (Digital Growth, Content, Hospitality)",
+      "name": "05: Practice Areas and Scope (Numbers & Capabilities)",
       "visible": true,
       "type": "services"
     },
     {
       "id": "brands",
-      "name": "05: Trusted by Brands & Institutions",
+      "name": "06: Trusted by Brands & Institutions",
       "visible": true,
       "type": "brands"
     },
     {
       "id": "army",
-      "name": "06: Army Section",
+      "name": "07: Army Section",
       "visible": true,
       "type": "spotlight"
     },
     {
       "id": "cta",
-      "name": "07: Interactive CTA",
+      "name": "08: Interactive CTA",
       "visible": true,
       "type": "cta"
     }
@@ -480,34 +486,99 @@
       }
     ]
   },
+  "whatWeDo": {
+    "enabled": true,
+    "eyebrow": "WHAT WE DO",
+    "showEyebrow": false,
+    "title": "What We Do",
+    "showHeadline": true,
+    "description": "We help businesses build stronger brands, communicate better and grow through digitally. Our work spans digital brand growth, hospitality consulting and content & brand production — bringing strategy, creativity and execution together to meet the needs of each business.",
+    "showDescription": true,
+    "image": "/uploads/1790913499091-hero--what-we-do-collage.png",
+    "showImage": true,
+    "services": [
+      {
+        "id": "digital-brand-growth",
+        "index": "01",
+        "title": "Digital Brand Growth",
+        "description": "Content strategy, social media management, performance marketing, and end-to-end digital brand growth.",
+        "href": "/services#digital-growth",
+        "enabled": true
+      },
+      {
+        "id": "hospitality-consulting",
+        "index": "02",
+        "title": "Hospitality Consulting",
+        "description": "Concept, menu engineering, guest journeys, kitchen pass, and operational hospitality systems.",
+        "href": "/services#hospitality-consulting",
+        "enabled": true
+      },
+      {
+        "id": "content-brand-production",
+        "index": "03",
+        "title": "Content & Brand Production",
+        "description": "Ideation, scripting, high-end shoot, post-production, photography, and campaign production.",
+        "href": "/services#content-production",
+        "enabled": true
+      }
+    ]
+  },
   "services": {
-    "eyebrow": "PRACTICE AREAS & SCOPE",
+    "enabled": true,
+    "eyebrow": "CAPABILITIES & PRACTICE AREAS",
     "title": "Three distinct capabilities. One strategic spine.",
-    "description": "We adapt our engagement model to what the client's business actually demands.",
+    "description": "Ārohana combines commercial thinking, sector experience and creative execution to build brands and operational systems across environments.",
+    "showEyebrow": true,
+    "showHeadline": true,
+    "showDescription": true,
+    "pillarsEnabled": true,
     "items": [
       {
-        "num": "1",
+        "num": "01",
         "title": "Digital Brand Growth",
-        "tags": [],
-        "image": "/uploads/1790912051772-digital-brand-growth.png",
-        "description": "Digital presence that helps brands stay relevant, consistent and connected with their audiences while resulting in business growth.",
-        "href": "/services#digital-growth"
+        "tags": [
+          "Content Strategy",
+          "Social Media Management",
+          "Performance Marketing",
+          "Digital Production",
+          "Website Management & Branding"
+        ],
+        "image": "/images/services/digital-growth.jpg",
+        "description": "Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding",
+        "href": "/services#digital-growth",
+        "enabled": true
       },
       {
-        "num": "2",
+        "num": "02",
         "title": "Content Production",
-        "tags": [],
-        "image": "/uploads/1790913249447-content-production.png",
-        "description": "Taking brand stories from concept and scripting to production, post-production and multi-platform communication.",
-        "href": "/services#content-production"
+        "tags": [
+          "Content Ideation",
+          "Scripting",
+          "Shoot",
+          "Post-Production",
+          "Art Direction",
+          "Photography",
+          "Influencer & UGC Content",
+          "AI Content"
+        ],
+        "image": "/images/services/content-production.jpg",
+        "description": "Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content",
+        "href": "/services#brand-production",
+        "enabled": true
       },
       {
-        "num": "3",
+        "num": "03",
         "title": "Hospitality & Experience",
-        "tags": [],
-        "image": "/uploads/1790913265172-hospitality---experience.png",
-        "description": "Menu creation, operational systems, staff training, revenue optimisation and digital marketing — built from actual hospitality experience.",
-        "href": "/services#hospitality-consulting"
+        "tags": [
+          "Concept & Menu",
+          "Food & Space Shoots",
+          "Kitchen Pass",
+          "Guest Journeys"
+        ],
+        "image": "/images/case-studies/raysons/neora-1.jpg",
+        "description": "Menu design, operational systems, staff workflows, revenue optimisation and digital marketing for hospitality brands.",
+        "href": "/services#hospitality-consulting",
+        "enabled": true
       }
     ]
   },

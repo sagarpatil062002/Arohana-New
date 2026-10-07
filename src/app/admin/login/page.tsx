@@ -27,8 +27,9 @@ export default function AdminLoginPage() {
 
       const data = await res.json();
       if (res.ok && data.success) {
-        // Save session-only token in browser session storage
+        // Save persistent admin session in browser
         if (typeof window !== 'undefined') {
+          localStorage.setItem('arohana_admin_session', 'active');
           sessionStorage.setItem('arohana_admin_session', 'active');
         }
         // Successful login

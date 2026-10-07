@@ -67,10 +67,74 @@ export function CmsProvider({
     setIsDraftMode(isDraftConsumer);
 
     // CRITICAL ARCHITECTURE RULE:
-    // The Live Website must NEVER read from CRM Draft, localStorage, or BroadcastChannel.
+    // The Live Website must never display stale drafts, but must immediately reconcile
+    // to the latest published content without visual delay or flicker of legacy builds.
     if (!isDraftConsumer) {
-      // Live website stays strictly on published data from SSR / layout
-      return;
+      // 1. Instantly check if we have an existing client-side published cache in localStorage
+      try {
+        const cachedPublished = localStorage.getItem('arohana_published_content');
+        if (cachedPublished) {
+          const parsed = JSON.parse(cachedPublished);
+          if (parsed && typeof parsed === 'object') {
+            setContent((prev) => ({
+              ...prev,
+              ...parsed,
+            }));
+          }
+        }
+      } catch (e) {}
+
+      // 2. Listen to BroadcastChannel for real-time live publish events across open tabs
+      let liveChannel: BroadcastChannel | null = null;
+      try {
+        liveChannel = new BroadcastChannel('arohana_cms_sync');
+        liveChannel.onmessage = (event) => {
+          const { type, section, data } = event.data || {};
+          if (type === 'ALL_PUBLISHED' && data) {
+            setContent(clone(data));
+            try {
+              localStorage.setItem('arohana_published_content', JSON.stringify(data));
+            } catch (e) {}
+          } else if (type === 'SECTION_PUBLISHED' && section && data) {
+            setContent((prev) => {
+              const updated = { ...prev, [section]: clone(data) };
+              try {
+                localStorage.setItem('arohana_published_content', JSON.stringify(updated));
+              } catch (e) {}
+              return updated;
+            });
+          }
+        };
+      } catch (e) {}
+
+      // 3. Silent background validation against the latest published API data to guarantee that
+      // any stale CDN edge cache, browser cache, or build-time static HTML immediately reconciles.
+      fetch('/api/content?draft=false', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+        },
+      })
+        .then((r) => r.json())
+        .then((res) => {
+          if (res.success && res.data) {
+            setContent((prev) => ({
+              ...prev,
+              ...res.data,
+            }));
+            try {
+              localStorage.setItem('arohana_published_content', JSON.stringify(res.data));
+            } catch (e) {}
+          }
+        })
+        .catch(() => {});
+
+      return () => {
+        try {
+          liveChannel?.close();
+        } catch (e) {}
+      };
     }
 
     // --- CRM / PREVIEW DRAFT MODE ---
@@ -236,6 +300,11 @@ export function CmsProvider({
       if (json.success && typeof window !== 'undefined') {
         try {
           localStorage.removeItem(`arohana_cms_${section}`);
+          // Update instant client-side published cache
+          const cachedRaw = localStorage.getItem('arohana_published_content');
+          const cachedObj = cachedRaw ? JSON.parse(cachedRaw) : {};
+          cachedObj[section] = payload;
+          localStorage.setItem('arohana_published_content', JSON.stringify(cachedObj));
         } catch (e) {}
 
         const msg = { type: 'SECTION_PUBLISHED', section, data: payload };
@@ -268,6 +337,9 @@ export function CmsProvider({
           const freshJson = await freshRes.json();
           if (freshJson.success && freshJson.data) {
             setContent(clone(freshJson.data));
+            try {
+              localStorage.setItem('arohana_published_content', JSON.stringify(freshJson.data));
+            } catch (e) {}
             if (channelRef.current) {
               channelRef.current.postMessage({ type: 'ALL_PUBLISHED', data: freshJson.data });
             }

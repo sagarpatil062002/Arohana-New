@@ -59,29 +59,48 @@ export function readContentFile<T = any>(filename: string): T | null {
     return deepClone(publishedInMemory[key]) as T;
   }
 
-  // 1. Primary check: CONTENT_DIR
-  try {
-    const filePath = path.join(CONTENT_DIR, cleanName);
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf-8');
-      const parsed = JSON.parse(data) as T;
-      publishedInMemory[key] = deepClone(parsed);
-      return deepClone(parsed);
-    }
-  } catch (err) {
-    console.error(`Error reading ${filename} from CONTENT_DIR:`, err);
-  }
+  const tmpPath = path.join(TMP_CONTENT_DIR, cleanName);
+  const primaryPath = path.join(CONTENT_DIR, cleanName);
 
-  // 2. Fallback check: TMP_CONTENT_DIR
-  try {
-    const tmpPath = path.join(TMP_CONTENT_DIR, cleanName);
-    if (fs.existsSync(tmpPath)) {
+  const hasTmp = fs.existsSync(tmpPath);
+  const hasPrimary = fs.existsSync(primaryPath);
+
+  // Compare timestamps: runtime writes in TMP take precedence over build-time files in CONTENT_DIR
+  if (hasTmp && hasPrimary) {
+    try {
+      const tmpStat = fs.statSync(tmpPath);
+      const primaryStat = fs.statSync(primaryPath);
+      if (tmpStat.mtimeMs >= primaryStat.mtimeMs) {
+        const data = fs.readFileSync(tmpPath, 'utf-8');
+        const parsed = JSON.parse(data) as T;
+        publishedInMemory[key] = deepClone(parsed);
+        return deepClone(parsed);
+      } else {
+        const data = fs.readFileSync(primaryPath, 'utf-8');
+        const parsed = JSON.parse(data) as T;
+        publishedInMemory[key] = deepClone(parsed);
+        return deepClone(parsed);
+      }
+    } catch (err) {
+      console.error(`Error comparing/reading content for ${filename}:`, err);
+    }
+  } else if (hasTmp) {
+    try {
       const data = fs.readFileSync(tmpPath, 'utf-8');
       const parsed = JSON.parse(data) as T;
       publishedInMemory[key] = deepClone(parsed);
       return deepClone(parsed);
+    } catch (e) {}
+  } else if (hasPrimary) {
+    try {
+      const data = fs.readFileSync(primaryPath, 'utf-8');
+      const parsed = JSON.parse(data) as T;
+      publishedInMemory[key] = deepClone(parsed);
+      return deepClone(parsed);
+    } catch (err) {
+      console.error(`Error reading ${filename} from CONTENT_DIR:`, err);
     }
-  } catch (e) {}
+  }
 
   return null;
 }
@@ -101,7 +120,26 @@ export function writeContentFile(filename: string, content: any): boolean {
 
   let written = false;
 
-  // Try writing to primary CONTENT_DIR
+  // 1. Always write to TMP_CONTENT_DIR (guaranteed writable in serverless/container runtimes)
+  try {
+    if (!fs.existsSync(TMP_CONTENT_DIR)) {
+      fs.mkdirSync(TMP_CONTENT_DIR, { recursive: true });
+    }
+    const tmpFilePath = path.join(TMP_CONTENT_DIR, cleanName);
+    fs.writeFileSync(tmpFilePath, JSON.stringify(content, null, 2), 'utf-8');
+    written = true;
+
+    const tmpDraftPath = path.join(TMP_DRAFTS_DIR, `${key}.json`);
+    if (fs.existsSync(tmpDraftPath)) {
+      try {
+        fs.unlinkSync(tmpDraftPath);
+      } catch (e) {}
+    }
+  } catch (tmpErr) {
+    console.error(`Error writing ${filename} to /tmp:`, tmpErr);
+  }
+
+  // 2. Also write to primary CONTENT_DIR if filesystem is writable
   try {
     if (!fs.existsSync(CONTENT_DIR)) {
       fs.mkdirSync(CONTENT_DIR, { recursive: true });
@@ -118,24 +156,7 @@ export function writeContentFile(filename: string, content: any): boolean {
       } catch (e) {}
     }
   } catch (err) {
-    // Fallback if read-only filesystem
-    try {
-      if (!fs.existsSync(TMP_CONTENT_DIR)) {
-        fs.mkdirSync(TMP_CONTENT_DIR, { recursive: true });
-      }
-      const tmpFilePath = path.join(TMP_CONTENT_DIR, cleanName);
-      fs.writeFileSync(tmpFilePath, JSON.stringify(content, null, 2), 'utf-8');
-      written = true;
-
-      const tmpDraftPath = path.join(TMP_DRAFTS_DIR, `${key}.json`);
-      if (fs.existsSync(tmpDraftPath)) {
-        try {
-          fs.unlinkSync(tmpDraftPath);
-        } catch (e) {}
-      }
-    } catch (tmpErr) {
-      console.error(`Error writing ${filename} to /tmp:`, tmpErr);
-    }
+    // Expected on read-only environments (e.g. Vercel serverless)
   }
 
   return written;
@@ -150,27 +171,43 @@ export function readDraftFile<T = any>(sectionKey: string): T | null {
     return deepClone(draftsInMemory[sectionKey]) as T;
   }
 
-  // Check persistent DRAFTS_DIR
-  try {
-    const filePath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf-8');
-      const parsed = JSON.parse(data) as T;
-      draftsInMemory[sectionKey] = deepClone(parsed);
-      return deepClone(parsed);
-    }
-  } catch (err) {}
+  const primaryDraftPath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
+  const tmpDraftPath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
 
-  // Check fallback TMP_DRAFTS_DIR
-  try {
-    const tmpPath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
-    if (fs.existsSync(tmpPath)) {
-      const data = fs.readFileSync(tmpPath, 'utf-8');
+  const hasTmp = fs.existsSync(tmpDraftPath);
+  const hasPrimary = fs.existsSync(primaryDraftPath);
+
+  if (hasTmp && hasPrimary) {
+    try {
+      const tmpStat = fs.statSync(tmpDraftPath);
+      const primaryStat = fs.statSync(primaryDraftPath);
+      if (tmpStat.mtimeMs >= primaryStat.mtimeMs) {
+        const data = fs.readFileSync(tmpDraftPath, 'utf-8');
+        const parsed = JSON.parse(data) as T;
+        draftsInMemory[sectionKey] = deepClone(parsed);
+        return deepClone(parsed);
+      } else {
+        const data = fs.readFileSync(primaryDraftPath, 'utf-8');
+        const parsed = JSON.parse(data) as T;
+        draftsInMemory[sectionKey] = deepClone(parsed);
+        return deepClone(parsed);
+      }
+    } catch (e) {}
+  } else if (hasTmp) {
+    try {
+      const data = fs.readFileSync(tmpDraftPath, 'utf-8');
       const parsed = JSON.parse(data) as T;
       draftsInMemory[sectionKey] = deepClone(parsed);
       return deepClone(parsed);
-    }
-  } catch (e) {}
+    } catch (e) {}
+  } else if (hasPrimary) {
+    try {
+      const data = fs.readFileSync(primaryDraftPath, 'utf-8');
+      const parsed = JSON.parse(data) as T;
+      draftsInMemory[sectionKey] = deepClone(parsed);
+      return deepClone(parsed);
+    } catch (err) {}
+  }
 
   return null;
 }
@@ -198,23 +235,25 @@ export function saveSectionDraft(sectionKey: string, draftData: any): void {
   const cloned = deepClone(draftData);
   draftsInMemory[sectionKey] = cloned;
 
+  // 1. Always write to TMP_DRAFTS_DIR (guaranteed writable)
+  try {
+    if (!fs.existsSync(TMP_DRAFTS_DIR)) {
+      fs.mkdirSync(TMP_DRAFTS_DIR, { recursive: true });
+    }
+    const tmpFilePath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
+    fs.writeFileSync(tmpFilePath, JSON.stringify(cloned, null, 2), 'utf-8');
+  } catch (tmpErr) {
+    console.error(`Error writing draft for ${sectionKey} to /tmp:`, tmpErr);
+  }
+
+  // 2. Also write to DRAFTS_DIR if writable
   try {
     if (!fs.existsSync(DRAFTS_DIR)) {
       fs.mkdirSync(DRAFTS_DIR, { recursive: true });
     }
     const filePath = path.join(DRAFTS_DIR, `${sectionKey}.json`);
     fs.writeFileSync(filePath, JSON.stringify(cloned, null, 2), 'utf-8');
-  } catch (err) {
-    try {
-      if (!fs.existsSync(TMP_DRAFTS_DIR)) {
-        fs.mkdirSync(TMP_DRAFTS_DIR, { recursive: true });
-      }
-      const tmpFilePath = path.join(TMP_DRAFTS_DIR, `${sectionKey}.json`);
-      fs.writeFileSync(tmpFilePath, JSON.stringify(cloned, null, 2), 'utf-8');
-    } catch (tmpErr) {
-      console.error(`Error writing draft for ${sectionKey} to /tmp:`, tmpErr);
-    }
-  }
+  } catch (err) {}
 }
 
 /**
@@ -280,6 +319,12 @@ export function getPendingChangesSummary(): {
         if (f.endsWith('.json')) sectionsModified.add(f.replace('.json', ''));
       });
     }
+    if (fs.existsSync(TMP_DRAFTS_DIR)) {
+      const files = fs.readdirSync(TMP_DRAFTS_DIR);
+      files.forEach((f) => {
+        if (f.endsWith('.json')) sectionsModified.add(f.replace('.json', ''));
+      });
+    }
   } catch (e) {}
 
   let totalChangesCount = 0;
@@ -315,6 +360,12 @@ export function publishAllDrafts(): { success: boolean; publishedSections: strin
         if (f.endsWith('.json')) keys.add(f.replace('.json', ''));
       });
     }
+    if (fs.existsSync(TMP_DRAFTS_DIR)) {
+      const files = fs.readdirSync(TMP_DRAFTS_DIR);
+      files.forEach((f) => {
+        if (f.endsWith('.json')) keys.add(f.replace('.json', ''));
+      });
+    }
   } catch (e) {}
 
   for (const key of Array.from(keys)) {
@@ -323,6 +374,14 @@ export function publishAllDrafts(): { success: boolean; publishedSections: strin
       const success = writeContentFile(`${key}.json`, deepClone(draftData));
       if (success) {
         published.push(key);
+        // Clean up draft from memory and disk upon publishing
+        delete draftsInMemory[key];
+        try {
+          const draftPath = path.join(DRAFTS_DIR, `${key}.json`);
+          if (fs.existsSync(draftPath)) fs.unlinkSync(draftPath);
+          const tmpDraftPath = path.join(TMP_DRAFTS_DIR, `${key}.json`);
+          if (fs.existsSync(tmpDraftPath)) fs.unlinkSync(tmpDraftPath);
+        } catch (e) {}
       }
     }
   }

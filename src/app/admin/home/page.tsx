@@ -63,7 +63,7 @@ export default function AdminHomePage() {
   }
 
   // Generic deep update helper
-  const updateField = (path: string[], val: any) => {
+  const updateField = (path: (string | number)[], val: any) => {
     const updated = JSON.parse(JSON.stringify(homeData));
     let current = updated;
     for (let i = 0; i < path.length - 1; i++) {
@@ -110,6 +110,54 @@ export default function AdminHomePage() {
     updateDraftInMemory('home', updated);
     setToastMessage(next ? '✓ Point of View Section is now Active' : '✕ Point of View Section is now Hidden');
     setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  // Atomic toggle for What We Do section
+  const toggleWhatWeDoSection = () => {
+    const updated = JSON.parse(JSON.stringify(homeData));
+    const current = updated.whatWeDo?.enabled !== false;
+    const next = !current;
+    if (!updated.whatWeDo) updated.whatWeDo = {};
+    updated.whatWeDo.enabled = next;
+    if (Array.isArray(updated.sections)) {
+      updated.sections = updated.sections.map((s: any) =>
+        s.id === 'whatWeDo' ? { ...s, visible: next } : s
+      );
+    }
+    setHomeData(updated);
+    updateDraftInMemory('home', updated);
+    setToastMessage(next ? '✓ What We Do Section is now Active' : '✕ What We Do Section is now Hidden');
+    setTimeout(() => setToastMessage(''), 3500);
+  };
+
+  const addWhatWeDoService = () => {
+    const current = homeData.whatWeDo?.services || [];
+    const newIdx = current.length + 1;
+    const newService = {
+      id: `service-${Date.now()}`,
+      index: newIdx < 10 ? `0${newIdx}` : `${newIdx}`,
+      title: 'New Practice Area',
+      description: 'Practice description and core advisory scope.',
+      href: '/services',
+      enabled: true,
+    };
+    updateField(['whatWeDo', 'services'], [...current, newService]);
+  };
+
+  const removeWhatWeDoService = (index: number) => {
+    const current = [...(homeData.whatWeDo?.services || [])];
+    current.splice(index, 1);
+    updateField(['whatWeDo', 'services'], current);
+  };
+
+  const moveWhatWeDoService = (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    const current = [...(homeData.whatWeDo?.services || [])];
+    if (targetIdx < 0 || targetIdx >= current.length) return;
+    const temp = current[index];
+    current[index] = current[targetIdx];
+    current[targetIdx] = temp;
+    updateField(['whatWeDo', 'services'], current);
   };
 
   // Atomic toggle for Selected Work section
@@ -216,6 +264,9 @@ export default function AdminHomePage() {
       } else if (id === 'pov') {
         if (!updated.pov) updated.pov = {};
         updated.pov.enabled = targetSec.visible;
+      } else if (id === 'whatWeDo') {
+        if (!updated.whatWeDo) updated.whatWeDo = {};
+        updated.whatWeDo.enabled = targetSec.visible;
       } else if (id === 'work') {
         if (!updated.selectedWork) updated.selectedWork = {};
         updated.selectedWork.enabled = targetSec.visible;
@@ -274,11 +325,12 @@ export default function AdminHomePage() {
   const sectionTabs = [
     { id: 'hero', label: '01 Hero Banner & Carousel', icon: Sparkles, isLive: true },
     { id: 'pov', label: '02 Point of View', icon: Quote, isLive: true },
-    { id: 'work', label: '03 Selected Work', icon: Briefcase, isLive: true },
-    { id: 'services', label: '04 Practice Areas & Numbers', icon: FileText, isLive: true },
-    { id: 'brands', label: '05 Brands Marquee', icon: Layers, isLive: true },
-    { id: 'army', label: '06 Army Spotlight', icon: Shield, isLive: true },
-    { id: 'cta', label: '07 Signature CTA', icon: Send, isLive: true },
+    { id: 'whatWeDo', label: '03 What We Do (Visual & Scope)', icon: LayoutGrid, isLive: true },
+    { id: 'work', label: '04 Selected Work (The work is the proof)', icon: Briefcase, isLive: true },
+    { id: 'services', label: '05 Practice Areas & Numbers', icon: FileText, isLive: true },
+    { id: 'brands', label: '06 Brands Marquee', icon: Layers, isLive: true },
+    { id: 'army', label: '07 Army Spotlight', icon: Shield, isLive: true },
+    { id: 'cta', label: '08 Signature CTA', icon: Send, isLive: true },
     { id: 'order', label: 'Order & Visibility', icon: GripVertical, isLive: true },
   ];
 
@@ -3063,6 +3115,256 @@ export default function AdminHomePage() {
           )}
 
           {/* ════════════════════════════════════════════════════════════
+              SECTION 03: WHAT WE DO (VISUAL COLLAGE & 3 PRACTICE AREAS)
+             ════════════════════════════════════════════════════════════ */}
+          {activeSectionId === 'whatWeDo' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      03 What We Do (Visual &amp; Scope)
+                    </h3>
+                    <span style={{ fontSize: '0.7rem', backgroundColor: '#F0FDF4', color: '#16A34A', padding: '2px 7px', borderRadius: '4px', fontWeight: 600 }}>
+                      Live Flow
+                    </span>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: '#71717A', margin: '0.25rem 0 0 0' }}>
+                    Main visual collage section representing Digital Brand Growth, Hospitality Consulting, and Content &amp; Brand Production. Positioned before &ldquo;The work is the proof&rdquo;.
+                  </p>
+                </div>
+
+                {/* Section Level Enable / Disable Toggle */}
+                <CmsToggle
+                  checked={homeData.whatWeDo?.enabled !== false}
+                  onChange={toggleWhatWeDoSection}
+                  size="md"
+                />
+              </div>
+
+              {/* Eyebrow with Enable/Disable */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION EYEBROW
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.whatWeDo?.showEyebrow === true;
+                      updateField(['whatWeDo', 'showEyebrow'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.whatWeDo?.showEyebrow === true ? '#ECFDF5' : '#FEE2E2',
+                      color: homeData.whatWeDo?.showEyebrow === true ? '#047857' : '#DC2626',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.whatWeDo?.showEyebrow === true ? <Eye size={11} /> : <EyeOff size={11} />}
+                    {homeData.whatWeDo?.showEyebrow === true ? 'Eyebrow Visible' : 'Eyebrow Hidden'}
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={homeData.whatWeDo?.eyebrow || ''}
+                  placeholder="e.g. WHAT WE DO"
+                  onChange={(e) => updateField(['whatWeDo', 'eyebrow'], e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Headline with Enable/Disable */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION HEADLINE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.whatWeDo?.showHeadline !== false;
+                      updateField(['whatWeDo', 'showHeadline'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.whatWeDo?.showHeadline === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.whatWeDo?.showHeadline === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.whatWeDo?.showHeadline === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.whatWeDo?.showHeadline === false ? 'Headline Hidden' : 'Headline Visible'}
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={homeData.whatWeDo?.title || ''}
+                  placeholder="What We Do."
+                  onChange={(e) => updateField(['whatWeDo', 'title'], e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Description with Enable/Disable */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 600, color: '#52525B' }}>
+                    SECTION DESCRIPTION / NARRATIVE
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.whatWeDo?.showDescription !== false;
+                      updateField(['whatWeDo', 'showDescription'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '2px 7px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: homeData.whatWeDo?.showDescription === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.whatWeDo?.showDescription === false ? '#DC2626' : '#047857',
+                      fontSize: '0.7rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.whatWeDo?.showDescription === false ? <EyeOff size={11} /> : <Eye size={11} />}
+                    {homeData.whatWeDo?.showDescription === false ? 'Description Hidden' : 'Description Visible'}
+                  </button>
+                </div>
+                <textarea
+                  rows={3}
+                  value={homeData.whatWeDo?.description || ''}
+                  placeholder="We help businesses build stronger brands, communicate better and grow through digitally..."
+                  onChange={(e) => updateField(['whatWeDo', 'description'], e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* ─── SECTION VISUAL IMAGE (Main Collage / Visual) ─── */}
+              <div style={{ padding: '1.1rem', backgroundColor: '#F8F8FA', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+                  <div>
+                    <h4 style={{ fontSize: '0.88rem', fontWeight: 650, margin: 0, color: '#111113' }}>
+                      Section Visual Image (Collage)
+                    </h4>
+                    <span style={{ fontSize: '0.72rem', color: '#71717A' }}>
+                      Main visual representing Digital Brand Growth, Hospitality Consulting, and Content &amp; Brand Production.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const cur = homeData.whatWeDo?.showImage !== false;
+                      updateField(['whatWeDo', 'showImage'], !cur);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '0.35rem 0.65rem',
+                      borderRadius: '6px',
+                      border: 'none',
+                      backgroundColor: homeData.whatWeDo?.showImage === false ? '#FEE2E2' : '#ECFDF5',
+                      color: homeData.whatWeDo?.showImage === false ? '#DC2626' : '#047857',
+                      fontSize: '0.72rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {homeData.whatWeDo?.showImage === false ? <EyeOff size={12} /> : <Eye size={12} />}
+                    {homeData.whatWeDo?.showImage === false ? 'Image Hidden' : 'Image Visible'}
+                  </button>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '1rem', alignItems: 'center' }}>
+                  {/* Thumbnail Preview */}
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      aspectRatio: '1396 / 1127',
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(0,0,0,0.1)',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {homeData.whatWeDo?.image ? (
+                      <img
+                        src={homeData.whatWeDo.image}
+                        alt="Section visual preview"
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: '0.7rem', color: '#A1A1AA' }}>No Image</span>
+                    )}
+                  </div>
+
+                  {/* Input and Picker Controls */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', gap: '0.45rem' }}>
+                      <input
+                        type="text"
+                        value={homeData.whatWeDo?.image || ''}
+                        placeholder="/uploads/1790913499091-hero--what-we-do-collage.png"
+                        onChange={(e) => updateField(['whatWeDo', 'image'], e.target.value)}
+                        style={{ ...inputStyle, flex: 1 }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setMediaPickerTarget({ path: 'whatWeDo.image', type: 'image' })}
+                        style={{ ...mediaBtnStyle, padding: '0 0.85rem', fontSize: '0.78rem', whiteSpace: 'nowrap' }}
+                      >
+                        <ImageIcon size={13} style={{ marginRight: '4px' }} /> Pick Image
+                      </button>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <button
+                        type="button"
+                        onClick={() => updateField(['whatWeDo', 'image'], '/uploads/1790913499091-hero--what-we-do-collage.png')}
+                        style={{
+                          fontSize: '0.7rem',
+                          color: '#2563EB',
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: 0,
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        Reset to default reference collage image
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════
               SECTION 04: SELECTED WORK SHOWCASE
              ════════════════════════════════════════════════════════════ */}
           {activeSectionId === 'work' && (
@@ -3633,6 +3935,7 @@ export default function AdminHomePage() {
                   style={inputStyle}
                 />
               </div>
+
 
               {/* ─── 3 SHARP METRIC NUMBERS ─── */}
               <div style={{ padding: '1.1rem', backgroundColor: '#F8F8FA', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)' }}>
