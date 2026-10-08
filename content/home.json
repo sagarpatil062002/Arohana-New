@@ -7,22 +7,10 @@
       "type": "hero"
     },
     {
-      "id": "pov",
-      "name": "02: Point of View (Philosophy & Approach)",
-      "visible": true,
-      "type": "philosophy"
-    },
-    {
       "id": "whatWeDo",
       "name": "03: What We Do (Visual & Scope)",
       "visible": true,
       "type": "whatWeDo"
-    },
-    {
-      "id": "work",
-      "name": "04: Work Proof (The work is the proof.)",
-      "visible": true,
-      "type": "showcase"
     },
     {
       "id": "services",
@@ -31,16 +19,28 @@
       "type": "services"
     },
     {
-      "id": "brands",
-      "name": "06: Trusted by Brands & Institutions",
+      "id": "work",
+      "name": "04: Work Proof (The work is the proof.)",
       "visible": true,
-      "type": "brands"
+      "type": "showcase"
     },
     {
       "id": "army",
       "name": "07: Army Section",
       "visible": true,
       "type": "spotlight"
+    },
+    {
+      "id": "pov",
+      "name": "02: Point of View (Philosophy & Approach)",
+      "visible": false,
+      "type": "philosophy"
+    },
+    {
+      "id": "brands",
+      "name": "06: Trusted by Brands & Institutions",
+      "visible": true,
+      "type": "brands"
     },
     {
       "id": "cta",
@@ -84,9 +84,9 @@
         "eyebrow": "STRATEGY · COMMUNICATION · EXECUTION",
         "badgeEnabled": true,
         "eyebrowEnabled": true,
-        "headline": "Commercial thinking.\nCreative clarity &\nmeasurable scale.",
+        "headline": "We build brands,\nbusinesses &\nexperiences.",
         "headlineEnabled": true,
-        "subheadline": "Directing multi-entity commercial initiatives and high-caliber brand transformations.",
+        "subheadline": "Ārohana brings together business thinking, creative communication and execution across sectors.",
         "subheadlineEnabled": true,
         "clickableUrl": "/work",
         "isImageClickable": true,
@@ -114,7 +114,7 @@
         "buttonUrl": "/services",
         "buttonEnabled": true,
         "imageEnabled": true,
-        "enabled": true
+        "enabled": false
       }
     ],
     "carouselInterval": 5000,
@@ -159,7 +159,7 @@
         "id": "raysons",
         "name": "Raysons Group",
         "monogram": "RG",
-        "logo": "/uploads/1790487614238-raysons.jpg",
+        "logo": "/uploads/1790518947373-raysonslogo.webp",
         "badgeBg": "#0066B3",
         "badgeColor": "#ffffff",
         "link": "/work/raysons-group"
@@ -385,7 +385,10 @@
     "founderRole": "FOUNDER",
     "founderDesc": "Madhura Hawal on-ground directing projects across Ladakh and regional commercial hubs.",
     "founderLink": "/about",
-    "triadWords": "IDEAS · BRANDS · PEOPLE · PROGRESS"
+    "triadWords": "IDEAS · BRANDS · PEOPLE · PROGRESS",
+    "founderDescEnabled": false,
+    "founderLinkEnabled": true,
+    "enabled": false
   },
   "selectedWork": {
     "eyebrow": "WORK PROOF",
@@ -543,10 +546,11 @@
           "Digital Production",
           "Website Management & Branding"
         ],
-        "image": "/images/services/digital-growth.jpg",
-        "description": "Content strategy | Social Media Management | Performance Marketing | Digital production | Website management and branding",
+        "image": "/uploads/1790912051772-digital-brand-growth.png",
+        "description": "Turns attention into revenue. It sparks community via content and socials, accelerates revenue through paid performance marketing, and seals the deal with a premium website and standout branding.",
         "href": "/services#digital-growth",
-        "enabled": true
+        "enabled": true,
+        "showDescription": true
       },
       {
         "num": "02",
@@ -561,10 +565,11 @@
           "Influencer & UGC Content",
           "AI Content"
         ],
-        "image": "/images/services/content-production.jpg",
-        "description": "Content Ideation | Scripting | Shoot | Post-production | Art Direction | Photography | Influencer & UGC content | AI content",
+        "image": "/uploads/1790913249447-content-production.png",
+        "description": "Where your brand's story gets real. We take you from a raw creative spark through the actual shoot and art direction, mixing polished photography with authentic, human UGC and influencer creators to build deep connections with your audience.",
         "href": "/services#brand-production",
-        "enabled": true
+        "enabled": true,
+        "showDescription": true
       },
       {
         "num": "03",
@@ -575,10 +580,11 @@
           "Kitchen Pass",
           "Guest Journeys"
         ],
-        "image": "/images/case-studies/raysons/neora-1.jpg",
+        "image": "/uploads/1790913265172-hospitality---experience.png",
         "description": "Menu design, operational systems, staff workflows, revenue optimisation and digital marketing for hospitality brands.",
         "href": "/services#hospitality-consulting",
-        "enabled": true
+        "enabled": true,
+        "showDescription": true
       }
     ]
   },

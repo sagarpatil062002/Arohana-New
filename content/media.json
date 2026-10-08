@@ -1,6 +1,26 @@
 {
   "assets": [
     {
+      "id": "asset-1791436291249",
+      "name": "Riana Thumb.png",
+      "url": "/uploads/1791436291249-riana-thumb.png",
+      "type": "image",
+      "size": "226 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-08T05:11:31.251Z",
+      "usedIn": "general"
+    },
+    {
+      "id": "asset-1791434487128",
+      "name": "Qubice Thumb.jpeg",
+      "url": "/uploads/1791434487128-qubice-thumb.jpeg",
+      "type": "image",
+      "size": "18 KB",
+      "dimensions": "Standard",
+      "uploadedAt": "2026-10-08T04:41:27.128Z",
+      "usedIn": "general"
+    },
+    {
       "id": "asset-1790938520176",
       "name": "DTK Card Work Proof.jpg.jpeg",
       "url": "/uploads/1790938520176-dtk-card-work-proof.jpg.jpeg",

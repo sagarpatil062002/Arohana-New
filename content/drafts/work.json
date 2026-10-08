@@ -24,7 +24,8 @@
       "instagramUrl": "https://www.instagram.com/reel/DbIvEiLqD2Y/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
       "category": "Hospitality & F&B",
       "categories": [
-        "Hospitality & F&B"
+        "Hospitality & F&B",
+        "Real Estate & Built Environment"
       ]
     },
     {
@@ -66,21 +67,19 @@
       "subtitle": "Luxury Outdoor Furniture & Handcrafted Living",
       "coverImage": "/images/reels/loom-reel.jpg",
       "instagramUrl": "https://www.instagram.com/reel/DdtjcrJvqkN/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
-      "category": "Real Estate & Built Environment",
-      "categories": [
-        "Real Estate & Built Environment"
-      ]
+      "category": "",
+      "categories": []
     },
     {
       "id": "reel-1791344426772",
       "hookTitle": "Loom Crafts",
       "subtitle": "Luxury Outdoor Furniture & Handcrafted Living",
-      "category": "Hospitality & F&B",
+      "category": "Real Estate & Built Environment",
       "coverImage": "/uploads/1791344624610-loom-thumbnail.png",
       "instagramUrl": "https://www.instagram.com/reel/DbnpPPSKwDT",
       "enabled": true,
       "categories": [
-        "Hospitality & F&B"
+        "Real Estate & Built Environment"
       ]
     }
   ],

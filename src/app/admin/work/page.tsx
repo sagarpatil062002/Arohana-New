@@ -27,6 +27,9 @@ import {
   ChevronUp,
   ChevronDown,
   GripVertical,
+  Tag,
+  Edit2,
+  Film,
 } from 'lucide-react';
 
 const DEFAULT_CASE_DETAILS: Record<string, any> = {
@@ -92,23 +95,47 @@ const DEFAULT_CASE_DETAILS: Record<string, any> = {
   },
 };
 
+const DEFAULT_WORK_CATEGORIES = [
+  { id: 'cat-real-estate', name: 'Real Estate & Built Environment', enabled: true },
+  { id: 'cat-hospitality', name: 'Hospitality & F&B', enabled: true },
+  { id: 'cat-healthcare', name: 'Healthcare', enabled: true },
+  { id: 'cat-entertainment', name: 'Entertainment & Media', enabled: true },
+  { id: 'cat-institutions', name: 'Institutions & Government', enabled: true },
+];
+
+const getReelCategories = (reel: any): string[] => {
+  if (Array.isArray(reel.categories) && reel.categories.length > 0) {
+    return reel.categories;
+  }
+  if (typeof reel.category === 'string' && reel.category.trim()) {
+    return [reel.category.trim()];
+  }
+  return [];
+};
+
 export default function AdminWorkPage() {
   const { content, saveDraft, updateDraftInMemory, publishAll, publishSection } = useCmsContent();
   const [workData, setWorkData] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'reels' | 'header' | 'cases' | 'order'>('cases');
+  const [activeTab, setActiveTab] = useState<'reels' | 'header' | 'cases' | 'order' | 'categories'>('cases');
   const [caseSubTab, setCaseSubTab] = useState<'card' | 'hero' | 'narrative' | 'gallery' | 'outcomes'>('card');
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>('raysons-group');
   const [searchQuery, setSearchQuery] = useState('');
   const [mediaPickerTarget, setMediaPickerTarget] = useState<{ path: string; type?: 'image' | 'video' } | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<{
-    type: 'case' | 'reel';
+    type: 'case' | 'reel' | 'category';
     id: string | number;
     title: string;
     message: string;
   } | null>(null);
   const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'info' | 'error' } | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Category management states
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [editingCatId, setEditingCatId] = useState<string | null>(null);
+  const [editingCatName, setEditingCatName] = useState('');
+  const [expandedCatId, setExpandedCatId] = useState<string | null>(null);
 
   const showToast = (text: string, type: 'success' | 'info' | 'error' = 'success') => {
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
@@ -145,6 +172,193 @@ export default function AdminWorkPage() {
     updateDraftInMemory('work', updated);
   };
 
+  const handleMoveCategory = (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    const cats = [...(workData.categories || DEFAULT_WORK_CATEGORIES)];
+    if (targetIdx < 0 || targetIdx >= cats.length) return;
+    const temp = cats[index];
+    cats[index] = cats[targetIdx];
+    cats[targetIdx] = temp;
+    const updated = { ...workData, categories: cats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+  };
+
+  const handleAddCategory = () => {
+    const trimmed = newCategoryName.trim();
+    if (!trimmed) {
+      showToast('Please enter a category name', 'error');
+      return;
+    }
+    const cats = [...(workData.categories || DEFAULT_WORK_CATEGORIES)];
+    if (cats.some((c: any) => c.name.toLowerCase() === trimmed.toLowerCase())) {
+      showToast('A category with this name already exists', 'error');
+      return;
+    }
+    const newCat = {
+      id: `cat-${Date.now()}`,
+      name: trimmed,
+      enabled: true,
+    };
+    const updatedCats = [...cats, newCat];
+    const updated = { ...workData, categories: updatedCats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    setNewCategoryName('');
+    showToast(`Category "${trimmed}" added`, 'success');
+  };
+
+  const handleRenameCategory = (catId: string, newName: string) => {
+    const trimmed = newName.trim();
+    if (!trimmed) return;
+    const cats = [...(workData.categories || DEFAULT_WORK_CATEGORIES)];
+    const catIdx = cats.findIndex((c: any) => c.id === catId);
+    if (catIdx === -1) return;
+    const oldName = cats[catIdx].name;
+    cats[catIdx] = { ...cats[catIdx], name: trimmed };
+
+    // Also update reels that had oldName assigned
+    const updatedReels = (workData.featuredReels || []).map((reel: any) => {
+      const currentCats = getReelCategories(reel);
+      if (currentCats.includes(oldName)) {
+        const replaced = currentCats.map((c: string) => (c === oldName ? trimmed : c));
+        return {
+          ...reel,
+          categories: replaced,
+          category: replaced[0] || '',
+        };
+      }
+      return reel;
+    });
+
+    const updated = {
+      ...workData,
+      categories: cats,
+      featuredReels: updatedReels,
+    };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    setEditingCatId(null);
+    showToast(`Renamed to "${trimmed}"`, 'success');
+  };
+
+  const handleToggleCategory = (catId: string) => {
+    const cats = [...(workData.categories || DEFAULT_WORK_CATEGORIES)];
+    const catIdx = cats.findIndex((c: any) => c.id === catId);
+    if (catIdx === -1) return;
+    const currentEnabled = cats[catIdx].enabled !== false;
+    cats[catIdx] = { ...cats[catIdx], enabled: !currentEnabled };
+    const updated = { ...workData, categories: cats };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    showToast(`Category "${cats[catIdx].name}" ${!currentEnabled ? 'enabled' : 'disabled'}`, 'info');
+  };
+
+  const handleSetPrimaryCategory = (reelIdx: number, newPrimaryCat: string) => {
+    const reels = [...(workData.featuredReels || [])];
+    const targetReel = reels[reelIdx];
+    if (!targetReel) return;
+    const currentCats = getReelCategories(targetReel);
+    let updatedCats: string[];
+    if (!newPrimaryCat) {
+      updatedCats = [];
+    } else {
+      const remaining = currentCats.filter((c: string) => c !== newPrimaryCat);
+      updatedCats = [newPrimaryCat, ...remaining];
+    }
+    reels[reelIdx] = {
+      ...targetReel,
+      category: newPrimaryCat,
+      categories: updatedCats,
+    };
+    const updated = { ...workData, featuredReels: reels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    showToast(newPrimaryCat ? `Primary category set to "${newPrimaryCat}"` : 'Category unassigned', 'success');
+  };
+
+  const handleToggleReelCategory = (reelIdx: number, catName: string) => {
+    const reels = [...(workData.featuredReels || [])];
+    const targetReel = reels[reelIdx];
+    if (!targetReel) return;
+    const currentCats = getReelCategories(targetReel);
+    let updatedCats: string[];
+    if (currentCats.includes(catName)) {
+      updatedCats = currentCats.filter((c: string) => c !== catName);
+    } else {
+      updatedCats = [...currentCats, catName];
+    }
+    reels[reelIdx] = {
+      ...targetReel,
+      categories: updatedCats,
+      category: updatedCats[0] || '',
+    };
+    const updated = { ...workData, featuredReels: reels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+  };
+
+  const handleToggleCategoryReel = (catName: string, reelIdx: number) => {
+    const reels = [...(workData.featuredReels || [])];
+    const targetReel = reels[reelIdx];
+    if (!targetReel) return;
+    const currentCats = getReelCategories(targetReel);
+    let updatedCats: string[];
+    if (currentCats.includes(catName)) {
+      updatedCats = currentCats.filter((c: string) => c !== catName);
+    } else {
+      updatedCats = [...currentCats, catName];
+    }
+    reels[reelIdx] = {
+      ...targetReel,
+      categories: updatedCats,
+      category: updatedCats[0] || '',
+    };
+    const updated = { ...workData, featuredReels: reels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    showToast(`Updated assignment for "${targetReel.hookTitle || 'reel'}"`, 'info');
+  };
+
+  const handleAssignAllReelsToCategory = (catName: string) => {
+    const reels = (workData.featuredReels || []).map((reel: any) => {
+      const currentCats = getReelCategories(reel);
+      if (currentCats.includes(catName)) return reel;
+      const updatedCats = [...currentCats, catName];
+      return {
+        ...reel,
+        categories: updatedCats,
+        category: updatedCats[0] || catName,
+      };
+    });
+    const updated = { ...workData, featuredReels: reels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    showToast(`All reels assigned to "${catName}"`, 'success');
+  };
+
+  const handleClearAllReelsFromCategory = (catName: string) => {
+    const reels = (workData.featuredReels || []).map((reel: any) => {
+      const currentCats = getReelCategories(reel);
+      if (!currentCats.includes(catName)) return reel;
+      const updatedCats = currentCats.filter((c: string) => c !== catName);
+      return {
+        ...reel,
+        categories: updatedCats,
+        category: updatedCats[0] || '',
+      };
+    });
+    const updated = { ...workData, featuredReels: reels };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    showToast(`Removed all reels from "${catName}"`, 'info');
+  };
+
   const caseImgInputRef = useRef<HTMLInputElement>(null);
   const heroImgInputRef = useRef<HTMLInputElement>(null);
   const galleryImgInputRef = useRef<HTMLInputElement>(null);
@@ -154,7 +368,11 @@ export default function AdminWorkPage() {
 
   useEffect(() => {
     if (content.work) {
-      setWorkData(JSON.parse(JSON.stringify(content.work)));
+      const cloned = JSON.parse(JSON.stringify(content.work));
+      if (!cloned.categories || !Array.isArray(cloned.categories) || cloned.categories.length === 0) {
+        cloned.categories = DEFAULT_WORK_CATEGORIES;
+      }
+      setWorkData(cloned);
     }
   }, [content.work]);
 
@@ -400,6 +618,35 @@ export default function AdminWorkPage() {
     handleSaveAndSync(updated);
     setDeleteConfirm(null);
     showToast('Reel deleted', 'info');
+  };
+
+  const handleDeleteCategory = (catIdOrName: string) => {
+    const cats = [...(workData.categories || DEFAULT_WORK_CATEGORIES)];
+    const targetCat = cats.find((c: any) => c.id === catIdOrName || c.name === catIdOrName);
+    const catName = targetCat?.name || catIdOrName;
+    const updatedCats = cats.filter((c: any) => c.id !== catIdOrName && c.name !== catIdOrName);
+
+    // Also update any reels that had this category assigned
+    const updatedReels = (workData.featuredReels || []).map((reel: any) => {
+      const currentCats = getReelCategories(reel);
+      const filtered = currentCats.filter((c: string) => c !== catName);
+      return {
+        ...reel,
+        categories: filtered,
+        category: filtered[0] || '',
+      };
+    });
+
+    const updated = {
+      ...workData,
+      categories: updatedCats,
+      featuredReels: updatedReels,
+    };
+    setWorkData(updated);
+    updateDraftInMemory('work', updated);
+    handleSaveAndSync(updated);
+    setDeleteConfirm(null);
+    showToast(`Category "${catName}" deleted`, 'info');
   };
 
   const toggleCasesSection = () => {
@@ -693,6 +940,28 @@ export default function AdminWorkPage() {
 
           <button
             type="button"
+            onClick={() => setActiveTab('categories')}
+            style={{
+              padding: '0.75rem 1rem',
+              border: 'none',
+              borderBottom: activeTab === 'categories' ? '2px solid #111113' : '2px solid transparent',
+              backgroundColor: 'transparent',
+              fontSize: '0.82rem',
+              fontWeight: activeTab === 'categories' ? 650 : 500,
+              color: activeTab === 'categories' ? '#111113' : '#71717A',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Tag size={14} />
+            Categories ({(workData.categories || DEFAULT_WORK_CATEGORIES).length})
+          </button>
+
+          <button
+            type="button"
             onClick={() => setActiveTab('header')}
             style={{
               padding: '0.75rem 1rem',
@@ -867,11 +1136,15 @@ export default function AdminWorkPage() {
               <button
                 type="button"
                 onClick={() => {
+                  const availableCats = (workData.categories || DEFAULT_WORK_CATEGORIES)
+                    .filter((c: any) => c.enabled !== false);
+                  const defaultCatName = availableCats[0]?.name || 'Hospitality & F&B';
                   const newReel = {
                     id: `reel-${Date.now()}`,
                     hookTitle: 'New Story',
                     subtitle: 'Category · Sector',
-                    category: 'Hospitality & F&B',
+                    category: defaultCatName,
+                    categories: [defaultCatName],
                     coverImage: '/images/case-studies/raysons/neora-1.jpg',
                     instagramUrl: 'https://www.instagram.com/byarohana/',
                     enabled: true,
@@ -893,6 +1166,8 @@ export default function AdminWorkPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {(workData.featuredReels || []).map((reel: any, idx: number, arr: any[]) => {
                 const isReelEnabled = reel.enabled !== false;
+                const assignedCats = getReelCategories(reel);
+                const allCategories = (workData.categories || DEFAULT_WORK_CATEGORIES);
                 return (
                   <div
                     key={reel.id || idx}
@@ -903,7 +1178,7 @@ export default function AdminWorkPage() {
                       backgroundColor: isReelEnabled ? '#F8F8FA' : '#FEF2F2',
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '0.5rem',
+                      gap: '0.65rem',
                     }}
                   >
                     <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr auto', gap: '0.5rem', alignItems: 'center' }}>
@@ -921,7 +1196,7 @@ export default function AdminWorkPage() {
                         />
                       </div>
                       <div>
-                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Category / Subtitle</span>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A' }}>Subtitle</span>
                         <input
                           type="text"
                           value={reel.subtitle || ''}
@@ -1063,6 +1338,713 @@ export default function AdminWorkPage() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Category Assignment Section */}
+                    <div
+                      style={{
+                        padding: '0.65rem 0.75rem',
+                        borderRadius: '8px',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid rgba(0,0,0,0.08)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.45rem',
+                        marginTop: '0.15rem',
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.72rem', fontWeight: 650, color: '#111113', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <Tag size={12} color="#DE322D" />
+                          Category Assignment:
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setActiveTab('categories')}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#DE322D',
+                            fontSize: '0.68rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '2px',
+                            padding: 0,
+                          }}
+                        >
+                          Manage Categories ↗
+                        </button>
+                      </div>
+
+                      {/* Primary Category Quick Dropdown */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '0.68rem', color: '#71717A', whiteSpace: 'nowrap', fontWeight: 500 }}>
+                          Primary:
+                        </span>
+                        <select
+                          value={assignedCats[0] || ''}
+                          onChange={(e) => handleSetPrimaryCategory(idx, e.target.value)}
+                          style={{
+                            ...inputStyle,
+                            padding: '0.3rem 0.5rem',
+                            fontSize: '0.76rem',
+                            fontWeight: 500,
+                            backgroundColor: '#F8F8FA',
+                            maxWidth: '280px',
+                          }}
+                        >
+                          <option value="">-- No Category (Shows under 'All' only) --</option>
+                          {allCategories.map((c: any) => {
+                            const name = typeof c === 'string' ? c : c.name;
+                            return (
+                              <option key={name} value={name}>
+                                {name} {c.enabled === false ? '(Hidden)' : ''}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+
+                      {/* Multi-Category Selector */}
+                      <div>
+                        <div style={{ fontSize: '0.65rem', color: '#71717A', marginBottom: '0.25rem' }}>
+                          Select all categories this reel belongs to (click to check/uncheck):
+                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                          {allCategories.map((cat: any) => {
+                            const catName = typeof cat === 'string' ? cat : cat.name;
+                            const isAssigned = assignedCats.includes(catName);
+                            const isCatEnabled = typeof cat === 'string' ? true : cat.enabled !== false;
+                            return (
+                              <button
+                                key={cat.id || catName}
+                                type="button"
+                                onClick={() => handleToggleReelCategory(idx, catName)}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '0.3rem',
+                                  padding: '0.25rem 0.6rem',
+                                  borderRadius: '6px',
+                                  fontSize: '0.72rem',
+                                  fontWeight: isAssigned ? 650 : 500,
+                                  border: isAssigned ? '1.5px solid #111113' : '1px solid rgba(0,0,0,0.12)',
+                                  backgroundColor: isAssigned ? '#111113' : '#F8F8FA',
+                                  color: isAssigned ? '#FFFFFF' : (isCatEnabled ? '#3F3F46' : '#A1A1AA'),
+                                  cursor: 'pointer',
+                                  transition: 'all 0.15s ease',
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    width: '12px',
+                                    height: '12px',
+                                    borderRadius: '3px',
+                                    border: isAssigned ? '1px solid #FFFFFF' : '1px solid #A1A1AA',
+                                    backgroundColor: isAssigned ? '#FFFFFF' : 'transparent',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}
+                                >
+                                  {isAssigned && <Check size={9} color="#111113" strokeWidth={3} />}
+                                </span>
+                                {catName}
+                                {!isCatEnabled && <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>(hidden)</span>}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      {assignedCats.length === 0 && (
+                        <div style={{ fontSize: '0.65rem', color: '#A1A1AA', fontStyle: 'italic' }}>
+                          No category selected · Reel will only display under "All"
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB 5: CATEGORIES MANAGEMENT ── */}
+        {activeTab === 'categories' && (
+          <div className="admin-editor-scroll" style={{ padding: '1.5rem 1.5rem 6rem 1.5rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
+            {/* Header info */}
+            <div>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 650, color: '#111113', margin: '0 0 0.35rem 0' }}>
+                Work &amp; Reel Categories
+              </h2>
+              <p style={{ fontSize: '0.78rem', color: '#71717A', margin: 0, lineHeight: 1.45 }}>
+                Manage the categories displayed in the Work page filter bar and assigned to reels. Changes are automatically reflected in the Work page horizontal filter and reels showcase.
+              </p>
+            </div>
+
+            {/* Permanent "All" System Filter Card */}
+            <div
+              style={{
+                padding: '0.85rem 1rem',
+                borderRadius: '10px',
+                backgroundColor: '#F4F4F5',
+                border: '1px solid rgba(0,0,0,0.06)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <span
+                  style={{
+                    backgroundColor: '#111113',
+                    color: '#FFFFFF',
+                    padding: '0.2rem 0.55rem',
+                    borderRadius: '4px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  All
+                </span>
+                <div>
+                  <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
+                    All Categories (Default System Filter)
+                  </div>
+                  <div style={{ fontSize: '0.7rem', color: '#71717A' }}>
+                    Always displays first in the filter bar. Shows all active reels across all categories.
+                  </div>
+                </div>
+              </div>
+              <span style={{ fontSize: '0.7rem', color: '#71717A', fontWeight: 500 }}>
+                Permanent · Active ({workData.featuredReels?.filter((r: any) => r.enabled !== false).length || 0} reels)
+              </span>
+            </div>
+
+            {/* Add Category Section */}
+            <div
+              style={{
+                padding: '1rem',
+                borderRadius: '10px',
+                border: '1px solid rgba(0,0,0,0.08)',
+                backgroundColor: '#FFFFFF',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+              }}
+            >
+              <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113', marginBottom: '0.5rem' }}>
+                Add New Category
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input
+                  type="text"
+                  placeholder="e.g. Architecture & Space, Luxury Living, Commercial..."
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddCategory();
+                    }
+                  }}
+                  style={{ ...inputStyle, flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={handleAddCategory}
+                  style={{
+                    ...mediaBtnStyle,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                >
+                  <Plus size={14} /> Add Category
+                </button>
+              </div>
+            </div>
+
+            {/* Existing Categories List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#111113' }}>
+                  Manage Categories ({(workData.categories || DEFAULT_WORK_CATEGORIES).length})
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#71717A' }}>
+                  Use arrows to reorder display position in the Work page filter bar
+                </div>
+              </div>
+
+              {(workData.categories || DEFAULT_WORK_CATEGORIES).map((cat: any, idx: number, arr: any[]) => {
+                const catId = cat.id || `cat-${idx}`;
+                const catName = cat.name || '';
+                const isCatEnabled = cat.enabled !== false;
+                const assignedReelCount = (workData.featuredReels || []).filter((r: any) =>
+                  getReelCategories(r).includes(catName)
+                ).length;
+                const isEditing = editingCatId === catId;
+
+                const isExpanded = expandedCatId === catId;
+
+                return (
+                  <div
+                    key={catId}
+                    style={{
+                      borderRadius: '10px',
+                      border: isCatEnabled ? '1px solid rgba(0,0,0,0.08)' : '1px dashed #FECACA',
+                      backgroundColor: isCatEnabled ? '#FFFFFF' : '#FEF2F2',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+                      overflow: 'hidden',
+                      transition: 'border-color 0.15s ease',
+                    }}
+                  >
+                    {/* Top Row: Reorder Controls + Name / Edit input + Actions */}
+                    <div
+                      style={{
+                        padding: '0.85rem 1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: '0.75rem',
+                        backgroundColor: isExpanded ? '#FAF5F5' : 'transparent',
+                        borderBottom: isExpanded ? '1px solid rgba(0,0,0,0.06)' : 'none',
+                      }}
+                    >
+                      {/* Left: Reorder Controls + Name / Edit input */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1 }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => handleMoveCategory(idx, 'up')}
+                            title="Move category up"
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: idx === 0 ? '#D4D4D8' : '#52525B',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              padding: '2px',
+                            }}
+                          >
+                            <ChevronUp size={13} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === arr.length - 1}
+                            onClick={() => handleMoveCategory(idx, 'down')}
+                            title="Move category down"
+                            style={{
+                              border: 'none',
+                              backgroundColor: 'transparent',
+                              color: idx === arr.length - 1 ? '#D4D4D8' : '#52525B',
+                              cursor: idx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                              padding: '2px',
+                            }}
+                          >
+                            <ChevronDown size={13} />
+                          </button>
+                        </div>
+
+                        {isEditing ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flex: 1 }}>
+                            <input
+                              type="text"
+                              value={editingCatName}
+                              onChange={(e) => setEditingCatName(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  handleRenameCategory(catId, editingCatName);
+                                } else if (e.key === 'Escape') {
+                                  setEditingCatId(null);
+                                }
+                              }}
+                              autoFocus
+                              style={{ ...inputStyle, padding: '0.35rem 0.55rem', maxWidth: '340px' }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRenameCategory(catId, editingCatName)}
+                              style={{
+                                ...mediaBtnStyle,
+                                padding: '0.35rem 0.65rem',
+                                backgroundColor: '#047857',
+                              }}
+                            >
+                              Save
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setEditingCatId(null)}
+                              style={{
+                                ...mediaBtnStyle,
+                                padding: '0.35rem 0.65rem',
+                                backgroundColor: '#F4F4F5',
+                                color: '#52525B',
+                              }}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 650, color: isCatEnabled ? '#111113' : '#991B1B' }}>
+                              {catName}
+                            </span>
+
+                            {/* Assigned Reels Pill Button */}
+                            <button
+                              type="button"
+                              onClick={() => setExpandedCatId(isExpanded ? null : catId)}
+                              title={isExpanded ? 'Collapse assigned reels' : 'Click to view & assign reels'}
+                              style={{
+                                border: '1px solid',
+                                borderColor: assignedReelCount > 0 ? '#BFDBFE' : '#E4E4E7',
+                                borderRadius: '999px',
+                                padding: '0.2rem 0.6rem',
+                                backgroundColor: assignedReelCount > 0 ? '#EFF6FF' : '#F4F4F5',
+                                color: assignedReelCount > 0 ? '#1D4ED8' : '#71717A',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                transition: 'all 0.15s ease',
+                              }}
+                            >
+                              <Film size={11} />
+                              <span>{assignedReelCount} {assignedReelCount === 1 ? 'reel' : 'reels'} assigned</span>
+                              {isExpanded ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+                            </button>
+
+                            {!isCatEnabled && (
+                              <span
+                                style={{
+                                  fontSize: '0.65rem',
+                                  padding: '0.15rem 0.45rem',
+                                  borderRadius: '999px',
+                                  backgroundColor: '#FEE2E2',
+                                  color: '#DC2626',
+                                  fontWeight: 500,
+                                }}
+                              >
+                                Hidden from Work page
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Right: Actions (Set Reels, Edit name, toggle enabled/disabled, delete) */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <button
+                          type="button"
+                          onClick={() => setExpandedCatId(isExpanded ? null : catId)}
+                          style={{
+                            border: isExpanded ? '1px solid #111113' : '1px solid rgba(0,0,0,0.12)',
+                            backgroundColor: isExpanded ? '#111113' : '#FFFFFF',
+                            color: isExpanded ? '#FFFFFF' : '#111113',
+                            borderRadius: '6px',
+                            padding: '5px 9px',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            transition: 'all 0.15s ease',
+                          }}
+                        >
+                          <Film size={12} />
+                          {isExpanded ? 'Done' : 'Set Reels'}
+                        </button>
+
+                        {!isEditing && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingCatId(catId);
+                              setEditingCatName(catName);
+                            }}
+                            title="Rename Category"
+                            style={{
+                              border: 'none',
+                              backgroundColor: '#F4F4F5',
+                              color: '#52525B',
+                              borderRadius: '6px',
+                              padding: '5px 8px',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '3px',
+                              fontSize: '0.72rem',
+                            }}
+                          >
+                            <Edit2 size={12} /> Edit
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          onClick={() => handleToggleCategory(catId)}
+                          title={isCatEnabled ? 'Hide category from Work page filter' : 'Show category on Work page filter'}
+                          style={{
+                            border: 'none',
+                            backgroundColor: isCatEnabled ? '#ECFDF5' : '#FEE2E2',
+                            color: isCatEnabled ? '#047857' : '#DC2626',
+                            borderRadius: '6px',
+                            padding: '5px 8px',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            fontSize: '0.72rem',
+                          }}
+                        >
+                          {isCatEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
+                          {isCatEnabled ? 'Visible' : 'Hidden'}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDeleteConfirm({
+                              type: 'category',
+                              id: catId,
+                              title: `Delete Category "${catName}"?`,
+                              message: assignedReelCount > 0
+                                ? `This category is currently assigned to ${assignedReelCount} reel(s). Deleting it will unassign those reels and remove the category from the Work page filter bar. Are you sure?`
+                                : `Remove "${catName}" from the Work page filter bar?`,
+                            });
+                          }}
+                          title="Delete Category"
+                          style={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            color: '#EF4444',
+                            cursor: 'pointer',
+                            padding: '4px',
+                          }}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Collapsible Reel Assignment Panel */}
+                    {isExpanded && (
+                      <div
+                        style={{
+                          padding: '1rem',
+                          backgroundColor: '#FAFAFA',
+                          borderTop: '1px solid rgba(0,0,0,0.06)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '0.75rem',
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                          <div>
+                            <div style={{ fontSize: '0.78rem', fontWeight: 650, color: '#111113' }}>
+                              Assign Reels to "{catName}"
+                            </div>
+                            <div style={{ fontSize: '0.68rem', color: '#71717A' }}>
+                              Click any reel to toggle whether it appears under "{catName}" on the Work page.
+                            </div>
+                          </div>
+                          <div style={{ display: 'flex', gap: '0.4rem' }}>
+                            <button
+                              type="button"
+                              onClick={() => handleAssignAllReelsToCategory(catName)}
+                              style={{
+                                border: '1px solid rgba(0,0,0,0.12)',
+                                backgroundColor: '#FFFFFF',
+                                color: '#111113',
+                                padding: '0.25rem 0.55rem',
+                                borderRadius: '5px',
+                                fontSize: '0.68rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Select All
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleClearAllReelsFromCategory(catName)}
+                              style={{
+                                border: '1px solid rgba(0,0,0,0.12)',
+                                backgroundColor: '#FFFFFF',
+                                color: '#71717A',
+                                padding: '0.25rem 0.55rem',
+                                borderRadius: '5px',
+                                fontSize: '0.68rem',
+                                fontWeight: 500,
+                                cursor: 'pointer',
+                              }}
+                            >
+                              Clear All
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Reels Grid */}
+                        <div
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                            gap: '0.65rem',
+                          }}
+                        >
+                          {(workData.featuredReels || []).map((reel: any, rIdx: number) => {
+                            const reelCats = getReelCategories(reel);
+                            const isAssigned = reelCats.includes(catName);
+                            const isPrimary = reelCats[0] === catName;
+                            const thumb = reel.coverImage || reel.thumb || reel.mediaUrl || '';
+
+                            return (
+                              <div
+                                key={reel.id || `reel-${rIdx}`}
+                                onClick={() => handleToggleCategoryReel(catName, rIdx)}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '0.65rem',
+                                  padding: '0.55rem 0.75rem',
+                                  borderRadius: '8px',
+                                  border: isAssigned ? '1.5px solid #111113' : '1px solid rgba(0,0,0,0.08)',
+                                  backgroundColor: isAssigned ? '#FFFFFF' : '#F4F4F5',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.15s ease',
+                                  boxShadow: isAssigned ? '0 2px 6px rgba(0,0,0,0.04)' : 'none',
+                                }}
+                              >
+                                {/* Checkbox */}
+                                <div
+                                  style={{
+                                    width: '18px',
+                                    height: '18px',
+                                    borderRadius: '4px',
+                                    border: isAssigned ? '1.5px solid #111113' : '1.5px solid #A1A1AA',
+                                    backgroundColor: isAssigned ? '#111113' : '#FFFFFF',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  {isAssigned && <Check size={12} color="#FFFFFF" strokeWidth={3} />}
+                                </div>
+
+                                {/* Thumbnail preview */}
+                                {thumb ? (
+                                  <div
+                                    style={{
+                                      width: '36px',
+                                      height: '46px',
+                                      borderRadius: '5px',
+                                      overflow: 'hidden',
+                                      backgroundColor: '#000',
+                                      flexShrink: 0,
+                                      position: 'relative',
+                                    }}
+                                  >
+                                    <img
+                                      src={thumb}
+                                      alt={reel.hookTitle || 'Reel thumbnail'}
+                                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                  </div>
+                                ) : (
+                                  <div
+                                    style={{
+                                      width: '36px',
+                                      height: '46px',
+                                      borderRadius: '5px',
+                                      backgroundColor: '#E4E4E7',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      flexShrink: 0,
+                                    }}
+                                  >
+                                    <Film size={14} color="#71717A" />
+                                  </div>
+                                )}
+
+                                {/* Hook Title & Subtitle */}
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div
+                                    style={{
+                                      fontSize: '0.78rem',
+                                      fontWeight: 650,
+                                      color: '#111113',
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                    }}
+                                  >
+                                    {reel.hookTitle || `Reel #${rIdx + 1}`}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: '0.67rem',
+                                      color: '#71717A',
+                                      whiteSpace: 'nowrap',
+                                      overflow: 'hidden',
+                                      textOverflow: 'ellipsis',
+                                    }}
+                                  >
+                                    {reel.subtitle || reel.category || (reelCats.length > 0 ? reelCats.join(', ') : 'Uncategorized')}
+                                  </div>
+                                </div>
+
+                                {/* Primary Badge or Set Primary Link */}
+                                {isAssigned && (
+                                  <div style={{ flexShrink: 0 }}>
+                                    {isPrimary ? (
+                                      <span
+                                        style={{
+                                          fontSize: '0.62rem',
+                                          padding: '0.15rem 0.45rem',
+                                          borderRadius: '4px',
+                                          backgroundColor: '#DCFCE7',
+                                          color: '#15803D',
+                                          fontWeight: 700,
+                                        }}
+                                      >
+                                        Primary
+                                      </span>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleSetPrimaryCategory(rIdx, catName);
+                                        }}
+                                        title="Make this the primary category for this reel"
+                                        style={{
+                                          border: 'none',
+                                          background: 'none',
+                                          color: '#DE322D',
+                                          fontSize: '0.62rem',
+                                          fontWeight: 600,
+                                          cursor: 'pointer',
+                                          padding: '2px',
+                                          textDecoration: 'underline',
+                                        }}
+                                      >
+                                        Set Primary
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -2489,6 +3471,8 @@ export default function AdminWorkPage() {
             handleDeleteCase(deleteConfirm.id as string);
           } else if (deleteConfirm.type === 'reel') {
             handleDeleteReel(deleteConfirm.id as number);
+          } else if (deleteConfirm.type === 'category') {
+            handleDeleteCategory(deleteConfirm.id as string);
           }
         }}
         onCancel={() => setDeleteConfirm(null)}

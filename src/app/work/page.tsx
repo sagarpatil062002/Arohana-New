@@ -42,6 +42,7 @@ interface ReelItem {
   hookTitle: string;
   subtitle: string;
   category: string;
+  categories: string[];
   image: string;
   instagramUrl: string;
 }
@@ -53,6 +54,7 @@ const REELS: ReelItem[] = [
     hookTitle: 'Raysons Group',
     subtitle: 'Commercial Real Estate & Industrial Film',
     category: 'Real Estate & Built Environment',
+    categories: ['Real Estate & Built Environment'],
     image: '/images/reels/raysons-reel.jpg',
     instagramUrl: 'https://www.instagram.com/reel/C-HO9zcIAsj/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
   },
@@ -62,6 +64,7 @@ const REELS: ReelItem[] = [
     hookTitle: 'Misu',
     subtitle: 'Pan-Asian Dining & Neora Deck Hospitality',
     category: 'Hospitality & F&B',
+    categories: ['Hospitality & F&B'],
     image: '/images/reels/misu-reel.jpg',
     instagramUrl: 'https://www.instagram.com/reel/DbIvEiLqD2Y/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
@@ -71,6 +74,7 @@ const REELS: ReelItem[] = [
     hookTitle: 'RR Skins',
     subtitle: 'Clinical Dermatology & Patient Trust',
     category: 'Healthcare',
+    categories: ['Healthcare'],
     image: '/images/reels/rrskins-reel.jpg',
     instagramUrl: 'https://www.instagram.com/reel/Dc3fHqXoH8c/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==',
   },
@@ -80,6 +84,7 @@ const REELS: ReelItem[] = [
     hookTitle: 'PictureTime',
     subtitle: 'Mobile Cinema Network & Film Festivals',
     category: 'Entertainment & Media',
+    categories: ['Entertainment & Media'],
     image: '/images/reels/picturetime-reel.jpg',
     instagramUrl: 'https://www.instagram.com/reel/DQMS9CxjHn-/?stkn=b2t2dnlyYzE5d3o5',
   },
@@ -89,6 +94,7 @@ const REELS: ReelItem[] = [
     hookTitle: 'SHE Initiative',
     subtitle: 'Ladakh Border Villages & Operation Sadbhavana',
     category: 'Institutions & Government',
+    categories: ['Institutions & Government'],
     image: '/images/reels/she-reel.jpg',
     instagramUrl: 'https://www.instagram.com/reel/DD_U5eeyHEd/?igsh=MWQ1MTNxa3V6Y2Vsdw==',
   },
@@ -98,6 +104,7 @@ const REELS: ReelItem[] = [
     hookTitle: 'Loom Crafts',
     subtitle: 'Luxury Outdoor Furniture & Handcrafted Living',
     category: 'Real Estate & Built Environment',
+    categories: ['Real Estate & Built Environment'],
     image: '/images/reels/loom-reel.jpg',
     instagramUrl: 'https://www.instagram.com/reel/DdtjcrJvqkN/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==',
   },
@@ -636,18 +643,37 @@ const DIRECTORY_CATEGORIES = [
 export default function WorkPage() {
   const { content } = useCmsContent();
   const workCms = content?.work;
+
+  // ── CMS-driven reel categories (falls back to hardcoded default if CMS categories not yet set) ──
+  const activeCategories: string[] = React.useMemo(() => {
+    if (Array.isArray(workCms?.categories) && workCms.categories.length > 0) {
+      const dynamicList = workCms.categories
+        .filter((cat: any) => (typeof cat === 'string' ? true : cat.enabled !== false))
+        .map((cat: any) => (typeof cat === 'string' ? cat : cat.name))
+        .filter(Boolean);
+      return ['All', ...dynamicList];
+    }
+    return REEL_FILTERS;
+  }, [workCms?.categories]);
+
   const activeReelsList: ReelItem[] = (workCms?.featuredReels && workCms.featuredReels.length > 0)
     ? workCms.featuredReels
         .filter((r: any) => r && r.enabled !== false)
-        .map((r: any, i: number) => ({
-        id: r.id || `reel-${i}`,
-        num: String(i + 1).padStart(2, '0'),
-        hookTitle: r.hookTitle || '',
-        subtitle: r.subtitle || '',
-        category: r.category || '',
-        image: r.coverImage || r.image || '/images/case-studies/raysons/neora-1.jpg',
-        instagramUrl: r.instagramUrl || 'https://www.instagram.com/byarohana/',
-      }))
+        .map((r: any, i: number) => {
+          const rawCategories: string[] = Array.isArray(r.categories) && r.categories.length > 0
+            ? r.categories
+            : (r.category ? [r.category] : []);
+          return {
+            id: r.id || `reel-${i}`,
+            num: String(i + 1).padStart(2, '0'),
+            hookTitle: r.hookTitle || '',
+            subtitle: r.subtitle || '',
+            category: r.category || rawCategories[0] || '',
+            categories: rawCategories,
+            image: r.coverImage || r.image || '/images/case-studies/raysons/neora-1.jpg',
+            instagramUrl: r.instagramUrl || 'https://www.instagram.com/byarohana/',
+          };
+        })
     : REELS;
 
   // ── CMS-driven case studies (falls back to hardcoded if CMS unavailable) ──
@@ -697,11 +723,21 @@ export default function WorkPage() {
   const [selectedCaseFilter, setSelectedCaseFilter] = useState('All');
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
-  // Filtered Reels
+  // Auto fallback to 'All' if the currently selected category is removed or disabled
+  useEffect(() => {
+    if (selectedReelFilter !== 'All' && !activeCategories.includes(selectedReelFilter)) {
+      setSelectedReelFilter('All');
+    }
+  }, [activeCategories, selectedReelFilter]);
+
+  // Filtered Reels: supports both single and multi-category assignment
   const filteredReels =
     selectedReelFilter === 'All'
       ? activeReelsList
-      : activeReelsList.filter((r) => r.category === selectedReelFilter);
+      : activeReelsList.filter((r) => {
+          const cats = r.categories && r.categories.length > 0 ? r.categories : (r.category ? [r.category] : []);
+          return cats.includes(selectedReelFilter);
+        });
 
   // Check if a case study card should be dimmed based on active category filter
   const isCardDimmed = (tags: string[]) => {
@@ -880,7 +916,7 @@ export default function WorkPage() {
               <div className="work-reel-filters-bar">
                 {/* Filter Pills */}
                 <div className="work-reel-filters-scroll">
-                  {REEL_FILTERS.map((filter) => {
+                  {activeCategories.map((filter) => {
                     const isActive = selectedReelFilter === filter;
                     return (
                       <button
